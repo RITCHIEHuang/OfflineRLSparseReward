@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 def main(args):
     dataset = MDPDataset.load('../datasets/dataset/Walker2d-v3_expert_100.h5')
     env_name = "Walker2d-v3"
-    # env = gym.make(env_name)
+    env = gym.make(env_name)
 
     d3rlpy.seed(42)
 
