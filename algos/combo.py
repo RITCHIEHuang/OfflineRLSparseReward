@@ -18,7 +18,9 @@ from sklearn.model_selection import train_test_split
 
 
 def main(args):
-    dataset = MDPDataset.load('../datasets/dataset/Walker2d-v3_expert_100.h5')
+    dataset = MDPDataset.load(
+        "../datasets/dataset/Walker2d-v3_delay_20_expert_100.h5"
+    )
     env_name = "Walker2d-v3"
     env = gym.make(env_name)
 
@@ -28,38 +30,51 @@ def main(args):
 
     device = None if args.gpu is None else Device(args.gpu)
 
-    dynamics = ProbabilisticEnsembleDynamics(use_gpu=device)
-    dynamics.fit(train_episodes,
-                 eval_episodes=test_episodes,
-                 n_steps=100000,
-                 scorers={
-                     "obs_error": dynamics_observation_prediction_error_scorer,
-                     "reward_error": dynamics_reward_prediction_error_scorer,
-                 })
+    dynamics = ProbabilisticEnsembleDynamics(batch_size=256, use_gpu=device)
 
-    combo = COMBO(q_func_factory=args.q_func,
-                  dynamics=dynamics,
-                  use_gpu=device)
+    dynamics.fit(
+        train_episodes,
+        eval_episodes=test_episodes,
+        n_epochs=100,
+        n_steps_per_epoch=500,
+        logdir="logs",
+        tensorboard_dir="tb_logs",
+        scorers={
+            "obs_error": dynamics_observation_prediction_error_scorer,
+            "reward_error": dynamics_reward_prediction_error_scorer,
+        },
+    )
 
-    combo.fit(train_episodes,
-              eval_episodes=test_episodes,
-              n_steps=1000000,
-              scorers={
-                  'environment': evaluate_on_environment(env),
-                  'td_error': td_error_scorer,
-                  'discounted_advantage': discounted_sum_of_advantage_scorer,
-                  'value_scale': average_value_estimation_scorer,
-                  'value_std': value_estimation_std_scorer,
-                  'action_diff': continuous_action_diff_scorer
-              })
+    combo = COMBO(
+        q_func_factory=args.q_func, dynamics=dynamics, use_gpu=device
+    )
+
+    combo.fit(
+        train_episodes,
+        eval_episodes=test_episodes,
+        n_epochs=1000,
+        n_steps_per_epoch=5000,
+        logdir="logs",
+        tensorboard_dir="tb_logs",
+        scorers={
+            "environment": evaluate_on_environment(env),
+            "td_error": td_error_scorer,
+            "discounted_advantage": discounted_sum_of_advantage_scorer,
+            "value_scale": average_value_estimation_scorer,
+            "value_std": value_estimation_std_scorer,
+            "action_diff": continuous_action_diff_scorer,
+        },
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--q-func',
-                        type=str,
-                        default='mean',
-                        choices=['mean', 'qr', 'iqn', 'fqf'])
-    parser.add_argument('--gpu', type=int)
+    parser.add_argument(
+        "--q-func",
+        type=str,
+        default="mean",
+        choices=["mean", "qr", "iqn", "fqf"],
+    )
+    parser.add_argument("--gpu", type=int, default=0)
     args = parser.parse_args()
     main(args)

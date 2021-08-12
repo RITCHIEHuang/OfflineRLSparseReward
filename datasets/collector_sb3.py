@@ -1,6 +1,7 @@
 import os
 import gym
 import numpy as np
+import matplotlib.pyplot as plt
 
 from stable_baselines3 import SAC
 from stable_baselines3.common.callbacks import CheckpointCallback
@@ -37,21 +38,11 @@ def train(sac, time_steps=1000000):
 
 def collect_dataset(
     sac,
-    checkpoint_path,
     env,
     n_episodes=10,
     action_noise_std=0.05,
-    level="expert",
 ):
-    sac = sac.load(checkpoint_path)
-    mean_rew, std_rew = evaluate_policy(sac, eval_env)
-    print(f"mean reward: {mean_rew}, std reward: {std_rew}")
 
-    dataset = collect_episodes(sac, env, n_episodes, action_noise_std)
-    dataset.dump(f"{dataset_dir}/{env_name}_{level}_{n_episodes}.h5")
-
-
-def collect_episodes(sac, env, n_episodes, action_noise_std=0.0):
     observations = []
     actions = []
     rewards = []
@@ -97,14 +88,29 @@ def collect_episodes(sac, env, n_episodes, action_noise_std=0.0):
     actions = np.array(actions)
     rewards = np.array(rewards)
     terminals = np.array(terminals)
+
+    plt.plot(range(len(rewards)), rewards)
+    plt.xlabel('t')
+    plt.ylabel('reward')
+    plt.title(f"{exp_name}_reward")
+    plt.savefig(f"{exp_name}_reward.png")
     dataset = MDPDataset(observations, actions, rewards, terminals)
     return dataset
 
 
 if __name__ == "__main__":
-    collect_dataset(
+    checkpoint_path = f"{checkpoint_dir}/{exp_name}/rl_model_1000000_steps.zip"
+    sac = sac.load(checkpoint_path)
+    mean_rew, std_rew = evaluate_policy(sac, eval_env)
+    print(f"mean reward: {mean_rew}, std reward: {std_rew}")
+
+    level = "expert"
+    n_episodes = 1
+
+    dataset = collect_dataset(
         sac,
-        checkpoint_path=f"{checkpoint_dir}/{exp_name}/rl_model_1000000_steps.zip",
         env=env,
-        n_episodes=100,
+        n_episodes=n_episodes,
     )
+
+    dataset.dump(f"{dataset_dir}/{exp_name}_{level}_{n_episodes}.h5")
