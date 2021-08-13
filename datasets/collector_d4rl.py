@@ -5,8 +5,11 @@ import gym
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from loguru import logger
 
 import d4rl
+from offlinerl.utils.data import SampleBatch
+from offlinerl.data.d4rl import load_d4rl_buffer
 
 task_list = [
     "halfcheetah-random-v0",
@@ -53,30 +56,33 @@ def argsparser():
     return parser.parse_args()
 
 
-def trans_dataset(args):
-    env = gym.make(args.task)
-    dataset = env.get_dataset()
+def trans_dataset(config):
+    env = gym.make(config["task"][5:])
+    # dataset = env.get_dataset()
+    dataset = d4rl.qlearning_dataset(env)
     raw_rewards = dataset["rewards"]
     raw_terminals = dataset["terminals"]
     raw_timeouts = dataset["timeouts"]
-    episode_ends = np.argwhere(np.logical_or(raw_terminals == True, raw_timeouts == True))
+    episode_ends = np.argwhere(
+        np.logical_or(raw_terminals == True, raw_timeouts == True)
+    )
     data_size = len(raw_rewards)
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
     delay_rewards = np.zeros_like(raw_rewards)
 
     trans_idx = 0
-    plot = True
+    plot = False
     for ep in tqdm(range(len(episode_ends))):
         last_idx = trans_idx
         episode_end_idx = episode_ends[ep]
         while trans_idx < episode_end_idx:
-            delay_idx = min(trans_idx + args.delay, episode_end_idx)
+            delay_idx = min(trans_idx + config["delay"], episode_end_idx)
             delay_rewards[delay_idx - 1] = np.sum(
                 raw_rewards[trans_idx:delay_idx]
             )
             # print(trans_idx, delay_idx, np.sum(raw_rewards[trans_idx:delay_idx]))
-            trans_idx += args.delay
+            trans_idx += config["delay"]
 
         if plot:
             plot_ep_reward(
@@ -87,7 +93,7 @@ def trans_dataset(args):
 
         trans_idx = episode_end_idx
 
-    print(f"Task: {args.task}, data size: {len(raw_rewards)}")
+    logger.info(f"Task: {config['task']}, data size: {len(raw_rewards)}")
     dataset["rewards"] = delay_rewards
     return dataset
 
@@ -105,8 +111,29 @@ def plot_ep_reward(raw_rewards, delay_rewards):
     plt.xlabel("t")
     plt.ylabel("reward")
     plt.title(f"{exp_name} reward")
-    plt.legend(["Raw","Delayed"])
+    plt.legend(["Raw", "Delayed"])
     plt.savefig(f"{exp_name}_reward.png")
+
+
+def load_d4rl_buffer(config):
+    dataset = trans_dataset(config)
+
+    buffer = SampleBatch(
+        obs=dataset["observations"],
+        obs_next=dataset["next_observations"],
+        act=dataset["actions"],
+        rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
+        done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
+    )
+
+    logger.info("obs shape: {}", buffer.obs.shape)
+    logger.info("obs_next shape: {}", buffer.obs_next.shape)
+    logger.info("act shape: {}", buffer.act.shape)
+    logger.info("rew shape: {}", buffer.rew.shape)
+    logger.info("done shape: {}", buffer.done.shape)
+    logger.info("Episode reward: {}", buffer.rew.sum() / np.sum(buffer.done))
+    logger.info("Number of terminals on: {}", np.sum(buffer.done))
+    return buffer
 
 
 if __name__ == "__main__":
@@ -115,5 +142,4 @@ if __name__ == "__main__":
         os.makedirs(args.dataset_dir)
 
     exp_name = f"{args.task}_delay_{args.delay}"
-
-    dataset = trans_dataset(args)
+    load_d4rl_buffer(vars(args))
