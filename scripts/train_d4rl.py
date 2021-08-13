@@ -3,7 +3,9 @@ import fire
 from offlinerl.algo import algo_select
 from offlinerl.evaluation import OnlineCallBackFunction
 
-from datasets.collector_d4rl import load_d4rl_buffer
+from datasets.d4rl import load_d4rl_buffer
+
+# python train_d4rl.py --algo_name=cql --exp_name=d4rl-halfcheetah-medium-cql --task=d4rl-halfcheetah-medium-v0 --delay=20
 
 
 def run_algo(**kwargs):
