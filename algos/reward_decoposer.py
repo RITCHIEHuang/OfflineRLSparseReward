@@ -1,65 +1,131 @@
 # pylint: disable=protected-access
 import torch
 from torch import nn
+import math
+from torch.nn import (
+    TransformerEncoder,
+    TransformerEncoderLayer,
+    MultiheadAttention,
+)
+from torch.nn.modules.activation import ReLU
+from torch.nn.utils.rnn import pad_sequence
+
+# Temporarily leave PositionalEncoding module here. Will be moved somewhere else.
+class PositionalEncoding(nn.Module):
+    r"""Inject some information about the relative or absolute position of the tokens
+        in the sequence. The positional encodings have the same dimension as
+        the embeddings, so that the two can be summed. Here, we use sine and cosine
+        functions of different frequencies.
+    .. math::
+        \text{PosEncoder}(pos, 2i) = sin(pos/10000^(2i/d_model))
+        \text{PosEncoder}(pos, 2i+1) = cos(pos/10000^(2i/d_model))
+        \text{where pos is the word position and i is the embed idx)
+    Args:
+        d_model: the embed dim (required).
+        dropout: the dropout value (default=0.1).
+        max_len: the max. length of the incoming sequence (default=5000).
+    Examples:
+        >>> pos_encoder = PositionalEncoding(d_model)
+    """
+
+    def __init__(self, d_model, dropout=0.1, max_len=5000):
+        super(PositionalEncoding, self).__init__()
+        self.dropout = nn.Dropout(p=dropout)
+
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        div_term = torch.exp(
+            torch.arange(0, d_model, 2).float()
+            * (-math.log(10000.0) / d_model)
+        )
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(0).transpose(0, 1)
+        self.register_buffer("pe", pe)
+
+    def forward(self, x):
+        r"""Inputs of forward function
+        Args:
+            x: the sequence fed to the positional encoder model (required).
+        Shape:
+            x: [sequence length, batch size, embed dim]
+            output: [sequence length, batch size, embed dim]
+        Examples:
+            >>> output = pos_encoder(x)
+        """
+
+        x = x + self.pe[: x.size(0), :]
+        return self.dropout(x)
 
 
-class RewardDecomposer(nn.Module):
-    def __init__(self, obs_size, act_size, hidden_size=256, aux_loss_coef=0.5):
-        super().__init__()
-
-        self._aux_loss_coef = aux_loss_coef
-        self.lstm = nn.LSTM(obs_size + act_size, hidden_size, batch_first=True)
-        self.fc_out = nn.Linear(hidden_size, 1)
-
-    def compute_decomposed_reward(self, observations, actions):
-        lstm_out, *_ = self.lstm(torch.cat([observations, actions], dim=-1))
-        net_out = self.fc_out(lstm_out)
-
-        return net_out
-
-    def forward(self, observations, actions):
-        return self.compute_decomposed_reward(observations, actions)
-
-    def compute_error(
+class TransformerRewardDecomposer(nn.Module):
+    def __init__(
         self,
-        pred_rews: torch.Tensor,
-        rews: torch.Tensor,
-    ) -> torch.Tensor:
-
-        returns = rews.sum(dim=1)
-        # Main task: predicting return at last timestep
-        main_loss = torch.mean(pred_rews[:, -1] - returns) ** 2
-        # Auxiliary task: predicting final return at every timestep ([..., None] is for correct broadcasting)
-        aux_loss = torch.mean(pred_rews[:, :] - returns[..., None]) ** 2
-        # Combine losses
-        loss = main_loss + aux_loss * self._aux_loss_coef
-        return loss.view(-1, 1)
-
-    def compute_redistribued_reward(self, observations, actions, rewards):
-        pred_rewards = self.compute_decomposed_reward(observations, actions)[
-            ..., 0
-        ]
-        redistributed_reward = pred_rewards[:, 1:] - pred_rewards[:, :-1]
-        # For the first timestep we will take (0-predictions[:, :1]) as redistributed reward
-        redistributed_reward = torch.cat(
-            [pred_rewards[:, :1], redistributed_reward], dim=1
+        input_pair_dim,
+        d_model,
+        nhead=4,
+        dim_ff=128,
+        nlayers=4,
+        dropout=0.1,
+    ):
+        super(TransformerRewardDecomposer, self).__init__()
+        self.model_type = "Transformer"
+        self.d_model = d_model
+        encoder_layers = TransformerEncoderLayer(
+            d_model, nhead, dim_ff, dropout, batch_first=True
+        )
+        self.embedding_net = nn.Linear(input_pair_dim, d_model)
+        self.transformer_encoder = TransformerEncoder(encoder_layers, nlayers)
+        self.self_attn = MultiheadAttention(d_model, 1, 0.1, batch_first=True)
+        self.pos_encoder = PositionalEncoding(d_model)
+        self.reward_ff = nn.Sequential(
+            nn.Linear(d_model, d_model), nn.ReLU(), nn.Linear(d_model, 1)
+        )
+        self.ff = nn.Sequential(
+            nn.Linear(d_model,d_model//2),
+            nn.Tanh(),
+            nn.Linear(d_model//2,1),
         )
 
-        # Calculate prediction error
-        returns = rewards.sum(dim=1)
-        predicted_returns = redistributed_reward.sum(dim=1)
-        prediction_error = returns - predicted_returns
-
-        # Distribute correction for prediction error equally over all sequence positions
-        redistributed_reward += (
-            prediction_error[:, None] / redistributed_reward.shape[1]
+    def _generate_square_subsequent_mask(self, sz):
+        mask = torch.tril(torch.ones(sz, sz)) == 1
+        mask = (
+            mask.float()
+            .masked_fill(mask == 0, float("-inf"))
+            .masked_fill(mask == 1, float(0.0))
         )
-        return redistributed_reward
+        return mask
+
+    def forward(self, src, key_padding_mask=None):
+        # src is batch first
+        sz = src.shape[1]
+        src = self.embedding_net(src)
+        src = src * math.sqrt(self.d_model)
+        src = self.pos_encoder(src)
+        output = self.transformer_encoder(
+            src, src_key_padding_mask=key_padding_mask
+        )
+        pair_importance = torch.softmax(self.ff(output)+(key_padding_mask*-1e9)[...,None],dim=1)
+        # print(f"pair_importance shape:{pair_importance.shape}")
+        output = pair_importance*output
+        output = self.reward_ff(output)
+        return output
+
+
+def create_key_padding_mask(seq_of_pair_length, max_length):
+    out = torch.ones(len(seq_of_pair_length), max_length)
+    for i, e in enumerate(seq_of_pair_length):
+        out[i, :e] = 0
+    return out
 
 
 if __name__ == "__main__":
-    model = RewardDecomposer(10, 5)
-    obs = torch.rand((2, 5, 10))
-    act = torch.rand((2, 5, 5))
-    pred_rew = model(obs, act)
-    print(pred_rew.shape)
+
+    obs_act_pair = torch.rand((3, 5, 10))  # [batch, seq_len, obs+act]
+
+    # [batch, len]
+    key_padding_mask = create_key_padding_mask([3, 4, 5], 5)
+
+    model = TransformerRewardDecomposer(10, 512)
+    reward_pre = model(obs_act_pair, key_padding_mask=key_padding_mask)
+    print(reward_pre.shape)

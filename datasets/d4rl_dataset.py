@@ -9,42 +9,14 @@ from loguru import logger
 
 import d4rl
 from offlinerl.utils.data import SampleBatch
-from offlinerl.data.d4rl import load_d4rl_buffer
 
-task_list = [
-    "halfcheetah-random-v0",
-    "halfcheetah-medium-v0",
-    "halfcheetah-expert-v0",
-    "halfcheetah-medium-replay-v0",
-    "halfcheetah-medium-expert-v0",
-    "walker2d-random-v0",
-    "walker2d-medium-v0",
-    "walker2d-expert-v0",
-    "walker2d-medium-replay-v0",
-    "walker2d-medium-expert-v0",
-    "hopper-random-v0",
-    "hopper-medium-v0",
-    "hopper-expert-v0",
-    "hopper-medium-replay-v0",
-    "hopper-medium-expert-v0",
-    "ant-random-v0",
-    "ant-medium-v0",
-    "ant-expert-v0",
-    "ant-medium-replay-v0",
-    "ant-medium-expert-v0",
-]
+from utils.d4rl_tasks import task_list
 
 
 def argsparser():
     # Experiment setting
     parser = argparse.ArgumentParser("Dataset collector for d4rl")
     parser.add_argument("--delay", help="delay steps", type=int, default=20)
-    parser.add_argument(
-        "--dataset_dir",
-        help="directory to store datasets",
-        type=str,
-        default="dataset",
-    )
     parser.add_argument(
         "--task",
         help="task name",
@@ -56,8 +28,88 @@ def argsparser():
     return parser.parse_args()
 
 
+def trans_traj_dataset(config):
+    """Generate trajectory data
+
+    Args:
+        config (dict):  dataset configuration
+    """
+
+    env = gym.make(
+        config["task"][5:] if "d4rl" in config["task"] else config["task"]
+    )
+    dataset = env.get_dataset()
+    # dataset = d4rl.qlearning_dataset(env)
+    raw_observations = dataset["observations"]
+    raw_actions = dataset["actions"]
+    raw_rewards = dataset["rewards"]
+    raw_terminals = dataset["terminals"]
+    raw_timeouts = dataset["timeouts"]
+
+    keys = [
+        "observations",
+        "actions",
+        "delay_rewards",
+        "rewards",
+        "terminals",
+        "length",
+    ]
+    traj_dataset = {k: [] for k in keys}
+
+    episode_ends = np.argwhere(
+        np.logical_or(raw_terminals == True, raw_timeouts == True)
+    )
+    data_size = len(raw_rewards)
+    if episode_ends[-1][0] + 1 != data_size:
+        episode_ends = np.append(episode_ends, data_size - 1)
+    delay_rewards = np.zeros_like(raw_rewards)
+
+    trans_idx = 0
+    last_delay_idx = 0
+    for ep in tqdm(range(len(episode_ends))):
+        traj_observations = []
+        traj_actions = []
+        traj_terminals = []
+        traj_rewards = []
+        traj_delay_rewards = []
+
+        episode_end_idx = episode_ends[ep]
+        episode_idx = 1
+        while trans_idx <= episode_end_idx:
+            traj_observations.append(raw_observations[trans_idx])
+            traj_actions.append(raw_actions[trans_idx])
+            traj_terminals.append(raw_terminals[trans_idx])
+            traj_rewards.append(raw_rewards[trans_idx])
+
+            if (
+                episode_idx % config["delay"] == 0
+                or trans_idx == episode_end_idx
+            ):
+                delay_rewards[trans_idx] = np.sum(
+                    raw_rewards[last_delay_idx:trans_idx]
+                )
+                last_delay_idx = trans_idx
+            traj_delay_rewards.append(delay_rewards[trans_idx])
+            trans_idx += 1
+            episode_idx += 1
+
+        traj_dataset["observations"].append(np.array(traj_observations))
+        traj_dataset["actions"].append(np.array(traj_actions))
+        traj_dataset["terminals"].append(np.array(traj_terminals))
+        traj_dataset["rewards"].append(np.array(traj_rewards))
+        traj_dataset["delay_rewards"].append(np.array(traj_delay_rewards))
+        traj_dataset["length"].append(len(traj_observations))
+
+    logger.info(
+        f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
+    )
+    return traj_dataset
+
+
 def trans_dataset(config):
-    env = gym.make(config["task"][5:])
+    env = gym.make(
+        config["task"][5:] if "d4rl" in config["task"] else config["task"]
+    )
     # dataset = env.get_dataset()
     dataset = d4rl.qlearning_dataset(env)
     raw_rewards = dataset["rewards"]
@@ -76,7 +128,7 @@ def trans_dataset(config):
     for ep in tqdm(range(len(episode_ends))):
         last_idx = trans_idx
         episode_end_idx = episode_ends[ep]
-        while trans_idx < episode_end_idx:
+        while trans_idx <= episode_end_idx:
             delay_idx = min(trans_idx + config["delay"], episode_end_idx)
             delay_rewards[delay_idx - 1] = np.sum(
                 raw_rewards[trans_idx:delay_idx]
@@ -91,7 +143,7 @@ def trans_dataset(config):
             )
             plot = False
 
-        trans_idx = episode_end_idx
+        trans_idx = episode_end_idx + 1
 
     logger.info(f"Task: {config['task']}, data size: {len(raw_rewards)}")
     dataset["rewards"] = delay_rewards
@@ -117,7 +169,6 @@ def plot_ep_reward(raw_rewards, delay_rewards):
 
 def load_d4rl_buffer(config):
     dataset = trans_dataset(config)
-
     buffer = SampleBatch(
         obs=dataset["observations"],
         obs_next=dataset["next_observations"],
@@ -138,8 +189,15 @@ def load_d4rl_buffer(config):
 
 if __name__ == "__main__":
     args = argsparser()
-    if not os.path.exists(args.dataset_dir):
-        os.makedirs(args.dataset_dir)
+    # if not os.path.exists(args.dataset_dir):
+    #     os.makedirs(args.dataset_dir)
 
     exp_name = f"{args.task}_delay_{args.delay}"
-    load_d4rl_buffer(vars(args))
+
+    """extract transition buffer"""
+    # load_d4rl_buffer(vars(args))
+
+    """extract traj dataset"""
+    traj_dataset = trans_traj_dataset(vars(args))
+
+    print(1)
