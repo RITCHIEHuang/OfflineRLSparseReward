@@ -26,7 +26,7 @@ def get_gpu_count():
     return int(out)
 
 
-algos = ["bc", "bcq", "combo", "cql", "mopo"]
+algos = ["bcq", "combo", "cql", "mopo"]
 tasks = ["walker2d-medium-replay-v0"]
 
 NUM_GPU = get_gpu_count()

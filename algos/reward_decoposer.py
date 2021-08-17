@@ -6,6 +6,7 @@ from torch.nn import (
     TransformerEncoder,
     TransformerEncoderLayer,
     MultiheadAttention,
+    parameter,
 )
 from torch.nn.modules.activation import ReLU
 from torch.nn.utils.rnn import pad_sequence
@@ -105,10 +106,11 @@ class TransformerRewardDecomposer(nn.Module):
         output = self.transformer_encoder(
             src, src_key_padding_mask=key_padding_mask
         )
+        pair_mask=torch.where(key_padding_mask==0,1,0)[...,None]
         pair_importance = torch.softmax(self.ff(output)+(key_padding_mask*-1e9)[...,None],dim=1)
         # print(f"pair_importance shape:{pair_importance.shape}")
         output = pair_importance*output
-        output = self.reward_ff(output)*torch.where(key_padding_mask==0,1,0)[...,None]
+        output = self.reward_ff(output)*pair_mask
         return output
 
 
