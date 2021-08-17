@@ -50,12 +50,12 @@ class TrajDataset(Dataset):
         obs_act_pair[:valid_length] = valid_obs_act_pair
 
         sample["obs_act_pair"] = obs_act_pair
-        valid_rew = torch.from_numpy(self.rew[idx])
+        valid_rew = (torch.from_numpy(self.rew[idx])-self.rew_min)/(self.rew_max-self.rew_min)
         rew = torch.zeros((self.max_length,))
         rew[:valid_length] = valid_rew
         sample["reward"] = rew
 
-        valid_delay_rew = torch.from_numpy(self.delay_rew[idx])
+        valid_delay_rew = (torch.from_numpy(self.delay_rew[idx])-self.rew_min)/(self.rew_max-self.rew_min)
         delay_rew = torch.zeros((self.max_length,))
         delay_rew[:valid_length] = valid_delay_rew
         sample["delay_reward"] = delay_rew
@@ -64,13 +64,13 @@ class TrajDataset(Dataset):
         return sample
 
 
-def reward_redistributed(predictions,rewards):
-    redistributed_reward = predictions[:, 1:] - predictions[:, :-1]
-    redistributed_reward = torch.cat([predictions[:, :1], redistributed_reward], dim=1)
+def reward_redistributed(predictions,rewards,length):
+    redistributed_reward = predictions[..., 1:] - predictions[..., :-1]
+    redistributed_reward = torch.cat([predictions[..., :1], redistributed_reward], dim=1)
     returns = rewards.sum(dim=1)
     predicted_returns = redistributed_reward.sum(dim=1)
     prediction_error = returns - predicted_returns
-    redistributed_reward += prediction_error[:, None] / redistributed_reward.shape[1]
+    redistributed_reward += prediction_error[..., None] / redistributed_reward.shape[1]
     return redistributed_reward
 
 def plot_dcompose_reward(exp_name,raw_rewards, delay_rewards):
@@ -92,7 +92,7 @@ def plot_dcompose_reward(exp_name,raw_rewards, delay_rewards):
 
 if __name__ == "__main__":
     BATCH_SIZE = 16
-    device = "cuda:1"
+    device = "cuda:0"
     cpu_device = 'cpu'
     task = "walker2d-expert-v0"
     dataset = TrajDataset({"delay": 20, "task": task})
@@ -102,9 +102,6 @@ if __name__ == "__main__":
     loss_fn = torch.nn.MSELoss()
     loss_fn_1 = torch.nn.MSELoss()
     rew_gap = dataset.rew_max-dataset.rew_min
-
-    def normalize_reward(r):
-        return (r-dataset.rew_min)/rew_gap
 
     opt = torch.optim.Adam(model.parameters(), lr=1e-4)
     for epoch in range(2000):
@@ -121,9 +118,9 @@ if __name__ == "__main__":
                 1,
                 0,
             )
-            delay_reward = normalize_reward(s['delay_reward'].to(device))
+            delay_reward = s['delay_reward'].to(device)
             returns = delay_reward.sum(dim=-1)
-            main_loss = torch.mean(reward_pre[:,-1]-returns[:,None])**2
+            main_loss = torch.mean(reward_pre[range(len(s["length"])),s["length"]-1]-returns[:,None])**2
             aux_loss = torch.mean(reward_pre-delay_reward)**2
             loss = main_loss + aux_loss
             opt.zero_grad()
@@ -133,7 +130,7 @@ if __name__ == "__main__":
             if batch>0 and batch % 100==0:
                 with torch.no_grad():
                     import pandas as pd
-                    reward_redistribution = reward_redistributed(reward_pre,delay_reward).to(cpu_device)
-                    plot_dcompose_reward(task, normalize_reward(s['reward'])[0],reward_redistribution[0])
+                    reward_redistribution = reward_redistributed(reward_pre,delay_reward,None).to(cpu_device)
+                    plot_dcompose_reward(task, s['reward'][0],reward_redistribution[0])
 
     print(1)

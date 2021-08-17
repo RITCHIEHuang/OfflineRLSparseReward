@@ -108,7 +108,7 @@ class TransformerRewardDecomposer(nn.Module):
         pair_importance = torch.softmax(self.ff(output)+(key_padding_mask*-1e9)[...,None],dim=1)
         # print(f"pair_importance shape:{pair_importance.shape}")
         output = pair_importance*output
-        output = self.reward_ff(output)
+        output = self.reward_ff(output)*torch.where(key_padding_mask==0,1,0)[...,None]
         return output
 
 
