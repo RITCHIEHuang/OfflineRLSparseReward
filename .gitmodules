@@ -1,6 +1,6 @@
-[submodule "OfflineRL"]
-    path = OfflineRL
-    url = https://agit.ai/Polixir/OfflineRL.git
+# [submodule "OfflineRL"]
+#     path = OfflineRL
+#     url = https://agit.ai/Polixir/OfflineRL.git
 
 
 [submodule "d4rl"]
