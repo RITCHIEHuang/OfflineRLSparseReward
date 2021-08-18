@@ -102,11 +102,11 @@ def plot_dcompose_reward(exp_name,raw_rewards, delay_rewards):
     plt.legend(["Raw", "Dcomposed"])
     plt.savefig(f"{exp_name}_reward.png")
 
-def decomposed_reward_dataset(task):
+def decomposed_reward_dataset(task,delay):
     BATCH_SIZE = 1
     device = "cuda:0"
     cpu_device = 'cpu'
-    dataset = TrajDataset({"delay": 20, "task": task,"delay_mode":"constant"})
+    dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant"})
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
     obs_act_pair_dim = dataset.act_size + dataset.obs_size
     model = torch.load("../datasets/transformer.ckpt").to(device)
@@ -140,7 +140,7 @@ def decomposed_reward_dataset(task):
     
 def load_decomposed_d4rl_buffer(config):
     dataset = decomposed_reward_dataset(
-        config["task"][5:] if "d4rl" in config["task"] else config["task"]
+        config["task"][5:] if "d4rl" in config["task"] else config["task"],config["delay"]
     )
     buffer = SampleBatch(
         obs=dataset["observations"],
@@ -160,12 +160,13 @@ def load_decomposed_d4rl_buffer(config):
     return buffer
 
 if __name__ == "__main__":
-    task = "walker2d-expert-v0"
-    decomposed_reward_dataset(task)
+    task = "walker2d-medium-replay-v0"
+    delay = 100
+    decomposed_reward_dataset(task,delay)
     # BATCH_SIZE = 16
     # device = "cuda:0"
     # cpu_device = 'cpu'
-    # dataset = TrajDataset({"delay": 20, "task": task})
+    # dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant"})
     # dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
     # obs_act_pair_dim = dataset.act_size + dataset.obs_size
     # model = TransformerRewardDecomposer(obs_act_pair_dim, 512).to(device)
