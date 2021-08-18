@@ -1,3 +1,4 @@
+
 import argparse
 
 from loguru import logger
@@ -8,6 +9,7 @@ from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
 
 from datasets import d4rl_dataset
+from datasets.traj_dataset import load_decomposed_d4rl_buffer
 
 from utils.d4rl_tasks import task_list
 
@@ -52,7 +54,7 @@ def run_algo(kwargs):
     if algo_config["delay_mode"] == "none":
         train_buffer = d4rl.load_d4rl_buffer(algo_config["task"])
     else:
-        train_buffer = d4rl_dataset.load_d4rl_buffer(algo_config)
+        train_buffer = load_decomposed_d4rl_buffer(algo_config)
 
     algo_init = algo_init_fn(algo_config)
     algo_trainer = algo_trainer_obj(algo_init, algo_config)
@@ -69,7 +71,7 @@ def run_algo(kwargs):
 
 
 if __name__ == "__main__":
-    # python train_d4rl.py --algo_name=cql --task=halfcheetah-medium-v0 --delay=20
+    # python train_d4rl.py --algo_name=cql --task=walker2d-expert-v0 --delay=20 --delay_mode=constant
     args = argsparser()
     args = vars(args)
     args["task"] = f"d4rl-{args['task']}"
