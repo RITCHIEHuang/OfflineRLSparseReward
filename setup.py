@@ -13,6 +13,6 @@ setup(
         "numpy",
         "matplotlib",
         "neorl @ git+https://agit.ai/Polixir/neorl.git",
-        "OfflineRL @ git+https://agit.ai/Polixir/OfflineRL.git@master#egg=OfflineRL",
+        # "OfflineRL @ git+https://agit.ai/Polixir/OfflineRL.git@master#egg=OfflineRL",
     ],
 )
