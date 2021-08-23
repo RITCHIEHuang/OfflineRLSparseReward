@@ -2,8 +2,9 @@
 *DS_Store
 *.egg-info/
 datasets/checkpoint/*
-*/logs/*
-*/tb_logs/*
+*logs
+*tb_logs
+*tune_results
 datasets/dataset/*
 !datasets/dataset/Walker2d-v3_expert_100.h5
 d4rl/
