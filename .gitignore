@@ -6,6 +6,6 @@ datasets/checkpoint/*
 */tb_logs/*
 datasets/dataset/*
 !datasets/dataset/Walker2d-v3_expert_100.h5
-# d4rl/
-# neorl/
+d4rl/
+neorl/
 # OfflineRL/
