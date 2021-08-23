@@ -2,7 +2,6 @@ import os
 import uuid
 import json
 from datetime import datetime
-from pprint import pformat
 from abc import ABC, abstractmethod
 
 import torch
@@ -47,7 +46,7 @@ class BaseAlgo(ABC):
 
         self.hparams_path = os.path.join(self.index_path, "hparams.json")
         with open(self.hparams_path, "w") as f:
-            json.dump(pformat(args), f)
+            json.dump(args, f)
 
     def log_res(self, epoch, result):
         logger.info("Epoch : {}", epoch)
@@ -60,6 +59,7 @@ class BaseAlgo(ABC):
                     epoch=epoch,
                 )
             self.exp_logger.add_scalar(k.split(" ")[0], v, epoch)
+            self.exp_logger.flush()
 
         self.metric_logs[str(epoch)] = result
         with open(self.metric_logs_path, "w") as f:
