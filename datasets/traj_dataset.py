@@ -44,10 +44,11 @@ class TrajDataset(Dataset):
     def __getitem__(self, idx):
         sample = {}
 
-        sample["terminals"]=self.done[idx]
-        sample["actions"]=self.act[idx]
-        sample["observations"]=self.obs[idx]
-        sample["next_observations"]=self.next_obs[idx]
+        if 'decomposed' in self.config:
+            sample["terminals"]=self.done[idx]
+            sample["actions"]=self.act[idx]
+            sample["observations"]=self.obs[idx]
+            sample["next_observations"]=self.next_obs[idx]
         valid_obs_act_pair = torch.cat(
             [torch.from_numpy(self.obs[idx]), torch.from_numpy(self.act[idx])],
             dim=-1,
@@ -59,12 +60,12 @@ class TrajDataset(Dataset):
         obs_act_pair[:valid_length] = valid_obs_act_pair
 
         sample["obs_act_pair"] = obs_act_pair
-        valid_rew = (torch.from_numpy(self.rew[idx])-self.rew_min)/(self.rew_max-self.rew_min)
+        valid_rew = (torch.from_numpy(self.rew[idx]))*0.001#-self.rew_min)/(self.rew_max-self.rew_min)
         rew = torch.zeros((self.max_length,))
         rew[:valid_length] = valid_rew
         sample["reward"] = rew
 
-        valid_delay_rew = (torch.from_numpy(self.delay_rew[idx])-self.rew_min)/(self.rew_max-self.rew_min)
+        valid_delay_rew = (torch.from_numpy(self.delay_rew[idx]))*0.001#-self.rew_min)/(self.rew_max-self.rew_min)
         delay_rew = torch.zeros((self.max_length,))
         delay_rew[:valid_length] = valid_delay_rew
         sample["delay_reward"] = delay_rew
@@ -87,6 +88,7 @@ def reward_redistributed(predictions,rewards,length):
 
 def plot_dcompose_reward(exp_name,raw_rewards, delay_rewards):
     import matplotlib.pyplot as plt
+    plt.cla()
     assert len(raw_rewards) == len(delay_rewards)
     plt.plot(
         range(len(raw_rewards)),
@@ -106,10 +108,10 @@ def decomposed_reward_dataset(task,delay):
     BATCH_SIZE = 1
     device = "cuda:0"
     cpu_device = 'cpu'
-    dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant"})
+    dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant","decomposed":True})
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
     obs_act_pair_dim = dataset.act_size + dataset.obs_size
-    model = torch.load("../datasets/transformer.ckpt").to(device)
+    model = torch.load(f"../datasets/transformer-{task}.ckpt").to(device)
     new_dataset = {}
     new_dataset["observations"]=[]
     new_dataset["actions"]=[]
@@ -143,11 +145,11 @@ def load_decomposed_d4rl_buffer(config):
         config["task"][5:] if "d4rl" in config["task"] else config["task"],config["delay"]
     )
     buffer = SampleBatch(
-        obs=dataset["observations"],
-        obs_next=dataset["next_observations"],
-        act=dataset["actions"],
-        rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
-        done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
+        obs=dataset["observations"].numpy(),
+        obs_next=dataset["next_observations"].numpy(),
+        act=dataset["actions"].numpy(),
+        rew=np.expand_dims(np.squeeze(dataset["rewards"].numpy()), 1),
+        done=np.expand_dims(np.squeeze(dataset["terminals"].numpy()), 1),
     )
 
     logger.info("obs shape: {}", buffer.obs.shape)
@@ -160,48 +162,49 @@ def load_decomposed_d4rl_buffer(config):
     return buffer
 
 if __name__ == "__main__":
-    task = "walker2d-medium-replay-v0"
+    task = "halfcheetah-medium-replay-v0"
     delay = 100
-    decomposed_reward_dataset(task,delay)
-    # BATCH_SIZE = 16
-    # device = "cuda:0"
-    # cpu_device = 'cpu'
-    # dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant"})
-    # dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
-    # obs_act_pair_dim = dataset.act_size + dataset.obs_size
-    # model = TransformerRewardDecomposer(obs_act_pair_dim, 512).to(device)
-    # loss_fn = torch.nn.MSELoss()
-    # loss_fn_1 = torch.nn.MSELoss()
-    # rew_gap = dataset.rew_max-dataset.rew_min
+    # decomposed_reward_dataset(task,delay)
+    BATCH_SIZE = 4
+    device = "cuda:0"
+    cpu_device = 'cpu'
+    dataset = TrajDataset({"delay": delay, "task": task,"delay_mode":"constant"})
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
+    obs_act_pair_dim = dataset.act_size + dataset.obs_size
+    model = TransformerRewardDecomposer(obs_act_pair_dim, 512).to(device)
+    loss_fn = torch.nn.MSELoss()
+    loss_fn_1 = torch.nn.MSELoss()
+    rew_gap = dataset.rew_max-dataset.rew_min
 
-    # opt = torch.optim.Adam(model.parameters(), lr=1e-4)
-    # for epoch in range(2000):
-    #     for batch, s in enumerate(dataloader):
-    #         key_padding_mask = create_key_padding_mask(
-    #             s["length"], dataset.max_length
-    #         ).to(device)
-    #         reward_pre = model(
-    #             s["obs_act_pair"].to(device), key_padding_mask=key_padding_mask
-    #         ).squeeze(dim=-1)
-    #         reward_mask = torch.where(
-    #             key_padding_mask.view(len(s["length"]), dataset.max_length, 1)
-    #             == 0,
-    #             1,
-    #             0,
-    #         )
-    #         delay_reward = s['delay_reward'].to(device)
-    #         returns = delay_reward.sum(dim=-1)
-    #         main_loss = torch.mean(reward_pre[range(len(s["length"])),s["length"]-1]-returns[:,None])**2
-    #         aux_loss = torch.mean(reward_pre-delay_reward)**2
-    #         loss = main_loss + aux_loss
-    #         opt.zero_grad()
-    #         loss.backward()
-    #         opt.step()
-    #         print(f"batch:{batch},loss:{loss.item()}")
-    #         if batch>0 and batch % 100==0:
-    #             with torch.no_grad():
-    #                 import pandas as pd
-    #                 reward_redistribution = reward_redistributed(reward_pre,delay_reward,s["length"]).to(cpu_device)
-    #                 plot_dcompose_reward(task, s['reward'][0],reward_redistribution[0])
+    opt = torch.optim.Adam(model.parameters(), lr=1e-4)
+    for epoch in range(2000):
+        for batch, s in enumerate(dataloader):
+            key_padding_mask = create_key_padding_mask(
+                s["length"], dataset.max_length
+            ).to(device)
+            reward_pre = model(
+                s["obs_act_pair"].to(device), key_padding_mask=key_padding_mask
+            ).squeeze(dim=-1)
+            reward_mask = torch.where(
+                key_padding_mask.view(len(s["length"]), dataset.max_length, 1)
+                == 0,
+                1,
+                0,
+            )
+            delay_reward = s['delay_reward'].to(device)
+            returns = delay_reward.sum(dim=-1)
+            main_loss = torch.mean(reward_pre[range(len(s["length"])),s["length"]-1]-returns[:,None])**2
+            aux_loss = torch.mean(reward_pre-returns[...,None])**2
+            loss = main_loss + aux_loss*0.5
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            print(f"batch:{batch},loss:{loss.item()}")
+            if batch>0 and batch % 10==0:
+                torch.save(model,f"transformer-{task}.ckpt")
+                with torch.no_grad():
+                    import pandas as pd
+                    reward_redistribution = reward_redistributed(reward_pre,delay_reward,s["length"]).to(cpu_device)
+                    plot_dcompose_reward(task, (s['reward'][0])[...,:s['length'][0]],reward_redistribution[0][...,:s["length"][0]])
 
     print(1)

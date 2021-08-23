@@ -19,7 +19,7 @@ setup(
     author_email="songyigao@gmail.com",
     python_requires=">=3.7",
     install_requires=[
-        "aim==2.0.27",
+        "aim",
         "fire",
         "loguru",
         "gym",

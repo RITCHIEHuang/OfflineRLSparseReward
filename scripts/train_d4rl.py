@@ -68,8 +68,8 @@ def run_algo(kwargs):
     algo_trainer.train(train_buffer, None, callback_fn=callback_list)
 
 
+# python train_d4rl.py --algo_name=cql --task=walker2d-medium-replay-v0 --delay_mode=constant --delay=20
 if __name__ == "__main__":
-    # python train_d4rl.py --algo_name=cql --task=halfcheetah-medium-v0 --delay=20
     args = argsparser()
     args = vars(args)
     args["task"] = f"d4rl-{args['task']}"
@@ -84,6 +84,6 @@ if __name__ == "__main__":
     args["exp_name"] = exp_name
 
     logger.info(
-        f"Task: {args['task']}-delay-{args['delay']}, algo: {args['algo_name']}, exp_name: {args['exp_name']}"
+        f"Task: {args['task']}, algo: {args['algo_name']}, exp_name: {args['exp_name']}"
     )
     run_algo(args)

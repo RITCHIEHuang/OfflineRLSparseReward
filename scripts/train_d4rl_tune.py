@@ -81,7 +81,7 @@ def run_algo(kwargs):
         "exp_name"
     ] = f"{config['kwargs']['exp_name']}-seed-{kwargs['seed']}"
     logger.info(
-        f"Task: {kwargs['task']}-delay-{kwargs['delay']}, algo: {kwargs['algo_name']}, exp_name: {kwargs['exp_name']}"
+        f"Task: {kwargs['task']}, algo: {kwargs['algo_name']}, exp_name: {kwargs['exp_name']}"
     )
     _, _, algo_config = algo_select(kwargs)
     # Prepare Dataset
@@ -98,7 +98,7 @@ def run_algo(kwargs):
         training_function,
         config=config,
         local_dir=f"../tune_results",
-        resources_per_trial={"gpu": 1},
+        resources_per_trial={"gpu": 1, "cpu": 8},
         queue_trials=True,
     )
 
