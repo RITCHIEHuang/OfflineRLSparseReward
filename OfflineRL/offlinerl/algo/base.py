@@ -17,7 +17,7 @@ class BaseAlgo(ABC):
         if "exp_name" not in args.keys():
             exp_name = str(uuid.uuid1()).replace("-", "")
         else:
-            exp_name = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f')[:-3]}"
+            exp_name = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')[:-3]}"
 
         if "log_path" in args.keys():
             repo = args["log_path"]
@@ -25,13 +25,16 @@ class BaseAlgo(ABC):
             repo = None
 
         self.repo, self.exp_logger = init_custom_exp_logger(repo, exp_name)
+
         try:
             self.aim_exp_logger = init_exp_logger(
-                repo=repo, experiment_name=exp_name
+                repo=self.repo, experiment_name=exp_name
             )
             self.aim_exp_logger.set_params(args, name="hparams")
         except:
+            logger.error(f"Error initializing Aim Logger !!!")
             self.aim_exp_logger = None
+
         # self.index_path = self.aim_exp_logger.repo.index_path
         self.index_path = f"{self.repo}/{exp_name}"
         self.models_save_dir = os.path.join(self.index_path, "models")
@@ -55,6 +58,7 @@ class BaseAlgo(ABC):
                     name=k.split(" ")[0],
                     epoch=epoch,
                 )
+
             self.exp_logger.add_scalar(k.split(" ")[0], v, epoch)
             self.exp_logger.flush()
 
