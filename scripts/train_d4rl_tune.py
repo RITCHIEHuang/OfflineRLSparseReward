@@ -12,6 +12,7 @@ from offlinerl.data import d4rl
 from datasets import d4rl_dataset
 
 from utils.d4rl_tasks import task_list
+from utils.io_util import proj_path
 
 
 def argsparser():
@@ -97,8 +98,8 @@ def run_algo(kwargs):
     analysis = tune.run(
         training_function,
         config=config,
-        local_dir=f"../tune_results",
-        resources_per_trial={"gpu": 1, "cpu": 8},
+        local_dir=f"{proj_path}/tune_results",
+        resources_per_trial={"gpu": 1},
         queue_trials=True,
     )
 
@@ -108,7 +109,7 @@ if __name__ == "__main__":
     args = argsparser()
     args = vars(args)
     args["task"] = f"d4rl-{args['task']}"
-
+    args["log_path"] = f"{proj_path}/logs"
     if args["delay_mode"] == "none":
         exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-{args['algo_name']}"
     if args["delay_mode"] == "constant":

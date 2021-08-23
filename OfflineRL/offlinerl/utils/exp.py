@@ -52,12 +52,11 @@ def init_custom_exp_logger(repo=None, experiment_name=None):
     return repo, tensorboard_logger
 
 
-def init_exp_logger(repo=None, experiment_name=None, flush_frequency=1):
-    if repo is None:
-        repo = os.path.join(log_path(), "./.aim")
-        if not os.path.exists(repo):
-            logger.info("{} dir is not exist, create {}", repo, repo)
-            os.system(str("cd " + os.path.join(repo, "../") + "&& aim init"))
+def init_exp_logger(repo, experiment_name=None, flush_frequency=1):
+    repo = os.path.join(repo, "./.aim")
+    if not os.path.exists(repo):
+        logger.info("{} dir is not exist, create {}", repo, repo)
+        os.system(str("cd " + os.path.join(repo, "../") + "&& aim init"))
 
     aim_logger = aim.Session(
         repo=repo, experiment=experiment_name, flush_frequency=flush_frequency

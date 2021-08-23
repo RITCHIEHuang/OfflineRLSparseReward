@@ -19,10 +19,7 @@ class BaseAlgo(ABC):
         else:
             exp_name = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f')[:-3]}"
 
-        if "aim_path" in args.keys():
-            if os.path.exists(args["aim_path"]):
-                repo = args["aim_path"]
-        elif "log_path" in args.keys():
+        if "log_path" in args.keys():
             repo = args["log_path"]
         else:
             repo = None
