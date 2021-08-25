@@ -7,7 +7,11 @@ task_train_num = 99
 
 seed = 42
 
-device = 'cuda'+":"+str(select_free_cuda()) if torch.cuda.is_available() else 'cpu'
+device = (
+    "cuda" + ":" + str(select_free_cuda())
+    if torch.cuda.is_available()
+    else "cpu"
+)
 obs_shape = None
 act_shape = None
 max_action = None
@@ -19,46 +23,49 @@ policy_bc_steps = 40000
 batch_size = 256
 hidden_layer_size = 256
 layer_num = 2
-actor_lr=1E-4
-critic_lr=3E-4
-reward_scale=1
-use_automatic_entropy_tuning=True
+actor_lr = 1e-4
+critic_lr = 3e-4
+reward_scale = 1
+use_automatic_entropy_tuning = True
 target_entropy = None
 discount = 0.99
-soft_target_tau=5e-3
+soft_target_tau = 5e-3
 
 # min Q
-explore=1.0
-temp=1.0
-min_q_version=3
-min_q_weight=5.0
+explore = 1.0
+temp = 1.0
+min_q_version = 3
+min_q_weight = 5.0
 
 # lagrange
-with_lagrange=False
-lagrange_thresh=2.0
+with_lagrange = False
+lagrange_thresh = 2.0
 
 # extra params
-num_random=10
-type_q_backup= "min"
+num_random = 10
+type_q_backup = "min"
 q_backup_lmbda = 0.75
-deterministic_backup=False
+deterministic_backup = False
 
 discrete = False
 
-#tune
+# tune
 params_tune = {
-    "actor_lr" : {"type" : "discrete", "value":[1e-4, 3e-4]},
-    "min_q_version" : {"type" : "discrete", "value":[2, 3]},
-    "min_q_weight" : {"type": "discrete", "value":[5, 10]},
-    "lagrange_thresh" : {"type": "discrete", "value":[-1, 2, 5, 10]},
-    "type_q_backup" : {"type": "discrete", "value":["max", "none"]},
+    "actor_lr": {"type": "discrete", "value": [1e-4, 3e-4]},
+    "min_q_version": {"type": "discrete", "value": [2, 3]},
+    "min_q_weight": {"type": "discrete", "value": [5, 10]},
+    "lagrange_thresh": {"type": "discrete", "value": [-1, 2, 5, 10]},
+    "type_q_backup": {"type": "discrete", "value": ["max", "none"]},
 }
 
-#tune
+# tune
 grid_tune = {
-    #"actor_lr" : [1e-4, 3e-4],
-    "min_q_version" : [2, 3],
-    "min_q_weight" : [5, 10],
-    "lagrange_thresh" : [-1, 2, 5, 10],
-    # "type_q_backup" : ["min", "none"],
+    # "actor_lr" : [1e-4, 3e-4],
+    "min_q_version": [2, 3],
+    "min_q_weight": [2, 5, 10],
+    "num_random": [5, 10, 15],
+    "q_back_lmbda": [0.75, 0.9],
+    # "lagrange_thresh": [-1, 2, 5, 10],
+    "lagrange_thresh": [-1, 2],
+    "type_q_backup": ["max", "min", "none"],
 }

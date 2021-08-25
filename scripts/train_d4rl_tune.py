@@ -99,6 +99,7 @@ def run_algo(kwargs):
         training_function,
         config=config,
         local_dir=f"{proj_path}/tune_results",
+        stop={"training_iteration": 150},
         resources_per_trial={"gpu": 1},
         queue_trials=True,
     )
