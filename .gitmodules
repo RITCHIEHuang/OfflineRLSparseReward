@@ -3,11 +3,11 @@
 #     url = https://agit.ai/Polixir/OfflineRL.git
 
 
-[submodule "d4rl"]
-    path = d4rl 
-    url = https://github.com/rail-berkeley/d4rl.git
+# [submodule "d4rl"]
+#     path = d4rl 
+#     url = https://github.com/rail-berkeley/d4rl.git
 
 
-[submodule "neorl"]
-    path = neorl 
-    url = https://agit.ai/Polixir/neorl.git
+# [submodule "neorl"]
+#     path = neorl 
+#     url = https://agit.ai/Polixir/neorl.git

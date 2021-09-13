@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from loguru import logger
 import numpy as np
 
-from datasets.d4rl_dataset import trans_traj_dataset
+from datasets.d4rl_dataset import trans_dataset, trans_traj_dataset
 from algos.reward_decoposer import (
     TransformerRewardDecomposer,
     RandomNetRewardDecomposer,
@@ -313,60 +313,24 @@ def transformer_decomposed_reward_dataset(task, delay):
     return new_dataset
 
 
-def policy_gradient_reward_dataset(task, delay, shaping_version, policy_mode):
-    BATCH_SIZE = 1
-    device = "cpu"
-    cpu_device = "cpu"
-    dataset = TrajDataset(
-        {
-            "delay": delay,
-            "task": task,
-            "delay_mode": "constant",
-            "decomposed": True,
-            "scale": 0.01,
-        }
-    )
-    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
-    obs_act_pair_dim = dataset.act_size + dataset.obs_size
-    model = torch.load(f"").to(device)
-    new_dataset = {}
-    new_dataset["observations"] = []
-    new_dataset["actions"] = []
-    new_dataset["terminals"] = []
-    new_dataset["rewards"] = []
-    new_dataset["next_observations"] = []
-    for _, s in tqdm(enumerate(dataloader)):
-        with torch.no_grad():
-            reward_pre = (
-                model(s["next_obs"].to(device)) - model(s["obs"].to(device))
-            ).squeeze(dim=-1)
-            delay_reward = s["delay_reward"].to(device)
-            # print("obs dtype", s["obs"].shape)
-            # print("last obs dtype", s["last_obs"].shape)
-            # print("reward_pre:", reward_pre.shape)
-            # print("delay_rew:", delay_reward.shape)
-            new_dataset["observations"].append(
-                s["observations"].squeeze(dim=0)
-            )
-            new_dataset["actions"].append(s["actions"].squeeze(dim=0))
-            new_dataset["terminals"].append(s["terminals"].squeeze(dim=0))
-            new_dataset["next_observations"].append(
-                s["next_observations"].squeeze(dim=0)
-            )
-            new_dataset["rewards"].append(
-                (reward_pre + delay_reward).squeeze(dim=0)[
-                    ..., : s["length"][0]
-                ]
-            )
-    new_dataset["observations"] = torch.cat(new_dataset["observations"], dim=0)
-    new_dataset["actions"] = torch.cat(new_dataset["actions"], dim=0)
-    new_dataset["terminals"] = torch.cat(new_dataset["terminals"], dim=0)
-    new_dataset["next_observations"] = torch.cat(
-        new_dataset["next_observations"], dim=0
-    )
-    new_dataset["rewards"] = torch.cat(new_dataset["rewards"], dim=0)
-    print("new_dataset_rewards:", new_dataset["rewards"].shape)
-    return new_dataset
+def pg_shaping_reward_dataset(config, model_path=None):
+    dataset = trans_dataset(config)
+    for k, v in dataset.items():
+        dataset[k] = torch.from_numpy(v)
+
+    if model_path is None:
+        model_path = "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-random-v2-seed-2021_2021-09-09_22-08-16-394/models/99.pt"
+    shaping_model = torch.load(model_path).to("cpu")
+
+    with torch.no_grad():
+        residual_reward = shaping_model(
+            dataset["next_observations"]
+        ) - shaping_model(dataset["observations"])
+        residual_reward.squeeze_(-1)
+    print("residual rewards:", residual_reward.shape)
+    print("rewards:", dataset["rewards"].shape)
+    dataset["rewards"] = dataset["rewards"] + residual_reward
+    return dataset
 
 
 def load_decomposed_d4rl_buffer(config):
@@ -385,18 +349,14 @@ def load_decomposed_d4rl_buffer(config):
         )
     elif config["shaping_method"] == "pg":
         logger.info("use policy gradient decomposer")
-        dataset = policy_gradient_reward_dataset(
-            task,
-            config["delay"],
-            config["shaping_version"],
-            config["policy_mode"],
-        )
+        dataset = pg_shaping_reward_dataset(config)
     else:
         logger.info("use transformer decomposer")
         dataset = transformer_decomposed_reward_dataset(
             task,
             config["delay"],
         )
+
     buffer = SampleBatch(
         obs=dataset["observations"].numpy(),
         obs_next=dataset["next_observations"].numpy(),
