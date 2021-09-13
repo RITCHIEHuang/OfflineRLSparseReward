@@ -1,3 +1,4 @@
+import os
 import torch
 from tqdm import tqdm
 
@@ -5,13 +6,15 @@ from torch.utils.data import Dataset, DataLoader
 from loguru import logger
 import numpy as np
 
+from offlinerl.utils.data import SampleBatch
+
 from datasets.d4rl_dataset import trans_dataset, trans_traj_dataset
 from algos.reward_decoposer import (
     TransformerRewardDecomposer,
     RandomNetRewardDecomposer,
     create_key_padding_mask,
 )
-from offlinerl.utils.data import SampleBatch
+from utils.io_util import proj_path
 
 
 class TrajDataset(Dataset):
@@ -147,7 +150,11 @@ def plot_dcompose_reward(exp_name, raw_rewards, delay_rewards):
     plt.ylabel("reward")
     plt.title(f"{exp_name} reward")
     plt.legend(["Raw", "Dcomposed"])
-    plt.savefig(f"{exp_name}_reward.png")
+
+    fig_dir = f"{proj_path}/assets/{exp_name}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    plt.savefig(f"{fig_dir}/{exp_name}_reward.png")
 
 
 def minmax_decomposed_reward_dataset(task, delay):
