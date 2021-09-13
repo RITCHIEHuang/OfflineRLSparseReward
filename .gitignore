@@ -8,6 +8,6 @@ datasets/checkpoint/*
 datasets/dataset/*
 !datasets/dataset/Walker2d-v3_expert_100.h5
 # d4rl/
-neorl/
+# neorl/
 d3rlpy/
 # OfflineRL/
