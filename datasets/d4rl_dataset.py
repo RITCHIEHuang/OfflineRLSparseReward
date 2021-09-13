@@ -7,10 +7,13 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from loguru import logger
 
+from torch.utils.data.dataloader import DataLoader
+
 import d4rl
 from offlinerl.utils.data import SampleBatch
 
 from utils.d4rl_tasks import task_list
+from utils.io_util import proj_path
 
 
 def argsparser():
@@ -162,6 +165,11 @@ def trans_traj_dataset(config):
         episode_ends = np.append(episode_ends, data_size - 1)
     delay_rewards = np.zeros_like(raw_rewards)
 
+    if config["delay_mode"] == "constant":
+        delay = config["delay"]
+    else:
+        delay = np.random.randint(config["delay_min"], config["delay_max"] + 1)
+
     trans_idx = 0
     last_delay_idx = 0
     for ep in tqdm(range(len(episode_ends))):
@@ -175,13 +183,6 @@ def trans_traj_dataset(config):
         episode_end_idx = episode_ends[ep]
         episode_idx = 1
 
-        if config["delay_mode"] == "constant":
-            delay = config["delay"]
-        else:
-            delay = np.random.randint(
-                config["delay_min"], config["delay_max"] + 1
-            )
-
         while trans_idx <= episode_end_idx:
             traj_observations.append(raw_observations[trans_idx])
             traj_actions.append(raw_actions[trans_idx])
@@ -191,7 +192,7 @@ def trans_traj_dataset(config):
 
             if episode_idx % delay == 0 or trans_idx == episode_end_idx:
                 delay_rewards[trans_idx] = np.sum(
-                    raw_rewards[last_delay_idx:trans_idx]
+                    raw_rewards[last_delay_idx : trans_idx + 1]
                 )
                 last_delay_idx = trans_idx
 
@@ -235,22 +236,25 @@ def trans_dataset(config):
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
     delay_rewards = np.zeros_like(raw_rewards)
+    returns = np.zeros_like(raw_rewards)
 
     trans_idx = 0
     plot = True
+
+    if config["delay_mode"] == "constant":
+        delay = config["delay"]
+    else:
+        delay = np.random.randint(config["delay_min"], config["delay_max"] + 1)
+
     for ep in tqdm(range(len(episode_ends))):
         last_idx = trans_idx
         episode_end_idx = episode_ends[ep]
-        if config["delay_mode"] == "constant":
-            delay = config["delay"]
-        else:
-            delay = np.random.randint(
-                config["delay_min"], config["delay_max"] + 1
-            )
+        return_ = raw_rewards[last_idx : episode_end_idx + 1].sum()
+        returns[last_idx : episode_end_idx + 1] = return_
         while trans_idx <= episode_end_idx:
             delay_idx = min(trans_idx + delay, episode_end_idx)
-            delay_rewards[delay_idx - 1] = np.sum(
-                raw_rewards[trans_idx:delay_idx]
+            delay_rewards[delay_idx] = np.sum(
+                raw_rewards[trans_idx : delay_idx + 1]
             )
             # print(trans_idx, delay_idx, np.sum(raw_rewards[trans_idx:delay_idx]))
             trans_idx += delay
@@ -262,42 +266,58 @@ def trans_dataset(config):
 
         if plot:
             plot_ep_reward(
-                raw_rewards[last_idx:episode_end_idx],
-                delay_rewards[last_idx:episode_end_idx],
+                raw_rewards[last_idx : episode_end_idx + 1],
+                delay_rewards[last_idx : episode_end_idx + 1],
+                returns[last_idx : episode_end_idx + 1],
                 config,
             )
             plot = False
 
         trans_idx = episode_end_idx + 1
 
-    logger.info(f"Task: {config['task']}, data size: {len(raw_rewards)}")
     dataset["rewards"] = delay_rewards
+    dataset["returns"] = returns
+    logger.info(
+        f"[TransDataset] Task: {config['task']}, data size: {len(raw_rewards)}"
+    )
     return dataset
 
 
-def plot_ep_reward(raw_rewards, delay_rewards, config):
+def plot_ep_reward(raw_rewards, delay_rewards, returns, config):
     assert len(raw_rewards) == len(delay_rewards)
     plt.plot(
         range(len(raw_rewards)),
         raw_rewards,
         "b.-",
+    )
+    plt.plot(
         range(len(delay_rewards)),
         delay_rewards,
         "r.-",
     )
+    # plt.plot(
+    #     range(len(returns)),
+    #     returns,
+    #     "g.-",
+    # )
     plt.xlabel("t")
     plt.ylabel("reward")
     plt.title(f"{config['task']}-delay_mode_{config['delay_mode']}_reward")
     plt.legend(["Raw", "Delayed"])
 
     if config["delay_mode"] == "random":
-        fig_name = f"{config['task']}_delay-mode_{config['delay_mode']}_delay-min_{config['delay_min']}_delay-max_{config['delay_max']}_reward.png"
+        fig_name = f"delay-mode_{config['delay_mode']}_delay-min_{config['delay_min']}_delay-max_{config['delay_max']}.png"
     elif config["delay_mode"] == "constant":
-        fig_name = f"{config['task']}_delay-mode_{config['delay_mode']}_delay{config['delay']}_reward.png"
+        fig_name = (
+            f"delay-mode_{config['delay_mode']}_delay_{config['delay']}.png"
+        )
     else:
         raise NotImplementedError()
 
-    plt.savefig(fig_name)
+    fig_dir = f"{proj_path}/assets/{config['task']}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    plt.savefig(f"{fig_dir}/{fig_name}")
 
 
 def load_d4rl_buffer(config):
@@ -307,6 +327,7 @@ def load_d4rl_buffer(config):
         obs_next=dataset["next_observations"],
         act=dataset["actions"],
         rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
+        returns=np.expand_dims(np.squeeze(dataset["returns"]), 1),
         done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
     )
 
@@ -320,16 +341,26 @@ def load_d4rl_buffer(config):
     return buffer
 
 
+def load_d4rl_traj_buffer(config):
+    from datasets.traj_dataset import TrajDataset
+
+    BATCH_SIZE = 1
+    dataset = TrajDataset(config)
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
+    return dataloader
+
+
 if __name__ == "__main__":
     args = argsparser()
     # if not os.path.exists(args.dataset_dir):
     #     os.makedirs(args.dataset_dir)
 
     """extract transition buffer"""
-    load_d4rl_buffer(vars(args))
+    # load_d4rl_buffer(vars(args))
 
     """extract traj dataset"""
-    # traj_dataset = trans_traj_dataset(vars(args))
+    traj_dataset = trans_traj_dataset(vars(args))
     # traj_dataset = trans_dataset(vars(args))
 
-    print(1)
+    """extract traj buffer"""
+    # load_d4rl_traj_buffer(vars(args))

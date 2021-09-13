@@ -5,9 +5,13 @@ task = "Hopper-v3"
 task_data_type = "low"
 task_train_num = 99
 
-seed = 42 
+seed = 42
 
-device = 'cuda'+":"+str(select_free_cuda()) if torch.cuda.is_available() else 'cpu'
+device = (
+    "cuda" + ":" + str(select_free_cuda())
+    if torch.cuda.is_available()
+    else "cpu"
+)
 obs_shape = None
 act_shape = None
 max_action = None
@@ -31,7 +35,7 @@ steps_per_epoch = 1000
 max_epoch = 200
 
 learnable_alpha = True
-uncertainty_mode = 'aleatoric'
+uncertainty_mode = "aleatoric"
 transition_lr = 1e-3
 actor_lr = 3e-4
 critic_lr = 3e-4
@@ -41,18 +45,18 @@ soft_target_tau = 5e-3
 horizon = 5
 lam = 2
 
-#tune
+# tune
 params_tune = {
-    "buffer_size" : {"type" : "discrete", "value": [1e6, 2e6]},
-    "real_data_ratio" : {"type" : "discrete", "value": [0.05, 0.1, 0.2]},
-    "horzion" : {"type" : "discrete", "value": [1, 2, 5]},
-    "lam" : {"type" : "continuous", "value": [0.1, 10]},
-    "learnable_alpha" : {"type" : "discrete", "value": [True, False]},
+    "buffer_size": {"type": "discrete", "value": [1e6, 2e6]},
+    "real_data_ratio": {"type": "discrete", "value": [0.05, 0.1, 0.2]},
+    "horzion": {"type": "discrete", "value": [1, 2, 5]},
+    "lam": {"type": "continuous", "value": [0.1, 10]},
+    "learnable_alpha": {"type": "discrete", "value": [True, False]},
 }
 
-#tune
+# tune
 grid_tune = {
-    "horizon" : [1, 5],
-    "lam" : [0.5, 1, 2, 5],
-    "uncertainty_mode" : ['aleatoric', 'disagreement'],
+    "horizon": [1, 5],
+    "lam": [0.5, 1, 2, 5],
+    "uncertainty_mode": ["aleatoric", "disagreement"],
 }

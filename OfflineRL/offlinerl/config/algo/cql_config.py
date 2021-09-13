@@ -63,9 +63,7 @@ grid_tune = {
     # "actor_lr" : [1e-4, 3e-4],
     "min_q_version": [2, 3],
     "min_q_weight": [2, 5, 10],
-    "num_random": [5, 10, 15],
-    "q_back_lmbda": [0.75, 0.9],
     # "lagrange_thresh": [-1, 2, 5, 10],
-    "lagrange_thresh": [-1, 2],
+    "lagrange_thresh": [-1, 5, 10],
     "type_q_backup": ["max", "min", "none"],
 }

@@ -16,6 +16,7 @@ class TanhNormal(Distribution):
 
     Note: this is not very numerically stable.
     """
+
     def __init__(self, normal_mean, normal_std, epsilon=1e-6):
         """
         :param normal_mean: Mean of the normal distribution
@@ -35,7 +36,7 @@ class TanhNormal(Distribution):
         else:
             return torch.tanh(z)
 
-    def atanh(self,x):
+    def atanh(self, x):
         one_plus_x = (1 + x).clamp(min=1e-6)
         one_minus_x = (1 - x).clamp(min=1e-6)
         return 0.5 * torch.log(one_plus_x / one_minus_x)
@@ -66,19 +67,21 @@ class TanhNormal(Distribution):
             return torch.tanh(z), z
         else:
             return torch.tanh(z)
-    
-
 
     def rsample(self, return_pretanh_value=False):
         """
         Sampling in the reparameterization case.
         """
         z = (
-            self.normal_mean +
-            self.normal_std *
-            Normal(
-                torch.zeros(self.normal_mean.size(), device=self.normal_mean.device),
-                torch.ones(self.normal_std.size(), device=self.normal_mean.device)
+            self.normal_mean
+            + self.normal_std
+            * Normal(
+                torch.zeros(
+                    self.normal_mean.size(), device=self.normal_mean.device
+                ),
+                torch.ones(
+                    self.normal_std.size(), device=self.normal_mean.device
+                ),
             ).sample()
         )
         z.requires_grad_()
@@ -87,23 +90,23 @@ class TanhNormal(Distribution):
             return torch.tanh(z), z
         else:
             return torch.tanh(z)
-        
+
 
 class TanhGaussianPolicy(ActorProb, BasePolicy):
     LOG_SIG_MAX = 2
     LOG_SIG_MIN = -5
     MEAN_MIN = -9.0
     MEAN_MAX = 9.0
-    
-    def atanh(self,x):
+
+    def atanh(self, x):
         one_plus_x = (1 + x).clamp(min=1e-6)
         one_minus_x = (1 - x).clamp(min=1e-6)
-        return 0.5*torch.log(one_plus_x/ one_minus_x)
+        return 0.5 * torch.log(one_plus_x / one_minus_x)
 
     def log_prob(self, obs, actions):
         raw_actions = self.atanh(actions)
         logits, h = self.preprocess(obs)
-        
+
         mean = self.mu(logits)
         mean = torch.clamp(mean, self.MEAN_MIN, self.MEAN_MAX)
         if self._c_sigma:
@@ -112,22 +115,23 @@ class TanhGaussianPolicy(ActorProb, BasePolicy):
             )
             std = log_std.exp()
         else:
-            shape = [1] * len(mu.shape)
+            shape = [1] * len(mean.shape)
             shape[1] = -1
-            log_std = (self.sigma.view(shape) + torch.zeros_like(mu))
+            log_std = self.sigma.view(shape) + torch.zeros_like(mean)
             std = log_std.exp()
 
         tanh_normal = TanhNormal(mean, std)
-        log_prob = tanh_normal.log_prob(value=actions, pre_tanh_value=raw_actions)
+        log_prob = tanh_normal.log_prob(
+            value=actions, pre_tanh_value=raw_actions
+        )
         return log_prob.sum(-1)
 
     def forward(
-            self,
-            obs,
-            state=None,
-            infor={},
-            reparameterize=True,
-
+        self,
+        obs,
+        state=None,
+        infor={},
+        reparameterize=True,
     ):
         """
         :param obs: Observation
@@ -136,19 +140,19 @@ class TanhGaussianPolicy(ActorProb, BasePolicy):
         """
         logits, h = self.preprocess(obs, state)
         mean = self.mu(logits)
-        
+
         if self._c_sigma:
             log_std = torch.clamp(
                 self.sigma(logits), min=self.LOG_SIG_MIN, max=self.LOG_SIG_MAX
             )
             std = log_std.exp()
         else:
-            shape = [1] * len(mu.shape)
+            shape = [1] * len(mean.shape)
             shape[1] = -1
-            log_std = (self.sigma.view(shape) + torch.zeros_like(mu))
+            log_std = self.sigma.view(shape) + torch.zeros_like(mean)
             std = log_std.exp()
-        
+
         return TanhNormal(mean, std)
-    
+
     def policy_infer(self, obs):
         return self(obs).mode

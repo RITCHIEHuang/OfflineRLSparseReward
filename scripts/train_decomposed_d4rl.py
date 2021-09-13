@@ -1,9 +1,7 @@
-
 import argparse
 
 from loguru import logger
 
-from offlinerl.algo import algo_select
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
@@ -11,7 +9,10 @@ from offlinerl.data import d4rl
 from datasets import d4rl_dataset
 from datasets.traj_dataset import load_decomposed_d4rl_buffer
 
+
+from config import algo_select
 from utils.d4rl_tasks import task_list
+from utils.io_util import proj_path
 
 
 def argsparser():
@@ -30,6 +31,15 @@ def argsparser():
     )
     parser.add_argument(
         "--delay", help="constant delay steps", type=int, default=20
+    )
+    parser.add_argument(
+        "--shaping_method",
+        help="custom shaping methods, default is transformer",
+        type=str,
+        default="transformer",
+    )
+    parser.add_argument(
+        "--name", help="experiment name", type=str, default="exp_name_is_none"
     )
     parser.add_argument(
         "--delay_min", help="min delay steps", type=int, default=10
@@ -75,6 +85,7 @@ if __name__ == "__main__":
     args = argsparser()
     args = vars(args)
     args["task"] = f"d4rl-{args['task']}"
+    args["log_path"] = f"{proj_path}/logs"
 
     if args["delay_mode"] == "none":
         exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-{args['algo_name']}-seed-{args['seed']}"
@@ -83,9 +94,14 @@ if __name__ == "__main__":
     elif args["delay_mode"] == "random":
         exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay_min-{args['delay_min']}-delay_max-{args['delay_max']}-{args['algo_name']}-seed-{args['seed']}"
 
-    args["exp_name"] = exp_name
+    args["exp_name"] = f"{exp_name}-decomposed-{args['shaping_method']}"
 
     logger.info(
         f"Task: {args['task']}-delay-{args['delay']}, algo: {args['algo_name']}, exp_name: {args['exp_name']}"
     )
+    import torch
+    import numpy as np
+
+    torch.manual_seed(args["seed"])
+    np.random.seed(args["seed"])
     run_algo(args)

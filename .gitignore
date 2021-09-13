@@ -9,4 +9,5 @@ datasets/dataset/*
 !datasets/dataset/Walker2d-v3_expert_100.h5
 d4rl/
 neorl/
+d3rlpy/
 # OfflineRL/

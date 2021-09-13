@@ -6,29 +6,13 @@ from torch.nn import (
     TransformerEncoder,
     TransformerEncoderLayer,
     MultiheadAttention,
-    parameter,
 )
 from torch.nn.modules.activation import ReLU
+from torch.nn.modules.linear import Linear
 from torch.nn.utils.rnn import pad_sequence
 
-# Temporarily leave PositionalEncoding module here. Will be moved somewhere else.
-class PositionalEncoding(nn.Module):
-    r"""Inject some information about the relative or absolute position of the tokens
-        in the sequence. The positional encodings have the same dimension as
-        the embeddings, so that the two can be summed. Here, we use sine and cosine
-        functions of different frequencies.
-    .. math::
-        \text{PosEncoder}(pos, 2i) = sin(pos/10000^(2i/d_model))
-        \text{PosEncoder}(pos, 2i+1) = cos(pos/10000^(2i/d_model))
-        \text{where pos is the word position and i is the embed idx)
-    Args:
-        d_model: the embed dim (required).
-        dropout: the dropout value (default=0.1).
-        max_len: the max. length of the incoming sequence (default=5000).
-    Examples:
-        >>> pos_encoder = PositionalEncoding(d_model)
-    """
 
+class PositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0.1, max_len=5000):
         super(PositionalEncoding, self).__init__()
         self.dropout = nn.Dropout(p=dropout)
@@ -59,6 +43,26 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 
+class RandomNetRewardDecomposer(nn.Module):
+    def __init__(self, input_state_dim, d_model):
+        super().__init__()
+        self.state_dim = input_state_dim
+        self.d_model = d_model
+        self.ff = nn.Sequential(
+            nn.Linear(self.state_dim, d_model),
+            nn.ReLU(),
+            nn.Linear(d_model, d_model),
+            nn.ReLU(),
+            nn.Linear(d_model, 1),
+        )
+
+    def forward(self, cur_state, last_state=None):
+        if last_state is not None:
+            return self.ff(cur_state) - self.ff(last_state)
+        else:
+            return self.ff(cur_state)
+
+
 class TransformerRewardDecomposer(nn.Module):
     def __init__(
         self,
@@ -83,9 +87,9 @@ class TransformerRewardDecomposer(nn.Module):
             nn.Linear(d_model, d_model), nn.ReLU(), nn.Linear(d_model, 1)
         )
         self.ff = nn.Sequential(
-            nn.Linear(d_model,d_model//2),
+            nn.Linear(d_model, d_model // 2),
             nn.Tanh(),
-            nn.Linear(d_model//2,1),
+            nn.Linear(d_model // 2, 1),
         )
 
     def _generate_square_subsequent_mask(self, sz):
@@ -106,12 +110,15 @@ class TransformerRewardDecomposer(nn.Module):
         output = self.transformer_encoder(
             src, src_key_padding_mask=key_padding_mask
         )
-        pair_mask=torch.where(key_padding_mask==0,1,0)[...,None]
-        pair_importance = torch.softmax(self.ff(output)+(key_padding_mask*-1e9)[...,None],dim=1)
+        pair_mask = torch.where(key_padding_mask == 0, 1, 0)[..., None]
+        pair_importance = torch.softmax(
+            self.ff(output) + (key_padding_mask * -1e9)[..., None], dim=1
+        )
         # print(f"pair_importance shape:{pair_importance.shape}")
-        output = pair_importance*output
-        output = self.reward_ff(output)*pair_mask
-        return output
+        # pair_importance = self.ff(output)
+        output = pair_importance * output
+        output = self.reward_ff(output) * pair_mask
+        return torch.tanh(output)
 
 
 def create_key_padding_mask(seq_of_pair_length, max_length):

@@ -4,13 +4,13 @@ import random
 from loguru import logger
 from ray import tune
 
-from offlinerl.algo import algo_select
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
 
 from datasets import d4rl_dataset
 
+from config import algo_select
 from utils.d4rl_tasks import task_list
 from utils.io_util import proj_path
 
@@ -111,6 +111,7 @@ if __name__ == "__main__":
     args = vars(args)
     args["task"] = f"d4rl-{args['task']}"
     args["log_path"] = f"{proj_path}/logs"
+
     if args["delay_mode"] == "none":
         exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-{args['algo_name']}"
     if args["delay_mode"] == "constant":
