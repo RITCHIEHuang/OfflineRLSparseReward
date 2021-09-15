@@ -32,8 +32,8 @@ transition_batch_size = 256
 policy_batch_size = 256
 data_collection_per_epoch = 50e3
 steps_per_epoch = 1000
+bc_epoch = 50
 max_epoch = 1500
-bc_epoch = 0
 
 learnable_alpha = True
 uncertainty_mode = "aleatoric"

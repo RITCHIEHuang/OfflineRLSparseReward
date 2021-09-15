@@ -16,7 +16,7 @@ obs_shape = None
 act_shape = None
 max_action = None
 
-max_epoch = 300
+max_epoch = 1000
 steps_per_epoch = 1000
 policy_bc_steps = 40000
 

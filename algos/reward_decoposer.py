@@ -7,9 +7,6 @@ from torch.nn import (
     TransformerEncoderLayer,
     MultiheadAttention,
 )
-from torch.nn.modules.activation import ReLU
-from torch.nn.modules.linear import Linear
-from torch.nn.utils.rnn import pad_sequence
 
 
 class PositionalEncoding(nn.Module):

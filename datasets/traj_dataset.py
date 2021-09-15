@@ -1,5 +1,6 @@
 import os
 import torch
+from torch.utils import data
 from tqdm import tqdm
 
 from torch.utils.data import Dataset, DataLoader
@@ -36,6 +37,8 @@ class TrajDataset(Dataset):
         tmp = np.array([x.sum() for x in self.delay_rew])
         self.return_max = np.max(tmp)
         self.return_min = np.min(tmp)
+        self.return_mean = np.mean(tmp)
+        self.return_std = np.std(tmp)
 
         self.length = traj_dataset["length"]
         self.max_length = max(self.length)
@@ -101,6 +104,10 @@ class TrajDataset(Dataset):
             valid_delay_rew = (
                 torch.from_numpy(self.delay_rew[idx])
             ) * self.config["scale"]
+        elif self.config["shaping_method"] == "zscore":
+            valid_delay_rew = (
+                torch.from_numpy(self.delay_rew[idx]) - self.return_mean
+            ) / (self.return_std)
         else:
             valid_delay_rew = (
                 torch.from_numpy(self.delay_rew[idx])
@@ -157,7 +164,7 @@ def plot_dcompose_reward(exp_name, raw_rewards, delay_rewards):
     plt.savefig(f"{fig_dir}/{exp_name}_reward.png")
 
 
-def minmax_decomposed_reward_dataset(task, delay):
+def normalize_decomposed_reward_dataset(task, delay, shaping_method):
     BATCH_SIZE = 1
     device = "cpu"
     cpu_device = "cpu"
@@ -167,6 +174,7 @@ def minmax_decomposed_reward_dataset(task, delay):
             "task": task,
             "delay_mode": "constant",
             "decomposed": True,
+            "shaping_method": shaping_method,
         }
     )
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
@@ -179,10 +187,6 @@ def minmax_decomposed_reward_dataset(task, delay):
     for _, s in tqdm(enumerate(dataloader)):
         with torch.no_grad():
             delay_reward = s["delay_reward"].to(device)
-            # print("obs dtype", s["obs"].shape)
-            # print("last obs dtype", s["last_obs"].shape)
-            # print("reward_pre:", reward_pre.shape)
-            # print("delay_rew:", delay_reward.shape)
             new_dataset["observations"].append(
                 s["observations"].squeeze(dim=0)
             )
@@ -320,7 +324,9 @@ def transformer_decomposed_reward_dataset(task, delay):
     return new_dataset
 
 
-def pg_shaping_reward_dataset(config, model_path=None):
+def pg_shaping_reward_dataset(
+    config, model_path=None, normalize_type="min_max"
+):
     dataset = trans_dataset(config)
     for k, v in dataset.items():
         dataset[k] = torch.from_numpy(v)
@@ -337,6 +343,22 @@ def pg_shaping_reward_dataset(config, model_path=None):
     print("residual rewards:", residual_reward.shape)
     print("rewards:", dataset["rewards"].shape)
     dataset["rewards"] = dataset["rewards"] + residual_reward
+    # returns = dataset["returns"]
+    returns = dataset["rewards"]
+
+    # min-max
+    if normalize_type == "min_max":
+        min_ret = np.min(returns)
+        max_ret = np.max(returns)
+        dataset["rewards"] = (dataset["rewards"] - min_ret) / (
+            max_ret - min_ret + 1e-6
+        )
+
+    # z_score
+    elif normalize_type == "z_score":
+        mean_ret = np.mean(returns)
+        std_ret = np.std(returns)
+        dataset["rewards"] = (dataset["rewards"] - mean_ret) / (std_ret + 1e-6)
     return dataset
 
 
@@ -350,9 +372,13 @@ def load_decomposed_d4rl_buffer(config):
         )
     elif config["shaping_method"] == "minmax":
         logger.info("use minmax decomposer")
-        dataset = minmax_decomposed_reward_dataset(
-            task,
-            config["delay"],
+        dataset = normalize_decomposed_reward_dataset(
+            task, config["delay"], config["shaping_method"]
+        )
+    elif config["shaping_method"] == "zscore":
+        logger.info("use zscore decomposer")
+        dataset = normalize_decomposed_reward_dataset(
+            task, config["delay"], config["shaping_method"]
         )
     elif config["shaping_method"] == "pg":
         logger.info("use policy gradient decomposer")
