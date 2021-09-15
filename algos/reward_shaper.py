@@ -109,8 +109,10 @@ class AlgoTrainer(BaseAlgo):
         min_grad_norms = logp_grad_norms.min()
         logp_grad_norms = (
             2
-            * (logp_grad_norms - min_grad_norms)
-            / (max_grad_norms - min_grad_norms + 1e-6)
+            * (
+                (logp_grad_norms - min_grad_norms)
+                / (max_grad_norms - min_grad_norms + 1e-6)
+            )
             - 1
         )
 
@@ -144,12 +146,8 @@ class AlgoTrainer(BaseAlgo):
         valdata = buffer[val_splits.indices]
         batch_size = self.batch_size
 
-        epoch = 0
-        cnt = 0
-
         idxs = np.arange(train_buffer.shape[0])
-        while True:
-            epoch += 1
+        for epoch in range(100):
             np.random.shuffle(idxs)
             for batch_num in range(int(np.ceil(idxs.shape[-1] / batch_size))):
                 batch_idxs = idxs[
@@ -161,15 +159,9 @@ class AlgoTrainer(BaseAlgo):
             val_loss = self._eval_bc_policy(self.actor, valdata)
             logger.debug(f"val loss: {val_loss}")
 
-            if val_loss > self.best_loss:
-                cnt = 0
-            else:
+            if val_loss < self.best_loss:
                 self.best_loss = val_loss
                 self.best_actor.load_state_dict(self.actor.state_dict())
-                cnt += 1
-
-            if cnt >= 10:
-                break
 
             res = callback_fn(self.get_policy())
             res["loss"] = val_loss
@@ -286,16 +278,20 @@ class AlgoTrainer(BaseAlgo):
                 ]
                 batch = train_buffer[batch_idxs]
                 obs = batch["obs"]
+                ret = batch["returns"]
                 logp_grad_norms = batch["logp_grad_norms"]
-                loss = (logp_grad_norms - self.shaping_net(obs)).pow(2).mean()
+                shaping_reward = ret - self.shaping_net(obs)
+                loss = (logp_grad_norms - shaping_reward).pow(2).mean()
                 self.shaping_net.zero_grad()
                 loss.backward()
                 self.shaping_optim.step()
 
             # eval on valdata
             obs = valdata["obs"]
+            ret = valdata["returns"]
             logp_grad_norms = valdata["logp_grad_norms"]
-            loss = (logp_grad_norms - self.shaping_net(obs)).pow(2).mean()
+            shaping_reward = ret - self.shaping_net(obs)
+            loss = (logp_grad_norms - shaping_reward).pow(2).mean()
 
             res = {"loss": loss.item()}
             self.log_res(epoch, res)

@@ -222,93 +222,120 @@ class AlgoTrainer(BaseAlgo):
         rew_min = train_buffer["rew"].min()
 
         for epoch in range(self.args["max_epoch"]):
-            # collect data
-            with torch.no_grad():
-                obs = train_buffer.sample(
-                    int(self.args["data_collection_per_epoch"])
-                )["obs"]
-                obs = torch.tensor(obs, device=self.device)
-                for t in range(self.args["horizon"]):
-                    action = torch.tanh(self.actor(obs).sample())
-                    obs_action = torch.cat([obs, action], dim=-1)
-                    next_obs_dists = transition(obs_action)
-                    next_obses = next_obs_dists.sample()
-                    rewards = next_obses[:, :, -1:]
-                    next_obses = next_obses[:, :, :-1]
-
-                    next_obses_mode = next_obs_dists.mean[:, :, :-1]
-                    next_obs_mean = torch.mean(next_obses_mode, dim=0)
-                    diff = next_obses_mode - next_obs_mean
-                    disagreement_uncertainty = torch.max(
-                        torch.norm(diff, dim=-1, keepdim=True), dim=0
-                    )[0]
-                    aleatoric_uncertainty = torch.max(
-                        torch.norm(
-                            next_obs_dists.stddev, dim=-1, keepdim=True
-                        ),
-                        dim=0,
-                    )[0]
-                    uncertainty = (
-                        disagreement_uncertainty
-                        if self.args["uncertainty_mode"] == "disagreement"
-                        else aleatoric_uncertainty
+            # bc update policy
+            if epoch <= self.args["bc_epoch"]:
+                for step in range(1, self.args["steps_per_epoch"] + 1):
+                    batch_data = train_buffer.sample(
+                        self.args["policy_batch_size"]
                     )
+                    batch_data.to_torch(device=self.device)
+                    obs = batch_data["obs"]
+                    action = batch_data["act"]
 
-                    model_indexes = np.random.randint(
-                        0, next_obses.shape[0], size=(obs.shape[0])
-                    )
-                    next_obs = next_obses[
-                        model_indexes, np.arange(obs.shape[0])
-                    ]
-                    reward = rewards[model_indexes, np.arange(obs.shape[0])]
+                    action_dist = self.actor(obs)
+                    loss = -action_dist.log_prob(action).mean()
 
-                    next_obs = torch.clamp(next_obs, obs_min, obs_max)
-                    reward = torch.clamp(reward, rew_min, rew_max)
-                    # TODO : scale should be consistent with transition tranining
-                    # reward = (reward - rew_min) / (rew_max - rew_min)
+                    self.actor_optim.zero_grad()
+                    loss.backward()
+                    self.actor_optim.step()
 
-                    print("average next_obs:", next_obs.mean().item())
-                    print("average reward:", reward.mean().item())
-                    print("average uncertainty:", uncertainty.mean().item())
+                res = callback_fn(self.get_policy())
+            else:
+                # collect data
+                with torch.no_grad():
+                    obs = train_buffer.sample(
+                        int(self.args["data_collection_per_epoch"])
+                    )["obs"]
+                    obs = torch.tensor(obs, device=self.device)
+                    for t in range(self.args["horizon"]):
+                        action = torch.tanh(self.actor(obs).sample())
+                        obs_action = torch.cat([obs, action], dim=-1)
+                        next_obs_dists = transition(obs_action)
+                        next_obses = next_obs_dists.sample()
+                        rewards = next_obses[:, :, -1:]
+                        next_obses = next_obses[:, :, :-1]
 
-                    penalized_reward = reward - self.args["lam"] * uncertainty
-                    dones = torch.zeros_like(reward)
+                        next_obses_mode = next_obs_dists.mean[:, :, :-1]
+                        next_obs_mean = torch.mean(next_obses_mode, dim=0)
+                        diff = next_obses_mode - next_obs_mean
+                        disagreement_uncertainty = torch.max(
+                            torch.norm(diff, dim=-1, keepdim=True), dim=0
+                        )[0]
+                        aleatoric_uncertainty = torch.max(
+                            torch.norm(
+                                next_obs_dists.stddev, dim=-1, keepdim=True
+                            ),
+                            dim=0,
+                        )[0]
+                        uncertainty = (
+                            disagreement_uncertainty
+                            if self.args["uncertainty_mode"] == "disagreement"
+                            else aleatoric_uncertainty
+                        )
 
-                    batch_data = Batch(
-                        {
-                            "obs": obs.cpu(),
-                            "act": action.cpu(),
-                            "rew": penalized_reward.cpu(),
-                            "returns": penalized_reward.cpu(),
-                            "done": dones.cpu(),
-                            "obs_next": next_obs.cpu(),
-                        }
-                    )
+                        model_indexes = np.random.randint(
+                            0, next_obses.shape[0], size=(obs.shape[0])
+                        )
+                        next_obs = next_obses[
+                            model_indexes, np.arange(obs.shape[0])
+                        ]
+                        reward = rewards[
+                            model_indexes, np.arange(obs.shape[0])
+                        ]
 
-                    model_buffer.put(batch_data)
+                        next_obs = torch.clamp(next_obs, obs_min, obs_max)
+                        reward = torch.clamp(reward, rew_min, rew_max)
+                        # TODO : scale should be consistent with transition tranining
+                        # reward = (reward - rew_min) / (rew_max - rew_min)
 
-                    obs = next_obs
+                        print("average next_obs:", next_obs.mean().item())
+                        print("average reward:", reward.mean().item())
+                        print(
+                            "average uncertainty:", uncertainty.mean().item()
+                        )
 
-            # update
-            for _ in range(self.args["steps_per_epoch"]):
-                batch = train_buffer.sample(real_batch_size)
-                model_batch = model_buffer.sample(model_batch_size)
-                batch = Batch.cat([batch, model_batch], axis=0)
-                batch.to_torch(device=self.device)
+                        penalized_reward = (
+                            reward - self.args["lam"] * uncertainty
+                        )
+                        dones = torch.zeros_like(reward)
 
-                sac_metrics = self._sac_update(batch)
+                        batch_data = Batch(
+                            {
+                                "obs": obs.cpu(),
+                                "act": action.cpu(),
+                                "rew": penalized_reward.cpu(),
+                                "returns": penalized_reward.cpu(),
+                                "done": dones.cpu(),
+                                "obs_next": next_obs.cpu(),
+                            }
+                        )
 
-            res = callback_fn(self.get_policy())
+                        model_buffer.put(batch_data)
 
-            res["uncertainty"] = uncertainty.mean().item()
-            res[
-                "disagreement_uncertainty"
-            ] = disagreement_uncertainty.mean().item()
-            res["aleatoric_uncertainty"] = aleatoric_uncertainty.mean().item()
-            res["reward"] = reward.mean().item()
-            res["next_obs"] = next_obs.mean().item()
+                        obs = next_obs
 
-            res.update(sac_metrics)
+                # update
+                for _ in range(self.args["steps_per_epoch"]):
+                    batch = train_buffer.sample(real_batch_size)
+                    model_batch = model_buffer.sample(model_batch_size)
+                    batch = Batch.cat([batch, model_batch], axis=0)
+                    batch.to_torch(device=self.device)
+
+                    sac_metrics = self._sac_update(batch)
+
+                res = callback_fn(self.get_policy())
+
+                res["uncertainty"] = uncertainty.mean().item()
+                res[
+                    "disagreement_uncertainty"
+                ] = disagreement_uncertainty.mean().item()
+                res[
+                    "aleatoric_uncertainty"
+                ] = aleatoric_uncertainty.mean().item()
+                res["reward"] = reward.mean().item()
+                res["next_obs"] = next_obs.mean().item()
+
+                res.update(sac_metrics)
             self.log_res(epoch, res)
 
         return self.get_policy()
