@@ -99,20 +99,32 @@ class TrajDataset(Dataset):
         rew = torch.zeros((self.max_length,))
         rew[:valid_length] = valid_rew
         sample["reward"] = rew
+        valid_delay_rew_zscore = (
+            torch.from_numpy(self.delay_rew[idx])
+            - self.return_mean / valid_length
+        ) / (self.return_std)
+        valid_delay_rew_minmax = (
+            (
+                torch.from_numpy(self.delay_rew[idx])
+                - self.return_min / valid_length
+            )
+            / (self.return_max - self.return_min)
+        ) #- 0.5 / valid_length
 
         if "scale" in self.config:
             valid_delay_rew = (
                 torch.from_numpy(self.delay_rew[idx])
             ) * self.config["scale"]
         elif self.config["shaping_method"] == "zscore":
-            valid_delay_rew = (
-                torch.from_numpy(self.delay_rew[idx]) - self.return_mean
-            ) / (self.return_std)
+            valid_delay_rew = valid_delay_rew_zscore
+
         else:
-            valid_delay_rew = (
-                torch.from_numpy(self.delay_rew[idx])
-                - self.return_min / valid_length
-            ) / (self.return_max - self.return_min)
+            valid_delay_rew = valid_delay_rew_minmax
+
+        zscore_rew = torch.zeros((self.max_length,))
+        zscore_rew[:valid_length] = valid_delay_rew_zscore
+        minmax_rew = torch.zeros((self.max_length,))
+        minmax_rew[:valid_length] = valid_delay_rew_minmax
 
         delay_rew = torch.zeros((self.max_length,))
         delay_rew[:valid_length] = valid_delay_rew
@@ -120,6 +132,8 @@ class TrajDataset(Dataset):
         # if(delay_rew.sum()>1):
         #   exit(1)
         sample["delay_reward"] = delay_rew
+        sample["zscore_reward"] = zscore_rew
+        sample["minmax_reward"] = minmax_rew
 
         sample["length"] = valid_length
         return sample
@@ -138,6 +152,34 @@ def reward_redistributed(predictions, rewards, length):
     for i, l in enumerate(length):
         redistributed_reward[i, :l] += prediction_error[i, None] / l
     return redistributed_reward
+
+
+def plot_dcompose_reward_sns(
+    exp_name,
+    raw_rewards,
+    decomposed_rewards,
+    length,
+    raw_name="raw",
+    dec_name="decomposed",
+):
+    import seaborn as sns
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    plt.cla()
+    raw_rewards = np.reshape(raw_rewards, [length, 1])
+    decomposed_rewards = np.reshape(decomposed_rewards, [length, 1])
+    r = np.concatenate((raw_rewards, decomposed_rewards), 1)
+    df = pd.DataFrame(r, columns=[raw_name, dec_name])
+    df["steps"] = list(range(length))
+    df = df.melt("steps", var_name="cols", value_name="vals")
+    sns_plot = sns.lineplot(
+        data=df, x="steps", y="vals", hue="cols"
+    ).set_title(exp_name)
+    fig_dir = f"{proj_path}/assets/{exp_name}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    sns_plot.figure.savefig(f"{fig_dir}/{exp_name}_reward.png")
 
 
 def plot_dcompose_reward(exp_name, raw_rewards, delay_rewards):
@@ -197,6 +239,28 @@ def normalize_decomposed_reward_dataset(task, delay, shaping_method):
             )
             new_dataset["rewards"].append(
                 (delay_reward).squeeze(dim=0)[..., : s["length"][0]]
+            )
+            plot_dcompose_reward_sns(
+                task + "_" + "minmax_zscore",
+                (s["zscore_reward"][0])[..., : s["length"][0]].numpy().T,
+                s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                s["length"][0],
+                raw_name="zscore",
+                dec_name="minmax",
+            )
+            plot_dcompose_reward_sns(
+                task + "_" + "minmax",
+                (s["reward"][0])[..., : s["length"][0]].numpy().T,
+                s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                s["length"][0],
+                dec_name="minmax",
+            )
+            plot_dcompose_reward_sns(
+                task + "_" + "zscore",
+                (s["reward"][0])[..., : s["length"][0]].numpy().T,
+                s["zscore_reward"][0][..., : s["length"][0]].numpy().T,
+                s["length"][0],
+                dec_name="zscore",
             )
     new_dataset["observations"] = torch.cat(new_dataset["observations"], dim=0)
     new_dataset["actions"] = torch.cat(new_dataset["actions"], dim=0)
@@ -275,7 +339,6 @@ def transformer_decomposed_reward_dataset(task, delay):
             "task": task,
             "delay_mode": "constant",
             "decomposed": True,
-            "scale": 0.01,
         }
     )
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
@@ -359,6 +422,31 @@ def pg_shaping_reward_dataset(
         mean_ret = returns.mean()
         std_ret = returns.std()
         dataset["rewards"] = (dataset["rewards"] - mean_ret) / (std_ret + 1e-6)
+
+    # visualization
+    traj_dataset = trans_traj_dataset(config)
+    for i in range(1):
+        observastions = traj_dataset["observations"][i]
+        actions = traj_dataset["actions"][i]
+        next_observastions = traj_dataset["next_observations"][i]
+        rewards = traj_dataset["rewards"][i]
+        delay_rewards = traj_dataset["delay_rewards"][i]
+        print(observastions.shape)
+        print(rewards.shape)
+        with torch.no_grad():
+            residual_rewards = shaping_model(
+                next_observastions
+            ) - shaping_model(observastions)
+            residual_rewards.squeeze_(-1)
+            decomposed_rewards = rewards + residual_rewards
+        plot_dcompose_reward_sns(
+            exp_name=config["task"] + "_" + f"pg_{normalize_type}",
+            raw_rewards=rewards,
+            decomposed_rewards=decomposed_rewards,
+            length=rewards.shape[0],
+            dec_name=f"pg_{normalize_type}",
+        )
+
     return dataset
 
 
