@@ -86,7 +86,7 @@ def run_algo(kwargs):
     algo_trainer.train(train_buffer, None, callback_fn=callback_list)
 
 
-# python train_reward_shaping.py --policy_mode=bc --task=walker2d-medium-replay-v0 --delay_mode=constant --delay=20
+# python train_reward_shaping.py --policy_mode=bc --shaping_version=v1 --task=walker2d-medium-replay-v0 --delay_mode=constant --delay=100
 if __name__ == "__main__":
     args = argsparser()
     args = vars(args)

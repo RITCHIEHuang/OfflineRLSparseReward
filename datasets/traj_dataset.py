@@ -332,7 +332,7 @@ def pg_shaping_reward_dataset(
         dataset[k] = torch.from_numpy(v)
 
     if model_path is None:
-        model_path = "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-random-v2-seed-2021_2021-09-09_22-08-16-394/models/99.pt"
+        model_path = "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-bc-v2-seed-2021_2021-09-15_15-29-42-068/models/270.pt"
     shaping_model = torch.load(model_path).to("cpu")
 
     with torch.no_grad():
@@ -348,16 +348,16 @@ def pg_shaping_reward_dataset(
 
     # min-max
     if normalize_type == "min_max":
-        min_ret = np.min(returns)
-        max_ret = np.max(returns)
+        min_ret = returns.min()
+        max_ret = returns.max()
         dataset["rewards"] = (dataset["rewards"] - min_ret) / (
             max_ret - min_ret + 1e-6
         )
 
     # z_score
     elif normalize_type == "z_score":
-        mean_ret = np.mean(returns)
-        std_ret = np.std(returns)
+        mean_ret = returns.mean()
+        std_ret = returns.std()
         dataset["rewards"] = (dataset["rewards"] - mean_ret) / (std_ret + 1e-6)
     return dataset
 
