@@ -2,6 +2,9 @@ import os
 import torch
 from torch.utils import data
 from tqdm import tqdm
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
 
 from torch.utils.data import Dataset, DataLoader
 from loguru import logger
@@ -104,12 +107,11 @@ class TrajDataset(Dataset):
             - self.return_mean / valid_length
         ) / (self.return_std)
         valid_delay_rew_minmax = (
-            (
-                torch.from_numpy(self.delay_rew[idx])
-                - self.return_min / valid_length
-            )
-            / (self.return_max - self.return_min)
-        ) #- 0.5 / valid_length
+            torch.from_numpy(self.delay_rew[idx])
+            - self.return_min / valid_length
+        ) / (
+            self.return_max - self.return_min
+        )  # - 0.5 / valid_length
 
         if "scale" in self.config:
             valid_delay_rew = (
@@ -156,21 +158,17 @@ def reward_redistributed(predictions, rewards, length):
 
 def plot_dcompose_reward_sns(
     exp_name,
-    raw_rewards,
-    decomposed_rewards,
+    data_list,
     length,
-    raw_name="raw",
-    dec_name="decomposed",
+    names=["raw", "decomposed"],
+    suffix="",
 ):
-    import seaborn as sns
-    import pandas as pd
-    import matplotlib.pyplot as plt
-
     plt.cla()
-    raw_rewards = np.reshape(raw_rewards, [length, 1])
-    decomposed_rewards = np.reshape(decomposed_rewards, [length, 1])
-    r = np.concatenate((raw_rewards, decomposed_rewards), 1)
-    df = pd.DataFrame(r, columns=[raw_name, dec_name])
+    concated_data_list = []
+    for data in data_list:
+        concated_data_list.append(np.reshape(data, [length, 1]))
+    r = np.concatenate(concated_data_list, 1)
+    df = pd.DataFrame(r, columns=names)
     df["steps"] = list(range(length))
     df = df.melt("steps", var_name="cols", value_name="vals")
     sns_plot = sns.lineplot(
@@ -179,7 +177,7 @@ def plot_dcompose_reward_sns(
     fig_dir = f"{proj_path}/assets/{exp_name}"
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
-    sns_plot.figure.savefig(f"{fig_dir}/{exp_name}_reward.png")
+    sns_plot.figure.savefig(f"{fig_dir}/{exp_name}_reward_{suffix}.png")
 
 
 def plot_dcompose_reward(exp_name, raw_rewards, delay_rewards):
@@ -226,7 +224,9 @@ def normalize_decomposed_reward_dataset(task, delay, shaping_method):
     new_dataset["terminals"] = []
     new_dataset["rewards"] = []
     new_dataset["next_observations"] = []
-    for _, s in tqdm(enumerate(dataloader)):
+
+    plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
+    for traj_idx, s in tqdm(enumerate(dataloader)):
         with torch.no_grad():
             delay_reward = s["delay_reward"].to(device)
             new_dataset["observations"].append(
@@ -242,25 +242,33 @@ def normalize_decomposed_reward_dataset(task, delay, shaping_method):
             )
             plot_dcompose_reward_sns(
                 task + "_" + "minmax_zscore",
-                (s["zscore_reward"][0])[..., : s["length"][0]].numpy().T,
-                s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                [
+                    (s["zscore_reward"][0])[..., : s["length"][0]].numpy().T,
+                    s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                ],
                 s["length"][0],
-                raw_name="zscore",
-                dec_name="minmax",
+                names=["zscore", "minmax"],
+                suffix=traj_idx,
             )
             plot_dcompose_reward_sns(
                 task + "_" + "minmax",
-                (s["reward"][0])[..., : s["length"][0]].numpy().T,
-                s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                [
+                    (s["reward"][0])[..., : s["length"][0]].numpy().T,
+                    s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                ],
                 s["length"][0],
-                dec_name="minmax",
+                names=["raw", "minmax"],
+                suffix=traj_idx,
             )
             plot_dcompose_reward_sns(
                 task + "_" + "zscore",
-                (s["reward"][0])[..., : s["length"][0]].numpy().T,
-                s["zscore_reward"][0][..., : s["length"][0]].numpy().T,
+                [
+                    (s["reward"][0])[..., : s["length"][0]].numpy().T,
+                    s["zscore_reward"][0][..., : s["length"][0]].numpy().T,
+                ],
                 s["length"][0],
-                dec_name="zscore",
+                names=["raw", "zscore"],
+                suffix=traj_idx,
             )
     new_dataset["observations"] = torch.cat(new_dataset["observations"], dim=0)
     new_dataset["actions"] = torch.cat(new_dataset["actions"], dim=0)
@@ -352,7 +360,9 @@ def transformer_decomposed_reward_dataset(task, delay):
     new_dataset["terminals"] = []
     new_dataset["rewards"] = []
     new_dataset["next_observations"] = []
-    for _, s in tqdm(enumerate(dataloader)):
+
+    plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
+    for traj_idx, s in tqdm(enumerate(dataloader)):
         with torch.no_grad():
             key_padding_mask = create_key_padding_mask(
                 s["length"], dataset.max_length
@@ -388,66 +398,94 @@ def transformer_decomposed_reward_dataset(task, delay):
 
 
 def pg_shaping_reward_dataset(
-    config, model_path=None, normalize_type="min_max"
+    config, model_path=None, normalize_type="min_max", model_phase="init"
 ):
-    dataset = trans_dataset(config)
-    for k, v in dataset.items():
-        dataset[k] = torch.from_numpy(v)
+    model_mapping = {
+        "init": "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-bc-v2-seed-2021_2021-09-15_15-29-42-068/models/0.pt",
+        "trained": "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-bc-v2-seed-2021_2021-09-15_15-29-42-068/models/270.pt",
+    }
 
     if model_path is None:
-        model_path = "../logs/d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-100--reward_shaper-bc-v2-seed-2021_2021-09-15_15-29-42-068/models/270.pt"
+        model_path = model_mapping[model_phase]
     shaping_model = torch.load(model_path).to("cpu")
+    trained_shaping_model = torch.load(model_mapping["trained"]).to("cpu")
 
-    with torch.no_grad():
-        residual_reward = shaping_model(
-            dataset["next_observations"]
-        ) - shaping_model(dataset["observations"])
-        residual_reward.squeeze_(-1)
-    print("residual rewards:", residual_reward.shape)
-    print("rewards:", dataset["rewards"].shape)
-    dataset["rewards"] = dataset["rewards"] + residual_reward
-    # returns = dataset["returns"]
-    returns = dataset["rewards"]
+    BATCH_SIZE = 1
+    device = "cpu"
+    cpu_device = "cpu"
+    dataset = TrajDataset(
+        {
+            "delay": config["delay"],
+            "task": config["task"],
+            "delay_mode": config["delay_mode"],
+            "decomposed": True,
+            "shaping_method": normalize_type,
+        }
+    )
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE)
+    new_dataset = {}
+    new_dataset["observations"] = []
+    new_dataset["actions"] = []
+    new_dataset["terminals"] = []
+    new_dataset["rewards"] = []
+    new_dataset["next_observations"] = []
 
-    # min-max
-    if normalize_type == "min_max":
-        min_ret = returns.min()
-        max_ret = returns.max()
-        dataset["rewards"] = (dataset["rewards"] - min_ret) / (
-            max_ret - min_ret + 1e-6
-        )
+    plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
 
-    # z_score
-    elif normalize_type == "z_score":
-        mean_ret = returns.mean()
-        std_ret = returns.std()
-        dataset["rewards"] = (dataset["rewards"] - mean_ret) / (std_ret + 1e-6)
-
-    # visualization
-    traj_dataset = trans_traj_dataset(config)
-    for i in range(1):
-        observastions = traj_dataset["observations"][i]
-        actions = traj_dataset["actions"][i]
-        next_observastions = traj_dataset["next_observations"][i]
-        rewards = traj_dataset["rewards"][i]
-        delay_rewards = traj_dataset["delay_rewards"][i]
-        print(observastions.shape)
-        print(rewards.shape)
+    for traj_idx, s in tqdm(enumerate(dataloader)):
         with torch.no_grad():
-            residual_rewards = shaping_model(
-                next_observastions
-            ) - shaping_model(observastions)
-            residual_rewards.squeeze_(-1)
-            decomposed_rewards = rewards + residual_rewards
-        plot_dcompose_reward_sns(
-            exp_name=config["task"] + "_" + f"pg_{normalize_type}",
-            raw_rewards=rewards,
-            decomposed_rewards=decomposed_rewards,
-            length=rewards.shape[0],
-            dec_name=f"pg_{normalize_type}",
-        )
+            delay_reward = s["delay_reward"].to(device)
+            new_dataset["observations"].append(
+                s["observations"].squeeze(dim=0)
+            )
+            new_dataset["actions"].append(s["actions"].squeeze(dim=0))
+            new_dataset["terminals"].append(s["terminals"].squeeze(dim=0))
+            new_dataset["next_observations"].append(
+                s["next_observations"].squeeze(dim=0)
+            )
 
-    return dataset
+            residual_reward = shaping_model(
+                s["next_obs"].to(device)
+            ) - shaping_model(s["obs"].to(device))
+            residual_reward.squeeze_(-1)
+            new_reward = delay_reward + residual_reward
+
+            # trained_reward
+            new_residual = trained_shaping_model(
+                s["next_obs"].to(device)
+            ) - trained_shaping_model(s["obs"].to(device))
+            new_residual.squeeze_(-1)
+            trained_reward = delay_reward + new_residual
+
+            new_dataset["rewards"].append(
+                (new_reward).squeeze(dim=0)[..., : s["length"][0]]
+            )
+
+            if traj_idx in plot_traj_idx_list:
+                plot_dcompose_reward_sns(
+                    config["task"] + "_" + f"pg_{normalize_type}",
+                    [
+                        s["minmax_reward"][0][..., : s["length"][0]].numpy().T,
+                        new_dataset["rewards"][-1].numpy().T,
+                        (trained_reward)
+                        .squeeze(dim=0)[..., : s["length"][0]]
+                        .numpy()
+                        .T,
+                    ],
+                    length=s["length"][0],
+                    names=["raw", "decomposed_init", "decomposed_trained"],
+                    suffix=f"{traj_idx}_{model_phase}",
+                )
+
+    new_dataset["observations"] = torch.cat(new_dataset["observations"], dim=0)
+    new_dataset["actions"] = torch.cat(new_dataset["actions"], dim=0)
+    new_dataset["terminals"] = torch.cat(new_dataset["terminals"], dim=0)
+    new_dataset["next_observations"] = torch.cat(
+        new_dataset["next_observations"], dim=0
+    )
+    new_dataset["rewards"] = torch.cat(new_dataset["rewards"], dim=0)
+    print("new_dataset_rewards:", new_dataset["rewards"].shape)
+    return new_dataset
 
 
 def load_decomposed_d4rl_buffer(config):
@@ -477,7 +515,7 @@ def load_decomposed_d4rl_buffer(config):
             task,
             config["delay"],
         )
-
+    exit(0)
     buffer = SampleBatch(
         obs=dataset["observations"].numpy(),
         obs_next=dataset["next_observations"].numpy(),

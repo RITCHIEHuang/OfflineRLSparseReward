@@ -40,7 +40,7 @@ def argsparser():
         "--task",
         help="task name",
         type=str,
-        default="walker2d-expert-v0",
+        default="d4rl-walker2d-expert-v0",
         choices=task_list,
     )
 
@@ -154,6 +154,7 @@ def trans_traj_dataset(config):
         "terminals",
         "length",
         "next_observations",
+        "returns",
     ]
     traj_dataset = {k: [] for k in keys}
 
@@ -172,6 +173,8 @@ def trans_traj_dataset(config):
 
     trans_idx = 0
     last_delay_idx = 0
+    plot = True
+
     for ep in tqdm(range(len(episode_ends))):
         traj_observations = []
         traj_actions = []
@@ -205,6 +208,7 @@ def trans_traj_dataset(config):
             trans_idx += 1
             episode_idx += 1
 
+        traj_returns = np.cumsum(traj_delay_rewards[::-1])[::-1]
         traj_dataset["observations"].append(np.array(traj_observations))
         traj_dataset["actions"].append(np.array(traj_actions))
         traj_dataset["terminals"].append(np.array(traj_terminals))
@@ -212,6 +216,16 @@ def trans_traj_dataset(config):
         traj_dataset["delay_rewards"].append(np.array(traj_delay_rewards))
         traj_dataset["length"].append(len(traj_observations))
         traj_dataset["next_observations"].append(np.array(traj_next_obs))
+        traj_dataset["returns"].append(traj_returns)
+
+        if plot:
+            plot_ep_reward(
+                traj_rewards,
+                traj_delay_rewards,
+                traj_returns,
+                config,
+            )
+            plot = False
 
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
@@ -256,6 +270,9 @@ def trans_dataset(config):
             delay_rewards[delay_idx] = np.sum(
                 raw_rewards[trans_idx : delay_idx + 1]
             )
+            returns[trans_idx : trans_idx + delay] = np.sum(
+                raw_rewards[trans_idx : episode_end_idx + 1]
+            )
             # print(trans_idx, delay_idx, np.sum(raw_rewards[trans_idx:delay_idx]))
             trans_idx += delay
 
@@ -295,11 +312,11 @@ def plot_ep_reward(raw_rewards, delay_rewards, returns, config):
         delay_rewards,
         "r.-",
     )
-    # plt.plot(
-    #     range(len(returns)),
-    #     returns,
-    #     "g.-",
-    # )
+    plt.plot(
+        range(len(returns)),
+        returns,
+        "g.-",
+    )
     plt.xlabel("t")
     plt.ylabel("reward")
     plt.title(f"{config['task']}-delay_mode_{config['delay_mode']}_reward")
@@ -327,7 +344,7 @@ def load_d4rl_buffer(config):
         obs_next=dataset["next_observations"],
         act=dataset["actions"],
         rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
-        returns=np.expand_dims(np.squeeze(dataset["returns"]), 1),
+        ret=np.expand_dims(np.squeeze(dataset["returns"]), 1),
         done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
     )
 
@@ -335,6 +352,7 @@ def load_d4rl_buffer(config):
     logger.info("obs_next shape: {}", buffer.obs_next.shape)
     logger.info("act shape: {}", buffer.act.shape)
     logger.info("rew shape: {}", buffer.rew.shape)
+    logger.info("ret shape: {}", buffer.ret.shape)
     logger.info("done shape: {}", buffer.done.shape)
     logger.info("Episode reward: {}", buffer.rew.sum() / np.sum(buffer.done))
     logger.info("Number of terminals on: {}", np.sum(buffer.done))
@@ -359,8 +377,8 @@ if __name__ == "__main__":
     # load_d4rl_buffer(vars(args))
 
     """extract traj dataset"""
-    traj_dataset = trans_traj_dataset(vars(args))
-    # traj_dataset = trans_dataset(vars(args))
+    # traj_dataset = trans_traj_dataset(vars(args))
+    traj_dataset = trans_dataset(vars(args))
 
     """extract traj buffer"""
     # load_d4rl_traj_buffer(vars(args))

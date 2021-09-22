@@ -94,7 +94,7 @@ class AlgoTrainer(BaseAlgo):
         # prepare data
         obs = torch.from_numpy(train_buffer["obs"]).to(self.device)
         act = torch.from_numpy(train_buffer["act"]).to(self.device)
-        ret = torch.from_numpy(train_buffer["returns"]).to(self.device)
+        ret = torch.from_numpy(train_buffer["ret"]).to(self.device)
 
         max_returns = ret.max()
         min_returns = ret.min()

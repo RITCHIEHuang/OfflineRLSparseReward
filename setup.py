@@ -9,6 +9,7 @@ setup(
     install_requires=[
         "loguru",
         "gym",
+        "seaborn",
         # "d3rlpy",
         "numpy",
         "matplotlib",
