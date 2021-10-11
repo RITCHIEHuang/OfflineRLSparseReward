@@ -2,6 +2,7 @@ import argparse
 import os
 from copy import deepcopy
 
+import torch
 import gym
 import numpy as np
 from scipy.special import softmax
@@ -13,14 +14,16 @@ from torch.utils.data.dataloader import DataLoader
 
 import d4rl
 from offlinerl.utils.data import SampleBatch
+from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
+from offlinerl.evaluation.d4rl import d4rl_eval_fn
 
 from utils.d4rl_tasks import task_list
 from utils.io_util import proj_path
 
 from datasets.traj_dataset import TrajDataset
 from datasets.qlearning_dataset import qlearning_dataset
-from algos import reward_shaper, reward_decoposer
-from config import shaping_config, decomposer_config
+from algos import reward_shaper, reward_decoposer, reward_giver
+from config import shaping_config, decomposer_config, reward_giver_config
 
 
 def argsparser():
@@ -340,6 +343,33 @@ def process_interval_average(traj_dataset):
     return traj_dataset
 
 
+def load_smooth_traj_buffer(traj_dataset):
+    buffer = SampleBatch(
+        obs=np.concatenate(traj_dataset["observations"], axis=0),
+        obs_next=np.concatenate(traj_dataset["next_observations"], axis=0),
+        act=np.concatenate(traj_dataset["actions"], axis=0),
+        rew=np.expand_dims(
+            np.squeeze(np.concatenate(traj_dataset["smooth_rewards"])), 1
+        ),
+        ret=np.expand_dims(
+            np.squeeze(np.concatenate(traj_dataset["returns"])), 1
+        ),
+        done=np.expand_dims(
+            np.squeeze(np.concatenate(traj_dataset["terminals"])), 1
+        ),
+    )
+
+    logger.info("obs shape: {}", buffer.obs.shape)
+    logger.info("obs_next shape: {}", buffer.obs_next.shape)
+    logger.info("act shape: {}", buffer.act.shape)
+    logger.info("rew shape: {}", buffer.rew.shape)
+    logger.info("ret shape: {}", buffer.ret.shape)
+    logger.info("done shape: {}", buffer.done.shape)
+    logger.info("Episode reward: {}", buffer.rew.sum() / np.sum(buffer.done))
+    logger.info("Number of terminals on: {}", np.sum(buffer.done))
+    return buffer
+
+
 def load_reward_by_strategy(
     config, traj_dataset, plot_traj_idx_list, strategy
 ):
@@ -353,7 +383,6 @@ def load_reward_by_strategy(
     return_min = np.min(tmp)
     return_mean = np.mean(tmp)
     return_std = np.std(tmp)
-    length_max = max(traj_dataset["length"])
 
     # preprocessing
     # (1) for `transformer_decompose` and `pg_shaping`, train the model first;
@@ -363,7 +392,7 @@ def load_reward_by_strategy(
         # train decompose model
         logger.info(f"Training Transformer decompose model start...")
         dataset = TrajDataset(traj_dataset)
-        config["exp_name"] = (f"{config['exp_name']}-reward_decomposer",)
+        config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
         algo_config = decomposer_config.update(config)
         train_dataloader = DataLoader(
@@ -418,11 +447,28 @@ def load_reward_by_strategy(
 
         trained_shaping_model = algo_trainer.get_model()
         device = algo_trainer.device
-    elif strategy == "episodic_ensemble":
-        traj_dataset = process_episodic_average(traj_dataset)
 
-    elif strategy == "interval_ensemble":
-        traj_dataset = process_interval_average(traj_dataset)
+    elif strategy in ["episodic_ensemble", "interval_ensemble"]:
+        logger.info(f"Training reward giver model start...")
+        if strategy == "episodic_ensemble":
+            traj_dataset = process_episodic_average(traj_dataset)
+        else:
+            traj_dataset = process_interval_average(traj_dataset)
+
+        buffer = load_smooth_traj_buffer(traj_dataset)
+        config["exp_name"] = f"{config['exp_name']}-reward_giver"
+
+        algo_config = reward_giver_config.update(config)
+        algo_init = reward_giver.algo_init(algo_config)
+        algo_trainer = reward_giver.AlgoTrainer(algo_init, algo_config)
+        init_reward_giver_model = algo_trainer.get_policy()
+
+        algo_trainer.train(buffer, None)
+
+        trained_reward_giver_model = algo_trainer.get_policy()
+        device = algo_trainer.device
+
+        logger.info(f"Training reward giver model end...")
 
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
@@ -440,7 +486,7 @@ def load_reward_by_strategy(
             traj_delay_rewards = np.ones_like(
                 traj_dataset["delay_rewards"][i]
             ) * (np.sum(traj_dataset["delay_rewards"][i]) / traj_length)
-        elif strategy in ["episodic_random", "episodic_ensemble"]:
+        elif strategy == "episodic_random":
             weights = np.random.normal(
                 size=traj_dataset["delay_rewards"][i].shape
             )
@@ -468,7 +514,7 @@ def load_reward_by_strategy(
                 )
                 episode_idx += 1
 
-        elif strategy in ["interval_random", "interval_ensemble"]:
+        elif strategy == "interval_random":
             episode_idx = 0
             while episode_idx < traj_length:
                 interval_start_idx = episode_idx
@@ -490,6 +536,140 @@ def load_reward_by_strategy(
                     traj_delay_rewards[interval_start_idx : episode_idx + 1]
                 )
                 episode_idx += 1
+
+        elif strategy == "interval_ensemble":
+            with torch.no_grad():
+                traj_delay_rewards = torch.from_numpy(
+                    traj_dataset["delay_rewards"][i]
+                ).to(device)
+
+                traj_obs = torch.from_numpy(
+                    traj_dataset["observations"][i]
+                ).to(device)
+                traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(
+                    device
+                )
+                traj_obs_act_pair = torch.concat([traj_obs, traj_act], dim=-1)
+                # init
+                init_reward_pre = init_reward_giver_model(
+                    traj_obs_act_pair.unsqueeze(dim=0),
+                ).squeeze(dim=-1)
+
+                # trained
+                trained_reward_pre = trained_reward_giver_model(
+                    traj_obs_act_pair.unsqueeze(dim=0),
+                ).squeeze(dim=-1)
+
+            init_reward_redistribution = torch.empty_like(traj_delay_rewards)
+            trained_reward_redistribution = torch.empty_like(
+                traj_delay_rewards
+            )
+
+            episode_idx = 0
+            while episode_idx < traj_length:
+                interval_start_idx = episode_idx
+                while (
+                    episode_idx + 1 < traj_length
+                    and traj_delay_rewards[episode_idx] <= 1e-5
+                ):
+                    episode_idx += 1
+                # interval_range [interval_start_idx, episode_idx]
+                init_weights = (
+                    traj_delay_rewards[
+                        interval_start_idx : episode_idx + 1
+                    ].sum()
+                    / init_reward_pre[
+                        ..., interval_start_idx : episode_idx + 1, ...
+                    ].sum()
+                )
+
+                init_reward_redistribution[
+                    interval_start_idx : episode_idx + 1
+                ] = (
+                    init_reward_pre[0, interval_start_idx : episode_idx + 1]
+                    * init_weights
+                )
+                trained_weights = (
+                    traj_delay_rewards[
+                        interval_start_idx : episode_idx + 1
+                    ].sum()
+                    / trained_reward_pre[
+                        ..., interval_start_idx : episode_idx + 1, ...
+                    ].sum()
+                )
+                trained_reward_redistribution[
+                    interval_start_idx : episode_idx + 1
+                ] = (
+                    trained_reward_pre[0, interval_start_idx : episode_idx + 1]
+                    * trained_weights
+                )
+                episode_idx += 1
+
+            if i in plot_traj_idx_list:
+                plot_ep_reward(
+                    [
+                        traj_delay_rewards,
+                        init_reward_redistribution,
+                        trained_reward_redistribution,
+                    ],
+                    ["raw", "init_reward", "trained_reward"],
+                    config,
+                    suffix=f"{i}_{strategy}_compare",
+                )
+            traj_delay_rewards = (
+                trained_reward_redistribution.squeeze(-1).cpu().numpy()
+            )
+
+        elif strategy == "episodic_ensemble":
+            with torch.no_grad():
+                traj_delay_rewards = torch.from_numpy(
+                    traj_dataset["delay_rewards"][i]
+                ).to(device)
+
+                traj_obs = torch.from_numpy(
+                    traj_dataset["observations"][i]
+                ).to(device)
+                traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(
+                    device
+                )
+                traj_obs_act_pair = torch.concat([traj_obs, traj_act], dim=-1)
+                # init
+                init_reward_pre = init_reward_giver_model(
+                    traj_obs_act_pair.unsqueeze(dim=0),
+                ).squeeze(dim=-1)
+
+                init_rescale_weight = (
+                    traj_delay_rewards.sum() / init_reward_pre.sum()
+                )
+                init_reward_redistribution = (
+                    init_reward_pre * init_rescale_weight
+                ).squeeze(dim=0)
+                # trained
+                trained_reward_pre = trained_reward_giver_model(
+                    traj_obs_act_pair.unsqueeze(dim=0),
+                ).squeeze(dim=-1)
+
+                trained_rescale_weight = (
+                    traj_delay_rewards.sum() / trained_reward_pre.sum()
+                )
+                trained_reward_redistribution = (
+                    trained_reward_pre * trained_rescale_weight
+                ).squeeze(dim=0)
+
+            if i in plot_traj_idx_list:
+                plot_ep_reward(
+                    [
+                        traj_delay_rewards,
+                        init_reward_redistribution,
+                        trained_reward_redistribution,
+                    ],
+                    ["raw", "init_reward", "trained_reward"],
+                    config,
+                    suffix=f"{i}_{strategy}_compare",
+                )
+            traj_delay_rewards = (
+                trained_reward_redistribution.squeeze(-1).cpu().numpy()
+            )
 
         elif strategy == "transformer_decompose":
             with torch.no_grad():

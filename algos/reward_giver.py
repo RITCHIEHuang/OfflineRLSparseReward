@@ -3,10 +3,8 @@ import torch.nn as nn
 from copy import deepcopy
 from loguru import logger
 import numpy as np
-from tqdm import tqdm
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.net.continuous import GaussianActor
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
@@ -90,7 +88,7 @@ class AlgoTrainer(BaseAlgo):
                 obs = batch["obs"]
                 action = batch["act"]
                 rew = batch["rew"]
-                obs_act = torch.cat([obs, act], dim=-1)
+                obs_act = torch.cat([obs, action], dim=-1)
                 pre_rew = self.reward_net(obs_act)
 
                 loss = loss_fn(pre_rew, rew)
@@ -99,10 +97,10 @@ class AlgoTrainer(BaseAlgo):
                 self.reward_optim.step()
 
             with torch.no_grad():
-                obs = batch["obs"]
-                action = batch["act"]
-                rew = batch["rew"]
-                obs_act = torch.cat([obs, act], dim=-1)
+                obs = valdata["obs"]
+                action = valdata["act"]
+                rew = valdata["rew"]
+                obs_act = torch.cat([obs, action], dim=-1)
                 pre_rew = self.reward_net(obs_act)
 
                 val_loss = loss_fn(pre_rew, rew).item()
