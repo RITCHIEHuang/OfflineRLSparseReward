@@ -23,11 +23,12 @@ from offlinerl.algo.modelfree import cql, plas, bcqd, bcq, bc, crr
 from offlinerl.algo.modelbase import moose, combo, bremen
 
 from algos import mopo
-from algos import reward_shaper, reward_decoposer
-from config import cql_config, shaping_config, mopo_config, decomposer_config
+from algos import reward_shaper, reward_decoposer, reward_giver
+from config import cql_config, shaping_config, mopo_config, decomposer_config, reward_giver_config
 
 algo_dict = {
     # custom
+    "reward_giver": {"algo": reward_giver, "config": reward_giver_config},
     "reward_shaper": {"algo": reward_shaper, "config": shaping_config},
     "reward_decomposer": {
         "algo": reward_decoposer,

@@ -69,6 +69,7 @@ class AlgoTrainer(BaseAlgo):
                     action = batch_data['act']
 
                     action_dist = self.actor(obs)
+                    
                     val_loss += ((action_dist.mean - action) ** 2).mean().item()
 
             if val_loss < self.best_loss:

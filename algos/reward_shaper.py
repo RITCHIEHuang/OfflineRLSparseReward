@@ -287,14 +287,15 @@ class AlgoTrainer(BaseAlgo):
                 self.shaping_optim.step()
 
             # eval on valdata
-            obs = valdata["obs"]
-            ret = valdata["returns"]
-            logp_grad_norms = valdata["logp_grad_norms"]
-            shaping_reward = ret - self.shaping_net(obs)
-            loss = (logp_grad_norms - shaping_reward).pow(2).mean()
+            with torch.no_grad():
+                obs = valdata["obs"]
+                ret = valdata["returns"]
+                logp_grad_norms = valdata["logp_grad_norms"]
+                shaping_reward = ret - self.shaping_net(obs)
+                loss = (logp_grad_norms - shaping_reward).pow(2).mean()
 
-            res = {"loss": loss.item()}
-            self.log_res(epoch, res)
+                res = {"loss": loss.item()}
+                self.log_res(epoch, res)
 
     def _train_bc_policy(self, policy, data, optim):
         data.to_torch(device=self.device)
