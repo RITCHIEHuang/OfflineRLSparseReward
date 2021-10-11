@@ -6,7 +6,7 @@ from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
 
-from datasets import d4rl_dataset
+from datasets import delay_d4rl_dataset
 
 from config import algo_select
 from utils.d4rl_tasks import task_list
@@ -39,6 +39,26 @@ def argsparser():
     parser.add_argument(
         "--delay_max", help="max delay steps", type=int, default=50
     )
+    parser.add_argument("--bc_epoch", help="bc epochs", type=int, default=0)
+    parser.add_argument(
+        "--strategy",
+        help="delay rewards strategy",
+        type=str,
+        default="none",
+        choices=[
+            "none",
+            "minmax",
+            "zscore",
+            "episodic_average",
+            "episodic_random",
+            "episodic_ensemble",
+            "interval_average",
+            "interval_random",
+            "interval_ensemble",
+            "transformer_decompose",
+            "pg_reshaping",
+        ],
+    )
     parser.add_argument(
         "--task",
         help="task name",
@@ -55,8 +75,10 @@ def run_algo(kwargs):
 
     if algo_config["delay_mode"] == "none":
         train_buffer = d4rl.load_d4rl_buffer(algo_config["task"])
+    elif algo_config["strategy"] == "none":
+        train_buffer = delay_d4rl_dataset.load_d4rl_buffer(algo_config)
     else:
-        train_buffer = d4rl_dataset.load_d4rl_buffer(algo_config)
+        train_buffer = delay_d4rl_dataset.load_d4rl_traj_buffer(algo_config)
 
     algo_init = algo_init_fn(algo_config)
     algo_trainer = algo_trainer_obj(algo_init, algo_config)
@@ -72,7 +94,7 @@ def run_algo(kwargs):
     algo_trainer.train(train_buffer, None, callback_fn=callback_list)
 
 
-# python train_d4rl.py --algo_name=cql --task=walker2d-medium-replay-v0 --delay_mode=constant --delay=20
+# python train_d4rl.py --algo_name=mopo --task=walker2d-medium-replay-v0 --delay_mode=constant --delay=20 --strategy=minmax
 if __name__ == "__main__":
     args = argsparser()
     args = vars(args)
@@ -86,14 +108,12 @@ if __name__ == "__main__":
     elif args["delay_mode"] == "random":
         exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay_min-{args['delay_min']}-delay_max-{args['delay_max']}-{args['algo_name']}-seed-{args['seed']}"
 
-    args["exp_name"] = exp_name
+    args["exp_name"] = f"{exp_name}-strategy-{args['strategy']}"
+    if args["bc_epoch"] != 0:
+        args["exp_name"] = f"{args['exp_name']}-bc-{args['bc_epoch']}"
 
     logger.info(
         f"Task: {args['task']}, algo: {args['algo_name']}, exp_name: {args['exp_name']}"
     )
-    import torch
-    import numpy as np
 
-    torch.manual_seed(args["seed"])
-    np.random.seed(args["seed"])
     run_algo(args)

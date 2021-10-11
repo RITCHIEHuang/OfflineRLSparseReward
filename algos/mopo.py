@@ -304,7 +304,7 @@ class AlgoTrainer(BaseAlgo):
                                 "obs": obs.cpu(),
                                 "act": action.cpu(),
                                 "rew": penalized_reward.cpu(),
-                                "returns": penalized_reward.cpu(),
+                                "ret": penalized_reward.cpu(),
                                 "done": dones.cpu(),
                                 "obs_next": next_obs.cpu(),
                             }

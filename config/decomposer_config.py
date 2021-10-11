@@ -11,15 +11,15 @@ obs_shape = None
 act_shape = None
 max_action = None
 
-actor_features = 256
-actor_layers = 2
+# transformer params
+d_model = 512
+nhead = 4
+hidden_features = 128
+hidden_layers = 4
+dropout = 0.1
 
 batch_size = 256
 steps_per_epoch = 1000
 max_epoch = 100
 
-actor_lr = 1e-3
-
-shaping_lr = 1e-3
-hidden_layer_size = 256
-hidden_layers = 2
+lr = 1e-3

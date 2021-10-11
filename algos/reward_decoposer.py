@@ -1,12 +1,21 @@
 # pylint: disable=protected-access
+import math
 import torch
 from torch import nn
-import math
+from copy import deepcopy
+from loguru import logger
+
+import numpy as np
+from tqdm import tqdm
+
 from torch.nn import (
     TransformerEncoder,
     TransformerEncoderLayer,
     MultiheadAttention,
 )
+
+from offlinerl.algo.base import BaseAlgo
+from offlinerl.utils.exp import setup_seed
 
 
 class PositionalEncoding(nn.Module):
@@ -38,26 +47,6 @@ class PositionalEncoding(nn.Module):
 
         x = x + self.pe[: x.size(0), :]
         return self.dropout(x)
-
-
-class RandomNetRewardDecomposer(nn.Module):
-    def __init__(self, input_state_dim, d_model):
-        super().__init__()
-        self.state_dim = input_state_dim
-        self.d_model = d_model
-        self.ff = nn.Sequential(
-            nn.Linear(self.state_dim, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, 1),
-        )
-
-    def forward(self, cur_state, last_state=None):
-        if last_state is not None:
-            return self.ff(cur_state) - self.ff(last_state)
-        else:
-            return self.ff(cur_state)
 
 
 class TransformerRewardDecomposer(nn.Module):
@@ -123,6 +112,105 @@ def create_key_padding_mask(seq_of_pair_length, max_length):
     for i, e in enumerate(seq_of_pair_length):
         out[i, :e] = 0
     return out
+
+
+def algo_init(args):
+    logger.info("Run algo_init function")
+    setup_seed(args["seed"])
+
+    if args["obs_shape"] and args["action_shape"]:
+        obs_shape, action_shape = args["obs_shape"], args["action_shape"]
+        max_action = args["max_action"]
+    elif "task" in args.keys():
+        from offlinerl.utils.env import get_env_shape, get_env_action_range
+
+        obs_shape, action_shape = get_env_shape(args["task"])
+        max_action, _ = get_env_action_range(args["task"])
+        args["obs_shape"], args["action_shape"] = obs_shape, action_shape
+    else:
+        raise NotImplementedError
+
+    model = TransformerRewardDecomposer(
+        input_pair_dim=obs_shape + action_shape,
+        d_model=args["d_model"],
+        nhead=args["nhead"],
+        dim_ff=args["hidden_features"],
+        nlayers=args["hidden_layers"],
+        dropout=args["dropout"],
+    ).to(args["device"])
+    optim = torch.optim.Adam(model.parameters(), lr=args["lr"])
+
+    return {
+        "model": {"net": model, "opt": optim},
+    }
+
+
+class AlgoTrainer(BaseAlgo):
+    def __init__(self, algo_init, args):
+        super(AlgoTrainer, self).__init__(args)
+        self.args = args
+
+        self.model = self.args["model"]["net"]
+        self.model_optim = self.args["model"]["optim"]
+
+        self.batch_size = self.args["batch_size"]
+        self.device = self.args["device"]
+
+        self.best_model = deepcopy(self.model)
+        self.best_loss = float("inf")
+
+    def train(
+        self,
+        train_loader,
+        val_loader,
+        callback_fn,
+    ):
+        for epoch in range(self.args["max_epoch"]):
+            ep_loss = 0
+            for batch, s in enumerate(train_loader):
+                key_padding_mask = create_key_padding_mask(
+                    s["length"], dataset.max_length
+                ).to(self.device)
+                reward_pre = self.model(
+                    s["obs_act_pair"].to(self.device),
+                    key_padding_mask=key_padding_mask,
+                ).squeeze(dim=-1)
+                reward_mask = torch.where(
+                    key_padding_mask.view(
+                        len(s["length"]), dataset.max_length, 1
+                    )
+                    == 0,
+                    1,
+                    0,
+                )
+                delay_reward = s["delay_reward"].to(self.device)
+                returns = delay_reward.sum(dim=-1)
+                main_loss = (
+                    torch.mean(
+                        reward_pre[range(len(s["length"])), s["length"] - 1]
+                        - returns[:, None]
+                    )
+                    ** 2
+                )
+                aux_loss = torch.mean(reward_pre - returns[..., None]) ** 2
+                loss = main_loss + aux_loss * 0.5
+                ep_loss += loss.item()
+
+                self.model_optim.zero_grad()
+                loss.backward()
+                self.model_optim.step()
+
+            if ep_loss < self.best_loss:
+                self.best_loss = ep_loss
+                self.best_model.load_state_dict(self.model.state_dict())
+
+            # res = callback_fn(self.get_policy())
+            res = {}
+            res["loss"] = ep_loss
+            self.log_res(epoch, res)
+
+    def get_policy(self):
+        return self.best_model
 
 
 if __name__ == "__main__":
