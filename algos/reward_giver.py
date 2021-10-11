@@ -105,7 +105,7 @@ class AlgoTrainer(BaseAlgo):
                 obs_act = torch.cat([obs, act], dim=-1)
                 pre_rew = self.reward_net(obs_act)
 
-                val_loss = loss_fn(pre_rew, rew)
+                val_loss = loss_fn(pre_rew, rew).item()
             logger.debug(f"val loss: {val_loss}")
 
             if val_loss < self.best_loss:
