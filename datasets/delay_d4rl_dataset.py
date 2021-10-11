@@ -514,7 +514,7 @@ def load_reward_by_strategy(
                 ).squeeze(dim=0)
 
                 # trained
-                trained_reward_pre = init_decomposer_model(
+                trained_reward_pre = trained_decomposer_model(
                     traj_obs_act_pair.unsqueeze(dim=0),
                 ).squeeze(dim=-1)
                 trained_reward_redistribution = reward_redistributed(
