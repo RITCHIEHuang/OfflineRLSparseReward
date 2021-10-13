@@ -15,9 +15,9 @@ max_action = None
 
 batch_size = 256
 steps_per_epoch = 1000
-max_epoch = 500
+max_epoch = 100
 
-reward_lr = 1e-3
+reward_lr = 3e-4
 hidden_layer_size = 256
 hidden_layers = 2
 

@@ -33,7 +33,7 @@ def algo_init(args):
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        output_activation="tanh",
+        # output_activation="tanh",
     ).to(args["device"])
 
     reward_optim = torch.optim.Adam(
@@ -73,8 +73,8 @@ class AlgoTrainer(BaseAlgo):
         train_splits, val_splits = torch.utils.data.random_split(
             range(data_size), (train_size, val_size)
         )
-        train_buffer = train_buffer[train_splits.indices]
         valdata = train_buffer[val_splits.indices]
+        train_buffer = train_buffer[train_splits.indices]
         batch_size = self.batch_size
 
         idxs = np.arange(train_buffer.shape[0])
@@ -118,10 +118,10 @@ class AlgoTrainer(BaseAlgo):
         return self.get_policy()
 
     def get_policy(self):
-        return self.reward_net
+        return self.best_model
 
     def get_model(self):
-        return self.reward_net
+        return self.best_model
 
     def save_model(self, model_path):
         torch.save(self.get_model(), model_path)

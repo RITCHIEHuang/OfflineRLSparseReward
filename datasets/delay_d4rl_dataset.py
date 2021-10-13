@@ -16,6 +16,7 @@ import d4rl
 from offlinerl.utils.data import SampleBatch
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
+from offlinerl.utils.config import parse_config
 
 from utils.d4rl_tasks import task_list
 from utils.io_util import proj_path
@@ -373,6 +374,8 @@ def load_smooth_traj_buffer(traj_dataset):
 def load_reward_by_strategy(
     config, traj_dataset, plot_traj_idx_list, strategy
 ):
+    if "exp_name" not in config:
+        config["exp_name"] = "example"
     tmp = np.array(
         [
             traj_dataset["returns"][i][0]
@@ -392,9 +395,11 @@ def load_reward_by_strategy(
         # train decompose model
         logger.info(f"Training Transformer decompose model start...")
         dataset = TrajDataset(traj_dataset)
-        config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
-        algo_config = decomposer_config.update(config)
+        algo_config = parse_config(decomposer_config)
+        algo_config["task"] = config["task"]
+        algo_config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
+
         train_dataloader = DataLoader(
             dataset, batch_size=algo_config["batch_size"], shuffle=True
         )
@@ -405,7 +410,7 @@ def load_reward_by_strategy(
         algo_trainer = reward_decoposer.AlgoTrainer(algo_init, algo_config)
         init_decomposer_model = algo_trainer.get_policy()
 
-        algo_trainer.train(train_dataloader, None)
+        algo_trainer.train(train_dataloader, None, None)
 
         trained_decomposer_model = algo_trainer.get_policy()
         device = algo_trainer.device
@@ -415,18 +420,19 @@ def load_reward_by_strategy(
     elif strategy == "pg_reshaping":
         # train reshaping model
         logger.info(f"Training PG reshaping model start...")
-        config.update(
+        algo_config = parse_config(shaping_config)
+        algo_config.update(
             {
                 "policy_mode": "random",
                 "shaping_version": "v2",
             }  # proximal
         )
-        config["exp_name"] = (
+        algo_config["task"] = config["task"]
+
+        algo_config["exp_name"] = (
             f"{config['exp_name']}-reward_shaper-policy_mode-{config['policy_mode']}-shaping_version-{config['shaping_version']}",
         )
-
-        algo_config = shaping_config.update(config)
-        train_buffer = load_d4rl_buffer(algo_config)
+        train_buffer = load_d4rl_buffer(config)
 
         algo_init = reward_shaper.algo_init(algo_config)
         algo_trainer = reward_shaper.AlgoTrainer(algo_init, algo_config)
@@ -456,14 +462,15 @@ def load_reward_by_strategy(
             traj_dataset = process_interval_average(traj_dataset)
 
         buffer = load_smooth_traj_buffer(traj_dataset)
-        config["exp_name"] = f"{config['exp_name']}-reward_giver"
+        algo_config = parse_config(reward_giver_config)
+        algo_config["task"] = config["task"]
 
-        algo_config = reward_giver_config.update(config)
+        algo_config["exp_name"] = f"{config['exp_name']}-reward_giver"
         algo_init = reward_giver.algo_init(algo_config)
         algo_trainer = reward_giver.AlgoTrainer(algo_init, algo_config)
         init_reward_giver_model = algo_trainer.get_policy()
 
-        algo_trainer.train(buffer, None)
+        algo_trainer.train(buffer, None, None)
 
         trained_reward_giver_model = algo_trainer.get_policy()
         device = algo_trainer.device
@@ -538,6 +545,7 @@ def load_reward_by_strategy(
                 episode_idx += 1
 
         elif strategy == "interval_ensemble":
+            smooth_delay_rewards = traj_dataset["smooth_rewards"][i]
             with torch.no_grad():
                 traj_delay_rewards = torch.from_numpy(
                     traj_dataset["delay_rewards"][i]
@@ -549,16 +557,24 @@ def load_reward_by_strategy(
                 traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(
                     device
                 )
-                traj_obs_act_pair = torch.concat([traj_obs, traj_act], dim=-1)
+                traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
                 # init
-                init_reward_pre = init_reward_giver_model(
-                    traj_obs_act_pair.unsqueeze(dim=0),
-                ).squeeze(dim=-1)
+                init_reward_pre = (
+                    init_reward_giver_model(
+                        traj_obs_act_pair.unsqueeze(dim=0),
+                    )
+                    .squeeze(dim=-1)
+                    .squeeze(dim=0)
+                )
 
                 # trained
-                trained_reward_pre = trained_reward_giver_model(
-                    traj_obs_act_pair.unsqueeze(dim=0),
-                ).squeeze(dim=-1)
+                trained_reward_pre = (
+                    trained_reward_giver_model(
+                        traj_obs_act_pair.unsqueeze(dim=0),
+                    )
+                    .squeeze(dim=-1)
+                    .squeeze(dim=0)
+                )
 
             init_reward_redistribution = torch.empty_like(traj_delay_rewards)
             trained_reward_redistribution = torch.empty_like(
@@ -579,14 +595,14 @@ def load_reward_by_strategy(
                         interval_start_idx : episode_idx + 1
                     ].sum()
                     / init_reward_pre[
-                        ..., interval_start_idx : episode_idx + 1, ...
+                        interval_start_idx : episode_idx + 1
                     ].sum()
                 )
 
                 init_reward_redistribution[
                     interval_start_idx : episode_idx + 1
                 ] = (
-                    init_reward_pre[0, interval_start_idx : episode_idx + 1]
+                    init_reward_pre[interval_start_idx : episode_idx + 1]
                     * init_weights
                 )
                 trained_weights = (
@@ -594,13 +610,13 @@ def load_reward_by_strategy(
                         interval_start_idx : episode_idx + 1
                     ].sum()
                     / trained_reward_pre[
-                        ..., interval_start_idx : episode_idx + 1, ...
+                        interval_start_idx : episode_idx + 1
                     ].sum()
                 )
                 trained_reward_redistribution[
                     interval_start_idx : episode_idx + 1
                 ] = (
-                    trained_reward_pre[0, interval_start_idx : episode_idx + 1]
+                    trained_reward_pre[interval_start_idx : episode_idx + 1]
                     * trained_weights
                 )
                 episode_idx += 1
@@ -608,19 +624,18 @@ def load_reward_by_strategy(
             if i in plot_traj_idx_list:
                 plot_ep_reward(
                     [
-                        traj_delay_rewards,
-                        init_reward_redistribution,
-                        trained_reward_redistribution,
+                        smooth_delay_rewards,
+                        init_reward_redistribution.cpu().numpy(),
+                        trained_reward_redistribution.cpu().numpy(),
                     ],
-                    ["raw", "init_reward", "trained_reward"],
+                    ["smooth_reward", "init_reward", "trained_reward"],
                     config,
                     suffix=f"{i}_{strategy}_compare",
                 )
-            traj_delay_rewards = (
-                trained_reward_redistribution.squeeze(-1).cpu().numpy()
-            )
+            traj_delay_rewards = trained_reward_redistribution.cpu().numpy()
 
         elif strategy == "episodic_ensemble":
+            smooth_delay_rewards = traj_dataset["smooth_rewards"][i]
             with torch.no_grad():
                 traj_delay_rewards = torch.from_numpy(
                     traj_dataset["delay_rewards"][i]
@@ -632,44 +647,51 @@ def load_reward_by_strategy(
                 traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(
                     device
                 )
-                traj_obs_act_pair = torch.concat([traj_obs, traj_act], dim=-1)
+                traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
                 # init
-                init_reward_pre = init_reward_giver_model(
-                    traj_obs_act_pair.unsqueeze(dim=0),
-                ).squeeze(dim=-1)
+                init_reward_pre = (
+                    init_reward_giver_model(
+                        traj_obs_act_pair.unsqueeze(dim=0),
+                    )
+                    .squeeze(dim=-1)
+                    .squeeze(dim=0)
+                )
 
                 init_rescale_weight = (
                     traj_delay_rewards.sum() / init_reward_pre.sum()
                 )
                 init_reward_redistribution = (
                     init_reward_pre * init_rescale_weight
-                ).squeeze(dim=0)
+                )
                 # trained
-                trained_reward_pre = trained_reward_giver_model(
-                    traj_obs_act_pair.unsqueeze(dim=0),
-                ).squeeze(dim=-1)
+                trained_reward_pre = (
+                    trained_reward_giver_model(
+                        traj_obs_act_pair.unsqueeze(dim=0),
+                    )
+                    .squeeze(dim=-1)
+                    .squeeze(dim=0)
+                )
 
                 trained_rescale_weight = (
                     traj_delay_rewards.sum() / trained_reward_pre.sum()
                 )
                 trained_reward_redistribution = (
                     trained_reward_pre * trained_rescale_weight
-                ).squeeze(dim=0)
+                )
 
             if i in plot_traj_idx_list:
                 plot_ep_reward(
                     [
-                        traj_delay_rewards,
-                        init_reward_redistribution,
-                        trained_reward_redistribution,
+                        # traj_delay_rewards.cpu().numpy(),
+                        smooth_delay_rewards,
+                        init_reward_redistribution.cpu().numpy(),
+                        trained_reward_redistribution.cpu().numpy(),
                     ],
-                    ["raw", "init_reward", "trained_reward"],
+                    ["smooth_reward", "init_reward", "trained_reward"],
                     config,
                     suffix=f"{i}_{strategy}_compare",
                 )
-            traj_delay_rewards = (
-                trained_reward_redistribution.squeeze(-1).cpu().numpy()
-            )
+            traj_delay_rewards = trained_reward_redistribution.cpu().numpy()
 
         elif strategy == "transformer_decompose":
             with torch.no_grad():
@@ -683,7 +705,7 @@ def load_reward_by_strategy(
                 traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(
                     device
                 )
-                traj_obs_act_pair = torch.concat([traj_obs, traj_act], dim=-1)
+                traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
                 # init
                 init_reward_pre = init_decomposer_model(
                     traj_obs_act_pair.unsqueeze(dim=0),
@@ -705,9 +727,9 @@ def load_reward_by_strategy(
             if i in plot_traj_idx_list:
                 plot_ep_reward(
                     [
-                        traj_delay_rewards,
-                        init_reward_redistribution,
-                        trained_reward_redistribution,
+                        traj_delay_rewards.cpu().numpy(),
+                        init_reward_redistribution.cpu().numpy(),
+                        trained_reward_redistribution.cpu().numpy(),
                     ],
                     ["raw", "init_decompose", "trained_decompose"],
                     config,
@@ -748,9 +770,9 @@ def load_reward_by_strategy(
             if i in plot_traj_idx_list:
                 plot_ep_reward(
                     [
-                        traj_delay_rewards,
-                        init_delay_rewards,
-                        trained_delay_rewards,
+                        traj_delay_rewards.cpu().numpy(),
+                        init_delay_rewards.cpu().numpy(),
+                        trained_delay_rewards.cpu().numpy(),
                     ],
                     ["raw", "init_shaping", "trained_shaping"],
                     config,
