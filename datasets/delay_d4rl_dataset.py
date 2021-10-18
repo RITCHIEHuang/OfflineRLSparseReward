@@ -387,7 +387,6 @@ def load_reward_by_strategy(
     return_min = np.min(tmp)
     return_mean = np.mean(tmp)
     return_std = np.std(tmp)
-
     # preprocessing
     # (1) for `transformer_decompose` and `pg_shaping`, train the model first;
     # (2) for `episodic_ensemble` and `interval_ensemble`, process by corresponoding `average` strategy first.
@@ -481,24 +480,32 @@ def load_reward_by_strategy(
 
         logger.info(f"Training reward giver model end...")
 
-    tmp2 = np.array(
+    reward_max = np.max(
         [
-            traj_dataset["delay_rewards"][i][0]
+            np.max(traj_dataset["delay_rewards"][i])
             for i in range(len(traj_dataset["returns"]))
         ]
     )
-    reward_max = np.max(tmp2)
-    reward_min = np.min(tmp2)
+    reward_min = np.min(
+        [
+            np.min(traj_dataset["delay_rewards"][i])
+            for i in range(len(traj_dataset["returns"]))
+        ]
+    )
     # reward_mean = np.mean(tmp2)
     # reward_std = np.std(tmp2)
+    logger.info(f"Delay reward min: {reward_min}, max: {reward_max}")
 
     def process_scale(reward):
         if abs(reward_min) < 1e-6:
             return reward / reward_max
-        elif return_min < 0:
-            return reward / reward_min
-        elif reward_min > 0:
-            return reward / reward_max
+        else:
+            if reward < 0:
+                return reward / reward_min
+            elif reward > 0:
+                return reward / reward_max
+            else:
+                return reward
 
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
@@ -514,7 +521,10 @@ def load_reward_by_strategy(
             ) / return_std
         elif strategy == "scale":
             traj_delay_rewards = np.array(
-                [process_scale(r) for r in traj_delay_rewards]
+                [
+                    process_scale(traj_delay_rewards[i])
+                    for i in range(traj_length)
+                ]
             )
 
         elif strategy == "episodic_average":
@@ -830,13 +840,14 @@ def load_reward_by_strategy(
         if i in plot_traj_idx_list:
             plot_ep_reward(
                 [
-                    traj_dataset["delay_rewards"][i],
+                    # traj_dataset["delay_rewards"][i],
                     traj_delay_rewards,
                     # traj_dataset["rewards"][i],
                     # traj_dataset["delay_rewards"][i],
                     # traj_dataset["returns"][i],
                 ],
-                ["delay", "strategy"],
+                ["strategy"],
+                # ["delay", "strategy"],
                 # ["raw", "delay", "return"],
                 config,
                 suffix=f"{i}_{strategy}",
