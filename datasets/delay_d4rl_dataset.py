@@ -54,6 +54,7 @@ def argsparser():
         default="none",
         choices=[
             "none",
+            "scale",
             "minmax",
             "zscore",
             "episodic_average",
@@ -480,6 +481,25 @@ def load_reward_by_strategy(
 
         logger.info(f"Training reward giver model end...")
 
+    tmp2 = np.array(
+        [
+            traj_dataset["delay_rewards"][i][0]
+            for i in range(len(traj_dataset["returns"]))
+        ]
+    )
+    reward_max = np.max(tmp2)
+    reward_min = np.min(tmp2)
+    # reward_mean = np.mean(tmp2)
+    # reward_std = np.std(tmp2)
+
+    def process_scale(reward):
+        if abs(reward_min) < 1e-6:
+            return reward / reward_max
+        elif return_min < 0:
+            return reward / reward_min
+        elif reward_min > 0:
+            return reward / reward_max
+
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
         if strategy == "minmax":
@@ -492,6 +512,11 @@ def load_reward_by_strategy(
                 traj_dataset["delay_rewards"][i]
                 - return_mean / traj_dataset["length"][i]
             ) / return_std
+        elif strategy == "scale":
+            traj_delay_rewards = np.array(
+                [process_scale(r) for r in traj_delay_rewards]
+            )
+
         elif strategy == "episodic_average":
             traj_delay_rewards = np.ones_like(
                 traj_dataset["delay_rewards"][i]

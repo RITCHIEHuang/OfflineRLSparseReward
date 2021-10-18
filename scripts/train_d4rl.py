@@ -47,6 +47,7 @@ def argsparser():
         default="none",
         choices=[
             "none",
+            "scale",
             "minmax",
             "zscore",
             "episodic_average",
