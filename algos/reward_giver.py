@@ -108,7 +108,7 @@ class AlgoTrainer(BaseAlgo):
 
             if val_loss < self.best_loss:
                 self.best_loss = val_loss
-                self.best_model.load_state_dict(self.best_model.state_dict())
+                self.best_model.load_state_dict(self.reward_net.state_dict())
 
             # res = callback_fn(self.get_policy())
             res = {}

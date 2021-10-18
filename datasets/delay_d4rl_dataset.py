@@ -328,7 +328,7 @@ def process_interval_average(traj_dataset):
             interval_start_idx = episode_idx
             while (
                 episode_idx + 1 < traj_length
-                and cur_episode_delay_rewards[episode_idx] <= 1e-5
+                and abs(cur_episode_delay_rewards[episode_idx]) <= 1e-5
             ):
                 episode_idx += 1
             # interval_range [interval_start_idx, episode_idx]
@@ -398,6 +398,8 @@ def load_reward_by_strategy(
 
         algo_config = parse_config(decomposer_config)
         algo_config["task"] = config["task"]
+        algo_config["log_path"] = config["log_path"]
+
         algo_config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
         train_dataloader = DataLoader(
@@ -428,6 +430,7 @@ def load_reward_by_strategy(
             }  # proximal
         )
         algo_config["task"] = config["task"]
+        algo_config["log_path"] = config["log_path"]
 
         algo_config["exp_name"] = (
             f"{config['exp_name']}-reward_shaper-policy_mode-{config['policy_mode']}-shaping_version-{config['shaping_version']}",
@@ -464,7 +467,7 @@ def load_reward_by_strategy(
         buffer = load_smooth_traj_buffer(traj_dataset)
         algo_config = parse_config(reward_giver_config)
         algo_config["task"] = config["task"]
-
+        algo_config["log_path"] = config["log_path"]
         algo_config["exp_name"] = f"{config['exp_name']}-reward_giver"
         algo_init = reward_giver.algo_init(algo_config)
         algo_trainer = reward_giver.AlgoTrainer(algo_init, algo_config)
@@ -507,7 +510,7 @@ def load_reward_by_strategy(
                 interval_start_idx = episode_idx
                 while (
                     episode_idx + 1 < traj_length
-                    and traj_delay_rewards[episode_idx] <= 1e-5
+                    and abs(traj_delay_rewards[episode_idx]) <= 1e-5
                 ):
                     episode_idx += 1
                 # interval_range [interval_start_idx, episode_idx]
@@ -527,7 +530,7 @@ def load_reward_by_strategy(
                 interval_start_idx = episode_idx
                 while (
                     episode_idx + 1 < traj_length
-                    and traj_delay_rewards[episode_idx] <= 1e-5
+                    and abs(traj_delay_rewards[episode_idx]) <= 1e-5
                 ):
                     episode_idx += 1
                 # interval_range [interval_start_idx, episode_idx]
@@ -586,7 +589,7 @@ def load_reward_by_strategy(
                 interval_start_idx = episode_idx
                 while (
                     episode_idx + 1 < traj_length
-                    and traj_delay_rewards[episode_idx] <= 1e-5
+                    and abs(traj_delay_rewards[episode_idx]) <= 1e-5
                 ):
                     episode_idx += 1
                 # interval_range [interval_start_idx, episode_idx]
@@ -631,6 +634,17 @@ def load_reward_by_strategy(
                     ["smooth_reward", "init_reward", "trained_reward"],
                     config,
                     suffix=f"{i}_{strategy}_compare",
+                )
+
+                plot_ep_reward(
+                    [
+                        traj_dataset["rewards"][i],
+                        smooth_delay_rewards,
+                        trained_reward_redistribution.cpu().numpy(),
+                    ],
+                    ["non-delay_reward", "smooth_reward", "trained_reward"],
+                    config,
+                    suffix=f"{i}_{strategy}_compare_raw",
                 )
             traj_delay_rewards = trained_reward_redistribution.cpu().numpy()
 
