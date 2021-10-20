@@ -808,16 +808,20 @@ def load_reward_by_strategy(
 
                 # init
                 init_residual_rewards = init_shaping_model(
-                    traj_next_obs
-                ) - init_shaping_model(traj_obs)
-                init_residual_rewards.squeeze_(-1)
+                    traj_next_obs.unsqueeze(dim=0)
+                ) - init_shaping_model(traj_obs.unsqueeze(dim=0))
+                init_residual_rewards = init_residual_rewards.squeeze(
+                    dim=-1
+                ).squeeze(dim=0)
                 init_delay_rewards = traj_delay_rewards + init_residual_rewards
 
                 # trained
                 trained_residual_rewards = trained_shaping_model(
-                    traj_next_obs
-                ) - trained_shaping_model(traj_obs)
-                trained_residual_rewards.squeeze_(-1)
+                    traj_next_obs.unsqueeze(dim=0)
+                ) - trained_shaping_model(traj_obs.unsqueeze(dim=0))
+                trained_residual_rewards = trained_delay_rewards.squeeze(
+                    dim=-1
+                ).squeeze(dim=0)
                 trained_delay_rewards = (
                     traj_delay_rewards + trained_residual_rewards
                 )
@@ -834,7 +838,7 @@ def load_reward_by_strategy(
                     suffix=f"{i}_{strategy}_compare",
                 )
             traj_delay_rewards = (
-                trained_delay_rewards.squeeze(-1).cpu().numpy()
+                trained_delay_rewards.cpu().numpy()
             )
             logger.debug(
                 f"PG reshaping rewards shape: {traj_delay_rewards.shape}"
