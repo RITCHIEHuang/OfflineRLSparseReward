@@ -42,23 +42,23 @@ def argsparser():
     parser.add_argument("--bc_epoch", help="bc epochs", type=int, default=0)
     parser.add_argument(
         "--strategy",
-        help="delay rewards strategy",
+        help="delay rewards strategy, can be multiple strategies seperated by  `,`",
         type=str,
         default="none",
-        choices=[
-            "none",
-            "scale",
-            "minmax",
-            "zscore",
-            "episodic_average",
-            "episodic_random",
-            "episodic_ensemble",
-            "interval_average",
-            "interval_random",
-            "interval_ensemble",
-            "transformer_decompose",
-            "pg_reshaping",
-        ],
+        # choices=[
+        #     "none",
+        #     "scale",
+        #     "minmax",
+        #     "zscore",
+        #     "episodic_average",
+        #     "episodic_random",
+        #     "episodic_ensemble",
+        #     "interval_average",
+        #     "interval_random",
+        #     "interval_ensemble",
+        #     "transformer_decompose",
+        #     "pg_reshaping",
+        # ],
     )
     parser.add_argument(
         "--task",

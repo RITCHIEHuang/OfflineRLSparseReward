@@ -49,23 +49,23 @@ def argsparser():
     )
     parser.add_argument(
         "--strategy",
-        help="delay rewards strategy",
+        help="delay rewards strategy, can be multiple strategies seperated by  `,`",
         type=str,
         default="none",
-        choices=[
-            "none",
-            "scale",
-            "minmax",
-            "zscore",
-            "episodic_average",
-            "episodic_random",
-            "episodic_ensemble",
-            "interval_average",
-            "interval_random",
-            "interval_ensemble",
-            "transformer_decompose",
-            "pg_reshaping",
-        ],
+        # choices=[
+        #     "none",
+        #     "scale",
+        #     "minmax",
+        #     "zscore",
+        #     "episodic_average",
+        #     "episodic_random",
+        #     "episodic_ensemble",
+        #     "interval_average",
+        #     "interval_random",
+        #     "interval_ensemble",
+        #     "transformer_decompose",
+        #     "pg_reshaping",
+        # ],
     )
     parser.add_argument(
         "--task",
@@ -103,7 +103,6 @@ def delay_transition_dataset(config):
     returns = np.zeros_like(raw_rewards)
 
     trans_idx = 0
-    plot = True
     plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
 
     if config["delay_mode"] == "constant":
@@ -137,9 +136,10 @@ def delay_transition_dataset(config):
                 [
                     raw_rewards[last_idx : episode_end_idx + 1],
                     delay_rewards[last_idx : episode_end_idx + 1],
-                    returns[last_idx : episode_end_idx + 1],
+                    # returns[last_idx : episode_end_idx + 1],
                 ],
-                ["raw", "delay", "return"],
+                # ["raw", "delay", "return"],
+                ["raw", "delay"],
                 config,
                 suffix=ep,
             )
@@ -270,8 +270,10 @@ def delay_traj_dataset(config):
 
         if ep in plot_traj_idx_list:
             plot_ep_reward(
-                [traj_rewards, traj_delay_rewards, traj_returns],
-                ["raw", "delay", "return"],
+                # [traj_rewards, traj_delay_rewards, traj_returns],
+                [traj_rewards, traj_delay_rewards],
+                # ["raw", "delay", "return"],
+                ["raw", "delay"],
                 config,
                 suffix=f"{ep}_delayed",
             )
@@ -279,14 +281,18 @@ def delay_traj_dataset(config):
     # specific processing
     if "strategy" in config:
         # delay rewards process strategy
-        strategy = config["strategy"]
-        logger.info(f"Deal with delay rewards by strategy: {strategy} !!!")
-        if strategy == "none":
+        strategies = config["strategy"]
+        logger.info(f"Deal with delay rewards by strategies: {strategies} !!!")
+        if strategies == "none":
             pass
         else:
-            traj_dataset = load_reward_by_strategy(
-                config, traj_dataset, plot_traj_idx_list, strategy
-            )
+            # for multi strategies, process by order
+            strategies = strategies.split(",")
+            for strategy in strategies:
+                strategy = strategy.strip()
+                traj_dataset = load_reward_by_strategy(
+                    config, traj_dataset, plot_traj_idx_list, strategy
+                )
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
     )
@@ -410,7 +416,7 @@ def load_reward_by_strategy(
         # )
         algo_init = reward_decoposer.algo_init(algo_config)
         algo_trainer = reward_decoposer.AlgoTrainer(algo_init, algo_config)
-        init_decomposer_model = algo_trainer.get_policy()
+        init_decomposer_model = deepcopy(algo_trainer.get_policy())
 
         algo_trainer.train(train_dataloader, None, None)
 
@@ -431,16 +437,16 @@ def load_reward_by_strategy(
         )
         algo_config["task"] = config["task"]
         algo_config["log_path"] = config["log_path"]
+        algo_config[
+            "exp_name"
+        ] = f"{config['exp_name']}-reward_shaper-policy_mode-{algo_config['policy_mode']}-shaping_version-{algo_config['shaping_version']}"
 
-        algo_config["exp_name"] = (
-            f"{config['exp_name']}-reward_shaper-policy_mode-{config['policy_mode']}-shaping_version-{config['shaping_version']}",
-        )
         train_buffer = load_d4rl_buffer(config)
 
         algo_init = reward_shaper.algo_init(algo_config)
         algo_trainer = reward_shaper.AlgoTrainer(algo_init, algo_config)
 
-        init_shaping_model = algo_trainer.get_model()
+        init_shaping_model = deepcopy(algo_trainer.get_model())
         callback = OnlineCallBackFunction()
         callback.initialize(
             train_buffer=train_buffer,
@@ -471,7 +477,7 @@ def load_reward_by_strategy(
         algo_config["exp_name"] = f"{config['exp_name']}-reward_giver"
         algo_init = reward_giver.algo_init(algo_config)
         algo_trainer = reward_giver.AlgoTrainer(algo_init, algo_config)
-        init_reward_giver_model = algo_trainer.get_policy()
+        init_reward_giver_model = deepcopy(algo_trainer.get_policy())
 
         algo_trainer.train(buffer, None, None)
 
@@ -916,12 +922,14 @@ if __name__ == "__main__":
     # if not os.path.exists(args.dataset_dir):
     #     os.makedirs(args.dataset_dir)
 
+    config = vars(args)
+    config["log_path"] = f"{proj_path}/logs"
     """extract transition buffer"""
-    # load_d4rl_buffer(vars(args))
+    # load_d4rl_buffer(config)
 
     """extract traj dataset"""
-    # traj_dataset = delay_traj_dataset(vars(args))
-    # traj_dataset = delay_transition_dataset(vars(args))
+    # traj_dataset = delay_traj_dataset(config)
+    # traj_dataset = delay_transition_dataset(config)
 
     """extract traj buffer"""
-    load_d4rl_traj_buffer(vars(args))
+    load_d4rl_traj_buffer(config)

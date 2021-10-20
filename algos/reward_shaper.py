@@ -90,7 +90,6 @@ class AlgoTrainer(BaseAlgo):
 
             logger.info(f"{'*' * 30}Train BC policy finish.")
 
-        # self.actor.requires_grad_(False)
         # prepare data
         obs = torch.from_numpy(train_buffer["obs"]).to(self.device)
         act = torch.from_numpy(train_buffer["act"]).to(self.device)
@@ -229,7 +228,7 @@ class AlgoTrainer(BaseAlgo):
         if calc_logp_grads:
             logp_grads = []
 
-        for t in range(log_probs.shape[0]):
+        for t in tqdm(range(log_probs.shape[0])):
             self.actor.zero_grad()
             grads = torch.autograd.grad(
                 log_probs[t, 0],
