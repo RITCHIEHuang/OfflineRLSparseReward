@@ -501,7 +501,7 @@ def load_reward_by_strategy(
             return reward / reward_max
         else:
             if reward < 0:
-                return reward / reward_min
+                return -reward / reward_min
             elif reward > 0:
                 return reward / reward_max
             else:
