@@ -294,20 +294,20 @@ def delay_traj_dataset(config):
                     config, traj_dataset, plot_traj_idx_list, strategy
                 )
     # plot reward distribution
-    processed_delay_rewards = np.squeeze(
-        np.concatenate(traj_dataset["delay_rewards"])
-    )
-    raw_rewards = np.squeeze(np.concatenate(traj_dataset["rewards"]))
-    plot_reward_dist(
-        [
-            raw_rewards,
-            delay_rewards[delay_rewards >= 1e-5],
-            processed_delay_rewards,
-        ],
-        ["raw", "delay", "processed_delay"],
-        config,
-        config["strategy"],
-    )
+    # processed_delay_rewards = np.squeeze(
+    #     np.concatenate(traj_dataset["delay_rewards"])
+    # )
+    # raw_rewards = np.squeeze(np.concatenate(traj_dataset["rewards"]))
+    # plot_reward_dist(
+    #     [
+    #         raw_rewards,
+    #         delay_rewards[delay_rewards >= 1e-5],
+    #         processed_delay_rewards,
+    #     ],
+    #     ["raw", "delay", "processed_delay"],
+    #     config,
+    #     config["strategy"],
+    # )
 
 
     logger.info(
@@ -520,15 +520,16 @@ def load_reward_by_strategy(
     logger.info(f"Delay reward min: {reward_min}, max: {reward_max}")
 
     def process_scale(reward):
-        if abs(reward_min) < 1e-6:
-            return reward / reward_max
-        else:
-            if reward < 0:
-                return -reward / reward_min
-            elif reward > 0:
-                return reward / reward_max
-            else:
-                return reward
+        # if abs(reward_min) < 1e-6:
+        #     return reward / reward_max
+        # else:
+        #     if reward < 0:
+        #         return -reward / reward_min
+        #     elif reward > 0:
+        #         return reward / reward_max
+        #     else:
+        #         return reward
+        return reward / (reward_max - reward_min)
 
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
