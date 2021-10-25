@@ -277,7 +277,7 @@ def delay_traj_dataset(config):
                 config,
                 suffix=f"{ep}_delayed",
             )
-
+    delay_rewards = np.squeeze(np.concatenate(traj_dataset["delay_rewards"]))
     # specific processing
     if "strategy" in config:
         # delay rewards process strategy
@@ -293,6 +293,23 @@ def delay_traj_dataset(config):
                 traj_dataset = load_reward_by_strategy(
                     config, traj_dataset, plot_traj_idx_list, strategy
                 )
+    # plot reward distribution
+    processed_delay_rewards = np.squeeze(
+        np.concatenate(traj_dataset["delay_rewards"])
+    )
+    raw_rewards = np.squeeze(np.concatenate(traj_dataset["rewards"]))
+    plot_reward_dist(
+        [
+            raw_rewards,
+            delay_rewards[delay_rewards >= 1e-5],
+            processed_delay_rewards,
+        ],
+        ["raw", "delay", "processed_delay"],
+        config,
+        config["strategy"],
+    )
+
+
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
     )
@@ -917,6 +934,32 @@ def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
     plt.savefig(f"{fig_dir}/{fig_name}_{suffix}.png")
+
+
+def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
+    plt.figure()
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    axes = axes.ravel()
+    for idx, ax in enumerate(axes):
+        if idx >= len(data_list):
+            break
+        ax.hist(data_list[idx], color="blue", edgecolor="black", bins=1000)
+        ax.set_xlabel("val")
+        ax.set_ylabel("proportion")
+        ax.set_title(names[idx])
+
+    fig_name = f"delay-mode_{config['delay_mode']}"
+    if config["delay_mode"] == "random":
+        fig_name = f"{fig_name}_delay-min_{config['delay_min']}_delay-max_{config['delay_max']}"
+    elif config["delay_mode"] == "constant":
+        fig_name = f"{fig_name}_delay_{config['delay']}"
+    else:
+        raise NotImplementedError()
+
+    fig_dir = f"{proj_path}/assets/{config['task']}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    plt.savefig(f"{fig_dir}/{fig_name}_distribution_{suffix}.png")
 
 
 if __name__ == "__main__":

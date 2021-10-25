@@ -103,16 +103,16 @@ if __name__ == "__main__":
     args["log_path"] = f"{proj_path}/logs"
 
     if args["delay_mode"] == "none":
-        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-{args['algo_name']}-seed-{args['seed']}"
+        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-{args['algo_name']}"
     if args["delay_mode"] == "constant":
-        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay-{args['delay']}-{args['algo_name']}-seed-{args['seed']}"
+        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay-{args['delay']}-{args['algo_name']}"
     elif args["delay_mode"] == "random":
-        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay_min-{args['delay_min']}-delay_max-{args['delay_max']}-{args['algo_name']}-seed-{args['seed']}"
+        exp_name = f"{args['task']}-delay_mode-{args['delay_mode']}-delay_min-{args['delay_min']}-delay_max-{args['delay_max']}-{args['algo_name']}"
 
     args["exp_name"] = f"{exp_name}-strategy-{args['strategy']}"
     if args["bc_epoch"] != 0:
         args["exp_name"] = f"{args['exp_name']}-bc-{args['bc_epoch']}"
-
+    args["exp_name"] = f"{args['exp_name']}-seed-{args['seed']}"
     logger.info(
         f"Task: {args['task']}, algo: {args['algo_name']}, exp_name: {args['exp_name']}"
     )
