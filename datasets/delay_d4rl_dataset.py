@@ -1,4 +1,3 @@
-import argparse
 import os
 from copy import deepcopy
 
@@ -18,65 +17,13 @@ from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.utils.config import parse_config
 
-from utils.d4rl_tasks import task_list
+from utils.exp_utils import setup_exp_args
 from utils.io_util import proj_path
 
 from datasets.traj_dataset import TrajDataset
 from datasets.qlearning_dataset import qlearning_dataset
 from algos import reward_shaper, reward_decoposer, reward_giver
 from config import shaping_config, decomposer_config, reward_giver_config
-
-
-def argsparser():
-    # Experiment setting
-    parser = argparse.ArgumentParser("Dataset collector for d4rl")
-    parser.add_argument("--seed", help="random seed", type=int, default=2021)
-    parser.add_argument(
-        "--delay_mode",
-        help="delay mode",
-        type=str,
-        default="constant",
-        choices=["constant", "random"],
-    )
-    parser.add_argument(
-        "--delay", help="constant delay steps", type=int, default=20
-    )
-    parser.add_argument(
-        "--delay_min", help="min delay steps", type=int, default=10
-    )
-    parser.add_argument(
-        "--delay_max", help="max delay steps", type=int, default=50
-    )
-    parser.add_argument(
-        "--strategy",
-        help="delay rewards strategy, can be multiple strategies seperated by  `,`",
-        type=str,
-        default="none",
-        # choices=[
-        #     "none",
-        #     "scale",
-        #     "scale_v2",
-        #     "minmax",
-        #     "zscore",
-        #     "episodic_average",
-        #     "episodic_random",
-        #     "episodic_ensemble",
-        #     "interval_average",
-        #     "interval_random",
-        #     "interval_ensemble",
-        #     "transformer_decompose",
-        #     "pg_reshaping",
-        # ],
-    )
-    parser.add_argument(
-        "--task",
-        help="task name",
-        type=str,
-        default="d4rl-walker2d-expert-v0",
-        choices=task_list,
-    )
-
-    return parser.parse_args()
 
 
 def delay_transition_dataset(config):
@@ -410,6 +357,26 @@ def load_reward_by_strategy(
     return_min = np.min(tmp)
     return_mean = np.mean(tmp)
     return_std = np.std(tmp)
+
+    reward_max = np.max(
+        [
+            np.max(traj_dataset["delay_rewards"][i])
+            for i in range(len(traj_dataset["returns"]))
+        ]
+    )
+    reward_min = np.min(
+        [
+            np.min(traj_dataset["delay_rewards"][i])
+            for i in range(len(traj_dataset["returns"]))
+        ]
+    )
+    reward_mean = np.mean([np.concatenate(traj_dataset["delay_rewards"])])
+    reward_std = np.std([np.concatenate(traj_dataset["delay_rewards"])])
+
+    logger.info(
+        f"Delay reward min: {reward_min}, max: {reward_max}, mean: {reward_mean}, std: {reward_std}"
+    )
+
     # preprocessing
     # (1) for `transformer_decompose` and `pg_shaping`, train the model first;
     # (2) for `episodic_ensemble` and `interval_ensemble`, process by corresponoding `average` strategy first.
@@ -503,22 +470,6 @@ def load_reward_by_strategy(
 
         logger.info(f"Training reward giver model end...")
 
-    reward_max = np.max(
-        [
-            np.max(traj_dataset["delay_rewards"][i])
-            for i in range(len(traj_dataset["returns"]))
-        ]
-    )
-    reward_min = np.min(
-        [
-            np.min(traj_dataset["delay_rewards"][i])
-            for i in range(len(traj_dataset["returns"]))
-        ]
-    )
-    # reward_mean = np.mean(tmp2)
-    # reward_std = np.std(tmp2)
-    logger.info(f"Delay reward min: {reward_min}, max: {reward_max}")
-
     def process_scale(reward):
         if abs(reward_min) < 1e-6:
             return reward / reward_max
@@ -529,9 +480,6 @@ def load_reward_by_strategy(
                 return reward / reward_max
             else:
                 return reward
-
-    def process_scale_v2(reward):
-        return reward / (reward_max - reward_min)
 
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
@@ -553,12 +501,18 @@ def load_reward_by_strategy(
                 ]
             )
         elif strategy == "scale_v2":
-            traj_delay_rewards = np.array(
-                [
-                    process_scale_v2(traj_delay_rewards[i])
-                    for i in range(traj_length)
-                ]
+            traj_delay_rewards = traj_delay_rewards / (reward_max - reward_min)
+
+        elif strategy == "scale_minmax":
+            traj_delay_rewards = (traj_delay_rewards - reward_min) / (
+                reward_max - reward_min
             )
+
+        elif strategy == "scale_zscore":
+            traj_delay_rewards = (
+                traj_delay_rewards - reward_mean
+            ) / reward_std
+
         elif strategy == "episodic_average":
             traj_delay_rewards = np.ones_like(
                 traj_dataset["delay_rewards"][i]
@@ -876,11 +830,11 @@ def load_reward_by_strategy(
                 [
                     # traj_dataset["delay_rewards"][i],
                     traj_delay_rewards,
-                    # traj_dataset["rewards"][i],
+                    traj_dataset["rewards"][i],
                     # traj_dataset["delay_rewards"][i],
                     # traj_dataset["returns"][i],
                 ],
-                ["strategy"],
+                ["strategy", "raw"],
                 # ["delay", "strategy"],
                 # ["raw", "delay", "return"],
                 config,
@@ -928,21 +882,13 @@ def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
         plt.plot(range(len(data)), data, label=name)
     plt.xlabel("t")
     plt.ylabel("rew")
-    plt.title(f"{config['task']}-delay_mode_{config['delay_mode']}")
+    plt.title(f"{config['task']}-{config['delay_tag']}")
     plt.legend()
-
-    fig_name = f"delay-mode_{config['delay_mode']}"
-    if config["delay_mode"] == "random":
-        fig_name = f"{fig_name}_delay-min_{config['delay_min']}_delay-max_{config['delay_max']}"
-    elif config["delay_mode"] == "constant":
-        fig_name = f"{fig_name}_delay_{config['delay']}"
-    else:
-        raise NotImplementedError()
 
     fig_dir = f"{proj_path}/assets/{config['task']}"
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{fig_name}_{suffix}.png")
+    plt.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
 
 
 def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
@@ -957,27 +903,14 @@ def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
         ax.set_ylabel("proportion")
         ax.set_title(names[idx])
 
-    fig_name = f"delay-mode_{config['delay_mode']}"
-    if config["delay_mode"] == "random":
-        fig_name = f"{fig_name}_delay-min_{config['delay_min']}_delay-max_{config['delay_max']}"
-    elif config["delay_mode"] == "constant":
-        fig_name = f"{fig_name}_delay_{config['delay']}"
-    else:
-        raise NotImplementedError()
-
     fig_dir = f"{proj_path}/assets/{config['task']}"
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{fig_name}_distribution_{suffix}.png")
+    plt.savefig(f"{fig_dir}/{config['delay_tag']}_distribution_{suffix}.png")
 
 
 if __name__ == "__main__":
-    args = argsparser()
-    # if not os.path.exists(args.dataset_dir):
-    #     os.makedirs(args.dataset_dir)
-
-    config = vars(args)
-    config["log_path"] = f"{proj_path}/logs"
+    config = setup_exp_args()
     """extract transition buffer"""
     # load_d4rl_buffer(config)
 
