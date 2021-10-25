@@ -55,6 +55,7 @@ def argsparser():
         # choices=[
         #     "none",
         #     "scale",
+        #     "scale_v2",
         #     "minmax",
         #     "zscore",
         #     "episodic_average",
@@ -309,7 +310,6 @@ def delay_traj_dataset(config):
     #     config["strategy"],
     # )
 
-
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
     )
@@ -520,15 +520,17 @@ def load_reward_by_strategy(
     logger.info(f"Delay reward min: {reward_min}, max: {reward_max}")
 
     def process_scale(reward):
-        # if abs(reward_min) < 1e-6:
-        #     return reward / reward_max
-        # else:
-        #     if reward < 0:
-        #         return -reward / reward_min
-        #     elif reward > 0:
-        #         return reward / reward_max
-        #     else:
-        #         return reward
+        if abs(reward_min) < 1e-6:
+            return reward / reward_max
+        else:
+            if reward < 0:
+                return -reward / reward_min
+            elif reward > 0:
+                return reward / reward_max
+            else:
+                return reward
+
+    def process_scale_v2(reward):
         return reward / (reward_max - reward_min)
 
     for i, traj_length in enumerate(traj_dataset["length"]):
@@ -550,7 +552,13 @@ def load_reward_by_strategy(
                     for i in range(traj_length)
                 ]
             )
-
+        elif strategy == "scale_v2":
+            traj_delay_rewards = np.array(
+                [
+                    process_scale_v2(traj_delay_rewards[i])
+                    for i in range(traj_length)
+                ]
+            )
         elif strategy == "episodic_average":
             traj_delay_rewards = np.ones_like(
                 traj_dataset["delay_rewards"][i]
