@@ -2,7 +2,11 @@
 
 ## Paper Manuscripts
 
-Overleaf Address:
+Manuscript link:
+
+[Offline RL for delay rewards](https://clammy-feels-e03.notion.site/Offline-RL-for-delay-rewards-1f815340bb0b4937862127180b23590b)
+
+Overleaf link:
 
 [RL_Offline_Delay_Rewards](https://www.overleaf.com/project/617812aa8bb2ee6d5adccf00)
 
