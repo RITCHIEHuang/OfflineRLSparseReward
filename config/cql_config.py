@@ -8,7 +8,7 @@ task_train_num = 99
 seed = 42
 
 device = (
-    "cuda" + ":" + str(select_free_cuda())
+    "cuda"
     if torch.cuda.is_available()
     else "cpu"
 )

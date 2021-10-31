@@ -15,14 +15,6 @@ def argsparser():
     # Experiment setting
     parser = argparse.ArgumentParser("Experiment runner")
     parser.add_argument(
-        "--algo_name",
-        help="algorithm",
-        type=str,
-        default="bc",
-        choices=["bcq", "cql", "mopo"],
-    )
-    parser.add_argument("--seed", help="random seed", type=int, default=2021)
-    parser.add_argument(
         "--task_id",
         help="task id",
         type=int,
@@ -43,13 +35,13 @@ def get_gpu_count():
         line = p.stdout.readline()
         line = line.strip()
         if line:
+            out = int(line.decode("utf-8"))
             print("Subprogram output: [{}]".format(line))
-            out = line.decode("utf-8")
-    return int(out)
+    return out
 
 
 NUM_GPU = get_gpu_count()
-print("num_gpu: {NUM_GPU} gpus.")
+print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 # algo = args.algo_name
@@ -59,8 +51,8 @@ algos = ["mopo"]
 
 # delay_modes = ["constant", "random"]
 delay_modes = ["constant"]
-
-delays = [100]
+seeds = [10, 100, 1000]
+delays = [20]
 
 strategies = ["interval_average"]
 # strategies = [
@@ -79,30 +71,30 @@ strategies = ["interval_average"]
 
 
 task = task_list[args.task_id]
-seed = args.seed
 gpu_id = 0
 
-print(f"Train task: {task}, seed: {seed}")
+print(f"Train task: {task}")
 process_buffer = []
 
 for algo in algos:
     for delay_mode in delay_modes:
         for delay in delays:
             for strategy in strategies:
-                param_list = [
-                    gpu_id % NUM_GPU,
-                    algo,
-                    task,
-                    delay_mode,
-                    delay,
-                    seed,
-                    strategy,
-                ]
-                str_command = template.format(*param_list)
+                for seed in seeds:
+                    param_list = [
+                        gpu_id % NUM_GPU,
+                        algo,
+                        task,
+                        delay_mode,
+                        delay,
+                        seed,
+                        strategy,
+                    ]
+                    str_command = template.format(*param_list)
 
-                process = subprocess.Popen(str_command, shell=True)
-                process_buffer.append(process)
+                    process = subprocess.Popen(str_command, shell=True)
+                    process_buffer.append(process)
 
-                gpu_id += 1
+                    gpu_id += 1
 
 output = [p.wait() for p in process_buffer]

@@ -7,11 +7,7 @@ task_train_num = 99
 
 seed = 42
 
-device = (
-    "cuda" + ":" + str(select_free_cuda())
-    if torch.cuda.is_available()
-    else "cpu"
-)
+device = "cuda" if torch.cuda.is_available() else "cpu"
 obs_shape = None
 act_shape = None
 max_action = None
