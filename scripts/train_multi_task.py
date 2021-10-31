@@ -15,6 +15,12 @@ def argsparser():
     # Experiment setting
     parser = argparse.ArgumentParser("Experiment runner")
     parser.add_argument(
+        "--strategy",
+        help="delay rewards strategy, can be multiple strategies seperated by  `,`",
+        type=str,
+        default="none",
+    )
+    parser.add_argument(
         "--task_id",
         help="task id",
         type=int,
@@ -54,7 +60,8 @@ delay_modes = ["constant"]
 seeds = [10, 100, 1000]
 delays = [20]
 
-strategies = ["interval_average"]
+strategies = [args.strategy]
+# strategies = ["interval_average"]
 # strategies = [
 #     "none",
 #     "minmax",
