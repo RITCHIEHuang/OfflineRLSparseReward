@@ -17,6 +17,8 @@ setup(
         "matplotlib",
         "absl-py",
         "gin-config",
+        "wandb",
+        "transformers"
         # "scipy",
         # "neorl @ git+https://agit.ai/Polixir/neorl.git",
         # "OfflineRL @ git+https://agit.ai/Polixir/OfflineRL.git@master#egg=OfflineRL",
