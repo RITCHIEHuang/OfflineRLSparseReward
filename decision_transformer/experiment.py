@@ -273,7 +273,7 @@ def experiment(
                 returns.append(ret)
                 lengths.append(length)
                 d4rl_scores.append(
-                    d4rl_score(ret, f"{env}-{dataset}-v2", length)
+                    d4rl_score(f"{env}-{dataset}-v2", ret, length)
                 )
             return {
                 f"target_{target_rew}_return_mean": np.mean(returns),

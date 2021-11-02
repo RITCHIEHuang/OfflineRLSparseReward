@@ -1,5 +1,8 @@
 import argparse
 
+from datetime import datetime
+
+import wandb
 from loguru import logger
 
 from utils.io_util import proj_path
@@ -65,6 +68,7 @@ def argsparser():
         default="walker2d-expert-v0",
         choices=task_list,
     )
+    parser.add_argument("--log_to_wandb", type=bool, default=True)
 
     return parser.parse_args()
 
@@ -97,4 +101,15 @@ def setup_exp_args():
     logger.info(
         f"Task: {args['task']}, algo: {args['algo_name']}, delay_tag: {args['delay_tag']}"
     )
+    args[
+        "exp_name"
+    ] = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')[:-3]}"
+    # init wandb
+    if args["log_to_wandb"]:
+        wandb.init(
+            name=args["exp_name"],
+            group=args["task"],
+            project="OfflineRL_DelayRewards",
+            config=args,
+        )
     return args

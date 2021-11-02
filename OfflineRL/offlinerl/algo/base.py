@@ -1,9 +1,9 @@
 import os
 import uuid
 import json
-from datetime import datetime
 from abc import ABC, abstractmethod
 
+import wandb
 import torch
 from collections import OrderedDict
 from loguru import logger
@@ -17,13 +17,14 @@ class BaseAlgo(ABC):
         if "exp_name" not in args.keys():
             exp_name = str(uuid.uuid1()).replace("-", "")
         else:
-            exp_name = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')[:-3]}"
+            exp_name = args["exp_name"]
 
         if "log_path" in args.keys():
             repo = args["log_path"]
         else:
             repo = None
 
+        self.log_to_wandb = args["log_to_wandb"]
         self.repo, self.exp_logger = init_custom_exp_logger(repo, exp_name)
 
         try:
@@ -50,6 +51,10 @@ class BaseAlgo(ABC):
 
     def log_res(self, epoch, result):
         logger.info("Epoch : {}", epoch)
+
+        if self.log_to_wandb:
+            wandb.log(result)
+
         for k, v in result.items():
             logger.info("{} : {}", k, v)
             if self.aim_exp_logger:
