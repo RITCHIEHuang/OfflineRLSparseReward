@@ -239,7 +239,7 @@ def experiment(
 
     def eval_episodes(target_rew):
         def fn(model):
-            returns, lengths = [], [], []
+            returns, lengths = [], []
             d4rl_scores = []
             for _ in range(num_eval_episodes):
                 with torch.no_grad():
