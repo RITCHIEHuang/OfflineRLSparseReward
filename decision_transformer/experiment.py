@@ -19,6 +19,8 @@ from decision_transformer.models.mlp_bc import MLPBCModel
 from decision_transformer.training.act_trainer import ActTrainer
 from decision_transformer.training.seq_trainer import SequenceTrainer
 
+from offlinerl.evaluation.d4rl import d4rl_score
+
 
 def discount_cumsum(x, gamma):
     discount_cumsum = np.zeros_like(x)
@@ -80,11 +82,11 @@ def experiment(
 
     # save all path information into separate lists
     mode = variant.get("mode", "normal")
-    delay_freq = variant.get("delay", 1)
     states, traj_lens, returns = [], [], []
     for path in trajectories:
         if mode == "delayed":  # delayed
             normal_rewards = path["rewards"]
+            delay_freq = variant.get("delay", len(path["rewards"]))
 
             path["rewards"] *= 0.0
             last_delay_idx = 0
@@ -235,7 +237,8 @@ def experiment(
 
     def eval_episodes(target_rew):
         def fn(model):
-            returns, lengths = [], []
+            returns, lengths = [], [], []
+            d4rl_scores = []
             for _ in range(num_eval_episodes):
                 with torch.no_grad():
                     if model_type == "dt":
@@ -267,11 +270,16 @@ def experiment(
                         )
                 returns.append(ret)
                 lengths.append(length)
+                d4rl_scores.append(
+                    d4rl_score(ret, f"{env}-{dataset}-v2", length)
+                )
             return {
                 f"target_{target_rew}_return_mean": np.mean(returns),
                 f"target_{target_rew}_return_std": np.std(returns),
                 f"target_{target_rew}_length_mean": np.mean(lengths),
                 f"target_{target_rew}_length_std": np.std(lengths),
+                f"target_{target_rew}_d4rl_score_mean": np.mean(d4rl_scores),
+                f"target_{target_rew}_d4rl_score_std": np.std(d4rl_scores),
             }
 
         return fn
@@ -365,7 +373,7 @@ if __name__ == "__main__":
         "--dataset", type=str, default="medium"
     )  # medium, medium-replay, medium-expert, expert
     parser.add_argument(
-        "--mode", type=str, default="delay"
+        "--mode", type=str, default="delayed"
     )  # normal for standard setting, delayed for sparse
     parser.add_argument("--K", type=int, default=20)
     parser.add_argument("--pct_traj", type=float, default=1.0)

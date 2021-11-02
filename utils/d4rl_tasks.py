@@ -20,4 +20,5 @@ task_list = [
     "ant-expert-v0",
     "ant-medium-replay-v0",
     "ant-medium-expert-v0",
+    "antmaze-medium-play-v0"
 ]
