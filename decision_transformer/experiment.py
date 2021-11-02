@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import gym
 import numpy as np
 import torch
@@ -85,7 +87,7 @@ def experiment(
     states, traj_lens, returns = [], [], []
     for path in trajectories:
         if mode == "delayed":  # delayed
-            normal_rewards = path["rewards"]
+            normal_rewards = deepcopy(path["rewards"])
             delay_freq = variant.get("delay", len(path["rewards"]))
 
             path["rewards"] *= 0.0
