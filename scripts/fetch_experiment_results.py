@@ -11,6 +11,7 @@ from loguru import logger
 
 from utils.io_util import proj_path
 
+debug = False
 log_path = f"{proj_path}/logs"
 
 result_file_path = f"{proj_path}/results.csv"
@@ -40,7 +41,11 @@ def fetch_experiment_results():
 
         with open(exp_hparam_file, "r") as f:
             exp_hparam = json.load(f)
-            logger.info(f"Load exp hparam: {exp_hparam}")
+            if "delay_mode" not in exp_hparam:
+                continue
+            if debug:
+                logger.debug(f"{exp_log_dir} Load exp hparam: {exp_hparam}")
+
             task = exp_hparam["task"]
             if task.startswith("d4rl"):
                 task = task[5:]
@@ -69,7 +74,7 @@ def fetch_experiment_results():
         # load metric json file
         with open(exp_metric_file, "rb") as f:
             exp_metrics = json.load(f)
-            for k, v in exp_metrics:
+            for k, v in exp_metrics.items():
                 iteration = int(k)
                 d4rl_score = v["D4rl_Score"]
 
@@ -96,19 +101,28 @@ def fetch_experiment_results():
 
     for k, v in exp_variant_mapping.items():
         iter_scores = [
-            (i_iter, np.mean([it["D4rl_Score"] for it in iter_res]))
+            (
+                i_iter,
+                np.mean([it["D4rl_Score"] for it in iter_res]),
+                [it["Seed"] for it in iter_res],
+                np.std([it["D4rl_Score"] for it in iter_res]),
+            )
             for i_iter, iter_res in v.items()
-            if len(iter_res) >= 3
         ]
 
         agg_item = deepcopy(v[0][0])
         sorted_iter_scores = sorted(
             iter_scores, key=lambda v: v[1], reverse=True
         )
+        if debug:
+            logger.debug(f"{k}, {len(iter_scores)}")
+
         agg_item["Iteration"] = sorted_iter_scores[0][0]
         agg_item["D4rl_Score"] = sorted_iter_scores[0][1]
+        agg_item["Seed"] = sorted_iter_scores[0][2]
+        agg_item["D4rl_Score_stddev"] = sorted_iter_scores[0][3]
 
-        del agg_item["Seed"]
+        logger.info(f"{k} aggregating results finish!")
 
         agg_fields = list(agg_item.keys())
         with open(agg_result_file_path, "a+") as f:

@@ -1,0 +1,95 @@
+Dataset Type,Environment,Delay Mode,Delay,Algo,Strategy,Seed,Iteration,D4rl_Score
+medium,hopper,constant,20,mopo,interval_ensemble,"[1000, 10, 100]",0,43.947711194794806
+random,hopper,constant,20,mopo,interval_average,"[10, 1000, 100]",57,9.11076296645239
+medium-replay,hopper,constant,20,mopo,interval_average,"[10, 100, 1000]",1466,89.80172343482616
+medium,hopper,constant,50,mopo,none,[2021],757,94.35920741556929
+medium,walker2d,constant,20,mopo,interval_average,"[1000, 100, 10]",672,72.25492374084634
+expert,hopper,constant,20,mopo,interval_average,"[10, 100, 1000]",0,13.505476624412031
+medium,halfcheetah,constant,20,mopo,interval_average,"[1000, 10, 100]",1250,48.33584726238674
+medium-replay,hopper,constant,20,mopo,interval_ensemble,"[100, 10, 1000]",1343,96.94502009739396
+medium-expert,halfcheetah,constant,20,mopo,interval_ensemble,"[10, 1000, 100]",1426,61.478291343090575
+random,halfcheetah,constant,20,mopo,interval_average,"[100, 1000, 10]",1348,25.265053416756263
+medium-replay,walker2d,constant,100,mopo,"pg_reshaping,scale",[2021],875,53.029583982344384
+medium,hopper,constant,50,mopo,"scale,pg_reshaping,scale",[2021],0,38.92023621310099
+medium,hopper,constant,20,mopo,interval_average,"[1000, 100, 10]",0,19.022007528623547
+medium-expert,hopper,constant,20,mopo,interval_average,"[100, 10, 1000]",1069,22.066014997643567
+medium-expert,walker2d,constant,20,mopo,interval_average,"[10, 1000, 100]",1426,99.0441223013582
+medium-replay,walker2d,constant,20,mopo,interval_average,"[100, 10, 1000]",1263,59.10251886306548
+expert,hopper,constant,20,mopo,interval_ensemble,"[1000, 10, 100]",0,15.602571522992037
+medium-replay,halfcheetah,constant,50,mopo,"interval_average,scale","[2021, 2021]",1425,43.54162964397274
+random,hopper,constant,20,mopo,interval_ensemble,"[10, 100, 1000]",160,8.724914259829816
+medium-replay,hopper,constant,50,mopo,"scale,pg_reshaping,scale",[2021],615,99.67419776815721
+medium-replay,halfcheetah,constant,50,mopo,"interval_average,scale_zscore",[2021],1204,49.43541210694925
+medium,halfcheetah,constant,50,mopo,"scale,interval_average,scale",[2021],176,39.3308851799814
+expert,halfcheetah,constant,20,mopo,interval_ensemble,"[1000, 100, 10]",234,19.661563964260584
+expert,halfcheetah,constant,20,mopo,interval_average,"[1000, 10, 100]",226,23.011053103515778
+medium,halfcheetah,constant,50,mopo,"interval_average,scale_zscore",[2021],1349,42.51063830211423
+medium-expert,hopper,constant,20,mopo,interval_ensemble,"[10, 100, 1000]",920,21.066747137179945
+medium-replay,hopper,constant,50,mopo,"scale,interval_average,scale",[2021],886,98.17624474945266
+medium-replay,hopper,constant,50,mopo,interval_average,[2021],210,100.3508465280762
+medium-replay,halfcheetah,constant,50,mopo,"scale,interval_average",[2021],9,7.820877207677132
+medium-replay,walker2d,constant,20,mopo,interval_ensemble,"[100, 1000, 10]",1084,57.26195388159115
+medium-replay,halfcheetah,constant,50,mopo,interval_random,"[2021, 2021]",332,17.1413504797435
+random,walker2d,constant,20,mopo,interval_average,"[1000, 10, 100]",5,12.628887204674667
+medium-replay,hopper,constant,50,mopo,none,[2021],1008,54.99826239788143
+medium-expert,walker2d,constant,20,mopo,interval_ensemble,"[1000, 10, 100]",1330,91.99955173973228
+random,walker2d,constant,20,mopo,interval_ensemble,"[10, 1000, 100]",974,7.104249661919643
+medium-replay,walker2d,constant,100,mopo,"scale,interval_average",[2021],999,52.474716485745
+medium,hopper,constant,50,mopo,interval_ensemble,[2021],80,30.692501425661124
+random,halfcheetah,constant,20,mopo,interval_ensemble,"[1000, 100, 10]",627,4.833569798735184
+medium,halfcheetah,constant,20,mopo,interval_ensemble,"[100, 1000, 10]",1375,47.72842185048362
+medium-replay,hopper,constant,50,mopo,scale,[2021],767,100.8407785641626
+medium-replay,halfcheetah,constant,20,mopo,interval_ensemble,"[100, 1000, 10]",1446,54.88429985849542
+medium,halfcheetah,constant,50,mopo,"pg_reshaping,scale",[2021],119,37.08139855734067
+medium-replay,walker2d,constant,100,mopo,"interval_average,scale_zscore",[2021],1151,69.88940691739876
+medium-replay,walker2d,constant,100,mopo,none,[2021],1017,25.2199894419937
+medium-replay,walker2d,constant,100,mopo,scale,[2021],1040,49.724213072704856
+medium-replay,halfcheetah,constant,50,mopo,scale_v2,[2021],0,6.971606339237726
+medium-replay,walker2d,constant,100,mopo,"scale,pg_reshaping",[2021],1498,50.8189616415498
+medium-replay,walker2d,constant,100,mopo,"scale,interval_average,scale",[2021],117,51.95340359123324
+medium-replay,halfcheetah,constant,50,mopo,none,[2021],0,5.7384828675255255
+medium-replay,hopper,constant,50,mopo,interval_ensemble,[2021],893,99.88823620032998
+medium,halfcheetah,constant,50,mopo,interval_ensemble,[2021],672,44.25440274747641
+medium,halfcheetah,constant,50,mopo,scale_v2,[2021],219,38.82743461692911
+medium-replay,walker2d,constant,100,mopo,interval_average,[2021],997,69.40579406663586
+expert,walker2d,constant,20,mopo,interval_ensemble,"[10, 100, 1000]",959,70.27137114206226
+medium-replay,walker2d,constant,100,mopo,interval_ensemble,[2021],760,71.41475764602154
+expert,walker2d,constant,20,mopo,interval_average,"[1000, 10, 100]",1458,97.26614815022634
+medium-replay,halfcheetah,constant,50,mopo,interval_average,[2021],538,54.02074638899501
+medium-replay,hopper,constant,50,mopo,"scale,pg_reshaping",[2021],1246,100.31921573259075
+medium,hopper,constant,50,mopo,scale,[2021],0,44.48755807992219
+medium,hopper,constant,50,mopo,"pg_reshaping,scale",[2021],1327,33.65239322317473
+medium-replay,halfcheetah,constant,20,mopo,interval_average,"[10, 1000, 100]",1150,54.50587648432307
+medium-replay,halfcheetah,constant,50,mopo,"scale,interval_average,scale",[2021],1364,40.42744749155769
+medium-replay,hopper,constant,50,mopo,"interval_average,scale_zscore",[2021],1090,99.89703793539599
+medium-replay,walker2d,constant,100,mopo,scale_v2,[2021],1020,51.13383930686928
+medium,hopper,constant,50,mopo,"interval_average,scale",[2021],1331,53.756140215999
+medium,hopper,constant,50,mopo,interval_random,[2021],362,95.04833881440986
+medium-replay,hopper,constant,50,mopo,"pg_reshaping,scale",[2021],1175,102.42774487871982
+medium,walker2d,constant,20,mopo,interval_ensemble,"[10, 1000, 100]",591,68.78754695164649
+medium,hopper,constant,50,mopo,"scale,pg_reshaping",[2021],708,95.25493427963103
+medium,hopper,constant,50,mopo,"scale,interval_average",[2021],0,40.48372969995397
+medium,halfcheetah,constant,50,mopo,"scale,pg_reshaping",[2021],1294,37.114204946205085
+medium-replay,halfcheetah,constant,50,mopo,interval_ensemble,[2021],1253,58.470074120550045
+medium,halfcheetah,constant,50,mopo,interval_random,[2021],215,35.890804576389854
+medium-replay,halfcheetah,constant,50,mopo,"pg_reshaping,scale",[2021],0,6.866322329991556
+medium,halfcheetah,constant,50,mopo,interval_average,[2021],1414,46.143356757303906
+medium,halfcheetah,constant,50,mopo,"scale,interval_average",[2021],226,35.60121651588008
+medium,hopper,constant,50,mopo,scale_v2,[2021],0,42.51728967100903
+medium-expert,halfcheetah,constant,20,mopo,interval_average,"[1000, 100, 10]",1163,73.5787789608887
+medium-replay,halfcheetah,constant,50,mopo,"scale,pg_reshaping",[2021],0,4.970658957390884
+medium,halfcheetah,constant,50,mopo,scale,[2021],1008,38.896019610600334
+medium-replay,walker2d,constant,100,mopo,interval_random,[2021],1196,44.58254522781813
+medium,hopper,constant,50,mopo,interval_average,[2021],0,29.764776193343835
+medium,hopper,constant,50,mopo,"scale,interval_average,scale",[2021],1304,67.26968140657027
+medium,halfcheetah,constant,50,mopo,none,[2021],216,8.366931394755014
+medium-replay,walker2d,constant,100,mopo,"interval_average,scale",[2021],384,53.43619808954282
+medium,halfcheetah,constant,50,mopo,"scale,pg_reshaping,scale",[2021],191,36.891873135571764
+medium-replay,halfcheetah,constant,50,mopo,"scale,pg_reshaping,scale",[2021],0,7.694353032159872
+medium-replay,hopper,constant,50,mopo,"scale,interval_average",[2021],818,95.856823631557
+medium,halfcheetah,constant,50,mopo,"interval_average,scale",[2021],1271,42.6613563128269
+medium,hopper,constant,50,mopo,"interval_average,scale_zscore",[2021],0,48.435759403327005
+medium-replay,walker2d,constant,100,mopo,"scale,pg_reshaping,scale",[2021],917,53.161609689373414
+medium-replay,halfcheetah,constant,50,mopo,scale,[2021],721,28.051497235098616
+medium-replay,hopper,constant,50,mopo,"interval_average,scale",[2021],1093,100.67258439727591
+medium-replay,hopper,constant,50,mopo,scale_v2,[2021],767,100.86408836995608
