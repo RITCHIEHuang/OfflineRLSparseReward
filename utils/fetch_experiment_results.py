@@ -21,15 +21,10 @@ if os.path.exists(result_file_path):
 if os.path.exists(agg_result_file_path):
     os.remove(agg_result_file_path)
 
-# max_iteration for experiment
-experiment_iter_mapping = {
-    "halfcheetah-meidum-v0-delay_mode-constant-delay-50-mopo-strategy-interval_average": 1500
-}
-
 
 def fetch_experiment_results():
     exp_logs_list = os.listdir(log_path)
-    exp_variant_mapping = defaultdict(list)
+    exp_variant_mapping = defaultdict(lambda: defaultdict(list))
     flag = True
     flag2 = True
     for exp_log_dir in tqdm(exp_logs_list):
@@ -57,22 +52,7 @@ def fetch_experiment_results():
             elif "shaping_method" in exp_hparam:
                 strategy = exp_hparam["shaping_method"]
 
-        iteration = None
-        if exp_name in experiment_iter_mapping:
-            iteration = experiment_iter_mapping[exp_name]
-
-        with open(exp_metric_file, "rb") as f:
-            exp_metric = json.load(f)
-            d4rl_score = -float("-inf")
-            if str(iteration) in exp_metric:
-                exp_metric = exp_metric[str(iteration)]
-            else:
-                # default the last iteration
-                exp_metric = exp_metric[sorted(exp_metric.keys())[-1]]
-            d4rl_score = exp_metric["D4rl_Score"]
-
         task_split_list = task.split("-")
-        print(task_split_list)
         variant_result_info = {
             # "exp_log_dir": exp_log_dir,
             # "task": task,
@@ -86,25 +66,47 @@ def fetch_experiment_results():
             "Seed": exp_hparam["seed"],
         }
 
-        result_info = deepcopy(variant_result_info)
-        result_info.update({"D4rl_Score": d4rl_score})
+        # load metric json file
+        with open(exp_metric_file, "rb") as f:
+            exp_metrics = json.load(f)
+            for k, v in exp_metrics:
+                iteration = int(k)
+                d4rl_score = v["D4rl_Score"]
 
-        identity_tag = f"{variant_result_info['Environment']}-{variant_result_info['Dataset Type']}-{variant_result_info['Delay Mode']}-{variant_result_info['Delay']}-{variant_result_info['Algo']}-{variant_result_info['Strategy']}"
-        exp_variant_mapping[identity_tag].append(result_info)
+                item_result_info = deepcopy(variant_result_info)
+                item_result_info.update(
+                    {"Iteration": iteration, "D4rl_Score": d4rl_score}
+                )
 
-        fields = list(result_info.keys())
-        with open(result_file_path, "a+") as f:
-            writer = csv.DictWriter(f, fieldnames=fields)
+                exp_identity_tag = f"{variant_result_info['Environment']}-{variant_result_info['Dataset Type']}-{variant_result_info['Delay Mode']}-{variant_result_info['Delay']}-{variant_result_info['Algo']}-{variant_result_info['Strategy']}"
 
-            if flag:
-                writer.writeheader()
-                flag = False
+                exp_variant_mapping[exp_identity_tag][iteration].append(
+                    item_result_info
+                )
 
-            writer.writerow(result_info)
+                fields = list(item_result_info.keys())
+                with open(result_file_path, "a+") as f:
+                    writer = csv.DictWriter(f, fieldnames=fields)
+
+                    if flag:
+                        writer.writeheader()
+                        flag = False
+
+                    writer.writerow(item_result_info)
 
     for k, v in exp_variant_mapping.items():
-        agg_item = deepcopy(v[0])
-        agg_item["D4rl_Score"] = np.mean([item["D4rl_Score"] for item in v])
+        iter_scores = [
+            (i_iter, np.mean([it["D4rl_Score"] for it in iter_res]))
+            for i_iter, iter_res in v.items()
+            if len(iter_res) >= 3
+        ]
+
+        agg_item = deepcopy(v[0][0])
+        sorted_iter_scores = sorted(
+            iter_scores, key=lambda v: v[1], reverse=True
+        )
+        agg_item["Iteration"] = sorted_iter_scores[0][0]
+        agg_item["D4rl_Score"] = sorted_iter_scores[0][1]
 
         del agg_item["Seed"]
 
