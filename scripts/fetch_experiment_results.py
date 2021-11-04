@@ -117,10 +117,11 @@ def fetch_experiment_results():
         if debug:
             logger.debug(f"{k}, {len(iter_scores)}")
 
-        agg_item["Iteration"] = sorted_iter_scores[0][0]
-        agg_item["D4rl_Score"] = sorted_iter_scores[0][1]
-        agg_item["Seed"] = sorted_iter_scores[0][2]
-        agg_item["D4rl_Score_stddev"] = sorted_iter_scores[0][3]
+        selected_item = sorted_iter_scores[0]
+        agg_item["Iteration"] = selected_item[0]
+        agg_item["D4rl_Score"] = round(selected_item[1], 1)
+        agg_item["Seed"] = selected_item[2]
+        agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
 
         logger.info(f"{k} aggregating results finish!")
 
