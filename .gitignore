@@ -1,13 +1,12 @@
 *__pycache__/
 *DS_Store
 *.egg-info/
-datasets/checkpoint/*
 *logs
 *tb_logs
 *assets
 *tune_results
 datasets/dataset/*
-!datasets/dataset/Walker2d-v3_expert_100.h5
+datasets/checkpoint/*
 # d4rl/
 # neorl/
 d3rlpy/
@@ -15,3 +14,9 @@ d3rlpy/
 decision_transformer/data
 decision_transformer/wandb
 results.csv
+
+paper/RL_Offline_Delay_Rewards/*
+!paper/RL_Offline_Delay_Rewards/*.tex
+!paper/RL_Offline_Delay_Rewards/*.bib
+!paper/RL_Offline_Delay_Rewards/assets
+!paper/RL_Offline_Delay_Rewards/main.pdf
