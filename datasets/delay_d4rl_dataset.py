@@ -1,11 +1,9 @@
-import os
 from copy import deepcopy
 
 import torch
 import gym
 import numpy as np
 from scipy.special import softmax
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 from loguru import logger
 
@@ -18,7 +16,7 @@ from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.utils.config import parse_config
 
 from utils.exp_utils import setup_exp_args
-from utils.io_util import proj_path
+from utils.plot_utils import plot_ep_reward, plot_reward_dist
 
 from datasets.traj_dataset import TrajDataset
 from datasets.qlearning_dataset import qlearning_dataset
@@ -876,41 +874,10 @@ def load_d4rl_traj_buffer(config):
     return buffer
 
 
-def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
-    plt.figure()
-    for data, name in zip(data_list, names):
-        plt.plot(range(len(data)), data, label=name)
-    plt.xlabel("t")
-    plt.ylabel("rew")
-    plt.title(f"{config['task']}-{config['delay_tag']}")
-    plt.legend()
-
-    fig_dir = f"{proj_path}/assets/{config['task']}"
-    if not os.path.exists(fig_dir):
-        os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
-
-
-def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
-    plt.figure()
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-    axes = axes.ravel()
-    for idx, ax in enumerate(axes):
-        if idx >= len(data_list):
-            break
-        ax.hist(data_list[idx], color="blue", edgecolor="black", bins=1000)
-        ax.set_xlabel("val")
-        ax.set_ylabel("proportion")
-        ax.set_title(names[idx])
-
-    fig_dir = f"{proj_path}/assets/{config['task']}"
-    if not os.path.exists(fig_dir):
-        os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{config['delay_tag']}_distribution_{suffix}.png")
-
-
 if __name__ == "__main__":
     config = setup_exp_args()
+    if config["log_to_wandb"]:
+        config["log_to_wandb"] = False
     """extract transition buffer"""
     # load_d4rl_buffer(config)
 
