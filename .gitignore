@@ -13,5 +13,5 @@ datasets/dataset/*
 d3rlpy/
 # OfflineRL/
 decision_transformer/data
-decision_transformer/wandb
+*/wandb
 results.csv
