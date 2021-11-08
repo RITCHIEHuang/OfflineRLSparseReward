@@ -15,6 +15,9 @@ def argsparser():
     # Experiment setting
     parser = argparse.ArgumentParser("Experiment runner")
     parser.add_argument(
+        "--algo_name", help="algorithm", type=str, default="cql"
+    )
+    parser.add_argument(
         "--strategy",
         help="delay rewards strategy, can be multiple strategies seperated by  `,`",
         type=str,
@@ -50,9 +53,9 @@ NUM_GPU = get_gpu_count()
 print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
-# algo = args.algo_name
+algos = [args.algo_name]
 
-algos = ["mopo"]
+# algos = ["mopo"]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]

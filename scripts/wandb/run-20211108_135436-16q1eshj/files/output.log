@@ -1,0 +1,114 @@
+
+[32m2021-11-08 at 13:54:47.261[39m | [34mINFO[39m | Use cql algorithm!
+Downloading dataset: http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_random.hdf5 to /root/.d4rl/datasets/halfcheetah_random.hdf5
+load datafile: 100% 5/5 [00:00<00:00,  6.32it/s]
+ 32% 325/1002 [00:00<00:00, 805.98it/s]
+[32m2021-11-08 at 13:55:39.442[39m | [34mINFO[39m | [TransDataset] Task: d4rl-halfcheetah-random-v0, data size: 999999
+[32m2021-11-08 at 13:55:39.444[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 13:55:39.444[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 13:55:39.444[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 13:55:39.444[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 13:55:39.445[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 13:55:39.445[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 13:55:39.447[39m | [34mINFO[39m | Episode reward: -318126.9375
+[32m2021-11-08 at 13:55:39.448[39m | [34mINFO[39m | Number of terminals on: 1
+
+100% 1002/1002 [00:01<00:00, 820.33it/s]
+[32m2021-11-08 at 13:55:42.153[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 13:56:08,319	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 13:56:09,624	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8266
+[36m(pid=1535)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1535)[39m No module named 'flow'
+[36m(pid=1535)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1535)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1534)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1534)[39m No module named 'flow'
+[36m(pid=1535)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1535)[39m No module named 'carla'
+[36m(pid=1535)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1534)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1534)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1528)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1528)[39m No module named 'flow'
+[36m(pid=1534)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1534)[39m No module named 'carla'
+[36m(pid=1534)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1528)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1528)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1549)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1549)[39m No module named 'flow'
+[36m(pid=1549)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1549)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1528)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1528)[39m No module named 'carla'
+[36m(pid=1528)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1549)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1549)[39m No module named 'carla'
+[36m(pid=1549)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1541)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1541)[39m No module named 'flow'
+[36m(pid=1541)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1541)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1539)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1539)[39m No module named 'flow'
+[36m(pid=1541)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1541)[39m No module named 'carla'
+[36m(pid=1541)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1539)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1539)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1531)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1531)[39m No module named 'flow'
+[36m(pid=1539)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1539)[39m No module named 'carla'
+[36m(pid=1539)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1531)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1531)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1527)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1527)[39m No module named 'flow'
+[36m(pid=1527)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1527)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1531)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1531)[39m No module named 'carla'
+[36m(pid=1531)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1546)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1546)[39m No module named 'flow'
+[36m(pid=1546)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1546)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1527)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1527)[39m No module named 'carla'
+[36m(pid=1527)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1538)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1538)[39m No module named 'flow'
+[36m(pid=1538)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1538)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1546)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1546)[39m No module named 'carla'
+[36m(pid=1546)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1542)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1542)[39m No module named 'flow'
+[36m(pid=1538)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1538)[39m No module named 'carla'
+[36m(pid=1542)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1542)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1538)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1542)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1542)[39m No module named 'carla'
+[36m(pid=1542)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=1537)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1537)[39m No module named 'flow'
+[36m(pid=1537)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1537)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1529)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1529)[39m No module named 'flow'
+[36m(pid=1529)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[32m2021-11-08 at 13:57:58.058[39m | [34mINFO[39m | Epoch : 1
+[32m2021-11-08 at 13:57:58.059[39m | [34mINFO[39m | Reward_Mean_Env : -0.5837742688681802
+[32m2021-11-08 at 13:57:58.062[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:57:58.062[39m | [34mINFO[39m | Reward_Mean : -0.40584802066968373
+[32m2021-11-08 at 13:57:58.063[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:57:58.063[39m | [34mINFO[39m | D4rl_Score : 2.2534762168025453
+[32m2021-11-08 at 14:00:05.112[39m | [34mINFO[39m | Epoch : 2
+[32m2021-11-08 at 14:00:05.114[39m | [34mINFO[39m | Reward_Mean_Env : -0.2696022590825207
+[32m2021-11-08 at 14:00:05.120[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 14:00:05.120[39m | [34mINFO[39m | Reward_Mean : -0.36875060939661464
+[32m2021-11-08 at 14:00:05.121[39m | [34mINFO[39m | Length_Mean : 1000.0

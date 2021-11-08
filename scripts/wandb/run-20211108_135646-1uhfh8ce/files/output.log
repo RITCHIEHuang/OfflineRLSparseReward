@@ -1,0 +1,48 @@
+
+[32m2021-11-08 at 13:56:51.091[39m | [34mINFO[39m | Use cql algorithm!
+load datafile: 100% 5/5 [00:00<00:00,  6.34it/s]
+Downloading dataset: http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_random.hdf5 to /root/.d4rl/datasets/walker2d_random.hdf5
+ 65% 33299/50988 [00:01<00:00, 42572.92it/s]
+[32m2021-11-08 at 13:57:55.120[39m | [34mINFO[39m | [TransDataset] Task: d4rl-walker2d-random-v0, data size: 999999
+[32m2021-11-08 at 13:57:55.121[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 13:57:55.122[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 13:57:55.122[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 13:57:55.122[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 13:57:55.122[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 13:57:55.122[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 13:57:55.124[39m | [34mINFO[39m | Episode reward: 0.8393015621629043
+[32m2021-11-08 at 13:57:55.126[39m | [34mINFO[39m | Number of terminals on: 50987
+
+100% 50988/50988 [00:01<00:00, 28268.31it/s]
+[32m2021-11-08 at 13:57:57.884[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 13:58:25,488	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 13:58:26,797	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8266
+[32m2021-11-08 at 13:58:37.424[39m | [34mINFO[39m | Epoch : 1
+[32m2021-11-08 at 13:58:37.426[39m | [34mINFO[39m | Reward_Mean_Env : 40.126382037917
+[32m2021-11-08 at 13:58:37.429[39m | [34mINFO[39m | Length_Mean_Env : 48.86
+[32m2021-11-08 at 13:58:37.430[39m | [34mINFO[39m | Reward_Mean : 40.06516127359876
+[32m2021-11-08 at 13:58:37.430[39m | [34mINFO[39m | Length_Mean : 48.79
+[32m2021-11-08 at 13:58:37.431[39m | [34mINFO[39m | D4rl_Score : 0.8372665638766116
+[32m2021-11-08 at 13:59:12.901[39m | [34mINFO[39m | Epoch : 2
+[32m2021-11-08 at 13:59:12.902[39m | [34mINFO[39m | Reward_Mean_Env : 47.21224426841506
+[32m2021-11-08 at 13:59:12.903[39m | [34mINFO[39m | Length_Mean_Env : 68.24
+[32m2021-11-08 at 13:59:12.904[39m | [34mINFO[39m | Reward_Mean : 47.27251584703403
+[32m2021-11-08 at 13:59:12.904[39m | [34mINFO[39m | Length_Mean : 68.14
+[32m2021-11-08 at 13:59:12.905[39m | [34mINFO[39m | D4rl_Score : 0.9942665881866801
+[32m2021-11-08 at 13:59:50.255[39m | [34mINFO[39m | Epoch : 3
+[32m2021-11-08 at 13:59:50.256[39m | [34mINFO[39m | Reward_Mean_Env : 40.21628659313126
+[32m2021-11-08 at 13:59:50.259[39m | [34mINFO[39m | Length_Mean_Env : 51.38
+[32m2021-11-08 at 13:59:50.260[39m | [34mINFO[39m | Reward_Mean : 40.17070331795865
+[32m2021-11-08 at 13:59:50.260[39m | [34mINFO[39m | Length_Mean : 51.39
+[32m2021-11-08 at 13:59:50.261[39m | [34mINFO[39m | D4rl_Score : 0.8395656187325098
+[32m2021-11-08 at 14:00:24.843[39m | [34mINFO[39m | Epoch : 4
+[32m2021-11-08 at 14:00:24.844[39m | [34mINFO[39m | Reward_Mean_Env : 45.09909560837188
+[32m2021-11-08 at 14:00:24.846[39m | [34mINFO[39m | Length_Mean_Env : 58.72
+[32m2021-11-08 at 14:00:24.846[39m | [34mINFO[39m | Reward_Mean : 45.15620585544892
+[32m2021-11-08 at 14:00:24.847[39m | [34mINFO[39m | Length_Mean : 58.71
+[32m2021-11-08 at 14:00:24.847[39m | [34mINFO[39m | D4rl_Score : 0.9481663558835347
+[32m2021-11-08 at 14:01:05.416[39m | [34mINFO[39m | Epoch : 5
+[32m2021-11-08 at 14:01:05.417[39m | [34mINFO[39m | Reward_Mean_Env : 94.33506346465501
+[32m2021-11-08 at 14:01:05.419[39m | [34mINFO[39m | Length_Mean_Env : 116.49
+[32m2021-11-08 at 14:01:05.420[39m | [34mINFO[39m | Reward_Mean : 91.01738368291673
+[32m2021-11-08 at 14:01:05.420[39m | [34mINFO[39m | Length_Mean : 106.71

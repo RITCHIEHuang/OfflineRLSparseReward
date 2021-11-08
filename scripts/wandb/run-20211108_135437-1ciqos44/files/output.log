@@ -1,0 +1,1693 @@
+
+[32m2021-11-08 at 13:54:46.635[39m | [34mINFO[39m | Use cql algorithm!
+load datafile: 100% 5/5 [00:00<00:00,  6.17it/s]
+Downloading dataset: http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_medium.hdf5 to /root/.d4rl/datasets/halfcheetah_medium.hdf5
+
+100% 1002/1002 [00:01<00:00, 841.98it/s]
+[32m2021-11-08 at 14:00:16.866[39m | [34mINFO[39m | [TransDataset] Task: d4rl-halfcheetah-medium-v0, data size: 999999
+[32m2021-11-08 at 14:00:16.867[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 14:00:16.868[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 14:00:16.868[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 14:00:16.868[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 14:00:16.868[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 14:00:16.868[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 14:00:16.870[39m | [34mINFO[39m | Episode reward: 4158814.0
+[32m2021-11-08 at 14:00:16.872[39m | [34mINFO[39m | Number of terminals on: 1
+[32m2021-11-08 at 14:00:16.872[39m | [34mINFO[39m | Run algo_init function
+[32m2021-11-08 at 14:00:19.522[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 14:00:49,843	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 14:00:50,938	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8267
+[36m(pid=4115)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4115)[39m No module named 'flow'
+[36m(pid=4115)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4115)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4115)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4115)[39m No module named 'carla'
+[36m(pid=4115)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4094)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4094)[39m No module named 'flow'
+[36m(pid=4094)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4094)[39m   warnings.warn(message, GLFWError)
+2021-11-08 14:00:52,405	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+[36m(pid=4094)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4094)[39m No module named 'carla'
+[36m(pid=4094)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4084)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4084)[39m No module named 'flow'
+[36m(pid=4084)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4084)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4084)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4084)[39m No module named 'carla'
+[36m(pid=4084)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4112)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4112)[39m No module named 'flow'
+[36m(pid=4112)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4112)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4112)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4112)[39m No module named 'carla'
+[36m(pid=4112)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4085)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4085)[39m No module named 'flow'
+[36m(pid=4085)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4085)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4096)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4096)[39m No module named 'flow'
+[36m(pid=4085)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4085)[39m No module named 'carla'
+[36m(pid=4085)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4096)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4096)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4096)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4096)[39m No module named 'carla'
+[36m(pid=4092)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4092)[39m No module named 'flow'
+[36m(pid=4096)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4092)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4092)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4092)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4092)[39m No module named 'carla'
+[36m(pid=4092)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4107)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4107)[39m No module named 'flow'
+[36m(pid=4107)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4107)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4107)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4107)[39m No module named 'carla'
+[36m(pid=4107)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4099)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4099)[39m No module named 'flow'
+[36m(pid=4099)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4099)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4099)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4099)[39m No module named 'carla'
+[36m(pid=4099)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4091)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4091)[39m No module named 'flow'
+[36m(pid=4091)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4091)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4091)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4091)[39m No module named 'carla'
+[36m(pid=4091)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4087)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4087)[39m No module named 'flow'
+[36m(pid=4087)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4087)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4097)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4097)[39m No module named 'flow'
+[36m(pid=4087)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4087)[39m No module named 'carla'
+[36m(pid=4087)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4097)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4097)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4097)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4097)[39m No module named 'carla'
+[36m(pid=4097)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4089)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4089)[39m No module named 'flow'
+[36m(pid=4089)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4089)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4089)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4089)[39m No module named 'carla'
+[36m(pid=4089)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4101)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4101)[39m No module named 'flow'
+[36m(pid=4101)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4101)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4101)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4101)[39m No module named 'carla'
+[36m(pid=4101)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4104)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4104)[39m No module named 'flow'
+[36m(pid=4104)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4104)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4098)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4098)[39m No module named 'flow'
+[36m(pid=4098)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4098)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4104)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4104)[39m No module named 'carla'
+[36m(pid=4104)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4098)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4098)[39m No module named 'carla'
+[36m(pid=4098)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4109)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4109)[39m No module named 'flow'
+[36m(pid=4109)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4109)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4109)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4109)[39m No module named 'carla'
+[36m(pid=4109)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4088)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4088)[39m No module named 'flow'
+[36m(pid=4088)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4088)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4088)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4088)[39m No module named 'carla'
+[36m(pid=4088)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4095)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4095)[39m No module named 'flow'
+[36m(pid=4095)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4095)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4105)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4105)[39m No module named 'flow'
+[36m(pid=4105)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4105)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4095)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4095)[39m No module named 'carla'
+[36m(pid=4095)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4090)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4090)[39m No module named 'flow'
+[36m(pid=4090)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4090)[39m   warnings.warn(message, GLFWError)
+2021-11-08 14:00:54,571	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+[36m(pid=4105)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4105)[39m No module named 'carla'
+[36m(pid=4105)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4103)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4103)[39m No module named 'flow'
+[36m(pid=4103)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4103)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4090)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4090)[39m No module named 'carla'
+[36m(pid=4090)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4118)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4118)[39m No module named 'flow'
+[36m(pid=4103)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4103)[39m No module named 'carla'
+[36m(pid=4103)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4118)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4118)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4118)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4118)[39m No module named 'carla'
+[36m(pid=4118)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=4086)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4086)[39m No module named 'flow'
+[36m(pid=4086)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=4086)[39m   warnings.warn(message, GLFWError)
+[36m(pid=4086)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=4086)[39m No module named 'carla'
+[36m(pid=4086)[39m pybullet build time: Aug 23 2021 12:49:13
+2021-11-08 14:00:57,423	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:00:59,834	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:01,862	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:03,927	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:05,973	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+2021-11-08 14:01:08,003	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:10,032	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:12,053	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:14,082	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+2021-11-08 14:01:16,100	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:18,128	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:20,143	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:22,199	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:24,245	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+2021-11-08 14:01:26,244	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:28,234	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:30,267	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:32,344	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:34,388	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:36,457	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+[33m(raylet)[39m Traceback (most recent call last):
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 334, in <module>
+[33m(raylet)[39m     raise e
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+[33m(raylet)[39m     loop.run_until_complete(agent.run())
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+[33m(raylet)[39m     return future.result()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+[33m(raylet)[39m     modules = self._load_modules()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+[33m(raylet)[39m     c = cls(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+[33m(raylet)[39m     self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+[33m(raylet)[39m     namespace="ray", port=metrics_export_port)))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+[33m(raylet)[39m     options=option, gatherer=option.registry, collector=collector)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+[33m(raylet)[39m     self.serve_http()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+[33m(raylet)[39m     port=self.options.port, addr=str(self.options.address))
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+[33m(raylet)[39m     httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+[33m(raylet)[39m     server = server_class((host, port), handler_class)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+[33m(raylet)[39m     self.server_bind()
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+[33m(raylet)[39m     HTTPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+[33m(raylet)[39m     socketserver.TCPServer.server_bind(self)
+[33m(raylet)[39m   File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+[33m(raylet)[39m     self.socket.bind(self.server_address)
+[33m(raylet)[39m OSError: [Errno 98] Address already in use
+2021-11-08 14:01:38,549	WARNING worker.py:1107 -- The agent on node kml-task-81734-record-1742199-prod-worker-0 failed with the following error:
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 323, in <module>
+    loop.run_until_complete(agent.run())
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 138, in run
+    modules = self._load_modules()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/agent.py", line 92, in _load_modules
+    c = cls(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/new_dashboard/modules/reporter/reporter_agent.py", line 72, in __init__
+    self._metrics_agent = MetricsAgent(dashboard_agent.metrics_export_port)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/metrics_agent.py", line 76, in __init__
+    namespace="ray", port=metrics_export_port)))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 334, in new_stats_exporter
+    options=option, gatherer=option.registry, collector=collector)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 266, in __init__
+    self.serve_http()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/ray/prometheus_exporter.py", line 321, in serve_http
+    port=self.options.port, addr=str(self.options.address))
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/prometheus_client/exposition.py", line 149, in start_wsgi_server
+    httpd = make_server(addr, port, app, ThreadingWSGIServer, handler_class=_SilentHandler)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 153, in make_server
+    server = server_class((host, port), handler_class)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/wsgiref/simple_server.py", line 50, in server_bind
+    HTTPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/http/server.py", line 137, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/miniconda3/envs/offlinerl/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)

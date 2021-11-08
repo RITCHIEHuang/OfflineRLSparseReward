@@ -1,0 +1,2285 @@
+
+[32m2021-11-08 at 11:42:43.048[39m | [34mINFO[39m | Use mopo algorithm!
+load datafile:  20% 1/5 [00:00<00:01,  2.67it/s]
+
+load datafile: 100% 5/5 [00:01<00:00,  3.13it/s]
+
+100% 6943/6943 [00:01<00:00, 3645.41it/s]
+[32m2021-11-08 at 11:44:08.132[39m | [34mINFO[39m | [TransDataset] Task: d4rl-walker2d-medium-expert-v0, data size: 1999999
+[32m2021-11-08 at 11:44:08.133[39m | [34mINFO[39m | obs shape: (1999999, 17)
+[32m2021-11-08 at 11:44:08.134[39m | [34mINFO[39m | obs_next shape: (1999999, 17)
+[32m2021-11-08 at 11:44:08.134[39m | [34mINFO[39m | act shape: (1999999, 6)
+[32m2021-11-08 at 11:44:08.134[39m | [34mINFO[39m | rew shape: (1999999, 1)
+[32m2021-11-08 at 11:44:08.134[39m | [34mINFO[39m | ret shape: (1999999, 1)
+[32m2021-11-08 at 11:44:08.135[39m | [34mINFO[39m | done shape: (1999999, 1)
+[32m2021-11-08 at 11:44:08.138[39m | [34mINFO[39m | Episode reward: 1262.1836001306763
+[32m2021-11-08 at 11:44:08.140[39m | [34mINFO[39m | Number of terminals on: 6122
+[32m2021-11-08 at 11:44:08.140[39m | [34mINFO[39m | Run algo_init function
+[32m2021-11-08 at 11:44:10.942[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 13:43:29,001	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 13:43:30,271	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8267
+[36m(pid=44953)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44953)[39m No module named 'flow'
+[36m(pid=44953)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44953)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44942)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44942)[39m No module named 'flow'
+[36m(pid=44942)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44942)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44953)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44953)[39m No module named 'carla'
+[36m(pid=44953)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44942)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44942)[39m No module named 'carla'
+[36m(pid=44942)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44951)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44951)[39m No module named 'flow'
+[36m(pid=44951)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44951)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44941)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44941)[39m No module named 'flow'
+[36m(pid=44951)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44951)[39m No module named 'carla'
+[36m(pid=44951)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44941)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44941)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44941)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44941)[39m No module named 'carla'
+[36m(pid=44934)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44934)[39m No module named 'flow'
+[36m(pid=44934)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44934)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44941)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44934)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44934)[39m No module named 'carla'
+[36m(pid=44934)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44944)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44944)[39m No module named 'flow'
+[36m(pid=44944)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44944)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44944)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44944)[39m No module named 'carla'
+[36m(pid=44944)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44946)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44946)[39m No module named 'flow'
+[36m(pid=44946)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44946)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44939)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44939)[39m No module named 'flow'
+[36m(pid=44939)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44939)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44946)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44946)[39m No module named 'carla'
+[36m(pid=44946)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44939)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44939)[39m No module named 'carla'
+[36m(pid=44945)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44945)[39m No module named 'flow'
+[36m(pid=44945)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44945)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44939)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44945)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44945)[39m No module named 'carla'
+[36m(pid=44945)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44936)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44936)[39m No module named 'flow'
+[36m(pid=44936)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44936)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44936)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44936)[39m No module named 'carla'
+[36m(pid=44936)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44938)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44938)[39m No module named 'flow'
+[36m(pid=44938)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44938)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44938)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44938)[39m No module named 'carla'
+[36m(pid=44938)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44943)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44943)[39m No module named 'flow'
+[36m(pid=44943)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44943)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44943)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44943)[39m No module named 'carla'
+[36m(pid=44943)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44948)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44948)[39m No module named 'flow'
+[36m(pid=44948)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44948)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44948)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44948)[39m No module named 'carla'
+[36m(pid=44948)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44937)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44937)[39m No module named 'flow'
+[36m(pid=44937)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44937)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44952)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44952)[39m No module named 'flow'
+[36m(pid=44937)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44937)[39m No module named 'carla'
+[36m(pid=44937)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44952)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44952)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44952)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44952)[39m No module named 'carla'
+[36m(pid=44952)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44947)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44947)[39m No module named 'flow'
+[36m(pid=44947)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44947)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44947)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44947)[39m No module named 'carla'
+[36m(pid=44947)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44940)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44940)[39m No module named 'flow'
+[36m(pid=44940)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44940)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44940)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44940)[39m No module named 'carla'
+[36m(pid=44940)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44933)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44933)[39m No module named 'flow'
+[36m(pid=44933)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44933)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44933)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44933)[39m No module named 'carla'
+[36m(pid=44933)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44949)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44949)[39m No module named 'flow'
+[36m(pid=44949)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44949)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44949)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44949)[39m No module named 'carla'
+[36m(pid=44949)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44931)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44931)[39m No module named 'flow'
+[36m(pid=44931)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44931)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44931)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44931)[39m No module named 'carla'
+[36m(pid=44931)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44932)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44932)[39m No module named 'flow'
+[36m(pid=44932)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44932)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44932)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44932)[39m No module named 'carla'
+[36m(pid=44932)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44954)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44954)[39m No module named 'flow'
+[36m(pid=44954)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44954)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44950)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44950)[39m No module named 'flow'
+[36m(pid=44954)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44954)[39m No module named 'carla'
+[36m(pid=44954)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44950)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44950)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44950)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44950)[39m No module named 'carla'
+[36m(pid=44950)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=44935)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44935)[39m No module named 'flow'
+[36m(pid=44935)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=44935)[39m   warnings.warn(message, GLFWError)
+[36m(pid=44935)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=44935)[39m No module named 'carla'
+[36m(pid=44935)[39m pybullet build time: Aug 23 2021 12:49:13
+eval transition loss [20.657812, 20.621517, 20.897999, 20.649828, 20.477867, 21.74543, 20.721483]
+eval transition loss [20.915236, 20.82707, 20.889236, 20.702038, 20.47542, 20.74481, 20.383053]
+eval transition loss [20.51407, 20.625109, 21.025984, 20.54829, 20.47527, 20.568014, 20.39357]
+eval transition loss [20.773098, 20.457531, 20.32893, 20.576149, 20.591215, 20.586414, 20.422148]
+eval transition loss [20.432098, 20.41093, 20.56258, 20.727423, 20.649687, 20.574049, 20.470095]
+eval transition loss [20.283451, 20.570063, 20.339315, 20.277517, 20.464354, 20.446253, 20.467754]
+eval transition loss [20.336859, 20.399996, 20.266382, 20.345459, 20.650093, 20.878147, 20.430977]
+eval transition loss [20.359642, 20.290888, 20.187937, 20.183687, 20.444866, 20.583338, 20.55435]
+eval transition loss [20.226614, 20.329426, 20.222626, 20.134026, 20.42307, 20.404713, 20.560097]
+eval transition loss [20.38556, 20.123596, 20.358967, 20.31747, 20.37162, 20.406342, 21.374222]
+eval transition loss [20.131937, 20.320698, 20.091274, 20.154337, 20.374329, 20.598528, 20.500706]
+eval transition loss [20.291407, 20.865892, 20.228676, 20.161175, 21.247375, 20.432194, 20.337896]
+eval transition loss [20.090923, 20.283396, 20.263515, 20.275951, 20.429525, 20.369694, 20.304314]
+eval transition loss [20.225636, 20.551306, 20.169418, 20.225933, 20.339159, 20.362137, 20.56222]
+eval transition loss [20.096336, 20.19114, 20.717777, 20.26729, 20.113428, 20.339146, 20.345251]
+eval transition loss [20.369282, 20.24184, 20.080921, 20.129131, 20.077473, 21.453772, 20.334732]
+eval transition loss [20.30891, 20.239187, 20.23399, 20.095846, 20.17593, 20.44078, 20.436255]
+eval transition loss [20.29095, 20.218622, 20.16337, 20.069029, 20.12706, 20.207846, 21.111473]
+eval transition loss [20.232283, 20.198326, 20.239109, 20.04322, 19.970167, 20.173359, 20.398767]
+eval transition loss [20.046535, 20.153114, 20.076385, 20.31674, 20.105824, 20.437107, 20.286362]
+eval transition loss [20.184677, 20.195215, 19.89808, 20.91124, 20.129623, 20.149881, 20.322588]
+eval transition loss [20.171133, 20.154799, 20.10792, 20.088865, 20.279799, 20.236359, 20.338879]
+eval transition loss [19.957293, 20.278303, 20.73589, 20.080713, 20.269365, 20.07289, 20.500292]
+eval transition loss [19.90805, 20.49151, 20.268982, 19.89857, 20.301704, 20.487354, 20.251059]
+eval transition loss [20.242704, 20.269556, 20.158499, 20.075163, 20.001537, 20.070225, 20.201004]
+eval transition loss [20.327684, 20.229752, 20.13624, 19.99219, 20.066776, 20.137125, 20.39918]
+eval transition loss [20.181429, 20.281147, 20.014349, 19.961994, 20.088947, 20.958956, 20.231594]
+eval transition loss [20.278156, 19.939465, 20.061394, 19.95472, 20.10557, 20.054747, 20.23857]
+eval transition loss [20.086262, 20.002827, 19.982489, 20.09515, 20.196962, 20.009382, 20.20474]
+eval transition loss [19.98808, 19.919695, 19.92898, 21.431871, 19.96049, 20.666424, 20.340576]
+eval transition loss [20.159237, 19.982763, 20.17664, 20.214912, 20.091188, 20.255306, 19.87593]
+eval transition loss [20.066376, 20.092196, 19.978386, 19.951046, 20.745924, 20.236198, 20.769833]
+eval transition loss [20.464203, 20.015038, 20.65115, 20.177965, 19.98264, 20.651798, 20.1658]
+eval transition loss [20.51094, 22.08634, 19.834751, 20.213697, 19.921389, 20.695524, 20.018227]
+eval transition loss [19.993237, 20.164116, 19.850775, 19.917034, 20.124134, 20.11953, 20.18885]
+eval transition loss [19.948212, 19.851858, 20.459082, 20.118647, 20.056324, 20.200375, 20.01566]
+eval transition loss [20.048615, 20.467768, 20.078184, 19.921484, 20.195927, 19.899551, 20.086071]
+eval transition loss [20.108852, 20.401611, 20.800413, 19.830181, 19.954288, 19.91029, 21.97072]
+eval transition loss [19.96928, 20.072247, 20.739883, 19.93017, 20.66286, 21.822319, 20.05225]
+eval transition loss [19.893482, 21.636587, 20.194855, 21.378567, 20.356709, 20.018202, 20.380949]
+eval transition loss [20.495623, 23.950201, 21.193352, 19.926117, 20.092125, 19.990465, 20.078318]
+eval transition loss [19.981628, 21.609802, 20.825602, 19.888386, 20.174639, 20.0461, 20.036886]
+eval transition loss [20.223696, 20.808413, 20.408766, 19.977074, 20.001764, 21.865473, 19.84322]
+eval transition loss [19.958733, 20.663671, 22.07149, 19.965483, 20.175348, 20.659664, 19.99158]
+eval transition loss [19.793013, 20.7163, 20.650871, 19.856983, 20.58283, 20.307535, 20.836805]
+eval transition loss [19.967014, 20.172112, 22.729403, 19.96583, 20.137888, 20.060955, 20.751549]
+eval transition loss [19.92617, 20.78266, 21.729115, 25.298014, 19.995497, 20.898933, 21.186615]
+eval transition loss [20.70609, 25.214008, 23.976873, 21.692286, 20.484947, 22.110538, 20.679949]
+eval transition loss [20.310122, 21.514612, 21.967375, 20.973, 20.1256, 23.305092, 20.47342]
+eval transition loss [20.296041, 21.463018, 21.51714, 20.241344, 20.670212, 21.927698, 20.410097]
+[32m2021-11-08 at 13:44:24.996[39m | [34mINFO[39m | Epoch : 0
+[32m2021-11-08 at 13:44:24.998[39m | [34mINFO[39m | Reward_Mean_Env : 214.39380960987685
+[32m2021-11-08 at 13:44:25.001[39m | [34mINFO[39m | Length_Mean_Env : 330.69
+[32m2021-11-08 at 13:44:25.002[39m | [34mINFO[39m | Reward_Mean : 224.52324063473796
+[32m2021-11-08 at 13:44:25.002[39m | [34mINFO[39m | Length_Mean : 338.73
+[32m2021-11-08 at 13:44:25.003[39m | [34mINFO[39m | D4rl_Score : 4.85537371384636
+average next_obs: -0.04420619457960129
+average reward: 2.558368444442749
+average uncertainty: 19.401151657104492
+average next_obs: -0.04202400892972946
+average reward: 2.5884811878204346
+average uncertainty: 19.53812599182129
+average next_obs: -0.03515547513961792
+average reward: 2.5614066123962402
+average uncertainty: 19.647336959838867
+average next_obs: -0.024394655600190163
+average reward: 2.5127811431884766
+average uncertainty: 19.755807876586914
+average next_obs: -0.011924847960472107
+average reward: 2.535010814666748
+average uncertainty: 19.85390853881836
+[32m2021-11-08 at 13:44:42.720[39m | [34mINFO[39m | Epoch : 1
+[32m2021-11-08 at 13:44:42.721[39m | [34mINFO[39m | Reward_Mean_Env : -4.506011232978648
+[32m2021-11-08 at 13:44:42.722[39m | [34mINFO[39m | Length_Mean_Env : 9.0
+[32m2021-11-08 at 13:44:42.723[39m | [34mINFO[39m | Reward_Mean : -4.511312526837138
+[32m2021-11-08 at 13:44:42.723[39m | [34mINFO[39m | Length_Mean : 9.0
+[32m2021-11-08 at 13:44:42.724[39m | [34mINFO[39m | D4rl_Score : -0.13375649306033163
+[32m2021-11-08 at 13:44:42.724[39m | [34mINFO[39m | uncertainty : 19.85390853881836
+[32m2021-11-08 at 13:44:42.725[39m | [34mINFO[39m | disagreement_uncertainty : 2.499109983444214
+[32m2021-11-08 at 13:44:42.725[39m | [34mINFO[39m | aleatoric_uncertainty : 19.85390853881836
+[32m2021-11-08 at 13:44:42.726[39m | [34mINFO[39m | reward : 2.535010814666748
+[32m2021-11-08 at 13:44:42.726[39m | [34mINFO[39m | next_obs : -0.011924847960472107
+[32m2021-11-08 at 13:44:42.726[39m | [34mINFO[39m | mean_action_log_prob : -0.9057896733283997
+[32m2021-11-08 at 13:44:42.727[39m | [34mINFO[39m | mean_critic_loss : 1426.7061767578125
+[32m2021-11-08 at 13:44:42.727[39m | [34mINFO[39m | mean_Qmin : -119.9361572265625
+[32m2021-11-08 at 13:44:42.728[39m | [34mINFO[39m | log_alpha : -0.3000001013278961
+[32m2021-11-08 at 13:44:42.728[39m | [34mINFO[39m | mean_obs : -0.07718978822231293
+[32m2021-11-08 at 13:44:42.728[39m | [34mINFO[39m | mean_new_action : -0.24729488790035248
+[32m2021-11-08 at 13:44:42.729[39m | [34mINFO[39m | mean_next_obs : -0.10496218502521515
+[32m2021-11-08 at 13:44:42.729[39m | [34mINFO[39m | mean_next_action : -0.24448204040527344
+[32m2021-11-08 at 13:44:42.730[39m | [34mINFO[39m | mean_alpha_loss : -2.041645050048828
+[32m2021-11-08 at 13:44:42.730[39m | [34mINFO[39m | mean_actor_loss : 119.26512908935547
+average next_obs: -0.9037622809410095
+average reward: 2.070808172225952
+average uncertainty: 19.894746780395508
+average next_obs: -1.2911088466644287
+average reward: 2.069288492202759
+average uncertainty: 19.993072509765625
+average next_obs: -1.4804368019104004
+average reward: 1.8994628190994263
+average uncertainty: 20.05259895324707
+average next_obs: -1.5793185234069824
+average reward: 1.801849603652954
+average uncertainty: 20.06320571899414
+average next_obs: -1.630758285522461
+average reward: 1.91852867603302
+average uncertainty: 20.078048706054688
+[32m2021-11-08 at 13:45:00.266[39m | [34mINFO[39m | Epoch : 2
+[32m2021-11-08 at 13:45:00.268[39m | [34mINFO[39m | Reward_Mean_Env : -2.6034196293645904
+[32m2021-11-08 at 13:45:00.270[39m | [34mINFO[39m | Length_Mean_Env : 16.92
+[32m2021-11-08 at 13:45:00.271[39m | [34mINFO[39m | Reward_Mean : -2.608494417564708
+[32m2021-11-08 at 13:45:00.271[39m | [34mINFO[39m | Length_Mean : 16.89
+[32m2021-11-08 at 13:45:00.272[39m | [34mINFO[39m | D4rl_Score : -0.09230682017834112
+[32m2021-11-08 at 13:45:00.273[39m | [34mINFO[39m | uncertainty : 20.078048706054688
+[32m2021-11-08 at 13:45:00.274[39m | [34mINFO[39m | disagreement_uncertainty : 6.138864994049072
+[32m2021-11-08 at 13:45:00.274[39m | [34mINFO[39m | aleatoric_uncertainty : 20.078048706054688
+[32m2021-11-08 at 13:45:00.275[39m | [34mINFO[39m | reward : 1.91852867603302
+[32m2021-11-08 at 13:45:00.275[39m | [34mINFO[39m | next_obs : -1.630758285522461
+[32m2021-11-08 at 13:45:00.276[39m | [34mINFO[39m | mean_action_log_prob : -0.19128592312335968
+[32m2021-11-08 at 13:45:00.276[39m | [34mINFO[39m | mean_critic_loss : 1024.9180908203125
+[32m2021-11-08 at 13:45:00.277[39m | [34mINFO[39m | mean_Qmin : -253.25160217285156
+[32m2021-11-08 at 13:45:00.277[39m | [34mINFO[39m | log_alpha : -0.5999903082847595
+[32m2021-11-08 at 13:45:00.278[39m | [34mINFO[39m | mean_obs : -0.4229254424571991
+[32m2021-11-08 at 13:45:00.278[39m | [34mINFO[39m | mean_new_action : 0.02728528156876564
+[32m2021-11-08 at 13:45:00.279[39m | [34mINFO[39m | mean_next_obs : -0.5611995458602905
+[32m2021-11-08 at 13:45:00.279[39m | [34mINFO[39m | mean_next_action : 0.032402362674474716
+[32m2021-11-08 at 13:45:00.280[39m | [34mINFO[39m | mean_alpha_loss : -3.4151148796081543
+[32m2021-11-08 at 13:45:00.280[39m | [34mINFO[39m | mean_actor_loss : 253.14662170410156
+average next_obs: -0.2613429129123688
+average reward: 2.5762417316436768
+average uncertainty: 19.84882164001465
+average next_obs: -0.33710941672325134
+average reward: 2.2951743602752686
+average uncertainty: 19.87417984008789
+average next_obs: -0.4071188271045685
+average reward: 2.282256603240967
+average uncertainty: 19.744150161743164
+average next_obs: -0.4874372184276581
+average reward: 2.2691400051116943
+average uncertainty: 19.61149787902832
+average next_obs: -0.5747354626655579
+average reward: 2.0659680366516113
+average uncertainty: 19.5012264251709
+[32m2021-11-08 at 13:45:22.195[39m | [34mINFO[39m | Epoch : 3
+[32m2021-11-08 at 13:45:22.197[39m | [34mINFO[39m | Reward_Mean_Env : -12.807475847950467
+[32m2021-11-08 at 13:45:22.199[39m | [34mINFO[39m | Length_Mean_Env : 12.0
+[32m2021-11-08 at 13:45:22.199[39m | [34mINFO[39m | Reward_Mean : -12.822437943136872
+[32m2021-11-08 at 13:45:22.200[39m | [34mINFO[39m | Length_Mean : 12.0
+[32m2021-11-08 at 13:45:22.201[39m | [34mINFO[39m | D4rl_Score : -0.31480029756697653
+[32m2021-11-08 at 13:45:22.201[39m | [34mINFO[39m | uncertainty : 19.5012264251709
+[32m2021-11-08 at 13:45:22.202[39m | [34mINFO[39m | disagreement_uncertainty : 3.3196604251861572
+[32m2021-11-08 at 13:45:22.202[39m | [34mINFO[39m | aleatoric_uncertainty : 19.5012264251709
+[32m2021-11-08 at 13:45:22.203[39m | [34mINFO[39m | reward : 2.0659680366516113
+[32m2021-11-08 at 13:45:22.203[39m | [34mINFO[39m | next_obs : -0.5747354626655579
+[32m2021-11-08 at 13:45:22.204[39m | [34mINFO[39m | mean_action_log_prob : 1.0249160528182983
+[32m2021-11-08 at 13:45:22.204[39m | [34mINFO[39m | mean_critic_loss : 1094.3125
+[32m2021-11-08 at 13:45:22.205[39m | [34mINFO[39m | mean_Qmin : -377.709716796875
+[32m2021-11-08 at 13:45:22.205[39m | [34mINFO[39m | log_alpha : -0.8999804854393005
+[32m2021-11-08 at 13:45:22.206[39m | [34mINFO[39m | mean_obs : -0.5480011105537415
+[32m2021-11-08 at 13:45:22.206[39m | [34mINFO[39m | mean_new_action : -0.03949148207902908
+[32m2021-11-08 at 13:45:22.207[39m | [34mINFO[39m | mean_next_obs : -0.6399341225624084
+[32m2021-11-08 at 13:45:22.207[39m | [34mINFO[39m | mean_next_action : -0.05053066462278366
+[32m2021-11-08 at 13:45:22.209[39m | [34mINFO[39m | mean_alpha_loss : -4.034642696380615
+[32m2021-11-08 at 13:45:22.209[39m | [34mINFO[39m | mean_actor_loss : 378.1264343261719
+average next_obs: -0.4381692409515381
+average reward: 2.145535945892334
+average uncertainty: 19.637969970703125
+average next_obs: -0.6406025290489197
+average reward: 2.103600263595581
+average uncertainty: 19.538801193237305
+average next_obs: -0.7987149953842163
+average reward: 2.1765177249908447
+average uncertainty: 19.201772689819336
+average next_obs: -0.9289590716362
+average reward: 1.8541241884231567
+average uncertainty: 18.884023666381836
+average next_obs: -1.0313589572906494
+average reward: 1.844746708869934
+average uncertainty: 18.63202476501465
+[32m2021-11-08 at 13:45:39.587[39m | [34mINFO[39m | Epoch : 4
+[32m2021-11-08 at 13:45:39.589[39m | [34mINFO[39m | Reward_Mean_Env : -14.57773040337197
+[32m2021-11-08 at 13:45:39.591[39m | [34mINFO[39m | Length_Mean_Env : 12.0
+[32m2021-11-08 at 13:45:39.591[39m | [34mINFO[39m | Reward_Mean : -14.5996690213135
+[32m2021-11-08 at 13:45:39.592[39m | [34mINFO[39m | Length_Mean : 12.0
+[32m2021-11-08 at 13:45:39.593[39m | [34mINFO[39m | D4rl_Score : -0.35351426947377934
+[32m2021-11-08 at 13:45:39.593[39m | [34mINFO[39m | uncertainty : 18.63202476501465
+[32m2021-11-08 at 13:45:39.593[39m | [34mINFO[39m | disagreement_uncertainty : 3.371570110321045
+[32m2021-11-08 at 13:45:39.594[39m | [34mINFO[39m | aleatoric_uncertainty : 18.63202476501465
+[32m2021-11-08 at 13:45:39.594[39m | [34mINFO[39m | reward : 1.844746708869934
+[32m2021-11-08 at 13:45:39.595[39m | [34mINFO[39m | next_obs : -1.0313589572906494
+[32m2021-11-08 at 13:45:39.596[39m | [34mINFO[39m | mean_action_log_prob : 4.861377716064453
+[32m2021-11-08 at 13:45:39.596[39m | [34mINFO[39m | mean_critic_loss : 1160.3583984375
+[32m2021-11-08 at 13:45:39.597[39m | [34mINFO[39m | mean_Qmin : -491.7566223144531
+[32m2021-11-08 at 13:45:39.597[39m | [34mINFO[39m | log_alpha : -1.1991239786148071
+[32m2021-11-08 at 13:45:39.597[39m | [34mINFO[39m | mean_obs : -0.3681876063346863
+[32m2021-11-08 at 13:45:39.598[39m | [34mINFO[39m | mean_new_action : -0.15447258949279785
+[32m2021-11-08 at 13:45:39.598[39m | [34mINFO[39m | mean_next_obs : -0.5756273865699768
+[32m2021-11-08 at 13:45:39.599[39m | [34mINFO[39m | mean_next_action : -0.15469244122505188
+[32m2021-11-08 at 13:45:39.599[39m | [34mINFO[39m | mean_alpha_loss : -1.1423732042312622
+[32m2021-11-08 at 13:45:39.600[39m | [34mINFO[39m | mean_actor_loss : 493.2221374511719
+average next_obs: -0.48447632789611816
+average reward: 2.2650146484375
+average uncertainty: 19.811237335205078
+average next_obs: -0.7978699207305908
+average reward: 2.169860363006592
+average uncertainty: 19.526409149169922
+average next_obs: -1.0400651693344116
+average reward: 1.9968057870864868
+average uncertainty: 19.38823890686035
+average next_obs: -1.2269868850708008
+average reward: 1.849143385887146
+average uncertainty: 19.329036712646484
+average next_obs: -1.3601068258285522
+average reward: 1.8966033458709717
+average uncertainty: 19.204662322998047
+[32m2021-11-08 at 13:46:00.042[39m | [34mINFO[39m | Epoch : 5
+[32m2021-11-08 at 13:46:00.043[39m | [34mINFO[39m | Reward_Mean_Env : -15.304265240333159
+[32m2021-11-08 at 13:46:00.046[39m | [34mINFO[39m | Length_Mean_Env : 11.9
+[32m2021-11-08 at 13:46:00.046[39m | [34mINFO[39m | Reward_Mean : -15.158945351665265
+[32m2021-11-08 at 13:46:00.047[39m | [34mINFO[39m | Length_Mean : 11.78
+[32m2021-11-08 at 13:46:00.047[39m | [34mINFO[39m | D4rl_Score : -0.3656971580172275
+[32m2021-11-08 at 13:46:00.048[39m | [34mINFO[39m | uncertainty : 19.204662322998047
+[32m2021-11-08 at 13:46:00.049[39m | [34mINFO[39m | disagreement_uncertainty : 3.6467032432556152
+[32m2021-11-08 at 13:46:00.049[39m | [34mINFO[39m | aleatoric_uncertainty : 19.204662322998047
+[32m2021-11-08 at 13:46:00.050[39m | [34mINFO[39m | reward : 1.8966033458709717
+[32m2021-11-08 at 13:46:00.051[39m | [34mINFO[39m | next_obs : -1.3601068258285522
+[32m2021-11-08 at 13:46:00.052[39m | [34mINFO[39m | mean_action_log_prob : 5.9553303718566895
+[32m2021-11-08 at 13:46:00.052[39m | [34mINFO[39m | mean_critic_loss : 1505.2939453125
+[32m2021-11-08 at 13:46:00.053[39m | [34mINFO[39m | mean_Qmin : -577.921630859375
+[32m2021-11-08 at 13:46:00.054[39m | [34mINFO[39m | log_alpha : -1.4165054559707642
+[32m2021-11-08 at 13:46:00.055[39m | [34mINFO[39m | mean_obs : -0.4643213152885437
+[32m2021-11-08 at 13:46:00.055[39m | [34mINFO[39m | mean_new_action : -0.1894240379333496
+[32m2021-11-08 at 13:46:00.056[39m | [34mINFO[39m | mean_next_obs : -0.6943179965019226
+[32m2021-11-08 at 13:46:00.056[39m | [34mINFO[39m | mean_next_action : -0.17796264588832855
+[32m2021-11-08 at 13:46:00.057[39m | [34mINFO[39m | mean_alpha_loss : -0.4252322316169739
+[32m2021-11-08 at 13:46:00.058[39m | [34mINFO[39m | mean_actor_loss : 579.3661499023438
+average next_obs: -0.5551392436027527
+average reward: 2.155576705932617
+average uncertainty: 19.86732292175293
+average next_obs: -0.8588565587997437
+average reward: 2.219555139541626
+average uncertainty: 19.68058967590332
+average next_obs: -1.0733654499053955
+average reward: 2.0330734252929688
+average uncertainty: 19.609996795654297
+average next_obs: -1.2291988134384155
+average reward: 1.9351427555084229
+average uncertainty: 19.513227462768555
+average next_obs: -1.3078702688217163
+average reward: 1.780113697052002
+average uncertainty: 19.3823299407959
+[32m2021-11-08 at 13:46:40.847[39m | [34mINFO[39m | Epoch : 6
+[32m2021-11-08 at 13:46:40.848[39m | [34mINFO[39m | Reward_Mean_Env : 94.3165061581908
+[32m2021-11-08 at 13:46:40.851[39m | [34mINFO[39m | Length_Mean_Env : 191.32
+[32m2021-11-08 at 13:46:40.851[39m | [34mINFO[39m | Reward_Mean : 100.94478852486152
+[32m2021-11-08 at 13:46:40.852[39m | [34mINFO[39m | Length_Mean : 193.24
+[32m2021-11-08 at 13:46:40.852[39m | [34mINFO[39m | D4rl_Score : 2.163426233287805
+[32m2021-11-08 at 13:46:40.853[39m | [34mINFO[39m | uncertainty : 19.3823299407959
+[32m2021-11-08 at 13:46:40.853[39m | [34mINFO[39m | disagreement_uncertainty : 4.241557598114014
+[32m2021-11-08 at 13:46:40.855[39m | [34mINFO[39m | aleatoric_uncertainty : 19.3823299407959
+[32m2021-11-08 at 13:46:40.855[39m | [34mINFO[39m | reward : 1.780113697052002
+[32m2021-11-08 at 13:46:40.856[39m | [34mINFO[39m | next_obs : -1.3078702688217163
+[32m2021-11-08 at 13:46:40.856[39m | [34mINFO[39m | mean_action_log_prob : 7.274653434753418
+[32m2021-11-08 at 13:46:40.856[39m | [34mINFO[39m | mean_critic_loss : 1661.000732421875
+[32m2021-11-08 at 13:46:40.857[39m | [34mINFO[39m | mean_Qmin : -637.5992431640625
+[32m2021-11-08 at 13:46:40.858[39m | [34mINFO[39m | log_alpha : -1.3944357633590698
+[32m2021-11-08 at 13:46:40.859[39m | [34mINFO[39m | mean_obs : -0.7090528607368469
+[32m2021-11-08 at 13:46:40.859[39m | [34mINFO[39m | mean_new_action : 0.4731893241405487
+[32m2021-11-08 at 13:46:40.860[39m | [34mINFO[39m | mean_next_obs : -0.9033217430114746
+[32m2021-11-08 at 13:46:40.860[39m | [34mINFO[39m | mean_next_action : 0.43062159419059753
+[32m2021-11-08 at 13:46:40.860[39m | [34mINFO[39m | mean_alpha_loss : 1.0981228351593018
+[32m2021-11-08 at 13:46:40.861[39m | [34mINFO[39m | mean_actor_loss : 639.4031372070312
+average next_obs: 0.2840677499771118
+average reward: 2.4354844093322754
+average uncertainty: 19.66737174987793
+average next_obs: 0.5058642029762268
+average reward: 2.497769832611084
+average uncertainty: 19.812744140625
+average next_obs: 0.6437656283378601
+average reward: 2.549570322036743
+average uncertainty: 20.129413604736328
+average next_obs: 0.7259557247161865
+average reward: 2.385371446609497
+average uncertainty: 20.440237045288086
+average next_obs: 0.7768282294273376
+average reward: 2.3475914001464844
+average uncertainty: 20.69886016845703
+[32m2021-11-08 at 13:46:58.841[39m | [34mINFO[39m | Epoch : 7
+[32m2021-11-08 at 13:46:58.842[39m | [34mINFO[39m | Reward_Mean_Env : -14.525849254555524
+[32m2021-11-08 at 13:46:58.846[39m | [34mINFO[39m | Length_Mean_Env : 12.0
+[32m2021-11-08 at 13:46:58.846[39m | [34mINFO[39m | Reward_Mean : -14.530255902342317
+[32m2021-11-08 at 13:46:58.847[39m | [34mINFO[39m | Length_Mean : 12.0
+[32m2021-11-08 at 13:46:58.847[39m | [34mINFO[39m | D4rl_Score : -0.352002222126188
+[32m2021-11-08 at 13:46:58.849[39m | [34mINFO[39m | uncertainty : 20.69886016845703
+[32m2021-11-08 at 13:46:58.849[39m | [34mINFO[39m | disagreement_uncertainty : 3.8189661502838135
+[32m2021-11-08 at 13:46:58.850[39m | [34mINFO[39m | aleatoric_uncertainty : 20.69886016845703
+[32m2021-11-08 at 13:46:58.850[39m | [34mINFO[39m | reward : 2.3475914001464844
+[32m2021-11-08 at 13:46:58.851[39m | [34mINFO[39m | next_obs : 0.7768282294273376
+[32m2021-11-08 at 13:46:58.851[39m | [34mINFO[39m | mean_action_log_prob : 5.819446563720703
+[32m2021-11-08 at 13:46:58.852[39m | [34mINFO[39m | mean_critic_loss : 1711.7138671875
+[32m2021-11-08 at 13:46:58.852[39m | [34mINFO[39m | mean_Qmin : -737.6610107421875
+[32m2021-11-08 at 13:46:58.853[39m | [34mINFO[39m | log_alpha : -1.498067021369934
+[32m2021-11-08 at 13:46:58.854[39m | [34mINFO[39m | mean_obs : -0.41846486926078796
+[32m2021-11-08 at 13:46:58.854[39m | [34mINFO[39m | mean_new_action : -0.10447587072849274
+[32m2021-11-08 at 13:46:58.855[39m | [34mINFO[39m | mean_next_obs : -0.5516915321350098
+[32m2021-11-08 at 13:46:58.855[39m | [34mINFO[39m | mean_next_action : -0.10755791515111923
+[32m2021-11-08 at 13:46:58.856[39m | [34mINFO[39m | mean_alpha_loss : -0.35271894931793213
+[32m2021-11-08 at 13:46:58.857[39m | [34mINFO[39m | mean_actor_loss : 738.9620361328125
+average next_obs: -0.4910178780555725
+average reward: 2.5315117835998535
+average uncertainty: 19.956775665283203
+average next_obs: -0.7095263600349426
+average reward: 2.323009967803955
+average uncertainty: 19.96302604675293
+average next_obs: -0.8855623602867126
+average reward: 2.1387012004852295
+average uncertainty: 19.939407348632812
+average next_obs: -1.0424160957336426
+average reward: 2.0236220359802246
+average uncertainty: 19.917354583740234
+average next_obs: -1.1758394241333008
+average reward: 1.9187558889389038
+average uncertainty: 19.83156394958496
+[32m2021-11-08 at 13:47:18.117[39m | [34mINFO[39m | Epoch : 8
+[32m2021-11-08 at 13:47:18.118[39m | [34mINFO[39m | Reward_Mean_Env : -11.554425864630595
+[32m2021-11-08 at 13:47:18.122[39m | [34mINFO[39m | Length_Mean_Env : 14.02
+[32m2021-11-08 at 13:47:18.124[39m | [34mINFO[39m | Reward_Mean : -11.568926406848892
+[32m2021-11-08 at 13:47:18.125[39m | [34mINFO[39m | Length_Mean : 14.01
+[32m2021-11-08 at 13:47:18.126[39m | [34mINFO[39m | D4rl_Score : -0.2874946697301651
+[32m2021-11-08 at 13:47:18.127[39m | [34mINFO[39m | uncertainty : 19.83156394958496
+[32m2021-11-08 at 13:47:18.128[39m | [34mINFO[39m | disagreement_uncertainty : 7.198227882385254
+[32m2021-11-08 at 13:47:18.129[39m | [34mINFO[39m | aleatoric_uncertainty : 19.83156394958496
+[32m2021-11-08 at 13:47:18.130[39m | [34mINFO[39m | reward : 1.9187558889389038
+[32m2021-11-08 at 13:47:18.130[39m | [34mINFO[39m | next_obs : -1.1758394241333008
+[32m2021-11-08 at 13:47:18.131[39m | [34mINFO[39m | mean_action_log_prob : 5.507329940795898
+[32m2021-11-08 at 13:47:18.132[39m | [34mINFO[39m | mean_critic_loss : 1759.69580078125
+[32m2021-11-08 at 13:47:18.133[39m | [34mINFO[39m | mean_Qmin : -827.7314453125
+[32m2021-11-08 at 13:47:18.134[39m | [34mINFO[39m | log_alpha : -1.6502810716629028
+[32m2021-11-08 at 13:47:18.134[39m | [34mINFO[39m | mean_obs : -0.4345669448375702
+[32m2021-11-08 at 13:47:18.135[39m | [34mINFO[39m | mean_new_action : -0.10045447200536728
+[32m2021-11-08 at 13:47:18.136[39m | [34mINFO[39m | mean_next_obs : -0.5939359068870544
+[32m2021-11-08 at 13:47:18.137[39m | [34mINFO[39m | mean_next_action : -0.11201553046703339
+[32m2021-11-08 at 13:47:18.138[39m | [34mINFO[39m | mean_alpha_loss : -1.5152442455291748
+[32m2021-11-08 at 13:47:18.138[39m | [34mINFO[39m | mean_actor_loss : 828.788818359375
+average next_obs: -0.40261927247047424
+average reward: 2.3607592582702637
+average uncertainty: 19.714359283447266
+average next_obs: -0.6461310386657715
+average reward: 2.186828136444092
+average uncertainty: 19.632884979248047
+average next_obs: -0.8782953023910522
+average reward: 2.0864219665527344
+average uncertainty: 19.59234619140625
+average next_obs: -1.0841742753982544
+average reward: 1.9185752868652344
+average uncertainty: 19.675357818603516
+average next_obs: -1.2537541389465332
+average reward: 1.837138056755066
+average uncertainty: 19.744125366210938
+[32m2021-11-08 at 13:47:43.943[39m | [34mINFO[39m | Epoch : 9
+[32m2021-11-08 at 13:47:43.945[39m | [34mINFO[39m | Reward_Mean_Env : 26.3726854689018
+[32m2021-11-08 at 13:47:43.947[39m | [34mINFO[39m | Length_Mean_Env : 74.75
+[32m2021-11-08 at 13:47:43.947[39m | [34mINFO[39m | Reward_Mean : 25.779155608335923
+[32m2021-11-08 at 13:47:43.948[39m | [34mINFO[39m | Length_Mean : 75.18
+[32m2021-11-08 at 13:47:43.948[39m | [34mINFO[39m | D4rl_Score : 0.5260701028329308
+[32m2021-11-08 at 13:47:43.949[39m | [34mINFO[39m | uncertainty : 19.744125366210938
+[32m2021-11-08 at 13:47:43.950[39m | [34mINFO[39m | disagreement_uncertainty : 6.8357367515563965
+[32m2021-11-08 at 13:47:43.951[39m | [34mINFO[39m | aleatoric_uncertainty : 19.744125366210938
+[32m2021-11-08 at 13:47:43.951[39m | [34mINFO[39m | reward : 1.837138056755066
+[32m2021-11-08 at 13:47:43.952[39m | [34mINFO[39m | next_obs : -1.2537541389465332
+[32m2021-11-08 at 13:47:43.952[39m | [34mINFO[39m | mean_action_log_prob : 5.98036003112793
+[32m2021-11-08 at 13:47:43.953[39m | [34mINFO[39m | mean_critic_loss : 2568.528564453125
+[32m2021-11-08 at 13:47:43.954[39m | [34mINFO[39m | mean_Qmin : -907.7201538085938
+[32m2021-11-08 at 13:47:43.954[39m | [34mINFO[39m | log_alpha : -1.796952486038208
+[32m2021-11-08 at 13:47:43.955[39m | [34mINFO[39m | mean_obs : -0.36793962121009827
+[32m2021-11-08 at 13:47:43.955[39m | [34mINFO[39m | mean_new_action : 0.029675647616386414
+[32m2021-11-08 at 13:47:43.956[39m | [34mINFO[39m | mean_next_obs : -0.47354361414909363
+[32m2021-11-08 at 13:47:43.956[39m | [34mINFO[39m | mean_next_action : 0.033281903713941574
+[32m2021-11-08 at 13:47:43.957[39m | [34mINFO[39m | mean_alpha_loss : -0.11323191225528717
+[32m2021-11-08 at 13:47:43.957[39m | [34mINFO[39m | mean_actor_loss : 908.7117309570312
+average next_obs: -0.46557772159576416
+average reward: 2.287299394607544
+average uncertainty: 19.93167495727539
+average next_obs: -0.6733119487762451
+average reward: 2.279035806655884
+average uncertainty: 19.9144229888916
+average next_obs: -0.8551901578903198
+average reward: 1.957627773284912
+average uncertainty: 19.9119873046875
+average next_obs: -1.0226918458938599
+average reward: 1.9206193685531616
+average uncertainty: 19.938520431518555
+average next_obs: -1.1678410768508911
+average reward: 1.8216043710708618
+average uncertainty: 19.981115341186523
+[32m2021-11-08 at 13:48:08.854[39m | [34mINFO[39m | Epoch : 10
+[32m2021-11-08 at 13:48:08.855[39m | [34mINFO[39m | Reward_Mean_Env : 11.805747461729203
+[32m2021-11-08 at 13:48:08.858[39m | [34mINFO[39m | Length_Mean_Env : 40.31
+[32m2021-11-08 at 13:48:08.858[39m | [34mINFO[39m | Reward_Mean : 11.382267358842977
+[32m2021-11-08 at 13:48:08.859[39m | [34mINFO[39m | Length_Mean : 39.84
+[32m2021-11-08 at 13:48:08.860[39m | [34mINFO[39m | D4rl_Score : 0.21245825230864152
+[32m2021-11-08 at 13:48:08.860[39m | [34mINFO[39m | uncertainty : 19.981115341186523
+[32m2021-11-08 at 13:48:08.861[39m | [34mINFO[39m | disagreement_uncertainty : 6.331123352050781
+[32m2021-11-08 at 13:48:08.862[39m | [34mINFO[39m | aleatoric_uncertainty : 19.981115341186523
+[32m2021-11-08 at 13:48:08.862[39m | [34mINFO[39m | reward : 1.8216043710708618
+[32m2021-11-08 at 13:48:08.863[39m | [34mINFO[39m | next_obs : -1.1678410768508911
+[32m2021-11-08 at 13:48:08.864[39m | [34mINFO[39m | mean_action_log_prob : 5.949384689331055
+[32m2021-11-08 at 13:48:08.865[39m | [34mINFO[39m | mean_critic_loss : 1862.7972412109375
+[32m2021-11-08 at 13:48:08.865[39m | [34mINFO[39m | mean_Qmin : -1015.7919921875
+[32m2021-11-08 at 13:48:08.866[39m | [34mINFO[39m | log_alpha : -1.906528353691101
+[32m2021-11-08 at 13:48:08.867[39m | [34mINFO[39m | mean_obs : -0.41394397616386414
+[32m2021-11-08 at 13:48:08.868[39m | [34mINFO[39m | mean_new_action : -0.0971335768699646
+[32m2021-11-08 at 13:48:08.868[39m | [34mINFO[39m | mean_next_obs : -0.591015100479126
+[32m2021-11-08 at 13:48:08.869[39m | [34mINFO[39m | mean_next_action : -0.10339035838842392
+[32m2021-11-08 at 13:48:08.870[39m | [34mINFO[39m | mean_alpha_loss : 0.2073344737291336
+[36m(pid=48976)[39m No module named 'flow'ug 23 2021 12:49:13
+[36m(pid=48996)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48996)[39m No module named 'flow'
+[36m(pid=48996)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48996)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48996)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48996)[39m No module named 'carla'
+[36m(pid=48996)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48975)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48975)[39m No module named 'flow'
+[36m(pid=48975)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48975)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48975)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48975)[39m No module named 'carla'
+[36m(pid=48975)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48995)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48995)[39m No module named 'flow'
+[36m(pid=48995)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48995)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48995)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48995)[39m No module named 'carla'
+[36m(pid=48995)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48987)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48987)[39m No module named 'flow'
+[36m(pid=48987)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48987)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48987)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48987)[39m No module named 'carla'
+[36m(pid=48987)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48988)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48988)[39m No module named 'flow'
+[36m(pid=48988)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48988)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48988)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48988)[39m No module named 'carla'
+[36m(pid=48988)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48977)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48977)[39m No module named 'flow'
+[36m(pid=48977)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48977)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48998)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48998)[39m No module named 'flow'
+[36m(pid=48977)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48977)[39m No module named 'carla'
+[36m(pid=48977)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48998)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48998)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48998)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48998)[39m No module named 'carla'
+[36m(pid=48998)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48986)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48986)[39m No module named 'flow'
+[36m(pid=48986)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48986)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48997)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48997)[39m No module named 'flow'
+[36m(pid=48997)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48997)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48986)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48986)[39m No module named 'carla'
+[36m(pid=48986)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48997)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48997)[39m No module named 'carla'
+[36m(pid=48997)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48974)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48974)[39m No module named 'flow'
+[36m(pid=48974)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48974)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48974)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48974)[39m No module named 'carla'
+[36m(pid=48974)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=48976)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48976)[39m No module named 'flow'ug 23 2021 12:49:13
+[36m(pid=48976)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=48976)[39m   warnings.warn(message, GLFWError)
+[36m(pid=48976)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=48976)[39m No module named 'carla'
+[36m(pid=48976)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49228)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49228)[39m No module named 'flow'
+[36m(pid=49228)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49228)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49228)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49228)[39m No module named 'carla'
+[36m(pid=49987)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49227)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49227)[39m No module named 'flow'
+[36m(pid=49227)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49227)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49227)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49227)[39m No module named 'carla'
+[36m(pid=49227)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49226)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49226)[39m No module named 'flow'
+[36m(pid=49226)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49226)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49226)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49226)[39m No module named 'carla'
+[36m(pid=49226)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49958)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49958)[39m No module named 'flow'
+[36m(pid=49958)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49958)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49958)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49958)[39m No module named 'carla'
+[36m(pid=49958)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49977)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49977)[39m No module named 'flow'
+[36m(pid=49977)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49977)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49977)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49977)[39m No module named 'carla'
+[36m(pid=49977)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49981)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49981)[39m No module named 'flow'
+[36m(pid=49981)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49981)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49969)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49969)[39m No module named 'flow'
+[36m(pid=49969)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49969)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49981)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49981)[39m No module named 'carla'
+[36m(pid=49981)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49969)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49969)[39m No module named 'carla'
+[36m(pid=49960)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49960)[39m No module named 'flow'
+[36m(pid=49960)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49960)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49969)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49991)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49991)[39m No module named 'flow'
+[36m(pid=49960)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49960)[39m No module named 'carla'
+[36m(pid=49960)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49991)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49991)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49991)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49991)[39m No module named 'carla'
+[36m(pid=49991)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49964)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49964)[39m No module named 'flow'
+[36m(pid=49964)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49964)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49965)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49965)[39m No module named 'flow'
+[36m(pid=49965)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49965)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49964)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49964)[39m No module named 'carla'
+[36m(pid=49964)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49965)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49965)[39m No module named 'carla'
+[36m(pid=49965)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49984)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49984)[39m No module named 'flow'
+[36m(pid=49984)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49984)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49984)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49984)[39m No module named 'carla'
+[36m(pid=49984)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49987)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49987)[39m No module named 'flow'
+[36m(pid=49987)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49987)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49987)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49987)[39m No module named 'carla'
+[36m(pid=49987)[39m pybullet build time: Aug 23 2021 12:49:13
+average next_obs: -0.6305542588233948
+average reward: 2.2757608890533447
+average uncertainty: 19.943710327148438
+average next_obs: -0.9576411247253418
+average reward: 2.0085535049438477
+average uncertainty: 20.02449607849121
+average next_obs: -1.1741012334823608
+average reward: 1.9050734043121338
+average uncertainty: 20.042348861694336
+average next_obs: -1.333250880241394
+average reward: 1.7500674724578857
+average uncertainty: 20.067190170288086
+average next_obs: -1.463038682937622
+average reward: 1.6950467824935913
+average uncertainty: 20.047021865844727
+[32m2021-11-08 at 13:48:36.182[39m | [34mINFO[39m | Epoch : 11
+[32m2021-11-08 at 13:48:36.183[39m | [34mINFO[39m | Reward_Mean_Env : 22.990473302671344
+[32m2021-11-08 at 13:48:36.186[39m | [34mINFO[39m | Length_Mean_Env : 47.97
+[32m2021-11-08 at 13:48:36.187[39m | [34mINFO[39m | Reward_Mean : 22.80138772192499
+[32m2021-11-08 at 13:48:36.188[39m | [34mINFO[39m | Length_Mean : 47.89
+[32m2021-11-08 at 13:48:36.189[39m | [34mINFO[39m | D4rl_Score : 0.461204467905048
+[32m2021-11-08 at 13:48:36.190[39m | [34mINFO[39m | uncertainty : 20.047021865844727
+[32m2021-11-08 at 13:48:36.190[39m | [34mINFO[39m | disagreement_uncertainty : 9.998165130615234
+[32m2021-11-08 at 13:48:36.191[39m | [34mINFO[39m | aleatoric_uncertainty : 20.047021865844727
+[32m2021-11-08 at 13:48:36.192[39m | [34mINFO[39m | reward : 1.6950467824935913
+[32m2021-11-08 at 13:48:36.193[39m | [34mINFO[39m | next_obs : -1.463038682937622
+[32m2021-11-08 at 13:48:36.193[39m | [34mINFO[39m | mean_action_log_prob : 6.533799171447754
+[32m2021-11-08 at 13:48:36.194[39m | [34mINFO[39m | mean_critic_loss : 2337.404296875
+[32m2021-11-08 at 13:48:36.195[39m | [34mINFO[39m | mean_Qmin : -1074.79443359375
+[32m2021-11-08 at 13:48:36.196[39m | [34mINFO[39m | log_alpha : -1.8086224794387817
+[32m2021-11-08 at 13:48:36.196[39m | [34mINFO[39m | mean_obs : -0.32474422454833984
+[32m2021-11-08 at 13:48:36.197[39m | [34mINFO[39m | mean_new_action : -0.06323011219501495
+[32m2021-11-08 at 13:48:36.197[39m | [34mINFO[39m | mean_next_obs : -0.49699166417121887
+[32m2021-11-08 at 13:48:36.198[39m | [34mINFO[39m | mean_next_action : -0.05918195843696594
+[32m2021-11-08 at 13:48:36.199[39m | [34mINFO[39m | mean_alpha_loss : 1.2109218835830688
+[32m2021-11-08 at 13:48:36.200[39m | [34mINFO[39m | mean_actor_loss : 1075.865234375
+average next_obs: -0.36679500341415405
+average reward: 2.373540163040161
+average uncertainty: 19.699617385864258
+average next_obs: -0.6739209294319153
+average reward: 2.1443209648132324
+average uncertainty: 19.445566177368164
+average next_obs: -0.9497411847114563
+average reward: 1.973839282989502
+average uncertainty: 19.20879364013672
+average next_obs: -1.1471309661865234
+average reward: 2.063765287399292
+average uncertainty: 19.14696502685547
+average next_obs: -1.2744306325912476
+average reward: 1.9057531356811523
+average uncertainty: 19.009180068969727
+[32m2021-11-08 at 13:49:12.521[39m | [34mINFO[39m | Epoch : 12
+[32m2021-11-08 at 13:49:12.522[39m | [34mINFO[39m | Reward_Mean_Env : 0.6543349228235216
+[32m2021-11-08 at 13:49:12.524[39m | [34mINFO[39m | Length_Mean_Env : 115.73
+[32m2021-11-08 at 13:49:12.525[39m | [34mINFO[39m | Reward_Mean : 0.7526625007274161
+[32m2021-11-08 at 13:49:12.525[39m | [34mINFO[39m | Length_Mean : 115.74
+[32m2021-11-08 at 13:49:12.526[39m | [34mINFO[39m | D4rl_Score : -0.019089703897311745
+[32m2021-11-08 at 13:49:12.526[39m | [34mINFO[39m | uncertainty : 19.009180068969727
+[32m2021-11-08 at 13:49:12.527[39m | [34mINFO[39m | disagreement_uncertainty : 4.192241668701172
+[32m2021-11-08 at 13:49:12.527[39m | [34mINFO[39m | aleatoric_uncertainty : 19.009180068969727
+[32m2021-11-08 at 13:49:12.529[39m | [34mINFO[39m | reward : 1.9057531356811523
+[32m2021-11-08 at 13:49:12.529[39m | [34mINFO[39m | next_obs : -1.2744306325912476
+[32m2021-11-08 at 13:49:12.530[39m | [34mINFO[39m | mean_action_log_prob : 7.526069641113281
+[32m2021-11-08 at 13:49:12.530[39m | [34mINFO[39m | mean_critic_loss : 2823.44580078125
+[32m2021-11-08 at 13:49:12.531[39m | [34mINFO[39m | mean_Qmin : -1132.823486328125
+[32m2021-11-08 at 13:49:12.532[39m | [34mINFO[39m | log_alpha : -1.573262333869934
+[32m2021-11-08 at 13:49:12.533[39m | [34mINFO[39m | mean_obs : -0.7190973162651062
+[32m2021-11-08 at 13:49:12.533[39m | [34mINFO[39m | mean_new_action : 0.41819143295288086
+[32m2021-11-08 at 13:49:12.533[39m | [34mINFO[39m | mean_next_obs : -0.9747416377067566
+[32m2021-11-08 at 13:49:12.534[39m | [34mINFO[39m | mean_next_action : 0.37354588508605957
+[32m2021-11-08 at 13:49:12.534[39m | [34mINFO[39m | mean_alpha_loss : 1.4206379652023315
+[32m2021-11-08 at 13:49:12.535[39m | [34mINFO[39m | mean_actor_loss : 1134.3841552734375
+average next_obs: 0.18977317214012146
+average reward: 2.5754129886627197
+average uncertainty: 19.754505157470703
+average next_obs: 0.3314732313156128
+average reward: 2.4997317790985107
+average uncertainty: 19.834077835083008
+average next_obs: 0.41704756021499634
+average reward: 2.4730916023254395
+average uncertainty: 20.03087615966797
+average next_obs: 0.45875266194343567
+average reward: 2.5468060970306396
+average uncertainty: 20.240163803100586
+average next_obs: 0.47351840138435364
+average reward: 2.5585005283355713
+average uncertainty: 20.418296813964844
+[32m2021-11-08 at 13:49:32.467[39m | [34mINFO[39m | Epoch : 13
+[32m2021-11-08 at 13:49:32.469[39m | [34mINFO[39m | Reward_Mean_Env : 6.424965152724077
+[32m2021-11-08 at 13:49:32.470[39m | [34mINFO[39m | Length_Mean_Env : 32.64
+[32m2021-11-08 at 13:49:32.471[39m | [34mINFO[39m | Reward_Mean : 6.142458751220863
+[32m2021-11-08 at 13:49:32.471[39m | [34mINFO[39m | Length_Mean : 32.4
+[32m2021-11-08 at 13:49:32.472[39m | [34mINFO[39m | D4rl_Score : 0.09831788771371971
+[32m2021-11-08 at 13:49:32.472[39m | [34mINFO[39m | uncertainty : 20.418296813964844
+[32m2021-11-08 at 13:49:32.473[39m | [34mINFO[39m | disagreement_uncertainty : 3.0975911617279053
+[32m2021-11-08 at 13:49:32.473[39m | [34mINFO[39m | aleatoric_uncertainty : 20.418296813964844
+[32m2021-11-08 at 13:49:32.475[39m | [34mINFO[39m | reward : 2.5585005283355713
+[32m2021-11-08 at 13:49:32.475[39m | [34mINFO[39m | next_obs : 0.47351840138435364
+[32m2021-11-08 at 13:49:32.476[39m | [34mINFO[39m | mean_action_log_prob : 6.346828460693359
+[32m2021-11-08 at 13:49:32.476[39m | [34mINFO[39m | mean_critic_loss : 5582.0712890625
+[32m2021-11-08 at 13:49:32.476[39m | [34mINFO[39m | mean_Qmin : -1212.3079833984375
+[32m2021-11-08 at 13:49:32.477[39m | [34mINFO[39m | log_alpha : -1.7501471042633057
+[32m2021-11-08 at 13:49:32.477[39m | [34mINFO[39m | mean_obs : -0.4857604205608368
+[32m2021-11-08 at 13:49:32.478[39m | [34mINFO[39m | mean_new_action : 0.09276747703552246
+[32m2021-11-08 at 13:49:32.478[39m | [34mINFO[39m | mean_next_obs : -0.6013524532318115
+[32m2021-11-08 at 13:49:32.479[39m | [34mINFO[39m | mean_next_action : 0.07249991595745087
+[32m2021-11-08 at 13:49:32.480[39m | [34mINFO[39m | mean_alpha_loss : 0.8631399273872375
+[32m2021-11-08 at 13:49:32.480[39m | [34mINFO[39m | mean_actor_loss : 1213.4107666015625
+average next_obs: -0.15058712661266327
+average reward: 2.529757499694824
+average uncertainty: 19.69382667541504
+average next_obs: -0.36065754294395447
+average reward: 2.332979917526245
+average uncertainty: 19.537647247314453
+average next_obs: -0.5975505113601685
+average reward: 2.4561476707458496
+average uncertainty: 19.443096160888672
+average next_obs: -0.7833362221717834
+average reward: 2.241791248321533
+average uncertainty: 19.375171661376953
+average next_obs: -0.928771436214447
+average reward: 2.129706859588623
+average uncertainty: 19.34249496459961
+[32m2021-11-08 at 13:49:50.329[39m | [34mINFO[39m | Epoch : 14
+[32m2021-11-08 at 13:49:50.330[39m | [34mINFO[39m | Reward_Mean_Env : -11.050906963822886
+[32m2021-11-08 at 13:49:50.333[39m | [34mINFO[39m | Length_Mean_Env : 16.0
+[32m2021-11-08 at 13:49:50.334[39m | [34mINFO[39m | Reward_Mean : -11.06554688867561
+[32m2021-11-08 at 13:49:50.335[39m | [34mINFO[39m | Length_Mean : 16.0
+[32m2021-11-08 at 13:49:50.336[39m | [34mINFO[39m | D4rl_Score : -0.2765293986608485
+[32m2021-11-08 at 13:49:50.336[39m | [34mINFO[39m | uncertainty : 19.34249496459961
+[32m2021-11-08 at 13:49:50.337[39m | [34mINFO[39m | disagreement_uncertainty : 3.9272449016571045
+[32m2021-11-08 at 13:49:50.337[39m | [34mINFO[39m | aleatoric_uncertainty : 19.34249496459961
+[32m2021-11-08 at 13:49:50.338[39m | [34mINFO[39m | reward : 2.129706859588623
+[32m2021-11-08 at 13:49:50.339[39m | [34mINFO[39m | next_obs : -0.928771436214447
+[32m2021-11-08 at 13:49:50.340[39m | [34mINFO[39m | mean_action_log_prob : 6.524240016937256
+[32m2021-11-08 at 13:49:50.340[39m | [34mINFO[39m | mean_critic_loss : 2635.78369140625
+[32m2021-11-08 at 13:49:50.340[39m | [34mINFO[39m | mean_Qmin : -1318.8822021484375
+[32m2021-11-08 at 13:49:50.341[39m | [34mINFO[39m | log_alpha : -1.6707221269607544
+[32m2021-11-08 at 13:49:50.342[39m | [34mINFO[39m | mean_obs : -0.32459959387779236
+[32m2021-11-08 at 13:49:50.343[39m | [34mINFO[39m | mean_new_action : 0.00046307346201501787
+[32m2021-11-08 at 13:49:50.343[39m | [34mINFO[39m | mean_next_obs : -0.5039564967155457
+[32m2021-11-08 at 13:49:50.344[39m | [34mINFO[39m | mean_next_action : -0.040023792535066605
+[32m2021-11-08 at 13:49:50.344[39m | [34mINFO[39m | mean_alpha_loss : 0.9679925441741943
+[32m2021-11-08 at 13:49:50.345[39m | [34mINFO[39m | mean_actor_loss : 1320.1094970703125
+average next_obs: -0.27340224385261536
+average reward: 2.4250600337982178
+average uncertainty: 19.681184768676758
+average next_obs: -0.4867214560508728
+average reward: 2.232532024383545
+average uncertainty: 19.578393936157227
+average next_obs: -0.6890053153038025
+average reward: 2.1601545810699463
+average uncertainty: 19.42291259765625
+average next_obs: -0.8858783841133118
+average reward: 1.9959205389022827
+average uncertainty: 19.209306716918945
+average next_obs: -1.0594656467437744
+average reward: 1.9694983959197998
+average uncertainty: 19.099308013916016
+[32m2021-11-08 at 13:50:11.308[39m | [34mINFO[39m | Epoch : 15
+[32m2021-11-08 at 13:50:11.309[39m | [34mINFO[39m | Reward_Mean_Env : 5.347854873044122
+[32m2021-11-08 at 13:50:11.312[39m | [34mINFO[39m | Length_Mean_Env : 43.34
+[32m2021-11-08 at 13:50:11.313[39m | [34mINFO[39m | Reward_Mean : 5.3055556894272025
+[32m2021-11-08 at 13:50:11.313[39m | [34mINFO[39m | Length_Mean : 43.32
+[32m2021-11-08 at 13:50:11.314[39m | [34mINFO[39m | D4rl_Score : 0.08008737057903283
+[32m2021-11-08 at 13:50:11.315[39m | [34mINFO[39m | uncertainty : 19.099308013916016
+[32m2021-11-08 at 13:50:11.316[39m | [34mINFO[39m | disagreement_uncertainty : 4.359289169311523
+[32m2021-11-08 at 13:50:11.316[39m | [34mINFO[39m | aleatoric_uncertainty : 19.099308013916016
+[32m2021-11-08 at 13:50:11.321[39m | [34mINFO[39m | reward : 1.9694983959197998
+[32m2021-11-08 at 13:50:11.322[39m | [34mINFO[39m | next_obs : -1.0594656467437744
+[32m2021-11-08 at 13:50:11.323[39m | [34mINFO[39m | mean_action_log_prob : 6.768484115600586
+[32m2021-11-08 at 13:50:11.323[39m | [34mINFO[39m | mean_critic_loss : 2243.196044921875
+[32m2021-11-08 at 13:50:11.324[39m | [34mINFO[39m | mean_Qmin : -1345.9364013671875
+[32m2021-11-08 at 13:50:11.324[39m | [34mINFO[39m | log_alpha : -1.4916949272155762
+[32m2021-11-08 at 13:50:11.325[39m | [34mINFO[39m | mean_obs : -0.4535890519618988
+[32m2021-11-08 at 13:50:11.326[39m | [34mINFO[39m | mean_new_action : 0.13036909699440002
+[32m2021-11-08 at 13:50:11.326[39m | [34mINFO[39m | mean_next_obs : -0.6200094819068909
+[32m2021-11-08 at 13:50:11.327[39m | [34mINFO[39m | mean_next_action : 0.10420066118240356
+[32m2021-11-08 at 13:50:11.327[39m | [34mINFO[39m | mean_alpha_loss : 1.2277610301971436
+[32m2021-11-08 at 13:50:11.328[39m | [34mINFO[39m | mean_actor_loss : 1347.459228515625
+average next_obs: -0.17090147733688354
+average reward: 2.478574275970459
+average uncertainty: 19.82034683227539
+average next_obs: -0.28940266370773315
+average reward: 2.326800584793091
+average uncertainty: 19.735322952270508
+average next_obs: -0.4541051685810089
+average reward: 2.326235294342041
+average uncertainty: 19.640396118164062
+average next_obs: -0.6365922689437866
+average reward: 2.212635040283203
+average uncertainty: 19.558734893798828
+average next_obs: -0.8095452189445496
+average reward: 2.1196348667144775
+average uncertainty: 19.46505355834961
+[32m2021-11-08 at 13:50:29.695[39m | [34mINFO[39m | Epoch : 16
+[32m2021-11-08 at 13:50:29.696[39m | [34mINFO[39m | Reward_Mean_Env : -6.269701289763523
+[32m2021-11-08 at 13:50:29.698[39m | [34mINFO[39m | Length_Mean_Env : 20.0
+[32m2021-11-08 at 13:50:29.698[39m | [34mINFO[39m | Reward_Mean : -6.330697042662564
+[32m2021-11-08 at 13:50:29.699[39m | [34mINFO[39m | Length_Mean : 20.01
+[32m2021-11-08 at 13:50:29.699[39m | [34mINFO[39m | D4rl_Score : -0.1733887062813619
+[32m2021-11-08 at 13:50:29.700[39m | [34mINFO[39m | uncertainty : 19.46505355834961
+[32m2021-11-08 at 13:50:29.701[39m | [34mINFO[39m | disagreement_uncertainty : 4.1750640869140625
+[32m2021-11-08 at 13:50:29.702[39m | [34mINFO[39m | aleatoric_uncertainty : 19.46505355834961
+[32m2021-11-08 at 13:50:29.702[39m | [34mINFO[39m | reward : 2.1196348667144775
+[32m2021-11-08 at 13:50:29.703[39m | [34mINFO[39m | next_obs : -0.8095452189445496
+[32m2021-11-08 at 13:50:29.703[39m | [34mINFO[39m | mean_action_log_prob : 6.555936336517334
+[32m2021-11-08 at 13:50:29.703[39m | [34mINFO[39m | mean_critic_loss : 2398.849365234375
+[32m2021-11-08 at 13:50:29.704[39m | [34mINFO[39m | mean_Qmin : -1432.69287109375
+[32m2021-11-08 at 13:50:29.705[39m | [34mINFO[39m | log_alpha : -1.5626006126403809
+[32m2021-11-08 at 13:50:29.706[39m | [34mINFO[39m | mean_obs : -0.3703211545944214
+[32m2021-11-08 at 13:50:29.706[39m | [34mINFO[39m | mean_new_action : 0.08915707468986511
+[32m2021-11-08 at 13:50:29.707[39m | [34mINFO[39m | mean_next_obs : -0.5134099125862122
+[32m2021-11-08 at 13:50:29.707[39m | [34mINFO[39m | mean_next_action : 0.09218176454305649
+[32m2021-11-08 at 13:50:29.708[39m | [34mINFO[39m | mean_alpha_loss : 0.3949998617172241
+[32m2021-11-08 at 13:50:29.709[39m | [34mINFO[39m | mean_actor_loss : 1434.06689453125
+average next_obs: -0.2672257125377655
+average reward: 2.5174806118011475
+average uncertainty: 19.75666618347168
+average next_obs: -0.4765235483646393
+average reward: 2.292757272720337
+average uncertainty: 19.690227508544922
+average next_obs: -0.6555747985839844
+average reward: 2.2146244049072266
+average uncertainty: 19.697166442871094
+average next_obs: -0.8096048831939697
+average reward: 2.1313514709472656
+average uncertainty: 19.72970199584961
+average next_obs: -0.9483879804611206
+average reward: 2.078098773956299
+average uncertainty: 19.657367706298828
+[32m2021-11-08 at 13:50:56.469[39m | [34mINFO[39m | Epoch : 17
+[32m2021-11-08 at 13:50:56.470[39m | [34mINFO[39m | Reward_Mean_Env : 31.920633588949087
+[32m2021-11-08 at 13:50:56.474[39m | [34mINFO[39m | Length_Mean_Env : 63.55
+[32m2021-11-08 at 13:50:56.474[39m | [34mINFO[39m | Reward_Mean : 22.62134590322387
+[32m2021-11-08 at 13:50:56.475[39m | [34mINFO[39m | Length_Mean : 54.15
+[32m2021-11-08 at 13:50:56.475[39m | [34mINFO[39m | D4rl_Score : 0.45728256152110386
+[32m2021-11-08 at 13:50:56.475[39m | [34mINFO[39m | uncertainty : 19.657367706298828
+[32m2021-11-08 at 13:50:56.476[39m | [34mINFO[39m | disagreement_uncertainty : 5.037065029144287
+[32m2021-11-08 at 13:50:56.477[39m | [34mINFO[39m | aleatoric_uncertainty : 19.657367706298828
+[32m2021-11-08 at 13:50:56.478[39m | [34mINFO[39m | reward : 2.078098773956299
+[32m2021-11-08 at 13:50:56.478[39m | [34mINFO[39m | next_obs : -0.9483879804611206
+[32m2021-11-08 at 13:50:56.479[39m | [34mINFO[39m | mean_action_log_prob : 5.539178848266602
+[32m2021-11-08 at 13:50:56.480[39m | [34mINFO[39m | mean_critic_loss : 3426.145751953125
+[32m2021-11-08 at 13:50:56.481[39m | [34mINFO[39m | mean_Qmin : -1487.0439453125
+[32m2021-11-08 at 13:50:56.481[39m | [34mINFO[39m | log_alpha : -1.4427703619003296
+[32m2021-11-08 at 13:50:56.482[39m | [34mINFO[39m | mean_obs : -0.3251197040081024
+[32m2021-11-08 at 13:50:56.482[39m | [34mINFO[39m | mean_new_action : 0.11470745503902435
+[32m2021-11-08 at 13:50:56.483[39m | [34mINFO[39m | mean_next_obs : -0.4908851087093353
+[32m2021-11-08 at 13:50:56.483[39m | [34mINFO[39m | mean_next_action : 0.11506082862615585
+[32m2021-11-08 at 13:50:56.483[39m | [34mINFO[39m | mean_alpha_loss : -0.25370848178863525
+[32m2021-11-08 at 13:50:56.484[39m | [34mINFO[39m | mean_actor_loss : 1488.3526611328125
+average next_obs: -0.11138228327035904
+average reward: 2.541376829147339
+average uncertainty: 19.557594299316406
+average next_obs: -0.22329993546009064
+average reward: 2.3411173820495605
+average uncertainty: 19.390365600585938
+average next_obs: -0.3980342149734497
+average reward: 2.222991704940796
+average uncertainty: 19.28534698486328
+average next_obs: -0.5845918655395508
+average reward: 2.0977954864501953
+average uncertainty: 19.316814422607422
+average next_obs: -0.7573139071464539
+average reward: 2.0880212783813477
+average uncertainty: 19.355077743530273
+[32m2021-11-08 at 13:51:23.743[39m | [34mINFO[39m | Epoch : 18
+[32m2021-11-08 at 13:51:23.745[39m | [34mINFO[39m | Reward_Mean_Env : -3.7412209494118303
+[32m2021-11-08 at 13:51:23.747[39m | [34mINFO[39m | Length_Mean_Env : 65.24
+[32m2021-11-08 at 13:51:23.747[39m | [34mINFO[39m | Reward_Mean : -1.264921738206317
+[32m2021-11-08 at 13:51:23.748[39m | [34mINFO[39m | Length_Mean : 66.48
+[32m2021-11-08 at 13:51:23.748[39m | [34mINFO[39m | D4rl_Score : -0.06303936272604736
+[32m2021-11-08 at 13:51:23.750[39m | [34mINFO[39m | uncertainty : 19.355077743530273
+[32m2021-11-08 at 13:51:23.750[39m | [34mINFO[39m | disagreement_uncertainty : 4.8899946212768555
+[32m2021-11-08 at 13:51:23.751[39m | [34mINFO[39m | aleatoric_uncertainty : 19.355077743530273
+[32m2021-11-08 at 13:51:23.751[39m | [34mINFO[39m | reward : 2.0880212783813477
+[32m2021-11-08 at 13:51:23.752[39m | [34mINFO[39m | next_obs : -0.7573139071464539
+[32m2021-11-08 at 13:51:23.753[39m | [34mINFO[39m | mean_action_log_prob : 6.853482246398926
+[32m2021-11-08 at 13:51:23.753[39m | [34mINFO[39m | mean_critic_loss : 2304.270263671875
+[32m2021-11-08 at 13:51:23.754[39m | [34mINFO[39m | mean_Qmin : -1541.248291015625
+[32m2021-11-08 at 13:51:23.754[39m | [34mINFO[39m | log_alpha : -1.5140447616577148
+[32m2021-11-08 at 13:51:23.755[39m | [34mINFO[39m | mean_obs : -0.23602603375911713
+[32m2021-11-08 at 13:51:23.756[39m | [34mINFO[39m | mean_new_action : 0.34584522247314453
+[32m2021-11-08 at 13:51:23.757[39m | [34mINFO[39m | mean_next_obs : -0.4019487202167511
+[32m2021-11-08 at 13:51:23.758[39m | [34mINFO[39m | mean_next_action : 0.3150824308395386
+[32m2021-11-08 at 13:51:23.759[39m | [34mINFO[39m | mean_alpha_loss : 0.5677428841590881
+[32m2021-11-08 at 13:51:23.759[39m | [34mINFO[39m | mean_actor_loss : 1542.7562255859375
+average next_obs: 0.10009374469518661
+average reward: 2.666294574737549
+average uncertainty: 19.87086296081543
+average next_obs: 0.19192185997962952
+average reward: 2.459946870803833
+average uncertainty: 19.937419891357422
+average next_obs: 0.23981308937072754
+average reward: 2.495936155319214
+average uncertainty: 20.120662689208984
+average next_obs: 0.26035261154174805
+average reward: 2.6085166931152344
+average uncertainty: 20.307918548583984
+average next_obs: 0.27231183648109436
+average reward: 2.5664398670196533
+average uncertainty: 20.46986961364746
+[32m2021-11-08 at 13:51:50.521[39m | [34mINFO[39m | Epoch : 19
+[32m2021-11-08 at 13:51:50.523[39m | [34mINFO[39m | Reward_Mean_Env : 14.795191183961776
+[32m2021-11-08 at 13:51:50.525[39m | [34mINFO[39m | Length_Mean_Env : 46.59
+[32m2021-11-08 at 13:51:50.526[39m | [34mINFO[39m | Reward_Mean : 14.900224682635189
+[32m2021-11-08 at 13:51:50.527[39m | [34mINFO[39m | Length_Mean : 46.55
+[32m2021-11-08 at 13:51:50.527[39m | [34mINFO[39m | D4rl_Score : 0.28909100011223776
+[32m2021-11-08 at 13:51:50.528[39m | [34mINFO[39m | uncertainty : 20.46986961364746
+[32m2021-11-08 at 13:51:50.529[39m | [34mINFO[39m | disagreement_uncertainty : 3.2298049926757812
+[32m2021-11-08 at 13:51:50.530[39m | [34mINFO[39m | aleatoric_uncertainty : 20.46986961364746
+[32m2021-11-08 at 13:51:50.531[39m | [34mINFO[39m | reward : 2.5664398670196533
+[32m2021-11-08 at 13:51:50.531[39m | [34mINFO[39m | next_obs : 0.27231183648109436
+[32m2021-11-08 at 13:51:50.532[39m | [34mINFO[39m | mean_action_log_prob : 4.894820690155029
+[32m2021-11-08 at 13:51:50.533[39m | [34mINFO[39m | mean_critic_loss : 2239.330078125
+[32m2021-11-08 at 13:51:50.534[39m | [34mINFO[39m | mean_Qmin : -1611.464111328125
+[32m2021-11-08 at 13:51:50.534[39m | [34mINFO[39m | log_alpha : -1.6724627017974854
+[32m2021-11-08 at 13:51:50.535[39m | [34mINFO[39m | mean_obs : -0.29655757546424866
+[32m2021-11-08 at 13:51:50.536[39m | [34mINFO[39m | mean_new_action : 0.08646298944950104
+[32m2021-11-08 at 13:51:50.536[39m | [34mINFO[39m | mean_next_obs : -0.42771151661872864
+[32m2021-11-08 at 13:51:50.537[39m | [34mINFO[39m | mean_next_action : 0.024092121049761772
+[32m2021-11-08 at 13:51:50.538[39m | [34mINFO[39m | mean_alpha_loss : -1.104021668434143
+[36m(pid=53529)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49982)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49982)[39m No module named 'flow'
+[36m(pid=49982)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49982)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49982)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49982)[39m No module named 'carla'
+[36m(pid=49982)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=49972)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49972)[39m No module named 'flow'
+[36m(pid=49972)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=49972)[39m   warnings.warn(message, GLFWError)
+[36m(pid=49972)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=49972)[39m No module named 'carla'
+[36m(pid=49972)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52463)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52463)[39m No module named 'flow'
+[36m(pid=52463)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52463)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52466)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52466)[39m No module named 'flow'
+[36m(pid=52466)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52466)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52463)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52463)[39m No module named 'carla'
+[36m(pid=52463)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52466)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52466)[39m No module named 'carla'
+[36m(pid=52466)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52468)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52468)[39m No module named 'flow'
+[36m(pid=52468)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52468)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52468)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52468)[39m No module named 'carla'
+[36m(pid=52468)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52470)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52470)[39m No module named 'flow'
+[36m(pid=52470)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52470)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52470)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52470)[39m No module named 'carla'
+[36m(pid=52470)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52464)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52464)[39m No module named 'flow'
+[36m(pid=52464)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52464)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52464)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52464)[39m No module named 'carla'
+[36m(pid=52464)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52465)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52465)[39m No module named 'flow'
+[36m(pid=52465)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52465)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52465)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52465)[39m No module named 'carla'
+[36m(pid=52465)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52467)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52467)[39m No module named 'flow'
+[36m(pid=52467)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52467)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52467)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52467)[39m No module named 'carla'
+[36m(pid=52467)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52462)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52462)[39m No module named 'flow'
+[36m(pid=52462)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52462)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52462)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52462)[39m No module named 'carla'
+[36m(pid=52462)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=52469)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52469)[39m No module named 'flow'
+[36m(pid=52469)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=52469)[39m   warnings.warn(message, GLFWError)
+[36m(pid=52469)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=52469)[39m No module named 'carla'
+[36m(pid=52469)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53529)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53529)[39m No module named 'flow'
+[36m(pid=53529)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53529)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53529)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53529)[39m No module named 'carla'
+[36m(pid=53529)[39m pybullet build time: Aug 23 2021 12:49:13
+average next_obs: -0.11297283321619034
+average reward: 2.6877834796905518
+average uncertainty: 19.634279251098633
+average next_obs: -0.2224135398864746
+average reward: 2.547611713409424
+average uncertainty: 19.478721618652344
+average next_obs: -0.37669992446899414
+average reward: 2.365316152572632
+average uncertainty: 19.267990112304688
+average next_obs: -0.5668882727622986
+average reward: 2.3080458641052246
+average uncertainty: 19.053129196166992
+average next_obs: -0.7613182663917542
+average reward: 2.009345531463623
+average uncertainty: 18.913955688476562
+[32m2021-11-08 at 13:52:19.694[39m | [34mINFO[39m | Epoch : 20
+[32m2021-11-08 at 13:52:19.696[39m | [34mINFO[39m | Reward_Mean_Env : 48.585644703709846
+[32m2021-11-08 at 13:52:19.698[39m | [34mINFO[39m | Length_Mean_Env : 57.7
+[32m2021-11-08 at 13:52:19.698[39m | [34mINFO[39m | Reward_Mean : 49.2316809837157
+[32m2021-11-08 at 13:52:19.699[39m | [34mINFO[39m | Length_Mean : 60.92
+[32m2021-11-08 at 13:52:19.699[39m | [34mINFO[39m | D4rl_Score : 1.036943685719826
+[32m2021-11-08 at 13:52:19.699[39m | [34mINFO[39m | uncertainty : 18.913955688476562
+[32m2021-11-08 at 13:52:19.700[39m | [34mINFO[39m | disagreement_uncertainty : 3.3454811573028564
+[32m2021-11-08 at 13:52:19.701[39m | [34mINFO[39m | aleatoric_uncertainty : 18.913955688476562
+[32m2021-11-08 at 13:52:19.702[39m | [34mINFO[39m | reward : 2.009345531463623
+[32m2021-11-08 at 13:52:19.702[39m | [34mINFO[39m | next_obs : -0.7613182663917542
+[32m2021-11-08 at 13:52:19.703[39m | [34mINFO[39m | mean_action_log_prob : 5.655320644378662
+[32m2021-11-08 at 13:52:19.703[39m | [34mINFO[39m | mean_critic_loss : 3302.6884765625
+[32m2021-11-08 at 13:52:19.703[39m | [34mINFO[39m | mean_Qmin : -1632.638671875
+[32m2021-11-08 at 13:52:19.704[39m | [34mINFO[39m | log_alpha : -1.6790903806686401
+[32m2021-11-08 at 13:52:19.704[39m | [34mINFO[39m | mean_obs : -0.2822886109352112
+[32m2021-11-08 at 13:52:19.705[39m | [34mINFO[39m | mean_new_action : 0.10780849307775497
+[32m2021-11-08 at 13:52:19.706[39m | [34mINFO[39m | mean_next_obs : -0.3549537658691406
+[32m2021-11-08 at 13:52:19.707[39m | [34mINFO[39m | mean_next_action : 0.0817101001739502
+[32m2021-11-08 at 13:52:19.707[39m | [34mINFO[39m | mean_alpha_loss : -0.7923778295516968
+[32m2021-11-08 at 13:52:19.707[39m | [34mINFO[39m | mean_actor_loss : 1633.693603515625
+average next_obs: -0.23380622267723083
+average reward: 2.4689011573791504
+average uncertainty: 19.53336524963379
+average next_obs: -0.35731709003448486
+average reward: 2.40864896774292
+average uncertainty: 19.587621688842773
+average next_obs: -0.4468400776386261
+average reward: 2.1904819011688232
+average uncertainty: 19.60388946533203
+average next_obs: -0.52101731300354
+average reward: 2.32354998588562
+average uncertainty: 19.604385375976562
+average next_obs: -0.595223605632782
+average reward: 2.1933276653289795
+average uncertainty: 19.604576110839844
+[32m2021-11-08 at 13:52:40.450[39m | [34mINFO[39m | Epoch : 21
+[32m2021-11-08 at 13:52:40.452[39m | [34mINFO[39m | Reward_Mean_Env : 1.687038577655502
+[32m2021-11-08 at 13:52:40.453[39m | [34mINFO[39m | Length_Mean_Env : 26.1
+[32m2021-11-08 at 13:52:40.454[39m | [34mINFO[39m | Reward_Mean : 1.6892082236549744
+[32m2021-11-08 at 13:52:40.454[39m | [34mINFO[39m | Length_Mean : 26.12
+[32m2021-11-08 at 13:52:40.455[39m | [34mINFO[39m | D4rl_Score : 0.0013113600116384544
+[32m2021-11-08 at 13:52:40.455[39m | [34mINFO[39m | uncertainty : 19.604576110839844
+[32m2021-11-08 at 13:52:40.456[39m | [34mINFO[39m | disagreement_uncertainty : 5.0650835037231445
+[32m2021-11-08 at 13:52:40.457[39m | [34mINFO[39m | aleatoric_uncertainty : 19.604576110839844
+[32m2021-11-08 at 13:52:40.458[39m | [34mINFO[39m | reward : 2.1933276653289795
+[32m2021-11-08 at 13:52:40.459[39m | [34mINFO[39m | next_obs : -0.595223605632782
+[32m2021-11-08 at 13:52:40.459[39m | [34mINFO[39m | mean_action_log_prob : 6.399868965148926
+[32m2021-11-08 at 13:52:40.460[39m | [34mINFO[39m | mean_critic_loss : 4501.54296875
+[32m2021-11-08 at 13:52:40.461[39m | [34mINFO[39m | mean_Qmin : -1704.029296875
+[32m2021-11-08 at 13:52:40.462[39m | [34mINFO[39m | log_alpha : -1.6581674814224243
+[32m2021-11-08 at 13:52:40.462[39m | [34mINFO[39m | mean_obs : -0.23886388540267944
+[32m2021-11-08 at 13:52:40.463[39m | [34mINFO[39m | mean_new_action : 0.07266565412282944
+[32m2021-11-08 at 13:52:40.463[39m | [34mINFO[39m | mean_next_obs : -0.3483295440673828
+[32m2021-11-08 at 13:52:40.465[39m | [34mINFO[39m | mean_next_action : 0.05444089323282242
+[32m2021-11-08 at 13:52:40.465[39m | [34mINFO[39m | mean_alpha_loss : 0.19456696510314941
+[32m2021-11-08 at 13:52:40.466[39m | [34mINFO[39m | mean_actor_loss : 1705.2484130859375
+average next_obs: -0.17255353927612305
+average reward: 2.376939535140991
+average uncertainty: 19.719942092895508
+average next_obs: -0.3351198136806488
+average reward: 2.4924261569976807
+average uncertainty: 19.6751766204834
+average next_obs: -0.5181424617767334
+average reward: 2.2125203609466553
+average uncertainty: 19.55967140197754
+average next_obs: -0.7119794487953186
+average reward: 2.2647509574890137
+average uncertainty: 19.386734008789062
+average next_obs: -0.8958329558372498
+average reward: 2.115211009979248
+average uncertainty: 19.209196090698242
+[32m2021-11-08 at 13:52:59.363[39m | [34mINFO[39m | Epoch : 22
+[32m2021-11-08 at 13:52:59.364[39m | [34mINFO[39m | Reward_Mean_Env : 13.68955137323295
+[32m2021-11-08 at 13:52:59.366[39m | [34mINFO[39m | Length_Mean_Env : 29.21
+[32m2021-11-08 at 13:52:59.366[39m | [34mINFO[39m | Reward_Mean : 13.581569201344198
+[32m2021-11-08 at 13:52:59.367[39m | [34mINFO[39m | Length_Mean : 29.17
+[32m2021-11-08 at 13:52:59.367[39m | [34mINFO[39m | D4rl_Score : 0.260366321659154
+[32m2021-11-08 at 13:52:59.368[39m | [34mINFO[39m | uncertainty : 19.209196090698242
+[32m2021-11-08 at 13:52:59.369[39m | [34mINFO[39m | disagreement_uncertainty : 4.935242176055908
+[32m2021-11-08 at 13:52:59.370[39m | [34mINFO[39m | aleatoric_uncertainty : 19.209196090698242
+[32m2021-11-08 at 13:52:59.370[39m | [34mINFO[39m | reward : 2.115211009979248
+[32m2021-11-08 at 13:52:59.370[39m | [34mINFO[39m | next_obs : -0.8958329558372498
+[32m2021-11-08 at 13:52:59.371[39m | [34mINFO[39m | mean_action_log_prob : 5.5418901443481445
+[32m2021-11-08 at 13:52:59.372[39m | [34mINFO[39m | mean_critic_loss : 2269.890625
+[32m2021-11-08 at 13:52:59.373[39m | [34mINFO[39m | mean_Qmin : -1766.208984375
+[32m2021-11-08 at 13:52:59.373[39m | [34mINFO[39m | log_alpha : -1.649975061416626
+[32m2021-11-08 at 13:52:59.374[39m | [34mINFO[39m | mean_obs : -0.2396910935640335
+[32m2021-11-08 at 13:52:59.374[39m | [34mINFO[39m | mean_new_action : 0.14401975274085999
+[32m2021-11-08 at 13:52:59.375[39m | [34mINFO[39m | mean_next_obs : -0.32774052023887634
+[32m2021-11-08 at 13:52:59.376[39m | [34mINFO[39m | mean_next_action : 0.13704992830753326
+[32m2021-11-08 at 13:52:59.376[39m | [34mINFO[39m | mean_alpha_loss : -0.2754864990711212
+[32m2021-11-08 at 13:52:59.377[39m | [34mINFO[39m | mean_actor_loss : 1767.2733154296875
+average next_obs: -0.2601926326751709
+average reward: 2.3234565258026123
+average uncertainty: 19.595748901367188
+average next_obs: -0.44963499903678894
+average reward: 2.431302547454834
+average uncertainty: 19.604475021362305
+average next_obs: -0.6082481741905212
+average reward: 2.2963168621063232
+average uncertainty: 19.55380630493164
+average next_obs: -0.7483270764350891
+average reward: 2.098431348800659
+average uncertainty: 19.570098876953125
+average next_obs: -0.877437949180603
+average reward: 2.076585292816162
+average uncertainty: 19.68988037109375
+[32m2021-11-08 at 13:53:19.030[39m | [34mINFO[39m | Epoch : 23
+[32m2021-11-08 at 13:53:19.031[39m | [34mINFO[39m | Reward_Mean_Env : 6.434023948170457
+[32m2021-11-08 at 13:53:19.033[39m | [34mINFO[39m | Length_Mean_Env : 37.81
+[32m2021-11-08 at 13:53:19.034[39m | [34mINFO[39m | Reward_Mean : 6.504135985682659
+[32m2021-11-08 at 13:53:19.034[39m | [34mINFO[39m | Length_Mean : 37.81
+[32m2021-11-08 at 13:53:19.035[39m | [34mINFO[39m | D4rl_Score : 0.10619641429713374
+[32m2021-11-08 at 13:53:19.035[39m | [34mINFO[39m | uncertainty : 19.68988037109375
+[32m2021-11-08 at 13:53:19.036[39m | [34mINFO[39m | disagreement_uncertainty : 5.16991662979126
+[32m2021-11-08 at 13:53:19.036[39m | [34mINFO[39m | aleatoric_uncertainty : 19.68988037109375
+[32m2021-11-08 at 13:53:19.036[39m | [34mINFO[39m | reward : 2.076585292816162
+[32m2021-11-08 at 13:53:19.037[39m | [34mINFO[39m | next_obs : -0.877437949180603
+[32m2021-11-08 at 13:53:19.037[39m | [34mINFO[39m | mean_action_log_prob : 6.389080047607422
+[32m2021-11-08 at 13:53:19.038[39m | [34mINFO[39m | mean_critic_loss : 2630.80126953125
+[32m2021-11-08 at 13:53:19.039[39m | [34mINFO[39m | mean_Qmin : -1786.255615234375
+[32m2021-11-08 at 13:53:19.040[39m | [34mINFO[39m | log_alpha : -1.7079334259033203
+[32m2021-11-08 at 13:53:19.040[39m | [34mINFO[39m | mean_obs : -0.21328626573085785
+[32m2021-11-08 at 13:53:19.041[39m | [34mINFO[39m | mean_new_action : 0.16715067625045776
+[32m2021-11-08 at 13:53:19.041[39m | [34mINFO[39m | mean_next_obs : -0.316322922706604
+[32m2021-11-08 at 13:53:19.042[39m | [34mINFO[39m | mean_next_action : 0.14540615677833557
+[32m2021-11-08 at 13:53:19.043[39m | [34mINFO[39m | mean_alpha_loss : 0.4412660002708435
+[32m2021-11-08 at 13:53:19.043[39m | [34mINFO[39m | mean_actor_loss : 1787.41357421875
+average next_obs: -0.1537560671567917
+average reward: 2.4957714080810547
+average uncertainty: 19.67259979248047
+average next_obs: -0.28445374965667725
+average reward: 2.3854317665100098
+average uncertainty: 19.64019012451172
+average next_obs: -0.41621461510658264
+average reward: 2.3876140117645264
+average uncertainty: 19.586668014526367
+average next_obs: -0.548358678817749
+average reward: 2.5006465911865234
+average uncertainty: 19.549047470092773
+average next_obs: -0.6754150390625
+average reward: 2.2363879680633545
+average uncertainty: 19.47828483581543
+[32m2021-11-08 at 13:53:39.348[39m | [34mINFO[39m | Epoch : 24
+[32m2021-11-08 at 13:53:39.349[39m | [34mINFO[39m | Reward_Mean_Env : -4.978436648518938
+[32m2021-11-08 at 13:53:39.352[39m | [34mINFO[39m | Length_Mean_Env : 39.05
+[32m2021-11-08 at 13:53:39.353[39m | [34mINFO[39m | Reward_Mean : -5.018297910623392
+[32m2021-11-08 at 13:53:39.353[39m | [34mINFO[39m | Length_Mean : 39.78
+[32m2021-11-08 at 13:53:39.354[39m | [34mINFO[39m | D4rl_Score : -0.14480031181078795
+[32m2021-11-08 at 13:53:39.354[39m | [34mINFO[39m | uncertainty : 19.47828483581543
+[32m2021-11-08 at 13:53:39.355[39m | [34mINFO[39m | disagreement_uncertainty : 5.140904903411865
+[32m2021-11-08 at 13:53:39.355[39m | [34mINFO[39m | aleatoric_uncertainty : 19.47828483581543
+[32m2021-11-08 at 13:53:39.355[39m | [34mINFO[39m | reward : 2.2363879680633545
+[32m2021-11-08 at 13:53:39.356[39m | [34mINFO[39m | next_obs : -0.6754150390625
+[32m2021-11-08 at 13:53:39.356[39m | [34mINFO[39m | mean_action_log_prob : 6.448707580566406
+[32m2021-11-08 at 13:53:39.357[39m | [34mINFO[39m | mean_critic_loss : 4312.4638671875
+[32m2021-11-08 at 13:53:39.358[39m | [34mINFO[39m | mean_Qmin : -1831.453369140625
+[32m2021-11-08 at 13:53:39.359[39m | [34mINFO[39m | log_alpha : -1.8198968172073364
+[32m2021-11-08 at 13:53:39.359[39m | [34mINFO[39m | mean_obs : -0.32826849818229675
+[32m2021-11-08 at 13:53:39.360[39m | [34mINFO[39m | mean_new_action : 0.18142156302928925
+[32m2021-11-08 at 13:53:39.360[39m | [34mINFO[39m | mean_next_obs : -0.515080988407135
+[32m2021-11-08 at 13:53:39.361[39m | [34mINFO[39m | mean_next_action : 0.1631331890821457
+[32m2021-11-08 at 13:53:39.361[39m | [34mINFO[39m | mean_alpha_loss : 0.20598797500133514
+[32m2021-11-08 at 13:53:39.362[39m | [34mINFO[39m | mean_actor_loss : 1832.498291015625
+average next_obs: -0.09210531413555145
+average reward: 2.6753523349761963
+average uncertainty: 19.768291473388672
+average next_obs: -0.11161575466394424
+average reward: 2.446861743927002
+average uncertainty: 19.785032272338867
+average next_obs: -0.11766546219587326
+average reward: 2.6015055179595947
+average uncertainty: 19.87788200378418
+average next_obs: -0.1187434196472168
+average reward: 2.636270523071289
+average uncertainty: 20.01251983642578
+average next_obs: -0.10968055576086044
+average reward: 2.4200706481933594
+average uncertainty: 20.15608024597168
+[32m2021-11-08 at 13:54:01.904[39m | [34mINFO[39m | Epoch : 25
+[32m2021-11-08 at 13:54:01.905[39m | [34mINFO[39m | Reward_Mean_Env : 12.077222216563339
+[32m2021-11-08 at 13:54:01.907[39m | [34mINFO[39m | Length_Mean_Env : 26.94
+[32m2021-11-08 at 13:54:01.908[39m | [34mINFO[39m | Reward_Mean : 11.892144364693477
+[32m2021-11-08 at 13:54:01.908[39m | [34mINFO[39m | Length_Mean : 26.79
+[32m2021-11-08 at 13:54:01.909[39m | [34mINFO[39m | D4rl_Score : 0.2235650601530513
+[32m2021-11-08 at 13:54:01.909[39m | [34mINFO[39m | uncertainty : 20.15608024597168
+[32m2021-11-08 at 13:54:01.909[39m | [34mINFO[39m | disagreement_uncertainty : 3.7818334102630615
+[32m2021-11-08 at 13:54:01.910[39m | [34mINFO[39m | aleatoric_uncertainty : 20.15608024597168
+[32m2021-11-08 at 13:54:01.911[39m | [34mINFO[39m | reward : 2.4200706481933594
+[32m2021-11-08 at 13:54:01.912[39m | [34mINFO[39m | next_obs : -0.10968055576086044
+[32m2021-11-08 at 13:54:01.912[39m | [34mINFO[39m | mean_action_log_prob : 6.5121893882751465
+[32m2021-11-08 at 13:54:01.913[39m | [34mINFO[39m | mean_critic_loss : 3590.685302734375
+[32m2021-11-08 at 13:54:01.913[39m | [34mINFO[39m | mean_Qmin : -1884.062744140625
+[32m2021-11-08 at 13:54:01.914[39m | [34mINFO[39m | log_alpha : -1.7116659879684448
+[32m2021-11-08 at 13:54:01.914[39m | [34mINFO[39m | mean_obs : -0.1701701134443283
+[32m2021-11-08 at 13:54:01.915[39m | [34mINFO[39m | mean_new_action : 0.18891827762126923
+[32m2021-11-08 at 13:54:01.916[39m | [34mINFO[39m | mean_next_obs : -0.3401065170764923
+[32m2021-11-08 at 13:54:01.916[39m | [34mINFO[39m | mean_next_action : 0.17740756273269653
+[32m2021-11-08 at 13:54:01.917[39m | [34mINFO[39m | mean_alpha_loss : 0.614082932472229
+[32m2021-11-08 at 13:54:01.918[39m | [34mINFO[39m | mean_actor_loss : 1885.2386474609375
+average next_obs: 0.007394210901111364
+average reward: 2.590930938720703
+average uncertainty: 19.88889503479004
+average next_obs: -0.030170349404215813
+average reward: 2.521035671234131
+average uncertainty: 19.844484329223633
+average next_obs: -0.12628251314163208
+average reward: 2.485952377319336
+average uncertainty: 19.641019821166992
+average next_obs: -0.25125089287757874
+average reward: 2.385117769241333
+average uncertainty: 19.379419326782227
+average next_obs: -0.37281206250190735
+average reward: 2.1765618324279785
+average uncertainty: 19.23872947692871
+[32m2021-11-08 at 13:54:32.588[39m | [34mINFO[39m | Epoch : 26
+[32m2021-11-08 at 13:54:32.590[39m | [34mINFO[39m | Reward_Mean_Env : 26.241094049524648
+[32m2021-11-08 at 13:54:32.592[39m | [34mINFO[39m | Length_Mean_Env : 84.37
+[32m2021-11-08 at 13:54:32.592[39m | [34mINFO[39m | Reward_Mean : 26.825716865992728
+[32m2021-11-08 at 13:54:32.593[39m | [34mINFO[39m | Length_Mean : 84.99
+[32m2021-11-08 at 13:54:32.593[39m | [34mINFO[39m | D4rl_Score : 0.5488676690161883
+[32m2021-11-08 at 13:54:32.594[39m | [34mINFO[39m | uncertainty : 19.23872947692871
+[32m2021-11-08 at 13:54:32.594[39m | [34mINFO[39m | disagreement_uncertainty : 3.763204336166382
+[32m2021-11-08 at 13:54:32.594[39m | [34mINFO[39m | aleatoric_uncertainty : 19.23872947692871
+[32m2021-11-08 at 13:54:32.595[39m | [34mINFO[39m | reward : 2.1765618324279785
+[32m2021-11-08 at 13:54:32.595[39m | [34mINFO[39m | next_obs : -0.37281206250190735
+[32m2021-11-08 at 13:54:32.596[39m | [34mINFO[39m | mean_action_log_prob : 6.426953315734863
+[32m2021-11-08 at 13:54:32.596[39m | [34mINFO[39m | mean_critic_loss : 2927.3896484375
+[32m2021-11-08 at 13:54:32.597[39m | [34mINFO[39m | mean_Qmin : -1907.975341796875
+[32m2021-11-08 at 13:54:32.597[39m | [34mINFO[39m | log_alpha : -1.63524329662323
+[32m2021-11-08 at 13:54:32.597[39m | [34mINFO[39m | mean_obs : -0.25262394547462463
+[32m2021-11-08 at 13:54:32.598[39m | [34mINFO[39m | mean_new_action : 0.0784858986735344
+[32m2021-11-08 at 13:54:32.598[39m | [34mINFO[39m | mean_next_obs : -0.40848973393440247
+[32m2021-11-08 at 13:54:32.599[39m | [34mINFO[39m | mean_next_action : 0.0652448907494545
+[32m2021-11-08 at 13:54:32.599[39m | [34mINFO[39m | mean_alpha_loss : -0.19614282250404358
+[36m(pid=54611)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53527)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53527)[39m No module named 'flow'
+[36m(pid=53527)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53527)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53527)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53527)[39m No module named 'carla'
+[36m(pid=53526)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53526)[39m No module named 'flow'
+[36m(pid=53527)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53526)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53526)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53526)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53526)[39m No module named 'carla'
+[36m(pid=53526)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53528)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53528)[39m No module named 'flow'
+[36m(pid=53528)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53528)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53528)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53528)[39m No module named 'carla'
+[36m(pid=53528)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53530)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53530)[39m No module named 'flow'
+[36m(pid=53530)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53530)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53530)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53530)[39m No module named 'carla'
+[36m(pid=53530)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53525)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53525)[39m No module named 'flow'
+[36m(pid=53525)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53525)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53525)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53525)[39m No module named 'carla'
+[36m(pid=53525)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53531)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53531)[39m No module named 'flow'
+[36m(pid=53531)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53531)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53531)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53531)[39m No module named 'carla'
+[36m(pid=53531)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53523)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53523)[39m No module named 'flow'
+[36m(pid=53523)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53523)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53523)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53523)[39m No module named 'carla'
+[36m(pid=53523)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=53524)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53524)[39m No module named 'flow'
+[36m(pid=53524)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=53524)[39m   warnings.warn(message, GLFWError)
+[36m(pid=53524)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=53524)[39m No module named 'carla'
+[36m(pid=53524)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54588)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54588)[39m No module named 'flow'
+[36m(pid=54588)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54588)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54588)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54588)[39m No module named 'carla'
+[36m(pid=54588)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54587)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54587)[39m No module named 'flow'
+[36m(pid=54587)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54587)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54587)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54587)[39m No module named 'carla'
+[36m(pid=54587)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54589)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54589)[39m No module named 'flow'
+[36m(pid=54589)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54589)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54589)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54589)[39m No module named 'carla'
+[36m(pid=54589)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54611)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54611)[39m No module named 'flow'
+[36m(pid=54611)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54611)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54611)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54611)[39m No module named 'carla'
+[36m(pid=54611)[39m pybullet build time: Aug 23 2021 12:49:13
+average next_obs: -0.263384610414505
+average reward: 2.3585867881774902
+average uncertainty: 19.486541748046875
+average next_obs: -0.42223480343818665
+average reward: 2.4146320819854736
+average uncertainty: 19.701862335205078
+average next_obs: -0.5344436764717102
+average reward: 2.3777048587799072
+average uncertainty: 19.87077522277832
+average next_obs: -0.6111480593681335
+average reward: 2.4135282039642334
+average uncertainty: 20.0261287689209
+average next_obs: -0.664880633354187
+average reward: 2.379775285720825
+average uncertainty: 20.180479049682617
+[32m2021-11-08 at 13:55:02.746[39m | [34mINFO[39m | Epoch : 27
+[32m2021-11-08 at 13:55:02.747[39m | [34mINFO[39m | Reward_Mean_Env : 2.69272916162241
+[32m2021-11-08 at 13:55:02.749[39m | [34mINFO[39m | Length_Mean_Env : 24.0
+[32m2021-11-08 at 13:55:02.750[39m | [34mINFO[39m | Reward_Mean : 2.6577312546418552
+[32m2021-11-08 at 13:55:02.751[39m | [34mINFO[39m | Length_Mean : 23.97
+[32m2021-11-08 at 13:55:02.751[39m | [34mINFO[39m | D4rl_Score : 0.022408995470042936
+[32m2021-11-08 at 13:55:02.751[39m | [34mINFO[39m | uncertainty : 20.180479049682617
+[32m2021-11-08 at 13:55:02.752[39m | [34mINFO[39m | disagreement_uncertainty : 4.615103244781494
+[32m2021-11-08 at 13:55:02.753[39m | [34mINFO[39m | aleatoric_uncertainty : 20.180479049682617
+[32m2021-11-08 at 13:55:02.755[39m | [34mINFO[39m | reward : 2.379775285720825
+[32m2021-11-08 at 13:55:02.755[39m | [34mINFO[39m | next_obs : -0.664880633354187
+[32m2021-11-08 at 13:55:02.755[39m | [34mINFO[39m | mean_action_log_prob : 5.625836372375488
+[32m2021-11-08 at 13:55:02.756[39m | [34mINFO[39m | mean_critic_loss : 2300.830810546875
+[32m2021-11-08 at 13:55:02.757[39m | [34mINFO[39m | mean_Qmin : -1942.3472900390625
+[32m2021-11-08 at 13:55:02.758[39m | [34mINFO[39m | log_alpha : -1.6834659576416016
+[32m2021-11-08 at 13:55:02.759[39m | [34mINFO[39m | mean_obs : -0.2085953652858734
+[32m2021-11-08 at 13:55:02.759[39m | [34mINFO[39m | mean_new_action : 0.13159647583961487
+[32m2021-11-08 at 13:55:02.760[39m | [34mINFO[39m | mean_next_obs : -0.33495140075683594
+[32m2021-11-08 at 13:55:02.760[39m | [34mINFO[39m | mean_next_action : 0.09233205765485764
+[32m2021-11-08 at 13:55:02.761[39m | [34mINFO[39m | mean_alpha_loss : -0.6854336261749268
+[32m2021-11-08 at 13:55:02.763[39m | [34mINFO[39m | mean_actor_loss : 1943.3922119140625
+average next_obs: -0.15344145894050598
+average reward: 2.3427231311798096
+average uncertainty: 19.725263595581055
+average next_obs: -0.31555604934692383
+average reward: 2.4201111793518066
+average uncertainty: 19.59124183654785
+average next_obs: -0.5026789307594299
+average reward: 2.214986562728882
+average uncertainty: 19.22887420654297
+average next_obs: -0.6777198910713196
+average reward: 2.1704351902008057
+average uncertainty: 18.984914779663086
+average next_obs: -0.8347569108009338
+average reward: 2.262200355529785
+average uncertainty: 18.909433364868164
+[32m2021-11-08 at 13:55:20.809[39m | [34mINFO[39m | Epoch : 28
+[32m2021-11-08 at 13:55:20.811[39m | [34mINFO[39m | Reward_Mean_Env : 0.5325677889602134
+[32m2021-11-08 at 13:55:20.813[39m | [34mINFO[39m | Length_Mean_Env : 23.85
+[32m2021-11-08 at 13:55:20.813[39m | [34mINFO[39m | Reward_Mean : 0.5177557260805711
+[32m2021-11-08 at 13:55:20.814[39m | [34mINFO[39m | Length_Mean : 23.85
+[32m2021-11-08 at 13:55:20.814[39m | [34mINFO[39m | D4rl_Score : -0.024206750513290298
+[32m2021-11-08 at 13:55:20.815[39m | [34mINFO[39m | uncertainty : 18.909433364868164
+[32m2021-11-08 at 13:55:20.816[39m | [34mINFO[39m | disagreement_uncertainty : 4.208746433258057
+[32m2021-11-08 at 13:55:20.816[39m | [34mINFO[39m | aleatoric_uncertainty : 18.909433364868164
+[32m2021-11-08 at 13:55:20.817[39m | [34mINFO[39m | reward : 2.262200355529785
+[32m2021-11-08 at 13:55:20.817[39m | [34mINFO[39m | next_obs : -0.8347569108009338
+[32m2021-11-08 at 13:55:20.818[39m | [34mINFO[39m | mean_action_log_prob : 7.1848063468933105
+[32m2021-11-08 at 13:55:20.819[39m | [34mINFO[39m | mean_critic_loss : 2804.119140625
+[32m2021-11-08 at 13:55:20.820[39m | [34mINFO[39m | mean_Qmin : -1970.6400146484375
+[32m2021-11-08 at 13:55:20.820[39m | [34mINFO[39m | log_alpha : -1.7372125387191772
+[32m2021-11-08 at 13:55:20.820[39m | [34mINFO[39m | mean_obs : -0.12099887430667877
+[32m2021-11-08 at 13:55:20.821[39m | [34mINFO[39m | mean_new_action : 0.0284031480550766
+[32m2021-11-08 at 13:55:20.821[39m | [34mINFO[39m | mean_next_obs : -0.25610846281051636
+[32m2021-11-08 at 13:55:20.822[39m | [34mINFO[39m | mean_next_action : 0.003358137561008334
+[32m2021-11-08 at 13:55:20.823[39m | [34mINFO[39m | mean_alpha_loss : 2.0730020999908447
+[32m2021-11-08 at 13:55:20.824[39m | [34mINFO[39m | mean_actor_loss : 1971.9046630859375
+average next_obs: -0.13477441668510437
+average reward: 2.603487730026245
+average uncertainty: 19.648183822631836
+average next_obs: -0.29441073536872864
+average reward: 2.486982822418213
+average uncertainty: 19.678041458129883
+average next_obs: -0.4957939386367798
+average reward: 2.2571804523468018
+average uncertainty: 19.50650978088379
+average next_obs: -0.7027781009674072
+average reward: 2.1373162269592285
+average uncertainty: 19.159029006958008
+average next_obs: -0.89397132396698
+average reward: 2.068772792816162
+average uncertainty: 18.82183265686035
+[32m2021-11-08 at 13:55:46.554[39m | [34mINFO[39m | Epoch : 29
+[32m2021-11-08 at 13:55:46.556[39m | [34mINFO[39m | Reward_Mean_Env : 18.406973877587653
+[32m2021-11-08 at 13:55:46.615[39m | [34mINFO[39m | Length_Mean_Env : 68.2
+[32m2021-11-08 at 13:55:46.616[39m | [34mINFO[39m | Reward_Mean : 18.30836551759677
+[32m2021-11-08 at 13:55:46.617[39m | [34mINFO[39m | Length_Mean : 67.98
+[32m2021-11-08 at 13:55:46.617[39m | [34mINFO[39m | D4rl_Score : 0.3633315815196362
+[32m2021-11-08 at 13:55:46.617[39m | [34mINFO[39m | uncertainty : 18.82183265686035
+[32m2021-11-08 at 13:55:46.618[39m | [34mINFO[39m | disagreement_uncertainty : 3.3403396606445312
+[32m2021-11-08 at 13:55:46.618[39m | [34mINFO[39m | aleatoric_uncertainty : 18.82183265686035
+[32m2021-11-08 at 13:55:46.619[39m | [34mINFO[39m | reward : 2.068772792816162
+[32m2021-11-08 at 13:55:46.619[39m | [34mINFO[39m | next_obs : -0.89397132396698
+[32m2021-11-08 at 13:55:46.620[39m | [34mINFO[39m | mean_action_log_prob : 5.640726566314697
+[32m2021-11-08 at 13:55:46.620[39m | [34mINFO[39m | mean_critic_loss : 3049.4306640625
+[32m2021-11-08 at 13:55:46.620[39m | [34mINFO[39m | mean_Qmin : -2013.7998046875
+[32m2021-11-08 at 13:55:46.621[39m | [34mINFO[39m | log_alpha : -1.7599667310714722
+[32m2021-11-08 at 13:55:46.621[39m | [34mINFO[39m | mean_obs : -0.1700090616941452
+[32m2021-11-08 at 13:55:46.622[39m | [34mINFO[39m | mean_new_action : 0.287495493888855
+[32m2021-11-08 at 13:55:46.622[39m | [34mINFO[39m | mean_next_obs : -0.286260724067688
+[32m2021-11-08 at 13:55:46.623[39m | [34mINFO[39m | mean_next_action : 0.26768940687179565
+[32m2021-11-08 at 13:55:46.623[39m | [34mINFO[39m | mean_alpha_loss : -0.5227822661399841
+[32m2021-11-08 at 13:55:46.624[39m | [34mINFO[39m | mean_actor_loss : 2014.770263671875
+average next_obs: 0.044340480118989944
+average reward: 2.6401848793029785
+average uncertainty: 19.70001220703125
+average next_obs: 0.014123973436653614
+average reward: 2.6737489700317383
+average uncertainty: 19.72452735900879
+average next_obs: -0.07721167802810669
+average reward: 2.4969465732574463
+average uncertainty: 19.750438690185547
+average next_obs: -0.19323737919330597
+average reward: 2.3924708366394043
+average uncertainty: 19.700963973999023
+average next_obs: -0.3072783946990967
+average reward: 2.5319714546203613
+average uncertainty: 19.603300094604492
+[32m2021-11-08 at 13:56:16.569[39m | [34mINFO[39m | Epoch : 30
+[32m2021-11-08 at 13:56:16.570[39m | [34mINFO[39m | Reward_Mean_Env : -5.603116272084962
+[32m2021-11-08 at 13:56:16.572[39m | [34mINFO[39m | Length_Mean_Env : 39.06
+[32m2021-11-08 at 13:56:16.573[39m | [34mINFO[39m | Reward_Mean : -5.50315217703932
+[32m2021-11-08 at 13:56:16.573[39m | [34mINFO[39m | Length_Mean : 38.97
+[32m2021-11-08 at 13:56:16.574[39m | [34mINFO[39m | D4rl_Score : -0.15536204161588324
+[32m2021-11-08 at 13:56:16.575[39m | [34mINFO[39m | uncertainty : 19.603300094604492
+[32m2021-11-08 at 13:56:16.576[39m | [34mINFO[39m | disagreement_uncertainty : 3.3193864822387695
+[32m2021-11-08 at 13:56:16.577[39m | [34mINFO[39m | aleatoric_uncertainty : 19.603300094604492
+[32m2021-11-08 at 13:56:16.577[39m | [34mINFO[39m | reward : 2.5319714546203613
+[32m2021-11-08 at 13:56:16.578[39m | [34mINFO[39m | next_obs : -0.3072783946990967
+[32m2021-11-08 at 13:56:16.579[39m | [34mINFO[39m | mean_action_log_prob : 6.910197734832764
+[32m2021-11-08 at 13:56:16.580[39m | [34mINFO[39m | mean_critic_loss : 3392.4404296875
+[32m2021-11-08 at 13:56:16.580[39m | [34mINFO[39m | mean_Qmin : -2015.6336669921875
+[32m2021-11-08 at 13:56:16.581[39m | [34mINFO[39m | log_alpha : -1.7049413919448853
+[32m2021-11-08 at 13:56:16.582[39m | [34mINFO[39m | mean_obs : -0.15045508742332458
+[32m2021-11-08 at 13:56:16.583[39m | [34mINFO[39m | mean_new_action : 0.09147926419973373
+[32m2021-11-08 at 13:56:16.583[39m | [34mINFO[39m | mean_next_obs : -0.2837294340133667
+[32m2021-11-08 at 13:56:16.584[39m | [34mINFO[39m | mean_next_action : 0.09693865478038788
+[32m2021-11-08 at 13:56:16.585[39m | [34mINFO[39m | mean_alpha_loss : 0.6542872190475464
+[36m(pid=54993)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54607)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54607)[39m No module named 'flow'
+[36m(pid=54607)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54607)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54606)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54606)[39m No module named 'flow'
+[36m(pid=54606)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54606)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54609)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54609)[39m No module named 'flow'
+[36m(pid=54607)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54607)[39m No module named 'carla'
+[36m(pid=54607)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54606)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54606)[39m No module named 'carla'
+[36m(pid=54606)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54609)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54609)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54609)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54609)[39m No module named 'carla'
+[36m(pid=54609)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54608)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54608)[39m No module named 'flow'
+[36m(pid=54608)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54608)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54608)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54608)[39m No module named 'carla'
+[36m(pid=54608)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54610)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54610)[39m No module named 'flow'
+[36m(pid=54610)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54610)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54610)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54610)[39m No module named 'carla'
+[36m(pid=54610)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54612)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54612)[39m No module named 'flow'
+[36m(pid=54612)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54612)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54612)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54612)[39m No module named 'carla'
+[36m(pid=54612)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54605)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54605)[39m No module named 'flow'
+[36m(pid=54605)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54605)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54605)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54605)[39m No module named 'carla'
+[36m(pid=54605)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54994)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54994)[39m No module named 'flow'
+[36m(pid=54994)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54994)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54995)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54995)[39m No module named 'flow'
+[36m(pid=54995)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54995)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54994)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54994)[39m No module named 'carla'
+[36m(pid=54994)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54995)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54995)[39m No module named 'carla'
+[36m(pid=54995)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54997)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54997)[39m No module named 'flow'
+[36m(pid=54997)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54997)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54997)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54997)[39m No module named 'carla'
+[36m(pid=54997)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54996)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54996)[39m No module named 'flow'
+[36m(pid=54996)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54996)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54996)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54996)[39m No module named 'carla'
+[36m(pid=54996)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=54993)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54993)[39m No module named 'flow'
+[36m(pid=54993)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=54993)[39m   warnings.warn(message, GLFWError)
+[36m(pid=54993)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=54993)[39m No module named 'carla'
+[36m(pid=54993)[39m pybullet build time: Aug 23 2021 12:49:13
+average next_obs: -0.20357678830623627
+average reward: 2.4997611045837402
+average uncertainty: 19.842626571655273
+average next_obs: -0.2976565957069397
+average reward: 2.4014363288879395
+average uncertainty: 19.725250244140625
+average next_obs: -0.35275059938430786
+average reward: 2.551708459854126
+average uncertainty: 19.713674545288086
+average next_obs: -0.397625207901001
+average reward: 2.476473331451416
+average uncertainty: 19.75157928466797
+average next_obs: -0.4283837378025055
+average reward: 2.341582775115967
+average uncertainty: 19.800254821777344
+[32m2021-11-08 at 13:56:39.485[39m | [34mINFO[39m | Epoch : 31
+[32m2021-11-08 at 13:56:39.486[39m | [34mINFO[39m | Reward_Mean_Env : 7.119065570744422
+[32m2021-11-08 at 13:56:39.488[39m | [34mINFO[39m | Length_Mean_Env : 48.77
+[32m2021-11-08 at 13:56:39.489[39m | [34mINFO[39m | Reward_Mean : 7.101319160879618
+[32m2021-11-08 at 13:56:39.489[39m | [34mINFO[39m | Length_Mean : 49.27
+[32m2021-11-08 at 13:56:39.490[39m | [34mINFO[39m | D4rl_Score : 0.11920503931595232
+[32m2021-11-08 at 13:56:39.490[39m | [34mINFO[39m | uncertainty : 19.800254821777344
+[32m2021-11-08 at 13:56:39.491[39m | [34mINFO[39m | disagreement_uncertainty : 3.014211893081665
+[32m2021-11-08 at 13:56:39.491[39m | [34mINFO[39m | aleatoric_uncertainty : 19.800254821777344
+[32m2021-11-08 at 13:56:39.493[39m | [34mINFO[39m | reward : 2.341582775115967
+[32m2021-11-08 at 13:56:39.493[39m | [34mINFO[39m | next_obs : -0.4283837378025055
+[32m2021-11-08 at 13:56:39.493[39m | [34mINFO[39m | mean_action_log_prob : 6.162247657775879
+[32m2021-11-08 at 13:56:39.494[39m | [34mINFO[39m | mean_critic_loss : 3464.089111328125
+[32m2021-11-08 at 13:56:39.494[39m | [34mINFO[39m | mean_Qmin : -2108.0048828125
+[32m2021-11-08 at 13:56:39.495[39m | [34mINFO[39m | log_alpha : -1.587407112121582
+[32m2021-11-08 at 13:56:39.496[39m | [34mINFO[39m | mean_obs : -0.26201707124710083
+[32m2021-11-08 at 13:56:39.497[39m | [34mINFO[39m | mean_new_action : 0.12077251076698303
+[32m2021-11-08 at 13:56:39.497[39m | [34mINFO[39m | mean_next_obs : -0.4189772307872772
+[32m2021-11-08 at 13:56:39.498[39m | [34mINFO[39m | mean_next_action : 0.1197614073753357
+[32m2021-11-08 at 13:56:39.498[39m | [34mINFO[39m | mean_alpha_loss : 0.5638066530227661
+[32m2021-11-08 at 13:56:39.498[39m | [34mINFO[39m | mean_actor_loss : 2109.264892578125
+average next_obs: -0.16962313652038574
+average reward: 2.5056190490722656
+average uncertainty: 19.782577514648438
+average next_obs: -0.29189562797546387
+average reward: 2.3652284145355225
+average uncertainty: 19.735654830932617
+average next_obs: -0.4281803071498871
+average reward: 2.3232290744781494
+average uncertainty: 19.498374938964844
+average next_obs: -0.5689676403999329
+average reward: 2.3602468967437744
+average uncertainty: 19.27342414855957
+average next_obs: -0.701043426990509
+average reward: 2.1859943866729736
+average uncertainty: 19.124858856201172
+[32m2021-11-08 at 13:57:04.047[39m | [34mINFO[39m | Epoch : 32
+[32m2021-11-08 at 13:57:04.048[39m | [34mINFO[39m | Reward_Mean_Env : -9.553150281058373
+[32m2021-11-08 at 13:57:04.050[39m | [34mINFO[39m | Length_Mean_Env : 55.3
+[32m2021-11-08 at 13:57:04.051[39m | [34mINFO[39m | Reward_Mean : -9.655414546589183
+[32m2021-11-08 at 13:57:04.051[39m | [34mINFO[39m | Length_Mean : 55.46
+[32m2021-11-08 at 13:57:04.052[39m | [34mINFO[39m | D4rl_Score : -0.24581205157708205
+[32m2021-11-08 at 13:57:04.053[39m | [34mINFO[39m | uncertainty : 19.124858856201172
+[32m2021-11-08 at 13:57:04.054[39m | [34mINFO[39m | disagreement_uncertainty : 3.5208687782287598
+[32m2021-11-08 at 13:57:04.054[39m | [34mINFO[39m | aleatoric_uncertainty : 19.124858856201172
+[32m2021-11-08 at 13:57:04.055[39m | [34mINFO[39m | reward : 2.1859943866729736
+[32m2021-11-08 at 13:57:04.056[39m | [34mINFO[39m | next_obs : -0.701043426990509
+[32m2021-11-08 at 13:57:04.057[39m | [34mINFO[39m | mean_action_log_prob : 6.252375602722168
+[32m2021-11-08 at 13:57:04.057[39m | [34mINFO[39m | mean_critic_loss : 4364.498046875
+[32m2021-11-08 at 13:57:04.058[39m | [34mINFO[39m | mean_Qmin : -2099.76025390625
+[32m2021-11-08 at 13:57:04.058[39m | [34mINFO[39m | log_alpha : -1.6824487447738647
+[32m2021-11-08 at 13:57:04.059[39m | [34mINFO[39m | mean_obs : -0.20119507610797882
+[32m2021-11-08 at 13:57:04.060[39m | [34mINFO[39m | mean_new_action : 0.15490426123142242
+[32m2021-11-08 at 13:57:04.061[39m | [34mINFO[39m | mean_next_obs : -0.3129675090312958
+[32m2021-11-08 at 13:57:04.061[39m | [34mINFO[39m | mean_next_action : 0.13059622049331665
+[32m2021-11-08 at 13:57:04.063[39m | [34mINFO[39m | mean_alpha_loss : 0.3305452764034271
+[36m(pid=56047)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=55935)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55935)[39m No module named 'flow'
+[36m(pid=55935)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=55935)[39m   warnings.warn(message, GLFWError)
+[36m(pid=55935)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55935)[39m No module named 'carla'
+[36m(pid=55935)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=55933)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55933)[39m No module named 'flow'
+[36m(pid=55933)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=55933)[39m   warnings.warn(message, GLFWError)
+[36m(pid=55933)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55933)[39m No module named 'carla'
+[36m(pid=55933)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=55934)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55934)[39m No module named 'flow'
+[36m(pid=55934)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=55934)[39m   warnings.warn(message, GLFWError)
+[36m(pid=55934)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55934)[39m No module named 'carla'
+[36m(pid=55934)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56018)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56018)[39m No module named 'flow'
+[36m(pid=56018)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56018)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56018)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56018)[39m No module named 'carla'
+[36m(pid=56018)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56016)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56016)[39m No module named 'flow'
+[36m(pid=56016)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56016)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56016)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56016)[39m No module named 'carla'
+[36m(pid=56016)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=55936)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55936)[39m No module named 'flow'
+[36m(pid=55936)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=55936)[39m   warnings.warn(message, GLFWError)
+[36m(pid=55936)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=55936)[39m No module named 'carla'
+[36m(pid=55936)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56050)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56050)[39m No module named 'flow'
+[36m(pid=56050)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56050)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56050)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56050)[39m No module named 'carla'
+[36m(pid=56050)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56036)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56036)[39m No module named 'flow'
+[36m(pid=56036)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56036)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56049)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56049)[39m No module named 'flow'
+[36m(pid=56049)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56049)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56036)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56036)[39m No module named 'carla'
+[36m(pid=56036)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56049)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56049)[39m No module named 'carla'
+[36m(pid=56049)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56041)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56041)[39m No module named 'flow'
+[36m(pid=56041)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56041)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56041)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56041)[39m No module named 'carla'
+[36m(pid=56041)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56038)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56038)[39m No module named 'flow'
+[36m(pid=56038)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56038)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56047)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56047)[39m No module named 'flow'
+[36m(pid=56038)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56038)[39m No module named 'carla'
+[36m(pid=56038)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56047)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56047)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56047)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56047)[39m No module named 'carla'
+[36m(pid=56047)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56040)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56040)[39m No module named 'flow'
+[36m(pid=56040)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56040)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56040)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56040)[39m No module named 'carla'
+[36m(pid=56040)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56051)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56051)[39m No module named 'flow'
+[36m(pid=56051)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56051)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56045)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56045)[39m No module named 'flow'
+[36m(pid=56045)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56045)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56051)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56051)[39m No module named 'carla'
+[36m(pid=56051)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56045)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56045)[39m No module named 'carla'
+[36m(pid=56045)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56037)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56037)[39m No module named 'flow'
+[36m(pid=56037)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56037)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56037)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56037)[39m No module named 'carla'
+[36m(pid=56037)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56039)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56039)[39m No module named 'flow'
+[36m(pid=56039)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56039)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56039)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56039)[39m No module named 'carla'
+[36m(pid=56039)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56061)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56061)[39m No module named 'flow'
+[36m(pid=56061)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56061)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56057)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56057)[39m No module named 'flow'
+[36m(pid=56057)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56057)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56061)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56061)[39m No module named 'carla'
+[36m(pid=56061)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56057)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56057)[39m No module named 'carla'
+[36m(pid=56057)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56048)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56048)[39m No module named 'flow'
+[36m(pid=56048)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56048)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56048)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56048)[39m No module named 'carla'
+[36m(pid=56048)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56054)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56054)[39m No module named 'flow'
+[36m(pid=56054)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56054)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56054)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56054)[39m No module named 'carla'
+[36m(pid=56054)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56032)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56032)[39m No module named 'flow'
+
+[36m(pid=56032)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+average next_obs: -0.17791526019573212
+average reward: 2.5633327960968018
+average uncertainty: 19.682830810546875
+average next_obs: -0.3057000935077667
+average reward: 2.550346612930298
+average uncertainty: 19.74571990966797
+average next_obs: -0.4148738980293274
+average reward: 2.4455583095550537
+average uncertainty: 19.750207901000977
+average next_obs: -0.5055843591690063
+average reward: 2.54246187210083
+average uncertainty: 19.719755172729492
+average next_obs: -0.5743569135665894
+average reward: 2.389658212661743
+average uncertainty: 19.681150436401367
+[32m2021-11-08 at 13:57:29.415[39m | [34mINFO[39m | Epoch : 33
+[32m2021-11-08 at 13:57:29.416[39m | [34mINFO[39m | Reward_Mean_Env : 5.619998549052468
+[32m2021-11-08 at 13:57:29.419[39m | [34mINFO[39m | Length_Mean_Env : 42.33
+[32m2021-11-08 at 13:57:29.419[39m | [34mINFO[39m | Reward_Mean : 5.762604993593617
+[32m2021-11-08 at 13:57:29.420[39m | [34mINFO[39m | Length_Mean : 42.41
+[32m2021-11-08 at 13:57:29.421[39m | [34mINFO[39m | D4rl_Score : 0.09004341632839927
+[32m2021-11-08 at 13:57:29.422[39m | [34mINFO[39m | uncertainty : 19.681150436401367
+[32m2021-11-08 at 13:57:29.423[39m | [34mINFO[39m | disagreement_uncertainty : 4.020172595977783
+[32m2021-11-08 at 13:57:29.423[39m | [34mINFO[39m | aleatoric_uncertainty : 19.681150436401367
+[32m2021-11-08 at 13:57:29.424[39m | [34mINFO[39m | reward : 2.389658212661743
+[32m2021-11-08 at 13:57:29.424[39m | [34mINFO[39m | next_obs : -0.5743569135665894
+[32m2021-11-08 at 13:57:29.425[39m | [34mINFO[39m | mean_action_log_prob : 6.414022922515869
+[32m2021-11-08 at 13:57:29.426[39m | [34mINFO[39m | mean_critic_loss : 2781.7333984375
+[32m2021-11-08 at 13:57:29.426[39m | [34mINFO[39m | mean_Qmin : -2127.269287109375
+[32m2021-11-08 at 13:57:29.427[39m | [34mINFO[39m | log_alpha : -1.6078717708587646
+[32m2021-11-08 at 13:57:29.427[39m | [34mINFO[39m | mean_obs : -0.36978134512901306
+[32m2021-11-08 at 13:57:29.428[39m | [34mINFO[39m | mean_new_action : 0.1676020324230194
+[32m2021-11-08 at 13:57:29.428[39m | [34mINFO[39m | mean_next_obs : -0.43215814232826233
+[32m2021-11-08 at 13:57:29.429[39m | [34mINFO[39m | mean_next_action : 0.1591378152370453
+[32m2021-11-08 at 13:57:29.430[39m | [34mINFO[39m | mean_alpha_loss : 0.4370418190956116
+[32m2021-11-08 at 13:57:29.430[39m | [34mINFO[39m | mean_actor_loss : 2128.55419921875
+average next_obs: -0.11771436035633087
+average reward: 2.5467991828918457
+average uncertainty: 19.682226181030273
+average next_obs: -0.22154220938682556
+average reward: 2.3702750205993652
+average uncertainty: 19.590255737304688
+average next_obs: -0.3448624014854431
+average reward: 2.3554375171661377
+average uncertainty: 19.304651260375977
+average next_obs: -0.47747477889060974
+average reward: 2.403090000152588
+average uncertainty: 19.02166748046875
+average next_obs: -0.6070847511291504
+average reward: 2.219238042831421
+average uncertainty: 18.83806037902832
+[32m2021-11-08 at 13:57:54.681[39m | [34mINFO[39m | Epoch : 34
+[32m2021-11-08 at 13:57:54.682[39m | [34mINFO[39m | Reward_Mean_Env : -2.1913417528409855
+[32m2021-11-08 at 13:57:54.684[39m | [34mINFO[39m | Length_Mean_Env : 46.1
+[32m2021-11-08 at 13:57:54.685[39m | [34mINFO[39m | Reward_Mean : -2.401862653704271
+[32m2021-11-08 at 13:57:54.685[39m | [34mINFO[39m | Length_Mean : 46.23
+[32m2021-11-08 at 13:57:54.686[39m | [34mINFO[39m | D4rl_Score : -0.08780569683013065
+[32m2021-11-08 at 13:57:54.687[39m | [34mINFO[39m | uncertainty : 18.83806037902832
+[32m2021-11-08 at 13:57:54.688[39m | [34mINFO[39m | disagreement_uncertainty : 4.723256587982178
+[32m2021-11-08 at 13:57:54.689[39m | [34mINFO[39m | aleatoric_uncertainty : 18.83806037902832
+[32m2021-11-08 at 13:57:54.689[39m | [34mINFO[39m | reward : 2.219238042831421
+[32m2021-11-08 at 13:57:54.690[39m | [34mINFO[39m | next_obs : -0.6070847511291504
+[32m2021-11-08 at 13:57:54.690[39m | [34mINFO[39m | mean_action_log_prob : 6.411680221557617
+[32m2021-11-08 at 13:57:54.691[39m | [34mINFO[39m | mean_critic_loss : 3658.208740234375
+[32m2021-11-08 at 13:57:54.692[39m | [34mINFO[39m | mean_Qmin : -2150.251953125
+[32m2021-11-08 at 13:57:54.693[39m | [34mINFO[39m | log_alpha : -1.7453663349151611
+[32m2021-11-08 at 13:57:54.693[39m | [34mINFO[39m | mean_obs : -0.17254625260829926
+[32m2021-11-08 at 13:57:54.694[39m | [34mINFO[39m | mean_new_action : 0.16940955817699432
+[32m2021-11-08 at 13:57:54.694[39m | [34mINFO[39m | mean_next_obs : -0.30316784977912903
+[32m2021-11-08 at 13:57:54.695[39m | [34mINFO[39m | mean_next_action : 0.13699135184288025
+[32m2021-11-08 at 13:57:54.695[39m | [34mINFO[39m | mean_alpha_loss : 0.8460474014282227
+[32m2021-11-08 at 13:57:54.696[39m | [34mINFO[39m | mean_actor_loss : 2151.371337890625
+[36m(pid=56032)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56032)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56032)[39m No module named 'carla'
+[36m(pid=56032)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56033)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56033)[39m No module named 'flow'
+[36m(pid=56033)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56033)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56033)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56033)[39m No module named 'carla'
+[36m(pid=56033)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56035)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56035)[39m No module named 'flow'
+[36m(pid=56035)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=56035)[39m   warnings.warn(message, GLFWError)
+[36m(pid=56035)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=56035)[39m No module named 'carla'
+[36m(pid=56035)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57343)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57343)[39m No module named 'flow'
+[36m(pid=57343)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57343)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57343)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57343)[39m No module named 'carla'
+[36m(pid=57343)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57341)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57341)[39m No module named 'flow'
+[36m(pid=57341)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57341)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57341)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57341)[39m No module named 'carla'
+[36m(pid=57341)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57337)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57337)[39m No module named 'flow'
+[36m(pid=57337)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57337)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57337)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57337)[39m No module named 'carla'
+[36m(pid=57337)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57342)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57342)[39m No module named 'flow'
+[36m(pid=57342)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57342)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57342)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57342)[39m No module named 'carla'
+[36m(pid=57342)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57339)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57339)[39m No module named 'flow'
+[36m(pid=57339)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57339)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57339)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57339)[39m No module named 'carla'
+[36m(pid=57339)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57338)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57338)[39m No module named 'flow'
+[36m(pid=57338)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57338)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57338)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57338)[39m No module named 'carla'
+[36m(pid=57338)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57340)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57340)[39m No module named 'flow'
+[36m(pid=57340)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57340)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57340)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57340)[39m No module named 'carla'
+[36m(pid=57340)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57348)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57348)[39m No module named 'flow'
+[36m(pid=57348)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57348)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57348)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57348)[39m No module named 'carla'
+[36m(pid=57348)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57356)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57356)[39m No module named 'flow'
+[36m(pid=57356)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57356)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57356)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57356)[39m No module named 'carla'
+[36m(pid=57356)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57375)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57375)[39m No module named 'flow'
+[36m(pid=57375)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57375)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57375)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57375)[39m No module named 'carla'
+[36m(pid=57375)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57361)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57361)[39m No module named 'flow'
+[36m(pid=57361)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57361)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57376)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57376)[39m No module named 'flow'
+[36m(pid=57376)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=57376)[39m   warnings.warn(message, GLFWError)
+[36m(pid=57361)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57361)[39m No module named 'carla'
+[36m(pid=57361)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=57376)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=57376)[39m No module named 'carla'
+[36m(pid=57376)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=56032)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+average next_obs: -0.10546696186065674
+average reward: 2.5120608806610107
+average uncertainty: 19.654449462890625
+average next_obs: -0.21228817105293274
+average reward: 2.3901567459106445
+average uncertainty: 19.57484245300293
+average next_obs: -0.3423748016357422
+average reward: 2.5306849479675293
+average uncertainty: 19.352203369140625
+average next_obs: -0.4854724705219269
+average reward: 2.278740882873535
+average uncertainty: 19.09885597229004
+average next_obs: -0.6239672303199768
+average reward: 2.334676742553711
+average uncertainty: 18.87905502319336
+[32m2021-11-08 at 14:00:11.244[39m | [34mINFO[39m | Epoch : 35
+[32m2021-11-08 at 14:00:11.245[39m | [34mINFO[39m | Reward_Mean_Env : 925.8449311896762
+[32m2021-11-08 at 14:00:11.248[39m | [34mINFO[39m | Length_Mean_Env : 971.38
+[32m2021-11-08 at 14:00:11.248[39m | [34mINFO[39m | Reward_Mean : 923.3967506744999
+[32m2021-11-08 at 14:00:11.250[39m | [34mINFO[39m | Length_Mean : 968.53
+[32m2021-11-08 at 14:00:11.250[39m | [34mINFO[39m | D4rl_Score : 20.07915061394798
+[32m2021-11-08 at 14:00:11.251[39m | [34mINFO[39m | uncertainty : 18.87905502319336
+[32m2021-11-08 at 14:00:11.251[39m | [34mINFO[39m | disagreement_uncertainty : 4.044248580932617
+[32m2021-11-08 at 14:00:11.252[39m | [34mINFO[39m | aleatoric_uncertainty : 18.87905502319336
+[32m2021-11-08 at 14:00:11.252[39m | [34mINFO[39m | reward : 2.334676742553711
+[32m2021-11-08 at 14:00:11.253[39m | [34mINFO[39m | next_obs : -0.6239672303199768
+[32m2021-11-08 at 14:00:11.254[39m | [34mINFO[39m | mean_action_log_prob : 5.980255126953125
+[32m2021-11-08 at 14:00:11.254[39m | [34mINFO[39m | mean_critic_loss : 3607.01123046875
+[32m2021-11-08 at 14:00:11.255[39m | [34mINFO[39m | mean_Qmin : -2187.230224609375
+[32m2021-11-08 at 14:00:11.255[39m | [34mINFO[39m | log_alpha : -1.695732831954956
+[32m2021-11-08 at 14:00:11.255[39m | [34mINFO[39m | mean_obs : -0.35282647609710693
+[32m2021-11-08 at 14:00:11.256[39m | [34mINFO[39m | mean_new_action : 0.21394436061382294
+[32m2021-11-08 at 14:00:11.256[39m | [34mINFO[39m | mean_next_obs : -0.39110830426216125
+[32m2021-11-08 at 14:00:11.257[39m | [34mINFO[39m | mean_next_action : 0.1874973177909851
+[32m2021-11-08 at 14:00:11.257[39m | [34mINFO[39m | mean_alpha_loss : -0.7723655700683594
+[32m2021-11-08 at 14:00:11.258[39m | [34mINFO[39m | mean_actor_loss : 2188.327392578125
+average next_obs: -0.14732138812541962
+average reward: 2.548724412918091
+average uncertainty: 19.62872886657715
+average next_obs: -0.23553995788097382
+average reward: 2.4620959758758545
+average uncertainty: 19.59626007080078
+average next_obs: -0.3233778774738312
+average reward: 2.485537052154541
+average uncertainty: 19.55135726928711
+average next_obs: -0.40125519037246704
+average reward: 2.3055880069732666
+average uncertainty: 19.510873794555664
+average next_obs: -0.4566252827644348
+average reward: 2.347987174987793
+average uncertainty: 19.482891082763672
+[32m2021-11-08 at 14:00:49.705[39m | [34mINFO[39m | Epoch : 36
+[32m2021-11-08 at 14:00:49.706[39m | [34mINFO[39m | Reward_Mean_Env : 116.44530847993208
+[32m2021-11-08 at 14:00:49.708[39m | [34mINFO[39m | Length_Mean_Env : 174.43
+[32m2021-11-08 at 14:00:49.708[39m | [34mINFO[39m | Reward_Mean : 104.68555170020096
+[32m2021-11-08 at 14:00:49.709[39m | [34mINFO[39m | Length_Mean : 166.89
+[32m2021-11-08 at 14:00:49.709[39m | [34mINFO[39m | D4rl_Score : 2.2449124295728
+[32m2021-11-08 at 14:00:49.710[39m | [34mINFO[39m | uncertainty : 19.482891082763672
+[32m2021-11-08 at 14:00:49.710[39m | [34mINFO[39m | disagreement_uncertainty : 3.2604787349700928
+[32m2021-11-08 at 14:00:49.711[39m | [34mINFO[39m | aleatoric_uncertainty : 19.482891082763672
+[32m2021-11-08 at 14:00:49.711[39m | [34mINFO[39m | reward : 2.347987174987793
+[32m2021-11-08 at 14:00:49.711[39m | [34mINFO[39m | next_obs : -0.4566252827644348
+[32m2021-11-08 at 14:00:49.712[39m | [34mINFO[39m | mean_action_log_prob : 5.881336212158203
+[32m2021-11-08 at 14:00:49.712[39m | [34mINFO[39m | mean_critic_loss : 3605.76416015625
+[32m2021-11-08 at 14:00:49.713[39m | [34mINFO[39m | mean_Qmin : -2234.910888671875
+[32m2021-11-08 at 14:00:49.713[39m | [34mINFO[39m | log_alpha : -1.6484012603759766
+[32m2021-11-08 at 14:00:49.714[39m | [34mINFO[39m | mean_obs : -0.2167099267244339
+[32m2021-11-08 at 14:00:49.714[39m | [34mINFO[39m | mean_new_action : 0.13403426110744476
+[32m2021-11-08 at 14:00:49.715[39m | [34mINFO[39m | mean_next_obs : -0.3237711489200592
+[32m2021-11-08 at 14:00:49.715[39m | [34mINFO[39m | mean_next_action : 0.11329852044582367
+[32m2021-11-08 at 14:00:49.716[39m | [34mINFO[39m | mean_alpha_loss : 0.05160142481327057
+[32m2021-11-08 at 14:00:49.717[39m | [34mINFO[39m | mean_actor_loss : 2236.042236328125
+average next_obs: -0.08673591166734695
+average reward: 2.6022071838378906
+average uncertainty: 19.69206428527832
+average next_obs: -0.16423198580741882
+average reward: 2.48037052154541
+average uncertainty: 19.679941177368164
+average next_obs: -0.24883754551410675
+average reward: 2.4885928630828857
+average uncertainty: 19.663564682006836
+average next_obs: -0.3339720070362091
+average reward: 2.4948227405548096
+average uncertainty: 19.53610610961914
+average next_obs: -0.4199944734573364
+average reward: 2.375582218170166
+average uncertainty: 19.356426239013672
+[32m2021-11-08 at 14:01:11.692[39m | [34mINFO[39m | Epoch : 37
+[32m2021-11-08 at 14:01:11.694[39m | [34mINFO[39m | Reward_Mean_Env : 6.135198612555506
+[32m2021-11-08 at 14:01:11.698[39m | [34mINFO[39m | Length_Mean_Env : 48.76
+[32m2021-11-08 at 14:01:11.699[39m | [34mINFO[39m | Reward_Mean : 6.042322658632087
+[32m2021-11-08 at 14:01:11.700[39m | [34mINFO[39m | Length_Mean : 48.75
+[32m2021-11-08 at 14:01:11.701[39m | [34mINFO[39m | D4rl_Score : 0.09613659237011353
+[32m2021-11-08 at 14:01:11.703[39m | [34mINFO[39m | uncertainty : 19.356426239013672
+[32m2021-11-08 at 14:01:11.704[39m | [34mINFO[39m | disagreement_uncertainty : 3.344916582107544
+[32m2021-11-08 at 14:01:11.706[39m | [34mINFO[39m | aleatoric_uncertainty : 19.356426239013672
+[32m2021-11-08 at 14:01:11.709[39m | [34mINFO[39m | reward : 2.375582218170166
+[32m2021-11-08 at 14:01:11.709[39m | [34mINFO[39m | next_obs : -0.4199944734573364
+[32m2021-11-08 at 14:01:11.710[39m | [34mINFO[39m | mean_action_log_prob : 5.814993381500244
+[32m2021-11-08 at 14:01:11.712[39m | [34mINFO[39m | mean_critic_loss : 3298.24560546875
+[32m2021-11-08 at 14:01:11.714[39m | [34mINFO[39m | mean_Qmin : -2245.34375
+[32m2021-11-08 at 14:01:11.715[39m | [34mINFO[39m | log_alpha : -1.6192481517791748
+[32m2021-11-08 at 14:01:11.767[39m | [34mINFO[39m | mean_obs : -0.21513111889362335
+[32m2021-11-08 at 14:01:11.768[39m | [34mINFO[39m | mean_new_action : 0.16505210101604462
+[32m2021-11-08 at 14:01:11.770[39m | [34mINFO[39m | mean_next_obs : -0.32392099499702454
+[32m2021-11-08 at 14:01:11.772[39m | [34mINFO[39m | mean_next_action : 0.15075473487377167
+[32m2021-11-08 at 14:01:11.778[39m | [34mINFO[39m | mean_alpha_loss : -0.0003396458923816681
+[32m2021-11-08 at 14:01:11.780[39m | [34mINFO[39m | mean_actor_loss : 2246.495361328125
+average next_obs: -0.16706085205078125
+average reward: 2.513132333755493
+average uncertainty: 19.641637802124023
+average next_obs: -0.2992017865180969
+average reward: 2.5242128372192383
+average uncertainty: 19.58028793334961
+average next_obs: -0.42293766140937805
+average reward: 2.3790910243988037
+average uncertainty: 19.331836700439453
+average next_obs: -0.5473378896713257
+average reward: 2.2737069129943848
+average uncertainty: 19.06266212463379
+average next_obs: -0.6649917960166931
+average reward: 2.238224983215332
+average uncertainty: 18.870786666870117
+[32m2021-11-08 at 14:01:34.984[39m | [34mINFO[39m | Epoch : 38
+[32m2021-11-08 at 14:01:34.986[39m | [34mINFO[39m | Reward_Mean_Env : -15.717046729583906
+[32m2021-11-08 at 14:01:34.990[39m | [34mINFO[39m | Length_Mean_Env : 47.86
+[32m2021-11-08 at 14:01:34.991[39m | [34mINFO[39m | Reward_Mean : -15.805805855518042
+[32m2021-11-08 at 14:01:34.992[39m | [34mINFO[39m | Length_Mean : 47.85
+[32m2021-11-08 at 14:01:34.993[39m | [34mINFO[39m | D4rl_Score : -0.3797879195851995
+[32m2021-11-08 at 14:01:34.993[39m | [34mINFO[39m | uncertainty : 18.870786666870117
+[32m2021-11-08 at 14:01:34.994[39m | [34mINFO[39m | disagreement_uncertainty : 3.568922758102417
+[32m2021-11-08 at 14:01:34.995[39m | [34mINFO[39m | aleatoric_uncertainty : 18.870786666870117
+[32m2021-11-08 at 14:01:34.996[39m | [34mINFO[39m | reward : 2.238224983215332
+[32m2021-11-08 at 14:01:34.996[39m | [34mINFO[39m | next_obs : -0.6649917960166931
+[32m2021-11-08 at 14:01:34.997[39m | [34mINFO[39m | mean_action_log_prob : 6.738565444946289
+[32m2021-11-08 at 14:01:34.997[39m | [34mINFO[39m | mean_critic_loss : 2943.86083984375
+[32m2021-11-08 at 14:01:34.999[39m | [34mINFO[39m | mean_Qmin : -2263.001953125
+[32m2021-11-08 at 14:01:34.999[39m | [34mINFO[39m | log_alpha : -1.599507212638855
+[32m2021-11-08 at 14:01:35.000[39m | [34mINFO[39m | mean_obs : -0.24236048758029938
+[32m2021-11-08 at 14:01:35.000[39m | [34mINFO[39m | mean_new_action : 0.1324293166399002
+[32m2021-11-08 at 14:01:35.001[39m | [34mINFO[39m | mean_next_obs : -0.30291634798049927
+[32m2021-11-08 at 14:01:35.002[39m | [34mINFO[39m | mean_next_action : 0.1237153708934784
+[32m2021-11-08 at 14:01:35.003[39m | [34mINFO[39m | mean_alpha_loss : 1.5563719272613525

@@ -130,8 +130,6 @@ def delay_traj_dataset(config):
     Args:
         config (dict):  dataset configuration
     """
-    if "seed" not in config:
-        config["seed"] = 42
     np.random.seed(config["seed"])
     env = gym.make(
         config["task"][5:] if "d4rl" in config["task"] else config["task"]

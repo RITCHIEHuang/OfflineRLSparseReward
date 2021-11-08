@@ -1,0 +1,18 @@
+
+[32m2021-11-08 at 13:57:07.845[39m | [34mINFO[39m | Use cql algorithm!
+load datafile: 100% 5/5 [00:00<00:00,  6.21it/s]
+Downloading dataset: http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_medium.hdf5 to /root/.d4rl/datasets/walker2d_medium.hdf5
+
+100% 5315/5315 [00:01<00:00, 3953.87it/s]
+[32m2021-11-08 at 14:01:04.761[39m | [34mINFO[39m | [TransDataset] Task: d4rl-walker2d-medium-v0, data size: 999999
+[32m2021-11-08 at 14:01:04.762[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 14:01:04.763[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 14:01:04.763[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 14:01:04.763[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 14:01:04.763[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 14:01:04.764[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 14:01:04.766[39m | [34mINFO[39m | Episode reward: 533.6960396993641
+[32m2021-11-08 at 14:01:04.767[39m | [34mINFO[39m | Number of terminals on: 5189
+[32m2021-11-08 at 14:01:04.767[39m | [34mINFO[39m | Run algo_init function
+[32m2021-11-08 at 14:01:07.386[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 14:01:33,989	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.

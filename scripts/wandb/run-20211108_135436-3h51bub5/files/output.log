@@ -1,0 +1,42 @@
+
+[32m2021-11-08 at 13:54:47.209[39m | [34mINFO[39m | Use cql algorithm!
+load datafile:  20% 1/5 [00:00<00:00,  5.10it/s]
+
+load datafile: 100% 5/5 [00:00<00:00,  6.19it/s]
+
+100% 1002/1002 [00:01<00:00, 939.28it/s]
+[32m2021-11-08 at 13:55:53.012[39m | [34mINFO[39m | [TransDataset] Task: d4rl-halfcheetah-medium-v0, data size: 999999
+[32m2021-11-08 at 13:55:53.013[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 13:55:53.014[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 13:55:53.014[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 13:55:53.014[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 13:55:53.014[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 13:55:53.014[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 13:55:53.017[39m | [34mINFO[39m | Episode reward: 4158814.0
+[32m2021-11-08 at 13:55:53.018[39m | [34mINFO[39m | Number of terminals on: 1
+[32m2021-11-08 at 13:55:53.018[39m | [34mINFO[39m | Run algo_init function
+[32m2021-11-08 at 13:55:55.629[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 13:56:27,549	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 13:56:28,771	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8266
+[36m(pid=1778)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1778)[39m No module named 'flow'
+[36m(pid=1778)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=1778)[39m   warnings.warn(message, GLFWError)
+[36m(pid=1785)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1785)[39m No module named 'flow'
+[36m(pid=1778)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=1778)[39m No module named 'carla'
+[36m(pid=1778)[39m pybullet build time: Aug 23 2021 12:49:13
+
+[36m(pid=1785)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[32m2021-11-08 at 13:58:08.040[39m | [34mINFO[39m | Epoch : 1
+[32m2021-11-08 at 13:58:08.041[39m | [34mINFO[39m | Reward_Mean_Env : -1.947939894936083
+[32m2021-11-08 at 13:58:08.044[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:58:08.044[39m | [34mINFO[39m | Reward_Mean : -1.8236094008651715
+[32m2021-11-08 at 13:58:08.045[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:58:08.046[39m | [34mINFO[39m | D4rl_Score : 2.2420566360976464
+[32m2021-11-08 at 14:00:14.752[39m | [34mINFO[39m | Epoch : 2
+[32m2021-11-08 at 14:00:14.754[39m | [34mINFO[39m | Reward_Mean_Env : -1.9720430082784939
+[32m2021-11-08 at 14:00:14.757[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 14:00:14.758[39m | [34mINFO[39m | Reward_Mean : -2.124284720321372
+[32m2021-11-08 at 14:00:14.759[39m | [34mINFO[39m | Length_Mean : 1000.0

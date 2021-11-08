@@ -1,0 +1,64 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.6
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.11
+    start_time: 1636342954
+    t:
+      1:
+      - 1
+      - 5
+      3:
+      - 13
+      - 16
+      4: 3.7.11
+      5: 0.12.6
+      8:
+      - 5
+algo_name:
+  desc: null
+  value: mopo
+bc_epoch:
+  desc: null
+  value: 0
+delay:
+  desc: null
+  value: 20
+delay_max:
+  desc: null
+  value: 50
+delay_min:
+  desc: null
+  value: 10
+delay_mode:
+  desc: null
+  value: constant
+delay_tag:
+  desc: null
+  value: delay_mode-constant-delay-20
+exp_name:
+  desc: null
+  value: d4rl-walker2d-medium-replay-v0-delay_mode-constant-delay-20-mopo-strategy-none-seed-100_2021-11-08_11-42-29-511
+log_path:
+  desc: null
+  value: /modelbasedsparseoffline/logs
+log_to_wandb:
+  desc: null
+  value: true
+name:
+  desc: null
+  value: exp_name_is_none
+seed:
+  desc: null
+  value: 100
+strategy:
+  desc: null
+  value: none
+task:
+  desc: null
+  value: d4rl-walker2d-medium-replay-v0

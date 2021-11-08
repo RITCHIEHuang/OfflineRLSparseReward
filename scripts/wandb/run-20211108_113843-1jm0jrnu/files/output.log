@@ -1,0 +1,2264 @@
+
+[32m2021-11-08 at 11:38:48.842[39m | [34mINFO[39m | Use mopo algorithm!
+load datafile: 100% 5/5 [00:00<00:00,  6.16it/s]
+Downloading dataset: http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_random.hdf5 to /root/.d4rl/datasets/halfcheetah_random.hdf5
+  0% 1/1002 [00:00<03:40,  4.53it/s]
+[32m2021-11-08 at 11:39:37.442[39m | [34mINFO[39m | [TransDataset] Task: d4rl-halfcheetah-random-v0, data size: 999999
+[32m2021-11-08 at 11:39:37.444[39m | [34mINFO[39m | obs shape: (999999, 17)
+[32m2021-11-08 at 11:39:37.444[39m | [34mINFO[39m | obs_next shape: (999999, 17)
+[32m2021-11-08 at 11:39:37.444[39m | [34mINFO[39m | act shape: (999999, 6)
+[32m2021-11-08 at 11:39:37.445[39m | [34mINFO[39m | rew shape: (999999, 1)
+[32m2021-11-08 at 11:39:37.445[39m | [34mINFO[39m | ret shape: (999999, 1)
+[32m2021-11-08 at 11:39:37.445[39m | [34mINFO[39m | done shape: (999999, 1)
+[32m2021-11-08 at 11:39:37.447[39m | [34mINFO[39m | Episode reward: -318126.9375
+[32m2021-11-08 at 11:39:37.448[39m | [34mINFO[39m | Number of terminals on: 1
+
+100% 1002/1002 [00:01<00:00, 839.75it/s]
+[32m2021-11-08 at 11:39:40.327[39m | [34mINFO[39m | Init AlgoTrainer
+2021-11-08 12:07:26,161	WARNING utils.py:480 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2021-11-08 12:07:27,382	INFO services.py:1174 -- View the Ray dashboard at [32m[1mhttp://127.0.0.1:8267
+[36m(pid=5245)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5245)[39m No module named 'flow'
+[36m(pid=5245)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5245)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5245)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5245)[39m No module named 'carla'
+[36m(pid=5245)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5234)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5234)[39m No module named 'flow'
+[36m(pid=5234)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5234)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5234)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5234)[39m No module named 'carla'
+[36m(pid=5234)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5227)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5227)[39m No module named 'flow'
+[36m(pid=5227)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5227)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5227)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5227)[39m No module named 'carla'
+[36m(pid=5227)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5240)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5240)[39m No module named 'flow'
+[36m(pid=5240)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5240)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5240)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5240)[39m No module named 'carla'
+[36m(pid=5240)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5248)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5248)[39m No module named 'flow'
+[36m(pid=5248)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5248)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5248)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5248)[39m No module named 'carla'
+[36m(pid=5248)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5231)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5231)[39m No module named 'flow'
+[36m(pid=5231)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5231)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5231)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5231)[39m No module named 'carla'
+[36m(pid=5231)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5230)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5230)[39m No module named 'flow'
+[36m(pid=5230)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5230)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5230)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5230)[39m No module named 'carla'
+[36m(pid=5230)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5244)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5244)[39m No module named 'flow'
+[36m(pid=5244)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5244)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5244)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5244)[39m No module named 'carla'
+[36m(pid=5244)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5225)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5225)[39m No module named 'flow'
+[36m(pid=5225)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5225)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5225)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5225)[39m No module named 'carla'
+[36m(pid=5225)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5243)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5243)[39m No module named 'flow'
+[36m(pid=5243)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5243)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5243)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5243)[39m No module named 'carla'
+[36m(pid=5243)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5242)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5242)[39m No module named 'flow'
+[36m(pid=5242)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5242)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5242)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5242)[39m No module named 'carla'
+[36m(pid=5242)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5226)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5226)[39m No module named 'flow'
+[36m(pid=5226)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5226)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5226)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5226)[39m No module named 'carla'
+[36m(pid=5226)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5246)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+eval transition loss [0.9616708, 0.9409944, 0.9629944, 0.90909606, 0.9887654, 0.9577309, 0.92376083]
+eval transition loss [0.74721646, 0.80621886, 0.78901505, 0.7477506, 0.77138346, 0.753731, 0.79080814]
+eval transition loss [0.687911, 0.74213636, 0.67851734, 0.69294536, 0.7026581, 0.670009, 0.7289207]
+eval transition loss [0.6354978, 0.66506946, 0.62208486, 0.6558084, 0.62209564, 0.6154468, 0.6676722]
+eval transition loss [0.58880776, 0.63391644, 0.60319567, 0.607769, 0.59566236, 0.59147453, 0.6195936]
+eval transition loss [0.57325673, 0.5758265, 0.5602076, 0.5953042, 0.5683394, 0.5698996, 0.586144]
+eval transition loss [0.539111, 0.56400114, 0.5412144, 0.5831326, 0.5507704, 0.53894204, 0.5719729]
+eval transition loss [0.5253688, 0.55016494, 0.5454041, 0.5545143, 0.5331362, 0.5181599, 0.53173697]
+eval transition loss [0.5140455, 0.5184107, 0.52226603, 0.54673326, 0.52389574, 0.5164646, 0.5188288]
+eval transition loss [0.5028143, 0.5354154, 0.5010468, 0.5230611, 0.5212385, 0.50535375, 0.51185936]
+eval transition loss [0.5183414, 0.5580915, 0.49406615, 0.51245064, 0.49414775, 0.50824577, 0.49590653]
+eval transition loss [0.5476546, 0.49158943, 0.4983024, 0.5644388, 0.48094824, 0.485299, 0.47380677]
+eval transition loss [0.5349902, 0.49804178, 0.48634008, 0.50679517, 0.48796093, 0.47512853, 0.4757339]
+eval transition loss [0.47054833, 0.5004649, 0.469558, 0.48371077, 0.47638625, 0.47513375, 0.47409648]
+eval transition loss [0.5163616, 0.4784752, 0.46848914, 0.49723873, 0.46560308, 0.47767037, 0.4490463]
+eval transition loss [0.48479873, 0.45870963, 0.4909361, 0.48932427, 0.45539546, 0.47898346, 0.4498016]
+eval transition loss [0.4714336, 0.49095613, 0.45915234, 0.47177657, 0.4537259, 0.46422088, 0.45028397]
+eval transition loss [0.4728111, 0.46683997, 0.45629054, 0.46952865, 0.45373046, 0.45819727, 0.44568738]
+eval transition loss [0.46131283, 0.47007564, 0.45977908, 0.50879395, 0.53275687, 0.4724801, 0.46048504]
+eval transition loss [2.3272161, 2.3525236, 0.4553276, 0.52163166, 0.44911206, 0.45591852, 0.4554898]
+eval transition loss [0.7488945, 1.1656837, 0.44429195, 0.47928157, 0.45552367, 0.45168048, 0.44635788]
+eval transition loss [0.54348165, 0.79497993, 0.48275447, 0.4621912, 0.44421643, 0.48667508, 0.44353008]
+eval transition loss [0.4915206, 0.6063636, 0.44475627, 0.45584685, 0.4633504, 0.4561546, 0.4413382]
+eval transition loss [0.47924078, 0.5271905, 0.4451889, 0.4492251, 0.5744082, 0.45396882, 0.48580915]
+eval transition loss [0.5135309, 0.49091184, 0.44224736, 0.44908237, 0.4422305, 0.4696482, 0.4668725]
+eval transition loss [0.473375, 0.51050675, 0.42248568, 0.45715734, 0.43960032, 0.4499151, 0.44835243]
+eval transition loss [0.51658064, 0.47615424, 0.45012155, 5.3233604, 0.4629712, 0.45916623, 0.4298341]
+eval transition loss [0.49143213, 3.99836, 0.44169512, 1.0359799, 0.43705326, 2.5337543, 0.43225464]
+eval transition loss [0.46427017, 1.3694861, 0.4231509, 0.6192873, 0.4274636, 1.0221916, 0.42576557]
+eval transition loss [1.2791511, 0.8119759, 0.432728, 0.50736517, 0.92208993, 0.6288835, 0.44386482]
+eval transition loss [0.79329634, 0.5742034, 0.43274552, 0.49423292, 0.53966796, 0.503171, 0.42182267]
+eval transition loss [0.60436416, 0.511418, 0.42914534, 0.45998102, 0.4676491, 0.4710772, 0.43477252]
+eval transition loss [0.4964069, 0.4730913, 1.8578084, 0.45187977, 0.47178614, 0.47759897, 3.2007089]
+eval transition loss [0.46315598, 0.45787755, 0.8995546, 0.49325716, 0.44407508, 0.48505512, 1.5548021]
+eval transition loss [0.47259474, 0.4504263, 0.5485398, 0.46831653, 0.43498155, 0.4550402, 0.9194362]
+eval transition loss [0.4643653, 0.45257255, 0.44120014, 0.42926386, 0.44804707, 0.43744656, 0.649055]
+eval transition loss [0.46226504, 0.44657463, 0.42131993, 0.43356985, 0.4189946, 0.5153873, 0.51405025]
+eval transition loss [0.4411607, 0.62731177, 0.43427637, 0.43476304, 0.43494424, 0.44415447, 0.46902832]
+eval transition loss [0.43915743, 0.46900022, 0.45873725, 0.4768916, 0.42778847, 0.44035324, 0.5067585]
+eval transition loss [0.4432421, 0.5141526, 0.43802235, 0.43567413, 1.0120792, 0.4376494, 0.44110352]
+eval transition loss [0.4399443, 0.4530279, 0.4681899, 0.5278138, 0.4907462, 0.4320777, 0.4561782]
+eval transition loss [0.5953089, 1.6495924, 0.47120133, 0.45863622, 0.44758606, 0.456082, 0.44124976]
+eval transition loss [0.45278925, 0.8221829, 0.4691406, 0.45335105, 1.8865335, 0.4771261, 0.47191608]
+eval transition loss [0.4388927, 0.561511, 0.44692054, 0.4442264, 0.97172767, 1.3216448, 0.45061925]
+eval transition loss [0.47517785, 0.48429385, 0.4652703, 0.536977, 0.61769974, 0.55813956, 0.4447071]
+eval transition loss [1.9735543, 0.45497343, 2.9134636, 0.42374802, 0.4931466, 0.46040133, 0.42135996]
+eval transition loss [0.8077212, 0.43067172, 1.2005019, 0.44053838, 0.4678909, 0.49660248, 0.4387386]
+eval transition loss [0.53328353, 0.7273425, 0.78964335, 0.4288645, 0.45336193, 0.44442198, 0.4375407]
+eval transition loss [0.4570827, 0.49471295, 1.2915661, 0.44058216, 1.0172591, 0.4428611, 0.41599455]
+eval transition loss [0.4644458, 0.46719825, 0.7673185, 0.427763, 0.553301, 2.4667506, 0.44596854]
+eval transition loss [0.4483204, 0.45935407, 0.5703659, 3.6004748, 0.46469477, 1.0445012, 0.43344215]
+eval transition loss [3.0174487, 2.5519397, 0.474315, 1.142719, 0.43901274, 0.65432686, 2.4327447]
+eval transition loss [0.845336, 1.2694341, 0.4527466, 0.65767217, 0.42527866, 0.4993302, 0.5171626]
+eval transition loss [0.54189223, 0.7828291, 0.45801085, 0.477255, 0.48980328, 0.51844144, 0.49463367]
+[32m2021-11-08 at 12:09:11.849[39m | [34mINFO[39m | Epoch : 0
+[32m2021-11-08 at 12:09:11.851[39m | [34mINFO[39m | Reward_Mean_Env : -0.2971129446168058
+[32m2021-11-08 at 12:09:11.855[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:09:11.855[39m | [34mINFO[39m | Reward_Mean : -0.27568672647133563
+[32m2021-11-08 at 12:09:11.856[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:09:11.856[39m | [34mINFO[39m | D4rl_Score : 2.2545246212974877
+average next_obs: 0.040234457701444626
+average reward: -0.30575093626976013
+average uncertainty: 2.8841052055358887
+average next_obs: 0.04678446799516678
+average reward: -0.28192710876464844
+average uncertainty: 2.7857491970062256
+average next_obs: 0.043681222945451736
+average reward: -0.2802507281303406
+average uncertainty: 2.746197462081909
+average next_obs: 0.027843037620186806
+average reward: -0.26799654960632324
+average uncertainty: 2.726949691772461
+average next_obs: 0.03462042659521103
+average reward: -0.2698894143104553
+average uncertainty: 2.7294843196868896
+[32m2021-11-08 at 12:11:07.353[39m | [34mINFO[39m | Epoch : 1
+[32m2021-11-08 at 12:11:07.354[39m | [34mINFO[39m | Reward_Mean_Env : -5.716456042586625
+[32m2021-11-08 at 12:11:07.357[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:11:07.357[39m | [34mINFO[39m | Reward_Mean : -5.844845819846913
+[32m2021-11-08 at 12:11:07.358[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:11:07.358[39m | [34mINFO[39m | D4rl_Score : 2.2096669586374595
+[32m2021-11-08 at 12:11:07.359[39m | [34mINFO[39m | uncertainty : 2.7294843196868896
+[32m2021-11-08 at 12:11:07.360[39m | [34mINFO[39m | disagreement_uncertainty : 0.7472407817840576
+[32m2021-11-08 at 12:11:07.360[39m | [34mINFO[39m | aleatoric_uncertainty : 2.7294843196868896
+[32m2021-11-08 at 12:11:07.361[39m | [34mINFO[39m | reward : -0.2698894143104553
+[32m2021-11-08 at 12:11:07.362[39m | [34mINFO[39m | next_obs : 0.03462042659521103
+[32m2021-11-08 at 12:11:07.362[39m | [34mINFO[39m | mean_action_log_prob : -4.051590919494629
+[32m2021-11-08 at 12:11:07.363[39m | [34mINFO[39m | mean_critic_loss : 17.002355575561523
+[32m2021-11-08 at 12:11:07.364[39m | [34mINFO[39m | mean_Qmin : -11.73694896697998
+[32m2021-11-08 at 12:11:07.364[39m | [34mINFO[39m | log_alpha : -0.3000001013278961
+[32m2021-11-08 at 12:11:07.364[39m | [34mINFO[39m | mean_obs : 0.006802583113312721
+[32m2021-11-08 at 12:11:07.365[39m | [34mINFO[39m | mean_new_action : 0.04196000099182129
+[32m2021-11-08 at 12:11:07.366[39m | [34mINFO[39m | mean_next_obs : -0.042659662663936615
+[32m2021-11-08 at 12:11:07.367[39m | [34mINFO[39m | mean_next_action : 0.05730804055929184
+[32m2021-11-08 at 12:11:07.367[39m | [34mINFO[39m | mean_alpha_loss : -2.99660325050354
+[32m2021-11-08 at 12:11:07.368[39m | [34mINFO[39m | mean_actor_loss : 8.735457420349121
+average next_obs: 0.16344447433948517
+average reward: -0.29223793745040894
+average uncertainty: 2.9487361907958984
+average next_obs: 0.14034807682037354
+average reward: -0.2984594404697418
+average uncertainty: 2.898003101348877
+average next_obs: 0.09443815797567368
+average reward: -0.2854498028755188
+average uncertainty: 2.8655200004577637
+average next_obs: 0.06502800434827805
+average reward: -0.2833070755004883
+average uncertainty: 2.8526923656463623
+average next_obs: 0.05694768577814102
+average reward: -0.2701212763786316
+average uncertainty: 2.850830554962158
+[32m2021-11-08 at 12:13:03.226[39m | [34mINFO[39m | Epoch : 2
+[32m2021-11-08 at 12:13:03.227[39m | [34mINFO[39m | Reward_Mean_Env : -33.03574078449993
+[32m2021-11-08 at 12:13:03.229[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:13:03.230[39m | [34mINFO[39m | Reward_Mean : -33.17026821005909
+[32m2021-11-08 at 12:13:03.230[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:13:03.231[39m | [34mINFO[39m | D4rl_Score : 1.989570071644064
+[32m2021-11-08 at 12:13:03.233[39m | [34mINFO[39m | uncertainty : 2.850830554962158
+[32m2021-11-08 at 12:13:03.233[39m | [34mINFO[39m | disagreement_uncertainty : 0.8654365539550781
+[32m2021-11-08 at 12:13:03.234[39m | [34mINFO[39m | aleatoric_uncertainty : 2.850830554962158
+[32m2021-11-08 at 12:13:03.234[39m | [34mINFO[39m | reward : -0.2701212763786316
+[32m2021-11-08 at 12:13:03.235[39m | [34mINFO[39m | next_obs : 0.05694768577814102
+[32m2021-11-08 at 12:13:03.236[39m | [34mINFO[39m | mean_action_log_prob : -3.7814784049987793
+[32m2021-11-08 at 12:13:03.237[39m | [34mINFO[39m | mean_critic_loss : 23.612104415893555
+[32m2021-11-08 at 12:13:03.238[39m | [34mINFO[39m | mean_Qmin : -25.810062408447266
+[32m2021-11-08 at 12:13:03.238[39m | [34mINFO[39m | log_alpha : -0.5999903082847595
+[32m2021-11-08 at 12:13:03.240[39m | [34mINFO[39m | mean_obs : 0.12412851303815842
+[32m2021-11-08 at 12:13:03.241[39m | [34mINFO[39m | mean_new_action : 0.10896702855825424
+[32m2021-11-08 at 12:13:03.242[39m | [34mINFO[39m | mean_next_obs : 0.0492708757519722
+[32m2021-11-08 at 12:13:03.243[39m | [34mINFO[39m | mean_next_action : 0.08188381791114807
+[32m2021-11-08 at 12:13:03.244[39m | [34mINFO[39m | mean_alpha_loss : -5.9112548828125
+[32m2021-11-08 at 12:13:03.244[39m | [34mINFO[39m | mean_actor_loss : 23.734722137451172
+average next_obs: 0.1982191652059555
+average reward: -0.3097420930862427
+average uncertainty: 2.937983751296997
+average next_obs: 0.205543652176857
+average reward: -0.28998589515686035
+average uncertainty: 2.8695948123931885
+average next_obs: 0.14682427048683167
+average reward: -0.2991604804992676
+average uncertainty: 2.834343671798706
+average next_obs: 0.0857841968536377
+average reward: -0.26631271839141846
+average uncertainty: 2.8186604976654053
+average next_obs: 0.057069938629865646
+average reward: -0.26394519209861755
+average uncertainty: 2.795757532119751
+[32m2021-11-08 at 12:14:59.239[39m | [34mINFO[39m | Epoch : 3
+[32m2021-11-08 at 12:14:59.240[39m | [34mINFO[39m | Reward_Mean_Env : -21.552191549579724
+[32m2021-11-08 at 12:14:59.244[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:14:59.245[39m | [34mINFO[39m | Reward_Mean : -21.713792713884736
+[32m2021-11-08 at 12:14:59.245[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:14:59.246[39m | [34mINFO[39m | D4rl_Score : 2.081848044757017
+[32m2021-11-08 at 12:14:59.246[39m | [34mINFO[39m | uncertainty : 2.795757532119751
+[32m2021-11-08 at 12:14:59.247[39m | [34mINFO[39m | disagreement_uncertainty : 0.8289077281951904
+[32m2021-11-08 at 12:14:59.248[39m | [34mINFO[39m | aleatoric_uncertainty : 2.795757532119751
+[32m2021-11-08 at 12:14:59.249[39m | [34mINFO[39m | reward : -0.26394519209861755
+[32m2021-11-08 at 12:14:59.250[39m | [34mINFO[39m | next_obs : 0.057069938629865646
+[32m2021-11-08 at 12:14:59.250[39m | [34mINFO[39m | mean_action_log_prob : -3.736276149749756
+[32m2021-11-08 at 12:14:59.251[39m | [34mINFO[39m | mean_critic_loss : 23.04090690612793
+[32m2021-11-08 at 12:14:59.251[39m | [34mINFO[39m | mean_Qmin : -44.07746124267578
+[32m2021-11-08 at 12:14:59.251[39m | [34mINFO[39m | log_alpha : -0.8999804854393005
+[32m2021-11-08 at 12:14:59.252[39m | [34mINFO[39m | mean_obs : 0.017106840386986732
+[32m2021-11-08 at 12:14:59.252[39m | [34mINFO[39m | mean_new_action : 0.08452673256397247
+[32m2021-11-08 at 12:14:59.253[39m | [34mINFO[39m | mean_next_obs : 0.11960414052009583
+[32m2021-11-08 at 12:14:59.253[39m | [34mINFO[39m | mean_next_action : 0.06750409305095673
+[32m2021-11-08 at 12:14:59.254[39m | [34mINFO[39m | mean_alpha_loss : -8.694489479064941
+[32m2021-11-08 at 12:14:59.255[39m | [34mINFO[39m | mean_actor_loss : 42.55837631225586
+average next_obs: 0.1218254566192627
+average reward: -0.3121660351753235
+average uncertainty: 2.9476864337921143
+average next_obs: 0.1430836021900177
+average reward: -0.2839413583278656
+average uncertainty: 2.8657925128936768
+average next_obs: 0.13467444479465485
+average reward: -0.2611585557460785
+average uncertainty: 2.819523572921753
+average next_obs: 0.10518138110637665
+average reward: -0.2693825960159302
+average uncertainty: 2.7904176712036133
+average next_obs: 0.08438580483198166
+average reward: -0.24985839426517487
+average uncertainty: 2.777129888534546
+[32m2021-11-08 at 12:16:57.140[39m | [34mINFO[39m | Epoch : 4
+[32m2021-11-08 at 12:16:57.142[39m | [34mINFO[39m | Reward_Mean_Env : -67.61494577925204
+[32m2021-11-08 at 12:16:57.145[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:16:57.145[39m | [34mINFO[39m | Reward_Mean : -67.57503960049061
+[32m2021-11-08 at 12:16:57.146[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:16:57.148[39m | [34mINFO[39m | D4rl_Score : 1.7124514612665798
+[32m2021-11-08 at 12:16:57.148[39m | [34mINFO[39m | uncertainty : 2.777129888534546
+[32m2021-11-08 at 12:16:57.149[39m | [34mINFO[39m | disagreement_uncertainty : 0.8112751245498657
+[32m2021-11-08 at 12:16:57.150[39m | [34mINFO[39m | aleatoric_uncertainty : 2.777129888534546
+[32m2021-11-08 at 12:16:57.151[39m | [34mINFO[39m | reward : -0.24985839426517487
+[32m2021-11-08 at 12:16:57.151[39m | [34mINFO[39m | next_obs : 0.08438580483198166
+[32m2021-11-08 at 12:16:57.152[39m | [34mINFO[39m | mean_action_log_prob : -3.2854976654052734
+[32m2021-11-08 at 12:16:57.153[39m | [34mINFO[39m | mean_critic_loss : 23.721948623657227
+[32m2021-11-08 at 12:16:57.154[39m | [34mINFO[39m | mean_Qmin : -63.14678955078125
+[32m2021-11-08 at 12:16:57.155[39m | [34mINFO[39m | log_alpha : -1.2000104188919067
+[32m2021-11-08 at 12:16:57.155[39m | [34mINFO[39m | mean_obs : 0.07324329763650894
+[32m2021-11-08 at 12:16:57.156[39m | [34mINFO[39m | mean_new_action : 0.09972833096981049
+[32m2021-11-08 at 12:16:57.157[39m | [34mINFO[39m | mean_next_obs : 0.13371649384498596
+[32m2021-11-08 at 12:16:57.158[39m | [34mINFO[39m | mean_next_action : 0.09411533176898956
+[32m2021-11-08 at 12:16:57.158[39m | [34mINFO[39m | mean_alpha_loss : -11.08005428314209
+[32m2021-11-08 at 12:16:57.159[39m | [34mINFO[39m | mean_actor_loss : 62.1572265625
+average next_obs: 0.20911376178264618
+average reward: -0.2998570203781128
+average uncertainty: 2.909308433532715
+average next_obs: 0.25030460953712463
+average reward: -0.2942511737346649
+average uncertainty: 2.8793787956237793
+average next_obs: 0.19030801951885223
+average reward: -0.26664742827415466
+average uncertainty: 2.845431089401245
+average next_obs: 0.10937996953725815
+average reward: -0.2562450170516968
+average uncertainty: 2.799109935760498
+average next_obs: 0.07437217980623245
+average reward: -0.23895007371902466
+average uncertainty: 2.7685868740081787
+[32m2021-11-08 at 12:18:57.030[39m | [34mINFO[39m | Epoch : 5
+[32m2021-11-08 at 12:18:57.031[39m | [34mINFO[39m | Reward_Mean_Env : -31.47974956410638
+[32m2021-11-08 at 12:18:57.034[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:18:57.035[39m | [34mINFO[39m | Reward_Mean : -30.861132267350317
+[32m2021-11-08 at 12:18:57.036[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:18:57.037[39m | [34mINFO[39m | D4rl_Score : 2.0081693681298454
+[32m2021-11-08 at 12:18:57.037[39m | [34mINFO[39m | uncertainty : 2.7685868740081787
+[32m2021-11-08 at 12:18:57.038[39m | [34mINFO[39m | disagreement_uncertainty : 0.8443657755851746
+[32m2021-11-08 at 12:18:57.038[39m | [34mINFO[39m | aleatoric_uncertainty : 2.7685868740081787
+[32m2021-11-08 at 12:18:57.039[39m | [34mINFO[39m | reward : -0.23895007371902466
+[32m2021-11-08 at 12:18:57.040[39m | [34mINFO[39m | next_obs : 0.07437217980623245
+[32m2021-11-08 at 12:18:57.041[39m | [34mINFO[39m | mean_action_log_prob : -2.5737359523773193
+[32m2021-11-08 at 12:18:57.041[39m | [34mINFO[39m | mean_critic_loss : 27.526535034179688
+[32m2021-11-08 at 12:18:57.042[39m | [34mINFO[39m | mean_Qmin : -82.19428253173828
+[32m2021-11-08 at 12:18:57.043[39m | [34mINFO[39m | log_alpha : -1.5000602006912231
+[32m2021-11-08 at 12:18:57.044[39m | [34mINFO[39m | mean_obs : 0.12833251059055328
+[32m2021-11-08 at 12:18:57.044[39m | [34mINFO[39m | mean_new_action : 0.14820443093776703
+[32m2021-11-08 at 12:18:57.045[39m | [34mINFO[39m | mean_next_obs : -0.01755252666771412
+[32m2021-11-08 at 12:18:57.045[39m | [34mINFO[39m | mean_next_action : 0.16583961248397827
+[32m2021-11-08 at 12:18:57.046[39m | [34mINFO[39m | mean_alpha_loss : -12.90583324432373
+[32m2021-11-08 at 12:18:57.047[39m | [34mINFO[39m | mean_actor_loss : 81.62004089355469
+average next_obs: 0.3610387444496155
+average reward: -0.2991079092025757
+average uncertainty: 2.939779043197632
+average next_obs: 0.295634388923645
+average reward: -0.2851601541042328
+average uncertainty: 2.838040590286255
+average next_obs: 0.17492836713790894
+average reward: -0.2510826289653778
+average uncertainty: 2.7851130962371826
+average next_obs: 0.11139069497585297
+average reward: -0.2422768622636795
+average uncertainty: 2.761401414871216
+average next_obs: 0.10344859957695007
+average reward: -0.2407635897397995
+average uncertainty: 2.772911787033081
+[32m2021-11-08 at 12:20:57.853[39m | [34mINFO[39m | Epoch : 6
+[32m2021-11-08 at 12:20:57.855[39m | [34mINFO[39m | Reward_Mean_Env : -149.86793645669323
+[32m2021-11-08 at 12:20:57.857[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:20:57.857[39m | [34mINFO[39m | Reward_Mean : -142.8125951318706
+[32m2021-11-08 at 12:20:57.858[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:20:57.859[39m | [34mINFO[39m | D4rl_Score : 1.106438806787688
+[32m2021-11-08 at 12:20:57.860[39m | [34mINFO[39m | uncertainty : 2.772911787033081
+[32m2021-11-08 at 12:20:57.861[39m | [34mINFO[39m | disagreement_uncertainty : 0.8519132733345032
+[32m2021-11-08 at 12:20:57.861[39m | [34mINFO[39m | aleatoric_uncertainty : 2.772911787033081
+[32m2021-11-08 at 12:20:57.862[39m | [34mINFO[39m | reward : -0.2407635897397995
+[32m2021-11-08 at 12:20:57.863[39m | [34mINFO[39m | next_obs : 0.10344859957695007
+[32m2021-11-08 at 12:20:57.863[39m | [34mINFO[39m | mean_action_log_prob : -1.9066814184188843
+[32m2021-11-08 at 12:20:57.864[39m | [34mINFO[39m | mean_critic_loss : 30.344297409057617
+[32m2021-11-08 at 12:20:57.865[39m | [34mINFO[39m | mean_Qmin : -101.8576431274414
+[32m2021-11-08 at 12:20:57.865[39m | [34mINFO[39m | log_alpha : -1.8001099824905396
+[32m2021-11-08 at 12:20:57.866[39m | [34mINFO[39m | mean_obs : 0.15291845798492432
+[32m2021-11-08 at 12:20:57.867[39m | [34mINFO[39m | mean_new_action : 0.16423873603343964
+[32m2021-11-08 at 12:20:57.868[39m | [34mINFO[39m | mean_next_obs : 0.1378670334815979
+[32m2021-11-08 at 12:20:57.869[39m | [34mINFO[39m | mean_next_action : 0.1463554948568344
+[32m2021-11-08 at 12:20:57.869[39m | [34mINFO[39m | mean_alpha_loss : -14.257590293884277
+[32m2021-11-08 at 12:20:57.870[39m | [34mINFO[39m | mean_actor_loss : 101.5425033569336
+average next_obs: 0.3985089361667633
+average reward: -0.2994866967201233
+average uncertainty: 2.9275498390197754
+average next_obs: 0.36653435230255127
+average reward: -0.27235835790634155
+average uncertainty: 2.822967767715454
+average next_obs: 0.2081480175256729
+average reward: -0.24409250915050507
+average uncertainty: 2.787684202194214
+average next_obs: 0.11264892667531967
+average reward: -0.2194557785987854
+average uncertainty: 2.7681565284729004
+average next_obs: 0.09708478301763535
+average reward: -0.19341987371444702
+average uncertainty: 2.788593053817749
+[32m2021-11-08 at 12:22:57.514[39m | [34mINFO[39m | Epoch : 7
+[32m2021-11-08 at 12:22:57.515[39m | [34mINFO[39m | Reward_Mean_Env : -56.774187930075584
+[32m2021-11-08 at 12:22:57.518[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:22:57.519[39m | [34mINFO[39m | Reward_Mean : -66.13679171938281
+[32m2021-11-08 at 12:22:57.520[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:22:57.521[39m | [34mINFO[39m | D4rl_Score : 1.7240360536961579
+[32m2021-11-08 at 12:22:57.521[39m | [34mINFO[39m | uncertainty : 2.788593053817749
+[32m2021-11-08 at 12:22:57.522[39m | [34mINFO[39m | disagreement_uncertainty : 0.8797478079795837
+[32m2021-11-08 at 12:22:57.522[39m | [34mINFO[39m | aleatoric_uncertainty : 2.788593053817749
+[32m2021-11-08 at 12:22:57.524[39m | [34mINFO[39m | reward : -0.19341987371444702
+[32m2021-11-08 at 12:22:57.524[39m | [34mINFO[39m | next_obs : 0.09708478301763535
+[32m2021-11-08 at 12:22:57.525[39m | [34mINFO[39m | mean_action_log_prob : -0.6284116506576538
+[32m2021-11-08 at 12:22:57.525[39m | [34mINFO[39m | mean_critic_loss : 38.06547927856445
+[32m2021-11-08 at 12:22:57.526[39m | [34mINFO[39m | mean_Qmin : -119.60322570800781
+[32m2021-11-08 at 12:22:57.527[39m | [34mINFO[39m | log_alpha : -2.1001200675964355
+[32m2021-11-08 at 12:22:57.527[39m | [34mINFO[39m | mean_obs : 0.19633808732032776
+[32m2021-11-08 at 12:22:57.528[39m | [34mINFO[39m | mean_new_action : 0.17303447425365448
+[32m2021-11-08 at 12:22:57.528[39m | [34mINFO[39m | mean_next_obs : 0.16905951499938965
+[32m2021-11-08 at 12:22:57.529[39m | [34mINFO[39m | mean_next_action : 0.16097719967365265
+[32m2021-11-08 at 12:22:57.530[39m | [34mINFO[39m | mean_alpha_loss : -13.741764068603516
+[32m2021-11-08 at 12:22:57.531[39m | [34mINFO[39m | mean_actor_loss : 119.52628326416016
+average next_obs: 0.3832085430622101
+average reward: -0.27945756912231445
+average uncertainty: 2.9739274978637695
+average next_obs: 0.38636842370033264
+average reward: -0.23629526793956757
+average uncertainty: 2.784057378768921
+average next_obs: 0.2282080352306366
+average reward: -0.24379706382751465
+average uncertainty: 2.695344924926758
+average next_obs: 0.09859570860862732
+average reward: -0.2050265371799469
+average uncertainty: 2.702755928039551
+average next_obs: 0.03682178631424904
+average reward: -0.17660991847515106
+average uncertainty: 2.714761257171631
+[32m2021-11-08 at 12:24:54.008[39m | [34mINFO[39m | Epoch : 8
+[32m2021-11-08 at 12:24:54.009[39m | [34mINFO[39m | Reward_Mean_Env : -197.94731798674772
+[32m2021-11-08 at 12:24:54.012[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:24:54.012[39m | [34mINFO[39m | Reward_Mean : -205.37862393230836
+[32m2021-11-08 at 12:24:54.013[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:24:54.014[39m | [34mINFO[39m | D4rl_Score : 0.6024909455664099
+[32m2021-11-08 at 12:24:54.015[39m | [34mINFO[39m | uncertainty : 2.714761257171631
+[32m2021-11-08 at 12:24:54.015[39m | [34mINFO[39m | disagreement_uncertainty : 0.8311988711357117
+[32m2021-11-08 at 12:24:54.016[39m | [34mINFO[39m | aleatoric_uncertainty : 2.714761257171631
+[32m2021-11-08 at 12:24:54.016[39m | [34mINFO[39m | reward : -0.17660991847515106
+[32m2021-11-08 at 12:24:54.018[39m | [34mINFO[39m | next_obs : 0.03682178631424904
+[32m2021-11-08 at 12:24:54.018[39m | [34mINFO[39m | mean_action_log_prob : 0.04741921275854111
+[32m2021-11-08 at 12:24:54.019[39m | [34mINFO[39m | mean_critic_loss : 31.304725646972656
+[32m2021-11-08 at 12:24:54.019[39m | [34mINFO[39m | mean_Qmin : -136.818603515625
+[32m2021-11-08 at 12:24:54.019[39m | [34mINFO[39m | log_alpha : -2.400050640106201
+[32m2021-11-08 at 12:24:54.020[39m | [34mINFO[39m | mean_obs : 0.2242712378501892
+[32m2021-11-08 at 12:24:54.021[39m | [34mINFO[39m | mean_new_action : 0.13517126441001892
+[32m2021-11-08 at 12:24:54.022[39m | [34mINFO[39m | mean_next_obs : 0.2642482817173004
+[32m2021-11-08 at 12:24:54.022[39m | [34mINFO[39m | mean_next_action : 0.11881093680858612
+[32m2021-11-08 at 12:24:54.023[39m | [34mINFO[39m | mean_alpha_loss : -14.042449951171875
+[32m2021-11-08 at 12:24:54.023[39m | [34mINFO[39m | mean_actor_loss : 136.82290649414062
+average next_obs: 0.26102548837661743
+average reward: -0.2840006649494171
+average uncertainty: 2.898777723312378
+average next_obs: 0.42014139890670776
+average reward: -0.25241583585739136
+average uncertainty: 2.84749436378479
+average next_obs: 0.31066402792930603
+average reward: -0.23522624373435974
+average uncertainty: 2.8520431518554688
+average next_obs: 0.151718407869339
+average reward: -0.20408371090888977
+average uncertainty: 2.729631185531616
+average next_obs: 0.051335010677576065
+average reward: -0.16442613303661346
+average uncertainty: 2.719924211502075
+[32m2021-11-08 at 12:26:50.927[39m | [34mINFO[39m | Epoch : 9
+[32m2021-11-08 at 12:26:50.929[39m | [34mINFO[39m | Reward_Mean_Env : -296.9221537646258
+[32m2021-11-08 at 12:26:50.931[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:26:50.931[39m | [34mINFO[39m | Reward_Mean : -297.3911528884565
+[32m2021-11-08 at 12:26:50.932[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:26:50.933[39m | [34mINFO[39m | D4rl_Score : -0.1386383551426566
+[32m2021-11-08 at 12:26:50.934[39m | [34mINFO[39m | uncertainty : 2.719924211502075
+[32m2021-11-08 at 12:26:50.935[39m | [34mINFO[39m | disagreement_uncertainty : 0.8271088004112244
+[32m2021-11-08 at 12:26:50.936[39m | [34mINFO[39m | aleatoric_uncertainty : 2.719924211502075
+[32m2021-11-08 at 12:26:50.937[39m | [34mINFO[39m | reward : -0.16442613303661346
+[32m2021-11-08 at 12:26:50.938[39m | [34mINFO[39m | next_obs : 0.051335010677576065
+[32m2021-11-08 at 12:26:50.938[39m | [34mINFO[39m | mean_action_log_prob : 0.4408387541770935
+[32m2021-11-08 at 12:26:50.939[39m | [34mINFO[39m | mean_critic_loss : 30.633331298828125
+[32m2021-11-08 at 12:26:50.940[39m | [34mINFO[39m | mean_Qmin : -150.6934814453125
+[32m2021-11-08 at 12:26:50.941[39m | [34mINFO[39m | log_alpha : -2.699981212615967
+[32m2021-11-08 at 12:26:50.942[39m | [34mINFO[39m | mean_obs : 0.11617845296859741
+[32m2021-11-08 at 12:26:50.943[39m | [34mINFO[39m | mean_new_action : 0.09660357236862183
+[32m2021-11-08 at 12:26:50.944[39m | [34mINFO[39m | mean_next_obs : 0.25574997067451477
+[32m2021-11-08 at 12:26:50.944[39m | [34mINFO[39m | mean_next_action : 0.059203218668699265
+[32m2021-11-08 at 12:26:50.945[39m | [34mINFO[39m | mean_alpha_loss : -14.47425365447998
+[32m2021-11-08 at 12:26:50.946[39m | [34mINFO[39m | mean_actor_loss : 150.72311401367188
+average next_obs: 0.10648728162050247
+average reward: -0.2749747335910797
+average uncertainty: 2.9511895179748535
+average next_obs: 0.19033758342266083
+average reward: -0.2319793850183487
+average uncertainty: 2.8440632820129395
+average next_obs: 0.20533934235572815
+average reward: -0.233252614736557
+average uncertainty: 2.6981656551361084
+average next_obs: 0.1776972860097885
+average reward: -0.20920386910438538
+average uncertainty: 2.6244983673095703
+average next_obs: 0.1376224160194397
+average reward: -0.18490026891231537
+average uncertainty: 2.5611157417297363
+[32m2021-11-08 at 12:28:48.158[39m | [34mINFO[39m | Epoch : 10
+[32m2021-11-08 at 12:28:48.159[39m | [34mINFO[39m | Reward_Mean_Env : -236.34701509773953
+[32m2021-11-08 at 12:28:48.161[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:28:48.162[39m | [34mINFO[39m | Reward_Mean : -236.3883976730436
+[32m2021-11-08 at 12:28:48.162[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:28:48.163[39m | [34mINFO[39m | D4rl_Score : 0.3527178745689753
+[32m2021-11-08 at 12:28:48.164[39m | [34mINFO[39m | uncertainty : 2.5611157417297363
+[32m2021-11-08 at 12:28:48.165[39m | [34mINFO[39m | disagreement_uncertainty : 0.7569912075996399
+[32m2021-11-08 at 12:28:48.165[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5611157417297363
+[32m2021-11-08 at 12:28:48.166[39m | [34mINFO[39m | reward : -0.18490026891231537
+[32m2021-11-08 at 12:28:48.166[39m | [34mINFO[39m | next_obs : 0.1376224160194397
+[32m2021-11-08 at 12:28:48.167[39m | [34mINFO[39m | mean_action_log_prob : 1.197798490524292
+[32m2021-11-08 at 12:28:48.168[39m | [34mINFO[39m | mean_critic_loss : 34.47880554199219
+[32m2021-11-08 at 12:28:48.169[39m | [34mINFO[39m | mean_Qmin : -166.03921508789062
+[32m2021-11-08 at 12:28:48.169[39m | [34mINFO[39m | log_alpha : -2.9999117851257324
+[32m2021-11-08 at 12:28:48.170[39m | [34mINFO[39m | mean_obs : 0.14039477705955505
+[32m2021-11-08 at 12:28:48.171[39m | [34mINFO[39m | mean_new_action : -0.005415502469986677
+[32m2021-11-08 at 12:28:48.171[39m | [34mINFO[39m | mean_next_obs : 0.20575085282325745
+[32m2021-11-08 at 12:28:48.173[39m | [34mINFO[39m | mean_next_action : -0.01503007858991623
+[32m2021-11-08 at 12:28:48.173[39m | [34mINFO[39m | mean_alpha_loss : -14.079816818237305
+[32m2021-11-08 at 12:28:48.173[39m | [34mINFO[39m | mean_actor_loss : 166.09886169433594
+average next_obs: -0.042715221643447876
+average reward: -0.28574007749557495
+average uncertainty: 2.886913776397705
+average next_obs: 0.03869305178523064
+average reward: -0.2562347650527954
+average uncertainty: 2.7059590816497803
+average next_obs: 0.0776870995759964
+average reward: -0.23608708381652832
+average uncertainty: 2.613827705383301
+average next_obs: 0.057109806686639786
+average reward: -0.2297435849905014
+average uncertainty: 2.5928795337677
+average next_obs: 0.0511469766497612
+average reward: -0.2213154286146164
+average uncertainty: 2.580409049987793
+[32m2021-11-08 at 12:30:44.805[39m | [34mINFO[39m | Epoch : 11
+[32m2021-11-08 at 12:30:44.806[39m | [34mINFO[39m | Reward_Mean_Env : -72.04751795285449
+[32m2021-11-08 at 12:30:44.810[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:30:44.810[39m | [34mINFO[39m | Reward_Mean : -72.09523248411537
+[32m2021-11-08 at 12:30:44.811[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:30:44.811[39m | [34mINFO[39m | D4rl_Score : 1.6760428609496871
+[32m2021-11-08 at 12:30:44.812[39m | [34mINFO[39m | uncertainty : 2.580409049987793
+[32m2021-11-08 at 12:30:44.812[39m | [34mINFO[39m | disagreement_uncertainty : 0.6763938665390015
+[32m2021-11-08 at 12:30:44.813[39m | [34mINFO[39m | aleatoric_uncertainty : 2.580409049987793
+[32m2021-11-08 at 12:30:44.813[39m | [34mINFO[39m | reward : -0.2213154286146164
+[32m2021-11-08 at 12:30:44.814[39m | [34mINFO[39m | next_obs : 0.0511469766497612
+[32m2021-11-08 at 12:30:44.814[39m | [34mINFO[39m | mean_action_log_prob : 1.2383689880371094
+[32m2021-11-08 at 12:30:44.815[39m | [34mINFO[39m | mean_critic_loss : 32.32380676269531
+[32m2021-11-08 at 12:30:44.815[39m | [34mINFO[39m | mean_Qmin : -179.55816650390625
+[32m2021-11-08 at 12:30:44.816[39m | [34mINFO[39m | log_alpha : -3.299842357635498
+[32m2021-11-08 at 12:30:44.817[39m | [34mINFO[39m | mean_obs : 0.0729629248380661
+[32m2021-11-08 at 12:30:44.817[39m | [34mINFO[39m | mean_new_action : 0.13276638090610504
+[32m2021-11-08 at 12:30:44.818[39m | [34mINFO[39m | mean_next_obs : 0.22344137728214264
+[32m2021-11-08 at 12:30:44.819[39m | [34mINFO[39m | mean_next_action : 0.15795186161994934
+[32m2021-11-08 at 12:30:44.819[39m | [34mINFO[39m | mean_alpha_loss : -15.122825622558594
+[32m2021-11-08 at 12:30:44.820[39m | [34mINFO[39m | mean_actor_loss : 179.60385131835938
+average next_obs: 0.3124501407146454
+average reward: -0.29704856872558594
+average uncertainty: 2.800396203994751
+average next_obs: 0.24477776885032654
+average reward: -0.26536300778388977
+average uncertainty: 2.671424627304077
+average next_obs: 0.326459676027298
+average reward: -0.2371378391981125
+average uncertainty: 2.5933072566986084
+average next_obs: 0.3004894256591797
+average reward: -0.21095886826515198
+average uncertainty: 2.5125086307525635
+average next_obs: 0.2648889422416687
+average reward: -0.16790375113487244
+average uncertainty: 2.443324565887451
+[32m2021-11-08 at 12:32:40.353[39m | [34mINFO[39m | Epoch : 12
+[32m2021-11-08 at 12:32:40.354[39m | [34mINFO[39m | Reward_Mean_Env : -35.09306544443258
+[32m2021-11-08 at 12:32:40.357[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:32:40.358[39m | [34mINFO[39m | Reward_Mean : -34.98681024126072
+[32m2021-11-08 at 12:32:40.358[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:32:40.359[39m | [34mINFO[39m | D4rl_Score : 1.9749384498359654
+[32m2021-11-08 at 12:32:40.360[39m | [34mINFO[39m | uncertainty : 2.443324565887451
+[32m2021-11-08 at 12:32:40.361[39m | [34mINFO[39m | disagreement_uncertainty : 0.6618459224700928
+[32m2021-11-08 at 12:32:40.362[39m | [34mINFO[39m | aleatoric_uncertainty : 2.443324565887451
+[32m2021-11-08 at 12:32:40.363[39m | [34mINFO[39m | reward : -0.16790375113487244
+[32m2021-11-08 at 12:32:40.364[39m | [34mINFO[39m | next_obs : 0.2648889422416687
+[32m2021-11-08 at 12:32:40.364[39m | [34mINFO[39m | mean_action_log_prob : 2.8240044116973877
+[32m2021-11-08 at 12:32:40.365[39m | [34mINFO[39m | mean_critic_loss : 27.50897979736328
+[32m2021-11-08 at 12:32:40.366[39m | [34mINFO[39m | mean_Qmin : -192.07083129882812
+[32m2021-11-08 at 12:32:40.367[39m | [34mINFO[39m | log_alpha : -3.5997729301452637
+[32m2021-11-08 at 12:32:40.368[39m | [34mINFO[39m | mean_obs : 0.12713465094566345
+[32m2021-11-08 at 12:32:40.368[39m | [34mINFO[39m | mean_new_action : 0.17881791293621063
+[32m2021-11-08 at 12:32:40.369[39m | [34mINFO[39m | mean_next_obs : 0.20259295403957367
+[32m2021-11-08 at 12:32:40.370[39m | [34mINFO[39m | mean_next_action : 0.1644597053527832
+[32m2021-11-08 at 12:32:40.371[39m | [34mINFO[39m | mean_alpha_loss : -12.251992225646973
+[32m2021-11-08 at 12:32:40.371[39m | [34mINFO[39m | mean_actor_loss : 192.14801025390625
+average next_obs: 0.3679451644420624
+average reward: -0.28872209787368774
+average uncertainty: 2.779937982559204
+average next_obs: 0.40195897221565247
+average reward: -0.2632480561733246
+average uncertainty: 2.6396262645721436
+average next_obs: 0.2932652533054352
+average reward: -0.22330942749977112
+average uncertainty: 2.5155935287475586
+average next_obs: 0.20275475084781647
+average reward: -0.20886272192001343
+average uncertainty: 2.436082363128662
+average next_obs: 0.15697279572486877
+average reward: -0.1623118668794632
+average uncertainty: 2.3431026935577393
+[32m2021-11-08 at 12:34:39.316[39m | [34mINFO[39m | Epoch : 13
+[32m2021-11-08 at 12:34:39.318[39m | [34mINFO[39m | Reward_Mean_Env : -77.88193114288946
+[32m2021-11-08 at 12:34:39.321[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:34:39.322[39m | [34mINFO[39m | Reward_Mean : -78.04899411405167
+[32m2021-11-08 at 12:34:39.324[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:34:39.325[39m | [34mINFO[39m | D4rl_Score : 1.6280873570260195
+[32m2021-11-08 at 12:34:39.326[39m | [34mINFO[39m | uncertainty : 2.3431026935577393
+[32m2021-11-08 at 12:34:39.327[39m | [34mINFO[39m | disagreement_uncertainty : 0.6243230104446411
+[32m2021-11-08 at 12:34:39.328[39m | [34mINFO[39m | aleatoric_uncertainty : 2.3431026935577393
+[32m2021-11-08 at 12:34:39.329[39m | [34mINFO[39m | reward : -0.1623118668794632
+[32m2021-11-08 at 12:34:39.329[39m | [34mINFO[39m | next_obs : 0.15697279572486877
+[32m2021-11-08 at 12:34:39.330[39m | [34mINFO[39m | mean_action_log_prob : 3.9287776947021484
+[32m2021-11-08 at 12:34:39.330[39m | [34mINFO[39m | mean_critic_loss : 26.545360565185547
+[32m2021-11-08 at 12:34:39.331[39m | [34mINFO[39m | mean_Qmin : -203.93161010742188
+[32m2021-11-08 at 12:34:39.332[39m | [34mINFO[39m | log_alpha : -3.8997035026550293
+[32m2021-11-08 at 12:34:39.333[39m | [34mINFO[39m | mean_obs : 0.17724809050559998
+[32m2021-11-08 at 12:34:39.333[39m | [34mINFO[39m | mean_new_action : 0.2764960527420044
+[32m2021-11-08 at 12:34:39.334[39m | [34mINFO[39m | mean_next_obs : 0.23507525026798248
+[32m2021-11-08 at 12:34:39.334[39m | [34mINFO[39m | mean_next_action : 0.2528092861175537
+[32m2021-11-08 at 12:34:39.335[39m | [34mINFO[39m | mean_alpha_loss : -8.721416473388672
+[32m2021-11-08 at 12:34:39.335[39m | [34mINFO[39m | mean_actor_loss : 204.0111541748047
+average next_obs: 0.6071522235870361
+average reward: -0.2967092990875244
+average uncertainty: 2.8719491958618164
+average next_obs: 0.49748480319976807
+average reward: -0.25394347310066223
+average uncertainty: 2.618110179901123
+average next_obs: 0.24635188281536102
+average reward: -0.21418456733226776
+average uncertainty: 2.462357759475708
+average next_obs: 0.15013930201530457
+average reward: -0.1775476336479187
+average uncertainty: 2.4069433212280273
+average next_obs: 0.13250768184661865
+average reward: -0.1555635780096054
+average uncertainty: 2.365744113922119
+[32m2021-11-08 at 12:36:38.138[39m | [34mINFO[39m | Epoch : 14
+[32m2021-11-08 at 12:36:38.139[39m | [34mINFO[39m | Reward_Mean_Env : -128.71852123725827
+[32m2021-11-08 at 12:36:38.146[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:36:38.148[39m | [34mINFO[39m | Reward_Mean : -128.5213001679573
+[32m2021-11-08 at 12:36:38.149[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:36:38.150[39m | [34mINFO[39m | D4rl_Score : 1.2215502765298134
+[32m2021-11-08 at 12:36:38.150[39m | [34mINFO[39m | uncertainty : 2.365744113922119
+[32m2021-11-08 at 12:36:38.151[39m | [34mINFO[39m | disagreement_uncertainty : 0.6220670938491821
+[32m2021-11-08 at 12:36:38.152[39m | [34mINFO[39m | aleatoric_uncertainty : 2.365744113922119
+[32m2021-11-08 at 12:36:38.153[39m | [34mINFO[39m | reward : -0.1555635780096054
+[32m2021-11-08 at 12:36:38.153[39m | [34mINFO[39m | next_obs : 0.13250768184661865
+[32m2021-11-08 at 12:36:38.154[39m | [34mINFO[39m | mean_action_log_prob : 4.067075729370117
+[32m2021-11-08 at 12:36:38.154[39m | [34mINFO[39m | mean_critic_loss : 29.884687423706055
+[32m2021-11-08 at 12:36:38.155[39m | [34mINFO[39m | mean_Qmin : -213.64404296875
+[32m2021-11-08 at 12:36:38.155[39m | [34mINFO[39m | log_alpha : -4.187350273132324
+[32m2021-11-08 at 12:36:38.156[39m | [34mINFO[39m | mean_obs : 0.19059239327907562
+[32m2021-11-08 at 12:36:38.157[39m | [34mINFO[39m | mean_new_action : -0.10265997052192688
+[32m2021-11-08 at 12:36:38.158[39m | [34mINFO[39m | mean_next_obs : 0.17838320136070251
+[32m2021-11-08 at 12:36:38.158[39m | [34mINFO[39m | mean_next_action : -0.08568954467773438
+[32m2021-11-08 at 12:36:38.159[39m | [34mINFO[39m | mean_alpha_loss : -8.140151977539062
+[32m2021-11-08 at 12:36:38.160[39m | [34mINFO[39m | mean_actor_loss : 213.705810546875
+average next_obs: -0.2880202531814575
+average reward: -0.26639991998672485
+average uncertainty: 2.843804359436035
+average next_obs: -0.17917974293231964
+average reward: -0.2817121744155884
+average uncertainty: 2.8327879905700684
+average next_obs: 0.006151353940367699
+average reward: -0.24755825102329254
+average uncertainty: 2.986266851425171
+average next_obs: 0.24331709742546082
+average reward: -0.2103077918291092
+average uncertainty: 2.911928653717041
+average next_obs: 0.26300638914108276
+average reward: -0.182153582572937
+average uncertainty: 2.6797826290130615
+[32m2021-11-08 at 12:38:35.676[39m | [34mINFO[39m | Epoch : 15
+[32m2021-11-08 at 12:38:35.678[39m | [34mINFO[39m | Reward_Mean_Env : -78.43705519629258
+[32m2021-11-08 at 12:38:35.681[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:38:35.682[39m | [34mINFO[39m | Reward_Mean : -78.18336129233752
+[32m2021-11-08 at 12:38:35.682[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:38:35.683[39m | [34mINFO[39m | D4rl_Score : 1.6270050755801013
+[32m2021-11-08 at 12:38:35.683[39m | [34mINFO[39m | uncertainty : 2.6797826290130615
+[32m2021-11-08 at 12:38:35.684[39m | [34mINFO[39m | disagreement_uncertainty : 0.8845901489257812
+[32m2021-11-08 at 12:38:35.684[39m | [34mINFO[39m | aleatoric_uncertainty : 2.6797826290130615
+[32m2021-11-08 at 12:38:35.685[39m | [34mINFO[39m | reward : -0.182153582572937
+[32m2021-11-08 at 12:38:35.685[39m | [34mINFO[39m | next_obs : 0.26300638914108276
+[32m2021-11-08 at 12:38:35.686[39m | [34mINFO[39m | mean_action_log_prob : 6.130596160888672
+[32m2021-11-08 at 12:38:35.686[39m | [34mINFO[39m | mean_critic_loss : 23.820663452148438
+[32m2021-11-08 at 12:38:35.687[39m | [34mINFO[39m | mean_Qmin : -221.1407470703125
+[32m2021-11-08 at 12:38:35.687[39m | [34mINFO[39m | log_alpha : -4.4010772705078125
+[32m2021-11-08 at 12:38:35.688[39m | [34mINFO[39m | mean_obs : 0.1858174055814743
+[32m2021-11-08 at 12:38:35.688[39m | [34mINFO[39m | mean_new_action : 0.06741111725568771
+[32m2021-11-08 at 12:38:35.689[39m | [34mINFO[39m | mean_next_obs : 0.14417801797389984
+[32m2021-11-08 at 12:38:35.689[39m | [34mINFO[39m | mean_next_action : 0.08219795674085617
+[32m2021-11-08 at 12:38:35.690[39m | [34mINFO[39m | mean_alpha_loss : -1.6112874746322632
+[32m2021-11-08 at 12:38:35.690[39m | [34mINFO[39m | mean_actor_loss : 221.21592712402344
+average next_obs: 0.10784352570772171
+average reward: -0.2990981936454773
+average uncertainty: 2.983201503753662
+average next_obs: 0.15313909947872162
+average reward: -0.2785935401916504
+average uncertainty: 2.9948341846466064
+average next_obs: 0.1441386342048645
+average reward: -0.2375422567129135
+average uncertainty: 2.9295237064361572
+average next_obs: 0.11964326351881027
+average reward: -0.23406192660331726
+average uncertainty: 2.7086188793182373
+average next_obs: 0.08081715553998947
+average reward: -0.20303891599178314
+average uncertainty: 2.5567145347595215
+[32m2021-11-08 at 12:40:34.090[39m | [34mINFO[39m | Epoch : 16
+[32m2021-11-08 at 12:40:34.091[39m | [34mINFO[39m | Reward_Mean_Env : -227.20192383403995
+[32m2021-11-08 at 12:40:34.095[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:40:34.095[39m | [34mINFO[39m | Reward_Mean : -223.74128200046238
+[32m2021-11-08 at 12:40:34.096[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:40:34.097[39m | [34mINFO[39m | D4rl_Score : 0.45458604514033213
+[32m2021-11-08 at 12:40:34.098[39m | [34mINFO[39m | uncertainty : 2.5567145347595215
+[32m2021-11-08 at 12:40:34.099[39m | [34mINFO[39m | disagreement_uncertainty : 0.7417335510253906
+[32m2021-11-08 at 12:40:34.099[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5567145347595215
+[32m2021-11-08 at 12:40:34.100[39m | [34mINFO[39m | reward : -0.20303891599178314
+[32m2021-11-08 at 12:40:34.100[39m | [34mINFO[39m | next_obs : 0.08081715553998947
+[32m2021-11-08 at 12:40:34.100[39m | [34mINFO[39m | mean_action_log_prob : 7.312926769256592
+[32m2021-11-08 at 12:40:34.101[39m | [34mINFO[39m | mean_critic_loss : 24.387853622436523
+[32m2021-11-08 at 12:40:34.102[39m | [34mINFO[39m | mean_Qmin : -228.109375
+[32m2021-11-08 at 12:40:34.103[39m | [34mINFO[39m | log_alpha : -4.255004405975342
+[32m2021-11-08 at 12:40:34.103[39m | [34mINFO[39m | mean_obs : 0.09998476505279541
+[32m2021-11-08 at 12:40:34.104[39m | [34mINFO[39m | mean_new_action : 0.08427725732326508
+[32m2021-11-08 at 12:40:34.104[39m | [34mINFO[39m | mean_next_obs : 0.16540232300758362
+[32m2021-11-08 at 12:40:34.105[39m | [34mINFO[39m | mean_next_action : 0.09107189625501633
+[32m2021-11-08 at 12:40:34.105[39m | [34mINFO[39m | mean_alpha_loss : 4.041037559509277
+[32m2021-11-08 at 12:40:34.106[39m | [34mINFO[39m | mean_actor_loss : 228.21316528320312
+average next_obs: 0.20492137968540192
+average reward: -0.32844632863998413
+average uncertainty: 3.162931203842163
+average next_obs: -0.008631863631308079
+average reward: -0.28367123007774353
+average uncertainty: 3.1504573822021484
+average next_obs: -0.057955894619226456
+average reward: -0.2618386149406433
+average uncertainty: 2.802739381790161
+average next_obs: -0.018334750086069107
+average reward: -0.25445714592933655
+average uncertainty: 2.7072031497955322
+average next_obs: 0.06025777757167816
+average reward: -0.24260984361171722
+average uncertainty: 2.759359836578369
+[32m2021-11-08 at 12:42:32.278[39m | [34mINFO[39m | Epoch : 17
+[32m2021-11-08 at 12:42:32.279[39m | [34mINFO[39m | Reward_Mean_Env : -111.41211711010016
+[32m2021-11-08 at 12:42:32.284[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:42:32.284[39m | [34mINFO[39m | Reward_Mean : -111.4339706623076
+[32m2021-11-08 at 12:42:32.285[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:42:32.286[39m | [34mINFO[39m | D4rl_Score : 1.359182843650569
+[32m2021-11-08 at 12:42:32.286[39m | [34mINFO[39m | uncertainty : 2.759359836578369
+[32m2021-11-08 at 12:42:32.287[39m | [34mINFO[39m | disagreement_uncertainty : 0.8253450393676758
+[32m2021-11-08 at 12:42:32.288[39m | [34mINFO[39m | aleatoric_uncertainty : 2.759359836578369
+[32m2021-11-08 at 12:42:32.288[39m | [34mINFO[39m | reward : -0.24260984361171722
+[32m2021-11-08 at 12:42:32.289[39m | [34mINFO[39m | next_obs : 0.06025777757167816
+[32m2021-11-08 at 12:42:32.290[39m | [34mINFO[39m | mean_action_log_prob : 5.045825004577637
+[32m2021-11-08 at 12:42:32.290[39m | [34mINFO[39m | mean_critic_loss : 26.404693603515625
+[32m2021-11-08 at 12:42:32.291[39m | [34mINFO[39m | mean_Qmin : -239.246826171875
+[32m2021-11-08 at 12:42:32.291[39m | [34mINFO[39m | log_alpha : -4.437680721282959
+[32m2021-11-08 at 12:42:32.292[39m | [34mINFO[39m | mean_obs : 0.10922489315271378
+[32m2021-11-08 at 12:42:32.292[39m | [34mINFO[39m | mean_new_action : 0.06064572185277939
+[32m2021-11-08 at 12:42:32.294[39m | [34mINFO[39m | mean_next_obs : 0.15893495082855225
+[32m2021-11-08 at 12:42:32.312[39m | [34mINFO[39m | mean_next_action : 0.05802003666758537
+[32m2021-11-08 at 12:42:32.313[39m | [34mINFO[39m | mean_alpha_loss : -3.994706153869629
+[32m2021-11-08 at 12:42:32.315[39m | [34mINFO[39m | mean_actor_loss : 239.30648803710938
+[36m(pid=5246)[39m No module named 'flow'
+[36m(pid=5246)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5246)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5233)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5233)[39m No module named 'flow'
+[36m(pid=5246)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5246)[39m No module named 'carla'
+[36m(pid=5246)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5233)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5233)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5233)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5233)[39m No module named 'carla'
+[36m(pid=5229)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5229)[39m No module named 'flow'
+[36m(pid=5233)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5229)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5229)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5229)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5229)[39m No module named 'carla'
+[36m(pid=5229)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5228)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5228)[39m No module named 'flow'
+[36m(pid=5228)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5228)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5228)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5228)[39m No module named 'carla'
+[36m(pid=5228)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5239)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5239)[39m No module named 'flow'
+[36m(pid=5239)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5239)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5239)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5239)[39m No module named 'carla'
+[36m(pid=5239)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5238)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5238)[39m No module named 'flow'
+[36m(pid=5238)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5238)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5238)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5238)[39m No module named 'carla'
+[36m(pid=5238)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5237)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5237)[39m No module named 'flow'
+[36m(pid=5237)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5237)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5237)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5237)[39m No module named 'carla'
+[36m(pid=5237)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5241)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5241)[39m No module named 'flow'
+[36m(pid=5241)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5241)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5232)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5232)[39m No module named 'flow'
+[36m(pid=5232)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5232)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5241)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5241)[39m No module named 'carla'
+[36m(pid=5241)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5232)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5232)[39m No module named 'carla'
+[36m(pid=5232)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5247)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5247)[39m No module named 'flow'
+[36m(pid=5247)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5247)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5247)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5247)[39m No module named 'carla'
+[36m(pid=5247)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5236)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5236)[39m No module named 'flow'
+[36m(pid=5236)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5236)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5236)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5236)[39m No module named 'carla'
+[36m(pid=5236)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=5235)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5235)[39m No module named 'flow'
+[36m(pid=5235)[39m /root/miniconda3/envs/offlinerl/lib/python3.7/site-packages/glfw/__init__.py:834: GLFWError: (65544) b'X11: The DISPLAY environment variable is missing'
+[36m(pid=5235)[39m   warnings.warn(message, GLFWError)
+[36m(pid=5235)[39m Warning: CARLA failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=5235)[39m No module named 'carla'
+[36m(pid=5235)[39m pybullet build time: Aug 23 2021 12:49:13
+[36m(pid=26177)[39m Warning: Flow failed to import. Set the environment variable D4RL_SUPPRESS_IMPORT_ERROR=1 to suppress this message.
+[36m(pid=26177)[39m No module named 'flow'
+average next_obs: 0.05337826907634735
+average reward: -0.28350985050201416
+average uncertainty: 2.8700110912323
+average next_obs: 0.17032285034656525
+average reward: -0.2376781702041626
+average uncertainty: 2.655470132827759
+average next_obs: 0.1565420925617218
+average reward: -0.21509316563606262
+average uncertainty: 2.5115065574645996
+average next_obs: 0.13455204665660858
+average reward: -0.19294440746307373
+average uncertainty: 2.4147562980651855
+average next_obs: 0.1424987018108368
+average reward: -0.18400128185749054
+average uncertainty: 2.332719087600708
+[32m2021-11-08 at 12:44:31.104[39m | [34mINFO[39m | Epoch : 18
+[32m2021-11-08 at 12:44:31.105[39m | [34mINFO[39m | Reward_Mean_Env : -230.30729326192966
+[32m2021-11-08 at 12:44:31.108[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:44:31.109[39m | [34mINFO[39m | Reward_Mean : -231.40134995899632
+[32m2021-11-08 at 12:44:31.110[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:44:31.112[39m | [34mINFO[39m | D4rl_Score : 0.39288683011062886
+[32m2021-11-08 at 12:44:31.113[39m | [34mINFO[39m | uncertainty : 2.332719087600708
+[32m2021-11-08 at 12:44:31.113[39m | [34mINFO[39m | disagreement_uncertainty : 0.5799750685691833
+[32m2021-11-08 at 12:44:31.114[39m | [34mINFO[39m | aleatoric_uncertainty : 2.332719087600708
+[32m2021-11-08 at 12:44:31.115[39m | [34mINFO[39m | reward : -0.18400128185749054
+[32m2021-11-08 at 12:44:31.116[39m | [34mINFO[39m | next_obs : 0.1424987018108368
+[32m2021-11-08 at 12:44:31.119[39m | [34mINFO[39m | mean_action_log_prob : 5.511008262634277
+[32m2021-11-08 at 12:44:31.120[39m | [34mINFO[39m | mean_critic_loss : 29.862255096435547
+[32m2021-11-08 at 12:44:31.121[39m | [34mINFO[39m | mean_Qmin : -248.22665405273438
+[32m2021-11-08 at 12:44:31.122[39m | [34mINFO[39m | log_alpha : -4.535619735717773
+[32m2021-11-08 at 12:44:31.124[39m | [34mINFO[39m | mean_obs : 0.16232265532016754
+[32m2021-11-08 at 12:44:31.125[39m | [34mINFO[39m | mean_new_action : 0.1137075275182724
+[32m2021-11-08 at 12:44:31.125[39m | [34mINFO[39m | mean_next_obs : 0.15489786863327026
+[32m2021-11-08 at 12:44:31.126[39m | [34mINFO[39m | mean_next_action : 0.11912402510643005
+[32m2021-11-08 at 12:44:31.126[39m | [34mINFO[39m | mean_alpha_loss : -2.679009437561035
+[32m2021-11-08 at 12:44:31.127[39m | [34mINFO[39m | mean_actor_loss : 248.28573608398438
+average next_obs: 0.3294258415699005
+average reward: -0.2960401475429535
+average uncertainty: 2.797731876373291
+average next_obs: 0.34507060050964355
+average reward: -0.30916473269462585
+average uncertainty: 2.6689393520355225
+average next_obs: 0.23928403854370117
+average reward: -0.26400870084762573
+average uncertainty: 2.634951114654541
+average next_obs: 0.21563294529914856
+average reward: -0.24902695417404175
+average uncertainty: 2.5707645416259766
+average next_obs: 0.17273208498954773
+average reward: -0.22317878901958466
+average uncertainty: 2.489206075668335
+[32m2021-11-08 at 12:46:32.940[39m | [34mINFO[39m | Epoch : 19
+[32m2021-11-08 at 12:46:32.942[39m | [34mINFO[39m | Reward_Mean_Env : 7.69974980837746
+[32m2021-11-08 at 12:46:32.946[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:46:32.946[39m | [34mINFO[39m | Reward_Mean : 7.831623167880789
+[32m2021-11-08 at 12:46:32.947[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:46:32.947[39m | [34mINFO[39m | D4rl_Score : 2.319826216425869
+[32m2021-11-08 at 12:46:32.948[39m | [34mINFO[39m | uncertainty : 2.489206075668335
+[32m2021-11-08 at 12:46:32.949[39m | [34mINFO[39m | disagreement_uncertainty : 0.7282730340957642
+[32m2021-11-08 at 12:46:32.950[39m | [34mINFO[39m | aleatoric_uncertainty : 2.489206075668335
+[32m2021-11-08 at 12:46:32.951[39m | [34mINFO[39m | reward : -0.22317878901958466
+[32m2021-11-08 at 12:46:32.951[39m | [34mINFO[39m | next_obs : 0.17273208498954773
+[32m2021-11-08 at 12:46:32.952[39m | [34mINFO[39m | mean_action_log_prob : 5.809902191162109
+[32m2021-11-08 at 12:46:32.952[39m | [34mINFO[39m | mean_critic_loss : 23.142131805419922
+[32m2021-11-08 at 12:46:32.954[39m | [34mINFO[39m | mean_Qmin : -255.4486846923828
+[32m2021-11-08 at 12:46:32.955[39m | [34mINFO[39m | log_alpha : -4.603098392486572
+[32m2021-11-08 at 12:46:32.955[39m | [34mINFO[39m | mean_obs : 0.12076754122972488
+[32m2021-11-08 at 12:46:32.955[39m | [34mINFO[39m | mean_new_action : 0.11398281902074814
+[32m2021-11-08 at 12:46:32.956[39m | [34mINFO[39m | mean_next_obs : 0.15560178458690643
+[32m2021-11-08 at 12:46:32.957[39m | [34mINFO[39m | mean_next_action : 0.11037766933441162
+[32m2021-11-08 at 12:46:32.957[39m | [34mINFO[39m | mean_alpha_loss : -1.858646273612976
+[32m2021-11-08 at 12:46:32.958[39m | [34mINFO[39m | mean_actor_loss : 255.50689697265625
+average next_obs: 0.15551668405532837
+average reward: -0.2778843939304352
+average uncertainty: 2.8601737022399902
+average next_obs: 0.21384389698505402
+average reward: -0.253232479095459
+average uncertainty: 2.6368560791015625
+average next_obs: 0.11379830539226532
+average reward: -0.19219671189785004
+average uncertainty: 2.4618682861328125
+average next_obs: 0.03552355617284775
+average reward: -0.17902252078056335
+average uncertainty: 2.3697657585144043
+average next_obs: 0.023257574066519737
+average reward: -0.1565200686454773
+average uncertainty: 2.3065390586853027
+[32m2021-11-08 at 12:48:37.689[39m | [34mINFO[39m | Epoch : 20
+[32m2021-11-08 at 12:48:37.690[39m | [34mINFO[39m | Reward_Mean_Env : -243.00484150907522
+[32m2021-11-08 at 12:48:37.693[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:48:37.693[39m | [34mINFO[39m | Reward_Mean : -243.03996783483927
+[32m2021-11-08 at 12:48:37.694[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:48:37.694[39m | [34mINFO[39m | D4rl_Score : 0.2991417627225297
+[32m2021-11-08 at 12:48:37.695[39m | [34mINFO[39m | uncertainty : 2.3065390586853027
+[32m2021-11-08 at 12:48:37.696[39m | [34mINFO[39m | disagreement_uncertainty : 0.5844811797142029
+[32m2021-11-08 at 12:48:37.698[39m | [34mINFO[39m | aleatoric_uncertainty : 2.3065390586853027
+[32m2021-11-08 at 12:48:37.698[39m | [34mINFO[39m | reward : -0.1565200686454773
+[32m2021-11-08 at 12:48:37.699[39m | [34mINFO[39m | next_obs : 0.023257574066519737
+[32m2021-11-08 at 12:48:37.699[39m | [34mINFO[39m | mean_action_log_prob : 8.155806541442871
+[32m2021-11-08 at 12:48:37.700[39m | [34mINFO[39m | mean_critic_loss : 26.011308670043945
+[32m2021-11-08 at 12:48:37.701[39m | [34mINFO[39m | mean_Qmin : -261.3272705078125
+[32m2021-11-08 at 12:48:37.702[39m | [34mINFO[39m | log_alpha : -4.38855504989624
+[32m2021-11-08 at 12:48:37.702[39m | [34mINFO[39m | mean_obs : 0.09232432395219803
+[32m2021-11-08 at 12:48:37.703[39m | [34mINFO[39m | mean_new_action : -0.3403664529323578
+[32m2021-11-08 at 12:48:37.703[39m | [34mINFO[39m | mean_next_obs : 0.10311693698167801
+[32m2021-11-08 at 12:48:37.704[39m | [34mINFO[39m | mean_next_action : -0.3140389323234558
+[32m2021-11-08 at 12:48:37.705[39m | [34mINFO[39m | mean_alpha_loss : 7.134608745574951
+[32m2021-11-08 at 12:48:37.705[39m | [34mINFO[39m | mean_actor_loss : 261.4285583496094
+average next_obs: -0.7896789908409119
+average reward: -0.2949417531490326
+average uncertainty: 3.0275120735168457
+average next_obs: -0.837115466594696
+average reward: -0.2736114263534546
+average uncertainty: 3.134654998779297
+average next_obs: -0.5564013719558716
+average reward: -0.30160048604011536
+average uncertainty: 3.2780017852783203
+average next_obs: -0.02605269104242325
+average reward: -0.25516366958618164
+average uncertainty: 3.167515277862549
+average next_obs: 0.23122110962867737
+average reward: -0.2179040014743805
+average uncertainty: 3.043799638748169
+[32m2021-11-08 at 12:50:41.376[39m | [34mINFO[39m | Epoch : 21
+[32m2021-11-08 at 12:50:41.378[39m | [34mINFO[39m | Reward_Mean_Env : -339.43309707691583
+[32m2021-11-08 at 12:50:41.482[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:50:41.483[39m | [34mINFO[39m | Reward_Mean : -339.6306134823611
+[32m2021-11-08 at 12:50:41.483[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:50:41.484[39m | [34mINFO[39m | D4rl_Score : -0.47886269466937703
+[32m2021-11-08 at 12:50:41.485[39m | [34mINFO[39m | uncertainty : 3.043799638748169
+[32m2021-11-08 at 12:50:41.485[39m | [34mINFO[39m | disagreement_uncertainty : 1.1461981534957886
+[32m2021-11-08 at 12:50:41.486[39m | [34mINFO[39m | aleatoric_uncertainty : 3.043799638748169
+[32m2021-11-08 at 12:50:41.487[39m | [34mINFO[39m | reward : -0.2179040014743805
+[32m2021-11-08 at 12:50:41.487[39m | [34mINFO[39m | next_obs : 0.23122110962867737
+[32m2021-11-08 at 12:50:41.488[39m | [34mINFO[39m | mean_action_log_prob : 6.787384986877441
+[32m2021-11-08 at 12:50:41.488[39m | [34mINFO[39m | mean_critic_loss : 23.051326751708984
+[32m2021-11-08 at 12:50:41.489[39m | [34mINFO[39m | mean_Qmin : -267.3732604980469
+[32m2021-11-08 at 12:50:41.489[39m | [34mINFO[39m | log_alpha : -4.139926910400391
+[32m2021-11-08 at 12:50:41.490[39m | [34mINFO[39m | mean_obs : -0.003884810721501708
+[32m2021-11-08 at 12:50:41.490[39m | [34mINFO[39m | mean_new_action : 0.15312038362026215
+[32m2021-11-08 at 12:50:41.491[39m | [34mINFO[39m | mean_next_obs : -0.004383888561278582
+[32m2021-11-08 at 12:50:41.492[39m | [34mINFO[39m | mean_next_action : 0.14154885709285736
+[32m2021-11-08 at 12:50:41.492[39m | [34mINFO[39m | mean_alpha_loss : 3.5063352584838867
+[32m2021-11-08 at 12:50:41.492[39m | [34mINFO[39m | mean_actor_loss : 267.4813537597656
+average next_obs: 0.3943946361541748
+average reward: -0.2919173240661621
+average uncertainty: 3.00675106048584
+average next_obs: 0.2704441547393799
+average reward: -0.280204713344574
+average uncertainty: 2.9936752319335938
+average next_obs: 0.166652113199234
+average reward: -0.24531495571136475
+average uncertainty: 2.8788902759552
+average next_obs: 0.14574365317821503
+average reward: -0.2364353984594345
+average uncertainty: 3.0785012245178223
+average next_obs: 0.1464640498161316
+average reward: -0.24664011597633362
+average uncertainty: 3.0112435817718506
+[32m2021-11-08 at 12:52:45.053[39m | [34mINFO[39m | Epoch : 22
+[32m2021-11-08 at 12:52:45.055[39m | [34mINFO[39m | Reward_Mean_Env : -210.1589314916341
+[32m2021-11-08 at 12:52:45.058[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:52:45.058[39m | [34mINFO[39m | Reward_Mean : -210.7369207756209
+[32m2021-11-08 at 12:52:45.059[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:52:45.060[39m | [34mINFO[39m | D4rl_Score : 0.5593317058679942
+[32m2021-11-08 at 12:52:45.061[39m | [34mINFO[39m | uncertainty : 3.0112435817718506
+[32m2021-11-08 at 12:52:45.061[39m | [34mINFO[39m | disagreement_uncertainty : 1.1381826400756836
+[32m2021-11-08 at 12:52:45.062[39m | [34mINFO[39m | aleatoric_uncertainty : 3.0112435817718506
+[32m2021-11-08 at 12:52:45.063[39m | [34mINFO[39m | reward : -0.24664011597633362
+[32m2021-11-08 at 12:52:45.064[39m | [34mINFO[39m | next_obs : 0.1464640498161316
+[32m2021-11-08 at 12:52:45.064[39m | [34mINFO[39m | mean_action_log_prob : 6.376927375793457
+[32m2021-11-08 at 12:52:45.065[39m | [34mINFO[39m | mean_critic_loss : 29.4009952545166
+[32m2021-11-08 at 12:52:45.065[39m | [34mINFO[39m | mean_Qmin : -274.1670227050781
+[32m2021-11-08 at 12:52:45.066[39m | [34mINFO[39m | log_alpha : -4.2445831298828125
+[32m2021-11-08 at 12:52:45.068[39m | [34mINFO[39m | mean_obs : 0.11941615492105484
+[32m2021-11-08 at 12:52:45.068[39m | [34mINFO[39m | mean_new_action : 0.14857780933380127
+[32m2021-11-08 at 12:52:45.069[39m | [34mINFO[39m | mean_next_obs : 0.10131551325321198
+[32m2021-11-08 at 12:52:45.070[39m | [34mINFO[39m | mean_next_action : 0.16539211571216583
+[32m2021-11-08 at 12:52:45.071[39m | [34mINFO[39m | mean_alpha_loss : 2.9749131202697754
+[32m2021-11-08 at 12:52:45.072[39m | [34mINFO[39m | mean_actor_loss : 274.25848388671875
+average next_obs: 0.33997687697410583
+average reward: -0.303934246301651
+average uncertainty: 2.9757065773010254
+average next_obs: 0.18546339869499207
+average reward: -0.26868346333503723
+average uncertainty: 2.8237361907958984
+average next_obs: 0.07200954854488373
+average reward: -0.23137852549552917
+average uncertainty: 2.5809662342071533
+average next_obs: 0.12373295426368713
+average reward: -0.1896398365497589
+average uncertainty: 2.401876926422119
+average next_obs: 0.20461025834083557
+average reward: -0.16752949357032776
+average uncertainty: 2.3991611003875732
+[32m2021-11-08 at 12:54:48.149[39m | [34mINFO[39m | Epoch : 23
+[32m2021-11-08 at 12:54:48.150[39m | [34mINFO[39m | Reward_Mean_Env : -192.4726474623261
+[32m2021-11-08 at 12:54:48.154[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:54:48.155[39m | [34mINFO[39m | Reward_Mean : -192.8077407019638
+[32m2021-11-08 at 12:54:48.155[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:54:48.157[39m | [34mINFO[39m | D4rl_Score : 0.7037450900127687
+[32m2021-11-08 at 12:54:48.157[39m | [34mINFO[39m | uncertainty : 2.3991611003875732
+[32m2021-11-08 at 12:54:48.158[39m | [34mINFO[39m | disagreement_uncertainty : 0.6550432443618774
+[32m2021-11-08 at 12:54:48.158[39m | [34mINFO[39m | aleatoric_uncertainty : 2.3991611003875732
+[32m2021-11-08 at 12:54:48.159[39m | [34mINFO[39m | reward : -0.16752949357032776
+[32m2021-11-08 at 12:54:48.160[39m | [34mINFO[39m | next_obs : 0.20461025834083557
+[32m2021-11-08 at 12:54:48.161[39m | [34mINFO[39m | mean_action_log_prob : 7.115384101867676
+[32m2021-11-08 at 12:54:48.162[39m | [34mINFO[39m | mean_critic_loss : 24.827524185180664
+[32m2021-11-08 at 12:54:48.162[39m | [34mINFO[39m | mean_Qmin : -281.8453369140625
+[32m2021-11-08 at 12:54:48.163[39m | [34mINFO[39m | log_alpha : -4.455644130706787
+[32m2021-11-08 at 12:54:48.164[39m | [34mINFO[39m | mean_obs : 0.05192633718252182
+[32m2021-11-08 at 12:54:48.165[39m | [34mINFO[39m | mean_new_action : -0.01881507784128189
+[32m2021-11-08 at 12:54:48.165[39m | [34mINFO[39m | mean_next_obs : 0.08223503082990646
+[32m2021-11-08 at 12:54:48.166[39m | [34mINFO[39m | mean_next_action : -0.02373923920094967
+[32m2021-11-08 at 12:54:48.167[39m | [34mINFO[39m | mean_alpha_loss : 4.718353271484375
+[32m2021-11-08 at 12:54:48.168[39m | [34mINFO[39m | mean_actor_loss : 281.927978515625
+average next_obs: -0.12276289612054825
+average reward: -0.31479862332344055
+average uncertainty: 3.0225439071655273
+average next_obs: 0.06089351326227188
+average reward: -0.2532786726951599
+average uncertainty: 3.008770227432251
+average next_obs: 0.11603742837905884
+average reward: -0.2416568547487259
+average uncertainty: 2.7655861377716064
+average next_obs: 0.02897806093096733
+average reward: -0.19879722595214844
+average uncertainty: 2.6077189445495605
+average next_obs: 0.06775999814271927
+average reward: -0.19631792604923248
+average uncertainty: 2.5506176948547363
+[32m2021-11-08 at 12:56:49.233[39m | [34mINFO[39m | Epoch : 24
+[32m2021-11-08 at 12:56:49.235[39m | [34mINFO[39m | Reward_Mean_Env : 400.5994101215934
+[32m2021-11-08 at 12:56:49.238[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:56:49.238[39m | [34mINFO[39m | Reward_Mean : 402.0615544039415
+[32m2021-11-08 at 12:56:49.239[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:56:49.240[39m | [34mINFO[39m | D4rl_Score : 5.49521283572868
+[32m2021-11-08 at 12:56:49.241[39m | [34mINFO[39m | uncertainty : 2.5506176948547363
+[32m2021-11-08 at 12:56:49.241[39m | [34mINFO[39m | disagreement_uncertainty : 0.7225940227508545
+[32m2021-11-08 at 12:56:49.242[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5506176948547363
+[32m2021-11-08 at 12:56:49.243[39m | [34mINFO[39m | reward : -0.19631792604923248
+[32m2021-11-08 at 12:56:49.244[39m | [34mINFO[39m | next_obs : 0.06775999814271927
+[32m2021-11-08 at 12:56:49.244[39m | [34mINFO[39m | mean_action_log_prob : 5.989802360534668
+[32m2021-11-08 at 12:56:49.245[39m | [34mINFO[39m | mean_critic_loss : 34.01393127441406
+[32m2021-11-08 at 12:56:49.245[39m | [34mINFO[39m | mean_Qmin : -287.234130859375
+[32m2021-11-08 at 12:56:49.246[39m | [34mINFO[39m | log_alpha : -4.366953372955322
+[32m2021-11-08 at 12:56:49.246[39m | [34mINFO[39m | mean_obs : 0.05046147480607033
+[32m2021-11-08 at 12:56:49.248[39m | [34mINFO[39m | mean_new_action : 0.12860490381717682
+[32m2021-11-08 at 12:56:49.248[39m | [34mINFO[39m | mean_next_obs : -0.017161060124635696
+[32m2021-11-08 at 12:56:49.249[39m | [34mINFO[39m | mean_next_action : 0.1252811700105667
+[32m2021-11-08 at 12:56:49.249[39m | [34mINFO[39m | mean_alpha_loss : -0.5840858221054077
+[32m2021-11-08 at 12:56:49.250[39m | [34mINFO[39m | mean_actor_loss : 287.3101501464844
+average next_obs: 0.47974544763565063
+average reward: -0.3041485548019409
+average uncertainty: 2.908031463623047
+average next_obs: 0.21067562699317932
+average reward: -0.28198444843292236
+average uncertainty: 2.744293689727783
+average next_obs: 0.036856379359960556
+average reward: -0.253312885761261
+average uncertainty: 2.6826674938201904
+average next_obs: 0.0318048819899559
+average reward: -0.22961406409740448
+average uncertainty: 2.5587217807769775
+average next_obs: 0.046132151037454605
+average reward: -0.21887347102165222
+average uncertainty: 2.480024814605713
+[32m2021-11-08 at 12:58:52.405[39m | [34mINFO[39m | Epoch : 25
+[32m2021-11-08 at 12:58:52.406[39m | [34mINFO[39m | Reward_Mean_Env : -216.19019624331577
+[32m2021-11-08 at 12:58:56.210[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 12:58:56.211[39m | [34mINFO[39m | Reward_Mean : -216.24740318720987
+[32m2021-11-08 at 12:58:56.212[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 12:58:56.212[39m | [34mINFO[39m | D4rl_Score : 0.5149466637155617
+[32m2021-11-08 at 12:58:56.213[39m | [34mINFO[39m | uncertainty : 2.480024814605713
+[32m2021-11-08 at 12:58:56.213[39m | [34mINFO[39m | disagreement_uncertainty : 0.7072188854217529
+[32m2021-11-08 at 12:58:56.214[39m | [34mINFO[39m | aleatoric_uncertainty : 2.480024814605713
+[32m2021-11-08 at 12:58:56.214[39m | [34mINFO[39m | reward : -0.21887347102165222
+[32m2021-11-08 at 12:58:56.215[39m | [34mINFO[39m | next_obs : 0.046132151037454605
+[32m2021-11-08 at 12:58:56.215[39m | [34mINFO[39m | mean_action_log_prob : 5.4327192306518555
+[32m2021-11-08 at 12:58:56.215[39m | [34mINFO[39m | mean_critic_loss : 29.20871353149414
+[32m2021-11-08 at 12:58:56.216[39m | [34mINFO[39m | mean_Qmin : -296.0067138671875
+[32m2021-11-08 at 12:58:56.216[39m | [34mINFO[39m | log_alpha : -4.331191062927246
+[32m2021-11-08 at 12:58:56.217[39m | [34mINFO[39m | mean_obs : 0.10465747117996216
+[32m2021-11-08 at 12:58:56.217[39m | [34mINFO[39m | mean_new_action : 0.07410027086734772
+[32m2021-11-08 at 12:58:56.218[39m | [34mINFO[39m | mean_next_obs : 0.09448890388011932
+[32m2021-11-08 at 12:58:56.218[39m | [34mINFO[39m | mean_next_action : 0.05997490882873535
+[32m2021-11-08 at 12:58:56.219[39m | [34mINFO[39m | mean_alpha_loss : -2.045572519302368
+[32m2021-11-08 at 12:58:56.219[39m | [34mINFO[39m | mean_actor_loss : 296.0781555175781
+average next_obs: 0.1558067351579666
+average reward: -0.2900943160057068
+average uncertainty: 2.8824093341827393
+average next_obs: 0.31242799758911133
+average reward: -0.2601434588432312
+average uncertainty: 2.623793125152588
+average next_obs: 0.008279426954686642
+average reward: -0.19997155666351318
+average uncertainty: 2.4219412803649902
+average next_obs: -0.05583653599023819
+average reward: -0.1826905459165573
+average uncertainty: 2.371508836746216
+average next_obs: 0.014770676381886005
+average reward: -0.1801101118326187
+average uncertainty: 2.3861920833587646
+[32m2021-11-08 at 13:01:01.255[39m | [34mINFO[39m | Epoch : 26
+[32m2021-11-08 at 13:01:01.256[39m | [34mINFO[39m | Reward_Mean_Env : -38.4691868489441
+[32m2021-11-08 at 13:01:01.259[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:01:01.260[39m | [34mINFO[39m | Reward_Mean : -38.476492740407856
+[32m2021-11-08 at 13:01:01.261[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:01:01.262[39m | [34mINFO[39m | D4rl_Score : 1.9468302565319624
+[32m2021-11-08 at 13:01:01.263[39m | [34mINFO[39m | uncertainty : 2.3861920833587646
+[32m2021-11-08 at 13:01:01.263[39m | [34mINFO[39m | disagreement_uncertainty : 0.5784106254577637
+[32m2021-11-08 at 13:01:01.263[39m | [34mINFO[39m | aleatoric_uncertainty : 2.3861920833587646
+[32m2021-11-08 at 13:01:01.264[39m | [34mINFO[39m | reward : -0.1801101118326187
+[32m2021-11-08 at 13:01:01.265[39m | [34mINFO[39m | next_obs : 0.014770676381886005
+[32m2021-11-08 at 13:01:01.266[39m | [34mINFO[39m | mean_action_log_prob : 5.833065986633301
+[32m2021-11-08 at 13:01:01.266[39m | [34mINFO[39m | mean_critic_loss : 23.440799713134766
+[32m2021-11-08 at 13:01:01.267[39m | [34mINFO[39m | mean_Qmin : -299.8071594238281
+[32m2021-11-08 at 13:01:01.267[39m | [34mINFO[39m | log_alpha : -4.55534029006958
+[32m2021-11-08 at 13:01:01.269[39m | [34mINFO[39m | mean_obs : 0.12988580763339996
+[32m2021-11-08 at 13:01:01.269[39m | [34mINFO[39m | mean_new_action : -0.14639121294021606
+[32m2021-11-08 at 13:01:01.270[39m | [34mINFO[39m | mean_next_obs : 0.17090469598770142
+[32m2021-11-08 at 13:01:01.270[39m | [34mINFO[39m | mean_next_action : -0.1212330162525177
+[32m2021-11-08 at 13:01:01.271[39m | [34mINFO[39m | mean_alpha_loss : -1.3606088161468506
+[32m2021-11-08 at 13:01:01.272[39m | [34mINFO[39m | mean_actor_loss : 299.86846923828125
+average next_obs: -0.31764286756515503
+average reward: -0.2912995219230652
+average uncertainty: 2.959022045135498
+average next_obs: -0.4720517098903656
+average reward: -0.2717311978340149
+average uncertainty: 2.8345487117767334
+average next_obs: -0.04183066263794899
+average reward: -0.23918816447257996
+average uncertainty: 2.7703921794891357
+average next_obs: 0.30599334836006165
+average reward: -0.1899912804365158
+average uncertainty: 2.6667160987854004
+average next_obs: 0.29699957370758057
+average reward: -0.1607290357351303
+average uncertainty: 2.5375046730041504
+[32m2021-11-08 at 13:03:03.932[39m | [34mINFO[39m | Epoch : 27
+[32m2021-11-08 at 13:03:03.933[39m | [34mINFO[39m | Reward_Mean_Env : -196.4957513724257
+[32m2021-11-08 at 13:03:03.936[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:03:03.937[39m | [34mINFO[39m | Reward_Mean : -196.7846715138098
+[32m2021-11-08 at 13:03:03.940[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:03:03.942[39m | [34mINFO[39m | D4rl_Score : 0.6717122789924732
+[32m2021-11-08 at 13:03:03.942[39m | [34mINFO[39m | uncertainty : 2.5375046730041504
+[32m2021-11-08 at 13:03:03.943[39m | [34mINFO[39m | disagreement_uncertainty : 0.7086515426635742
+[32m2021-11-08 at 13:03:03.943[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5375046730041504
+[32m2021-11-08 at 13:03:03.944[39m | [34mINFO[39m | reward : -0.1607290357351303
+[32m2021-11-08 at 13:03:03.945[39m | [34mINFO[39m | next_obs : 0.29699957370758057
+[32m2021-11-08 at 13:03:03.945[39m | [34mINFO[39m | mean_action_log_prob : 6.8501482009887695
+[32m2021-11-08 at 13:03:03.946[39m | [34mINFO[39m | mean_critic_loss : 27.020708084106445
+[32m2021-11-08 at 13:03:03.946[39m | [34mINFO[39m | mean_Qmin : -304.51123046875
+[32m2021-11-08 at 13:03:03.947[39m | [34mINFO[39m | log_alpha : -4.559406280517578
+[32m2021-11-08 at 13:03:03.948[39m | [34mINFO[39m | mean_obs : 0.06029191613197327
+[32m2021-11-08 at 13:03:03.949[39m | [34mINFO[39m | mean_new_action : 0.06270565092563629
+[32m2021-11-08 at 13:03:03.949[39m | [34mINFO[39m | mean_next_obs : 0.04869452491402626
+[32m2021-11-08 at 13:03:03.950[39m | [34mINFO[39m | mean_next_action : 0.04852313548326492
+[32m2021-11-08 at 13:03:03.950[39m | [34mINFO[39m | mean_alpha_loss : 3.3468410968780518
+[32m2021-11-08 at 13:03:03.951[39m | [34mINFO[39m | mean_actor_loss : 304.58294677734375
+average next_obs: 0.07391009479761124
+average reward: -0.31795310974121094
+average uncertainty: 2.9622600078582764
+average next_obs: 0.16791121661663055
+average reward: -0.28786107897758484
+average uncertainty: 2.9103617668151855
+average next_obs: -0.08248274773359299
+average reward: -0.2519175410270691
+average uncertainty: 2.950904369354248
+average next_obs: -0.12143654376268387
+average reward: -0.23902323842048645
+average uncertainty: 3.105808734893799
+average next_obs: 0.047431830316782
+average reward: -0.25514498353004456
+average uncertainty: 3.14551043510437
+[32m2021-11-08 at 13:05:09.282[39m | [34mINFO[39m | Epoch : 28
+[32m2021-11-08 at 13:05:09.283[39m | [34mINFO[39m | Reward_Mean_Env : -242.1567429134315
+[32m2021-11-08 at 13:05:09.286[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:05:09.286[39m | [34mINFO[39m | Reward_Mean : -242.28469991504323
+[32m2021-11-08 at 13:05:09.287[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:05:09.288[39m | [34mINFO[39m | D4rl_Score : 0.30522518626926426
+[32m2021-11-08 at 13:05:09.289[39m | [34mINFO[39m | uncertainty : 3.14551043510437
+[32m2021-11-08 at 13:05:09.289[39m | [34mINFO[39m | disagreement_uncertainty : 1.2511452436447144
+[32m2021-11-08 at 13:05:09.290[39m | [34mINFO[39m | aleatoric_uncertainty : 3.14551043510437
+[32m2021-11-08 at 13:05:09.290[39m | [34mINFO[39m | reward : -0.25514498353004456
+[32m2021-11-08 at 13:05:09.291[39m | [34mINFO[39m | next_obs : 0.047431830316782
+[32m2021-11-08 at 13:05:09.292[39m | [34mINFO[39m | mean_action_log_prob : 6.25850772857666
+[32m2021-11-08 at 13:05:09.292[39m | [34mINFO[39m | mean_critic_loss : 32.08835983276367
+[32m2021-11-08 at 13:05:09.293[39m | [34mINFO[39m | mean_Qmin : -305.91949462890625
+[32m2021-11-08 at 13:05:09.294[39m | [34mINFO[39m | log_alpha : -4.309780597686768
+[32m2021-11-08 at 13:05:09.295[39m | [34mINFO[39m | mean_obs : 0.03382169455289841
+[32m2021-11-08 at 13:05:09.295[39m | [34mINFO[39m | mean_new_action : 0.14714668691158295
+[32m2021-11-08 at 13:05:09.296[39m | [34mINFO[39m | mean_next_obs : 0.060409098863601685
+[32m2021-11-08 at 13:05:09.296[39m | [34mINFO[39m | mean_next_action : 0.14844945073127747
+[32m2021-11-08 at 13:05:09.297[39m | [34mINFO[39m | mean_alpha_loss : 1.2564668655395508
+[32m2021-11-08 at 13:05:09.298[39m | [34mINFO[39m | mean_actor_loss : 306.00360107421875
+average next_obs: 0.3303230106830597
+average reward: -0.2611961364746094
+average uncertainty: 2.9508962631225586
+average next_obs: 0.429098516702652
+average reward: -0.2661675214767456
+average uncertainty: 2.8717167377471924
+average next_obs: 0.08779599517583847
+average reward: -0.23447874188423157
+average uncertainty: 2.7979235649108887
+average next_obs: -0.09989513456821442
+average reward: -0.23961888253688812
+average uncertainty: 2.8344500064849854
+average next_obs: 0.12936197221279144
+average reward: -0.1983998715877533
+average uncertainty: 2.798264980316162
+[32m2021-11-08 at 13:07:12.059[39m | [34mINFO[39m | Epoch : 29
+[32m2021-11-08 at 13:07:12.060[39m | [34mINFO[39m | Reward_Mean_Env : -417.32517290707807
+[32m2021-11-08 at 13:07:12.063[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:07:12.064[39m | [34mINFO[39m | Reward_Mean : -417.19417652519934
+[32m2021-11-08 at 13:07:12.064[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:07:12.065[39m | [34mINFO[39m | D4rl_Score : -1.1036105403224254
+[32m2021-11-08 at 13:07:12.066[39m | [34mINFO[39m | uncertainty : 2.798264980316162
+[32m2021-11-08 at 13:07:12.066[39m | [34mINFO[39m | disagreement_uncertainty : 1.0180102586746216
+[32m2021-11-08 at 13:07:12.067[39m | [34mINFO[39m | aleatoric_uncertainty : 2.798264980316162
+[32m2021-11-08 at 13:07:12.067[39m | [34mINFO[39m | reward : -0.1983998715877533
+[32m2021-11-08 at 13:07:12.068[39m | [34mINFO[39m | next_obs : 0.12936197221279144
+[32m2021-11-08 at 13:07:12.068[39m | [34mINFO[39m | mean_action_log_prob : 6.1745734214782715
+[32m2021-11-08 at 13:07:12.069[39m | [34mINFO[39m | mean_critic_loss : 26.7410888671875
+[32m2021-11-08 at 13:07:12.070[39m | [34mINFO[39m | mean_Qmin : -313.9548645019531
+[32m2021-11-08 at 13:07:12.070[39m | [34mINFO[39m | log_alpha : -4.360437393188477
+[32m2021-11-08 at 13:07:12.071[39m | [34mINFO[39m | mean_obs : 0.06617137789726257
+[32m2021-11-08 at 13:07:12.071[39m | [34mINFO[39m | mean_new_action : 0.005032944492995739
+[32m2021-11-08 at 13:07:12.072[39m | [34mINFO[39m | mean_next_obs : 0.08509845286607742
+[32m2021-11-08 at 13:07:12.072[39m | [34mINFO[39m | mean_next_action : -0.010725117288529873
+[32m2021-11-08 at 13:07:12.074[39m | [34mINFO[39m | mean_alpha_loss : 0.27112436294555664
+[32m2021-11-08 at 13:07:12.074[39m | [34mINFO[39m | mean_actor_loss : 314.0337219238281
+average next_obs: -0.11381551623344421
+average reward: -0.32138779759407043
+average uncertainty: 2.958873748779297
+average next_obs: 0.08548463135957718
+average reward: -0.2816552221775055
+average uncertainty: 2.8679864406585693
+average next_obs: 0.19172342121601105
+average reward: -0.24221733212471008
+average uncertainty: 2.597078800201416
+average next_obs: 0.07821004837751389
+average reward: -0.21557554602622986
+average uncertainty: 2.481003761291504
+average next_obs: 0.0817638412117958
+average reward: -0.19633017480373383
+average uncertainty: 2.4386205673217773
+[32m2021-11-08 at 13:09:12.277[39m | [34mINFO[39m | Epoch : 30
+[32m2021-11-08 at 13:09:12.278[39m | [34mINFO[39m | Reward_Mean_Env : -122.05766542786729
+[32m2021-11-08 at 13:09:12.281[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:09:12.281[39m | [34mINFO[39m | Reward_Mean : -122.13525168747032
+[32m2021-11-08 at 13:09:12.282[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:09:12.283[39m | [34mINFO[39m | D4rl_Score : 1.272987702479633
+[32m2021-11-08 at 13:09:12.284[39m | [34mINFO[39m | uncertainty : 2.4386205673217773
+[32m2021-11-08 at 13:09:12.284[39m | [34mINFO[39m | disagreement_uncertainty : 0.6524707078933716
+[32m2021-11-08 at 13:09:12.285[39m | [34mINFO[39m | aleatoric_uncertainty : 2.4386205673217773
+[32m2021-11-08 at 13:09:12.285[39m | [34mINFO[39m | reward : -0.19633017480373383
+[32m2021-11-08 at 13:09:12.286[39m | [34mINFO[39m | next_obs : 0.0817638412117958
+[32m2021-11-08 at 13:09:12.287[39m | [34mINFO[39m | mean_action_log_prob : 6.1644487380981445
+[32m2021-11-08 at 13:09:12.287[39m | [34mINFO[39m | mean_critic_loss : 28.959308624267578
+[32m2021-11-08 at 13:09:12.288[39m | [34mINFO[39m | mean_Qmin : -318.3367919921875
+[32m2021-11-08 at 13:09:12.288[39m | [34mINFO[39m | log_alpha : -4.565464496612549
+[32m2021-11-08 at 13:09:12.289[39m | [34mINFO[39m | mean_obs : -0.031071841716766357
+[32m2021-11-08 at 13:09:12.290[39m | [34mINFO[39m | mean_new_action : 0.13965703547000885
+[32m2021-11-08 at 13:09:12.290[39m | [34mINFO[39m | mean_next_obs : 0.07351909577846527
+[32m2021-11-08 at 13:09:12.291[39m | [34mINFO[39m | mean_next_action : 0.14641907811164856
+[32m2021-11-08 at 13:09:12.291[39m | [34mINFO[39m | mean_alpha_loss : -0.8199477791786194
+[32m2021-11-08 at 13:09:12.292[39m | [34mINFO[39m | mean_actor_loss : 318.40093994140625
+average next_obs: 0.4085599482059479
+average reward: -0.31580546498298645
+average uncertainty: 2.9113099575042725
+average next_obs: 0.30916839838027954
+average reward: -0.2829102575778961
+average uncertainty: 2.6772189140319824
+average next_obs: 0.012719647958874702
+average reward: -0.23832882940769196
+average uncertainty: 2.598806858062744
+average next_obs: -0.06108700484037399
+average reward: -0.21589533984661102
+average uncertainty: 2.5620555877685547
+average next_obs: -0.03030145727097988
+average reward: -0.20984327793121338
+average uncertainty: 2.486860513687134
+[32m2021-11-08 at 13:11:10.620[39m | [34mINFO[39m | Epoch : 31
+[32m2021-11-08 at 13:11:10.621[39m | [34mINFO[39m | Reward_Mean_Env : -287.00673350121417
+[32m2021-11-08 at 13:11:10.623[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:11:10.624[39m | [34mINFO[39m | Reward_Mean : -287.1434675725641
+[32m2021-11-08 at 13:11:10.624[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:11:10.625[39m | [34mINFO[39m | D4rl_Score : -0.05609677153208649
+[32m2021-11-08 at 13:11:10.626[39m | [34mINFO[39m | uncertainty : 2.486860513687134
+[32m2021-11-08 at 13:11:10.627[39m | [34mINFO[39m | disagreement_uncertainty : 0.6387233138084412
+[32m2021-11-08 at 13:11:10.627[39m | [34mINFO[39m | aleatoric_uncertainty : 2.486860513687134
+[32m2021-11-08 at 13:11:10.628[39m | [34mINFO[39m | reward : -0.20984327793121338
+[32m2021-11-08 at 13:11:10.628[39m | [34mINFO[39m | next_obs : -0.03030145727097988
+[32m2021-11-08 at 13:11:10.629[39m | [34mINFO[39m | mean_action_log_prob : 6.491076469421387
+[32m2021-11-08 at 13:11:10.629[39m | [34mINFO[39m | mean_critic_loss : 37.72703552246094
+[32m2021-11-08 at 13:11:10.630[39m | [34mINFO[39m | mean_Qmin : -322.89251708984375
+[32m2021-11-08 at 13:11:10.631[39m | [34mINFO[39m | log_alpha : -4.568844795227051
+[32m2021-11-08 at 13:11:10.631[39m | [34mINFO[39m | mean_obs : 0.052961740642786026
+[32m2021-11-08 at 13:11:10.632[39m | [34mINFO[39m | mean_new_action : -0.24522683024406433
+[32m2021-11-08 at 13:11:10.632[39m | [34mINFO[39m | mean_next_obs : 0.11527413874864578
+[32m2021-11-08 at 13:11:10.633[39m | [34mINFO[39m | mean_next_action : -0.24251118302345276
+[32m2021-11-08 at 13:11:10.633[39m | [34mINFO[39m | mean_alpha_loss : 2.474578857421875
+[32m2021-11-08 at 13:11:10.634[39m | [34mINFO[39m | mean_actor_loss : 322.9598388671875
+average next_obs: -0.618718683719635
+average reward: -0.32129526138305664
+average uncertainty: 2.944153070449829
+average next_obs: -0.17336781322956085
+average reward: -0.26717278361320496
+average uncertainty: 2.8157460689544678
+average next_obs: -0.03642990067601204
+average reward: -0.246927410364151
+average uncertainty: 2.6116530895233154
+average next_obs: -0.07486514747142792
+average reward: -0.23177076876163483
+average uncertainty: 2.542597770690918
+average next_obs: -0.07115603983402252
+average reward: -0.2123071849346161
+average uncertainty: 2.5656251907348633
+[32m2021-11-08 at 13:13:08.467[39m | [34mINFO[39m | Epoch : 32
+[32m2021-11-08 at 13:13:08.468[39m | [34mINFO[39m | Reward_Mean_Env : -190.5015275219946
+[32m2021-11-08 at 13:13:08.471[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:13:08.471[39m | [34mINFO[39m | Reward_Mean : -189.68054447181115
+[32m2021-11-08 at 13:13:08.472[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:13:08.473[39m | [34mINFO[39m | D4rl_Score : 0.7289335809881405
+[32m2021-11-08 at 13:13:08.474[39m | [34mINFO[39m | uncertainty : 2.5656251907348633
+[32m2021-11-08 at 13:13:08.474[39m | [34mINFO[39m | disagreement_uncertainty : 0.6547389626502991
+[32m2021-11-08 at 13:13:08.475[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5656251907348633
+[32m2021-11-08 at 13:13:08.476[39m | [34mINFO[39m | reward : -0.2123071849346161
+[32m2021-11-08 at 13:13:08.477[39m | [34mINFO[39m | next_obs : -0.07115603983402252
+[32m2021-11-08 at 13:13:08.477[39m | [34mINFO[39m | mean_action_log_prob : 6.4669036865234375
+[32m2021-11-08 at 13:13:08.478[39m | [34mINFO[39m | mean_critic_loss : 27.267772674560547
+[32m2021-11-08 at 13:13:08.479[39m | [34mINFO[39m | mean_Qmin : -325.4681701660156
+[32m2021-11-08 at 13:13:08.479[39m | [34mINFO[39m | log_alpha : -4.413932800292969
+[32m2021-11-08 at 13:13:08.481[39m | [34mINFO[39m | mean_obs : 0.14117130637168884
+[32m2021-11-08 at 13:13:08.481[39m | [34mINFO[39m | mean_new_action : -0.08793487399816513
+[32m2021-11-08 at 13:13:08.482[39m | [34mINFO[39m | mean_next_obs : 0.04763665422797203
+[32m2021-11-08 at 13:13:08.482[39m | [34mINFO[39m | mean_next_action : -0.08191311359405518
+[32m2021-11-08 at 13:13:08.483[39m | [34mINFO[39m | mean_alpha_loss : 2.0166330337524414
+[32m2021-11-08 at 13:13:08.484[39m | [34mINFO[39m | mean_actor_loss : 325.5464782714844
+average next_obs: -0.1940084546804428
+average reward: -0.3159577548503876
+average uncertainty: 2.9300591945648193
+average next_obs: -0.1927933543920517
+average reward: -0.2734646797180176
+average uncertainty: 3.109560489654541
+average next_obs: 0.12260373681783676
+average reward: -0.24825142323970795
+average uncertainty: 3.053232431411743
+average next_obs: 0.2626231610774994
+average reward: -0.22806760668754578
+average uncertainty: 2.7880921363830566
+average next_obs: 0.1830502301454544
+average reward: -0.186961829662323
+average uncertainty: 2.634230852127075
+[32m2021-11-08 at 13:15:05.635[39m | [34mINFO[39m | Epoch : 33
+[32m2021-11-08 at 13:15:05.636[39m | [34mINFO[39m | Reward_Mean_Env : 306.763509851813
+[32m2021-11-08 at 13:15:05.639[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:15:05.639[39m | [34mINFO[39m | Reward_Mean : 311.4846759291129
+[32m2021-11-08 at 13:15:05.640[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:15:05.641[39m | [34mINFO[39m | D4rl_Score : 4.7656472062864905
+[32m2021-11-08 at 13:15:05.642[39m | [34mINFO[39m | uncertainty : 2.634230852127075
+[32m2021-11-08 at 13:15:05.642[39m | [34mINFO[39m | disagreement_uncertainty : 0.8160560727119446
+[32m2021-11-08 at 13:15:05.643[39m | [34mINFO[39m | aleatoric_uncertainty : 2.634230852127075
+[32m2021-11-08 at 13:15:05.644[39m | [34mINFO[39m | reward : -0.186961829662323
+[32m2021-11-08 at 13:15:05.645[39m | [34mINFO[39m | next_obs : 0.1830502301454544
+[32m2021-11-08 at 13:15:05.645[39m | [34mINFO[39m | mean_action_log_prob : 7.194432258605957
+[32m2021-11-08 at 13:15:05.646[39m | [34mINFO[39m | mean_critic_loss : 31.497303009033203
+[32m2021-11-08 at 13:15:05.646[39m | [34mINFO[39m | mean_Qmin : -328.23577880859375
+[32m2021-11-08 at 13:15:05.647[39m | [34mINFO[39m | log_alpha : -4.480830669403076
+[32m2021-11-08 at 13:15:05.647[39m | [34mINFO[39m | mean_obs : 0.09699390083551407
+[32m2021-11-08 at 13:15:05.648[39m | [34mINFO[39m | mean_new_action : 0.1063678115606308
+[32m2021-11-08 at 13:15:05.649[39m | [34mINFO[39m | mean_next_obs : 0.019018756225705147
+[32m2021-11-08 at 13:15:05.649[39m | [34mINFO[39m | mean_next_action : 0.09903542697429657
+[32m2021-11-08 at 13:15:05.650[39m | [34mINFO[39m | mean_alpha_loss : 5.537715911865234
+[32m2021-11-08 at 13:15:05.650[39m | [34mINFO[39m | mean_actor_loss : 328.3172607421875
+average next_obs: 0.19677817821502686
+average reward: -0.3240768611431122
+average uncertainty: 2.854555606842041
+average next_obs: 0.1558084636926651
+average reward: -0.301909863948822
+average uncertainty: 2.763821601867676
+average next_obs: -0.16909551620483398
+average reward: -0.2668248116970062
+average uncertainty: 2.889991283416748
+average next_obs: -0.1589248776435852
+average reward: -0.2579795718193054
+average uncertainty: 3.1638283729553223
+average next_obs: 0.0955018401145935
+average reward: -0.24767284095287323
+average uncertainty: 3.3439416885375977
+[32m2021-11-08 at 13:17:05.426[39m | [34mINFO[39m | Epoch : 34
+[32m2021-11-08 at 13:17:05.428[39m | [34mINFO[39m | Reward_Mean_Env : -325.83968903586356
+[32m2021-11-08 at 13:17:05.431[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:17:05.432[39m | [34mINFO[39m | Reward_Mean : -325.6314472812077
+[32m2021-11-08 at 13:17:05.432[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:17:05.433[39m | [34mINFO[39m | D4rl_Score : -0.36610422172146473
+[32m2021-11-08 at 13:17:05.434[39m | [34mINFO[39m | uncertainty : 3.3439416885375977
+[32m2021-11-08 at 13:17:05.435[39m | [34mINFO[39m | disagreement_uncertainty : 1.6777386665344238
+[32m2021-11-08 at 13:17:05.435[39m | [34mINFO[39m | aleatoric_uncertainty : 3.3439416885375977
+[32m2021-11-08 at 13:17:05.436[39m | [34mINFO[39m | reward : -0.24767284095287323
+[32m2021-11-08 at 13:17:05.436[39m | [34mINFO[39m | next_obs : 0.0955018401145935
+[32m2021-11-08 at 13:17:05.437[39m | [34mINFO[39m | mean_action_log_prob : 7.622461318969727
+[32m2021-11-08 at 13:17:05.438[39m | [34mINFO[39m | mean_critic_loss : 41.7032585144043
+[32m2021-11-08 at 13:17:05.439[39m | [34mINFO[39m | mean_Qmin : -329.4339294433594
+[32m2021-11-08 at 13:17:05.439[39m | [34mINFO[39m | log_alpha : -4.189625263214111
+[32m2021-11-08 at 13:17:05.440[39m | [34mINFO[39m | mean_obs : 0.06482177972793579
+[32m2021-11-08 at 13:17:05.441[39m | [34mINFO[39m | mean_new_action : 0.28837186098098755
+[32m2021-11-08 at 13:17:05.442[39m | [34mINFO[39m | mean_next_obs : 0.03929166868329048
+[32m2021-11-08 at 13:17:05.442[39m | [34mINFO[39m | mean_next_action : 0.2776210308074951
+[32m2021-11-08 at 13:17:05.443[39m | [34mINFO[39m | mean_alpha_loss : 7.884572982788086
+[32m2021-11-08 at 13:17:05.443[39m | [34mINFO[39m | mean_actor_loss : 329.5494384765625
+average next_obs: 0.6752351522445679
+average reward: -0.2973085939884186
+average uncertainty: 2.9828264713287354
+average next_obs: 0.5850262641906738
+average reward: -0.2935546338558197
+average uncertainty: 2.8635990619659424
+average next_obs: 0.06609410792589188
+average reward: -0.26464012265205383
+average uncertainty: 2.7754392623901367
+average next_obs: 0.05789050832390785
+average reward: -0.19846105575561523
+average uncertainty: 2.6940109729766846
+average next_obs: 0.2646867036819458
+average reward: -0.18650026619434357
+average uncertainty: 2.6223554611206055
+[32m2021-11-08 at 13:19:05.460[39m | [34mINFO[39m | Epoch : 35
+[32m2021-11-08 at 13:19:05.462[39m | [34mINFO[39m | Reward_Mean_Env : -296.71217415259366
+[32m2021-11-08 at 13:19:05.464[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:19:05.464[39m | [34mINFO[39m | Reward_Mean : -296.47454080143325
+[32m2021-11-08 at 13:19:05.465[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:19:05.465[39m | [34mINFO[39m | D4rl_Score : -0.13125535977470232
+[32m2021-11-08 at 13:19:05.466[39m | [34mINFO[39m | uncertainty : 2.6223554611206055
+[32m2021-11-08 at 13:19:05.468[39m | [34mINFO[39m | disagreement_uncertainty : 0.8367890119552612
+[32m2021-11-08 at 13:19:05.468[39m | [34mINFO[39m | aleatoric_uncertainty : 2.6223554611206055
+[32m2021-11-08 at 13:19:05.469[39m | [34mINFO[39m | reward : -0.18650026619434357
+[32m2021-11-08 at 13:19:05.469[39m | [34mINFO[39m | next_obs : 0.2646867036819458
+[32m2021-11-08 at 13:19:05.470[39m | [34mINFO[39m | mean_action_log_prob : 7.610354423522949
+[32m2021-11-08 at 13:19:05.470[39m | [34mINFO[39m | mean_critic_loss : 30.69287872314453
+[32m2021-11-08 at 13:19:05.471[39m | [34mINFO[39m | mean_Qmin : -333.73260498046875
+[32m2021-11-08 at 13:19:05.471[39m | [34mINFO[39m | log_alpha : -4.0981292724609375
+[32m2021-11-08 at 13:19:05.472[39m | [34mINFO[39m | mean_obs : -0.011053279042243958
+[32m2021-11-08 at 13:19:05.472[39m | [34mINFO[39m | mean_new_action : 0.09505262970924377
+[32m2021-11-08 at 13:19:05.472[39m | [34mINFO[39m | mean_next_obs : 0.03245445340871811
+[32m2021-11-08 at 13:19:05.473[39m | [34mINFO[39m | mean_next_action : 0.07898230105638504
+[32m2021-11-08 at 13:19:05.473[39m | [34mINFO[39m | mean_alpha_loss : 3.8070688247680664
+[32m2021-11-08 at 13:19:05.474[39m | [34mINFO[39m | mean_actor_loss : 333.8589782714844
+average next_obs: 0.09796291589736938
+average reward: -0.29752930998802185
+average uncertainty: 3.0024781227111816
+average next_obs: 0.22087249159812927
+average reward: -0.27052682638168335
+average uncertainty: 3.0708107948303223
+average next_obs: 0.2026655226945877
+average reward: -0.21157865226268768
+average uncertainty: 2.767807960510254
+average next_obs: 0.10228030383586884
+average reward: -0.1870289444923401
+average uncertainty: 2.613147020339966
+average next_obs: 0.10690143704414368
+average reward: -0.18158644437789917
+average uncertainty: 2.56074857711792
+[32m2021-11-08 at 13:21:04.836[39m | [34mINFO[39m | Epoch : 36
+[32m2021-11-08 at 13:21:04.837[39m | [34mINFO[39m | Reward_Mean_Env : -212.07678282514098
+[32m2021-11-08 at 13:21:04.839[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:21:04.840[39m | [34mINFO[39m | Reward_Mean : -211.87839486371243
+[32m2021-11-08 at 13:21:04.840[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:21:04.841[39m | [34mINFO[39m | D4rl_Score : 0.5501375243550832
+[32m2021-11-08 at 13:21:04.842[39m | [34mINFO[39m | uncertainty : 2.56074857711792
+[32m2021-11-08 at 13:21:04.843[39m | [34mINFO[39m | disagreement_uncertainty : 0.8324710726737976
+[32m2021-11-08 at 13:21:04.843[39m | [34mINFO[39m | aleatoric_uncertainty : 2.56074857711792
+[32m2021-11-08 at 13:21:04.844[39m | [34mINFO[39m | reward : -0.18158644437789917
+[32m2021-11-08 at 13:21:04.844[39m | [34mINFO[39m | next_obs : 0.10690143704414368
+[32m2021-11-08 at 13:21:04.845[39m | [34mINFO[39m | mean_action_log_prob : 5.804312229156494
+[32m2021-11-08 at 13:21:04.846[39m | [34mINFO[39m | mean_critic_loss : 28.70554542541504
+[32m2021-11-08 at 13:21:04.847[39m | [34mINFO[39m | mean_Qmin : -336.08795166015625
+[32m2021-11-08 at 13:21:04.847[39m | [34mINFO[39m | log_alpha : -4.137140274047852
+[32m2021-11-08 at 13:21:04.848[39m | [34mINFO[39m | mean_obs : 0.05308302864432335
+[32m2021-11-08 at 13:21:04.848[39m | [34mINFO[39m | mean_new_action : 0.16836017370224
+[32m2021-11-08 at 13:21:04.850[39m | [34mINFO[39m | mean_next_obs : 0.07126162946224213
+[32m2021-11-08 at 13:21:04.850[39m | [34mINFO[39m | mean_next_action : 0.1383545994758606
+[32m2021-11-08 at 13:21:04.851[39m | [34mINFO[39m | mean_alpha_loss : -0.5788036584854126
+[32m2021-11-08 at 13:21:04.851[39m | [34mINFO[39m | mean_actor_loss : 336.1806335449219
+average next_obs: 0.5327672362327576
+average reward: -0.32190409302711487
+average uncertainty: 3.09202241897583
+average next_obs: 0.2610090374946594
+average reward: -0.2706824839115143
+average uncertainty: 2.754793882369995
+average next_obs: -0.2713363468647003
+average reward: -0.2577650547027588
+average uncertainty: 2.612159013748169
+average next_obs: -0.33093178272247314
+average reward: -0.2412012815475464
+average uncertainty: 2.6007885932922363
+average next_obs: -0.1552877128124237
+average reward: -0.2508775591850281
+average uncertainty: 2.604766845703125
+[32m2021-11-08 at 13:23:03.157[39m | [34mINFO[39m | Epoch : 37
+[32m2021-11-08 at 13:23:03.158[39m | [34mINFO[39m | Reward_Mean_Env : -323.63723632639017
+[32m2021-11-08 at 13:23:03.161[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:23:03.162[39m | [34mINFO[39m | Reward_Mean : -323.69144850993985
+[32m2021-11-08 at 13:23:03.162[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:23:03.164[39m | [34mINFO[39m | D4rl_Score : -0.35047819829794336
+[32m2021-11-08 at 13:23:03.164[39m | [34mINFO[39m | uncertainty : 2.604766845703125
+[32m2021-11-08 at 13:23:03.164[39m | [34mINFO[39m | disagreement_uncertainty : 0.6603891253471375
+[32m2021-11-08 at 13:23:03.165[39m | [34mINFO[39m | aleatoric_uncertainty : 2.604766845703125
+[32m2021-11-08 at 13:23:03.165[39m | [34mINFO[39m | reward : -0.2508775591850281
+[32m2021-11-08 at 13:23:03.166[39m | [34mINFO[39m | next_obs : -0.1552877128124237
+[32m2021-11-08 at 13:23:03.166[39m | [34mINFO[39m | mean_action_log_prob : 5.924735069274902
+[32m2021-11-08 at 13:23:03.167[39m | [34mINFO[39m | mean_critic_loss : 27.041030883789062
+[32m2021-11-08 at 13:23:03.168[39m | [34mINFO[39m | mean_Qmin : -335.97698974609375
+[32m2021-11-08 at 13:23:03.168[39m | [34mINFO[39m | log_alpha : -4.072735786437988
+[32m2021-11-08 at 13:23:03.169[39m | [34mINFO[39m | mean_obs : 0.10795213282108307
+[32m2021-11-08 at 13:23:03.170[39m | [34mINFO[39m | mean_new_action : -0.31012484431266785
+[32m2021-11-08 at 13:23:03.170[39m | [34mINFO[39m | mean_next_obs : 0.19382800161838531
+[32m2021-11-08 at 13:23:03.171[39m | [34mINFO[39m | mean_next_action : -0.3261927366256714
+[32m2021-11-08 at 13:23:03.171[39m | [34mINFO[39m | mean_alpha_loss : -1.0255050659179688
+[32m2021-11-08 at 13:23:03.172[39m | [34mINFO[39m | mean_actor_loss : 336.077880859375
+average next_obs: -0.7179318070411682
+average reward: -0.30006295442581177
+average uncertainty: 3.054262399673462
+average next_obs: -0.35005316138267517
+average reward: -0.29215267300605774
+average uncertainty: 3.024099349975586
+average next_obs: -0.03734337538480759
+average reward: -0.2717936038970947
+average uncertainty: 2.6724424362182617
+average next_obs: -0.04801864176988602
+average reward: -0.23938053846359253
+average uncertainty: 2.569549798965454
+average next_obs: -0.08173102885484695
+average reward: -0.2380283921957016
+average uncertainty: 2.577263593673706
+[32m2021-11-08 at 13:25:02.265[39m | [34mINFO[39m | Epoch : 38
+[32m2021-11-08 at 13:25:02.266[39m | [34mINFO[39m | Reward_Mean_Env : 207.69173887907502
+[32m2021-11-08 at 13:25:02.268[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:25:02.269[39m | [34mINFO[39m | Reward_Mean : 207.40473297812252
+[32m2021-11-08 at 13:25:02.270[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:25:02.271[39m | [34mINFO[39m | D4rl_Score : 3.927319032806232
+[32m2021-11-08 at 13:25:02.272[39m | [34mINFO[39m | uncertainty : 2.577263593673706
+[32m2021-11-08 at 13:25:02.272[39m | [34mINFO[39m | disagreement_uncertainty : 0.7295470237731934
+[32m2021-11-08 at 13:25:02.273[39m | [34mINFO[39m | aleatoric_uncertainty : 2.577263593673706
+[32m2021-11-08 at 13:25:02.274[39m | [34mINFO[39m | reward : -0.2380283921957016
+[32m2021-11-08 at 13:25:02.275[39m | [34mINFO[39m | next_obs : -0.08173102885484695
+[32m2021-11-08 at 13:25:02.276[39m | [34mINFO[39m | mean_action_log_prob : 6.329996109008789
+[32m2021-11-08 at 13:25:02.276[39m | [34mINFO[39m | mean_critic_loss : 31.0675048828125
+[32m2021-11-08 at 13:25:02.277[39m | [34mINFO[39m | mean_Qmin : -333.37939453125
+[32m2021-11-08 at 13:25:02.277[39m | [34mINFO[39m | log_alpha : -3.9603934288024902
+[32m2021-11-08 at 13:25:02.278[39m | [34mINFO[39m | mean_obs : -0.011812440119683743
+[32m2021-11-08 at 13:25:02.279[39m | [34mINFO[39m | mean_new_action : -0.21312952041625977
+[32m2021-11-08 at 13:25:02.280[39m | [34mINFO[39m | mean_next_obs : -0.002508173929527402
+[32m2021-11-08 at 13:25:02.280[39m | [34mINFO[39m | mean_next_action : -0.2161511778831482
+[32m2021-11-08 at 13:25:02.281[39m | [34mINFO[39m | mean_alpha_loss : 0.31277647614479065
+[32m2021-11-08 at 13:25:02.281[39m | [34mINFO[39m | mean_actor_loss : 333.5000305175781
+average next_obs: -0.4327322840690613
+average reward: -0.29382604360580444
+average uncertainty: 2.9386494159698486
+average next_obs: -0.29541319608688354
+average reward: -0.3037339448928833
+average uncertainty: 3.266204357147217
+average next_obs: 0.20577219128608704
+average reward: -0.2809441387653351
+average uncertainty: 3.3914668560028076
+average next_obs: 0.15910235047340393
+average reward: -0.21458716690540314
+average uncertainty: 2.947390556335449
+average next_obs: 0.026717685163021088
+average reward: -0.1788869947195053
+average uncertainty: 2.655421495437622
+[32m2021-11-08 at 13:27:01.816[39m | [34mINFO[39m | Epoch : 39
+[32m2021-11-08 at 13:27:01.818[39m | [34mINFO[39m | Reward_Mean_Env : -529.0669914146928
+[32m2021-11-08 at 13:27:11.790[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:27:11.790[39m | [34mINFO[39m | Reward_Mean : -529.437614865109
+[32m2021-11-08 at 13:27:11.791[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:27:11.791[39m | [34mINFO[39m | D4rl_Score : -2.0076928637817035
+[32m2021-11-08 at 13:27:11.792[39m | [34mINFO[39m | uncertainty : 2.655421495437622
+[32m2021-11-08 at 13:27:11.793[39m | [34mINFO[39m | disagreement_uncertainty : 0.8252429366111755
+[32m2021-11-08 at 13:27:11.793[39m | [34mINFO[39m | aleatoric_uncertainty : 2.655421495437622
+[32m2021-11-08 at 13:27:11.794[39m | [34mINFO[39m | reward : -0.1788869947195053
+[32m2021-11-08 at 13:27:11.794[39m | [34mINFO[39m | next_obs : 0.026717685163021088
+[32m2021-11-08 at 13:27:11.795[39m | [34mINFO[39m | mean_action_log_prob : 7.902052879333496
+[32m2021-11-08 at 13:27:11.795[39m | [34mINFO[39m | mean_critic_loss : 27.661527633666992
+[32m2021-11-08 at 13:27:11.796[39m | [34mINFO[39m | mean_Qmin : -335.0660705566406
+[32m2021-11-08 at 13:27:11.796[39m | [34mINFO[39m | log_alpha : -3.998203992843628
+[32m2021-11-08 at 13:27:11.797[39m | [34mINFO[39m | mean_obs : -0.07340250164270401
+[32m2021-11-08 at 13:27:11.797[39m | [34mINFO[39m | mean_new_action : 0.21385912597179413
+[32m2021-11-08 at 13:27:11.798[39m | [34mINFO[39m | mean_next_obs : 0.02435251697897911
+[32m2021-11-08 at 13:27:11.798[39m | [34mINFO[39m | mean_next_action : 0.19503435492515564
+[32m2021-11-08 at 13:27:11.799[39m | [34mINFO[39m | mean_alpha_loss : 6.481837272644043
+[32m2021-11-08 at 13:27:11.799[39m | [34mINFO[39m | mean_actor_loss : 335.2110595703125
+average next_obs: 0.5139115452766418
+average reward: -0.32243993878364563
+average uncertainty: 2.9304070472717285
+average next_obs: 0.43661999702453613
+average reward: -0.29020580649375916
+average uncertainty: 3.1638686656951904
+average next_obs: -0.21529316902160645
+average reward: -0.26943835616111755
+average uncertainty: 3.1364212036132812
+average next_obs: -0.16643375158309937
+average reward: -0.25518861413002014
+average uncertainty: 3.180210828781128
+average next_obs: 0.0863046869635582
+average reward: -0.2611287534236908
+average uncertainty: 3.3228533267974854
+[32m2021-11-08 at 13:29:13.476[39m | [34mINFO[39m | Epoch : 40
+[32m2021-11-08 at 13:29:13.477[39m | [34mINFO[39m | Reward_Mean_Env : -192.98143496248744
+[32m2021-11-08 at 13:29:13.481[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:29:13.481[39m | [34mINFO[39m | Reward_Mean : -193.30721434377315
+[32m2021-11-08 at 13:29:13.482[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:29:13.483[39m | [34mINFO[39m | D4rl_Score : 0.6997220014717159
+[32m2021-11-08 at 13:29:13.484[39m | [34mINFO[39m | uncertainty : 3.3228533267974854
+[32m2021-11-08 at 13:29:13.484[39m | [34mINFO[39m | disagreement_uncertainty : 1.3968827724456787
+[32m2021-11-08 at 13:29:13.485[39m | [34mINFO[39m | aleatoric_uncertainty : 3.3228533267974854
+[32m2021-11-08 at 13:29:13.485[39m | [34mINFO[39m | reward : -0.2611287534236908
+[32m2021-11-08 at 13:29:13.486[39m | [34mINFO[39m | next_obs : 0.0863046869635582
+[32m2021-11-08 at 13:29:13.487[39m | [34mINFO[39m | mean_action_log_prob : 8.647909164428711
+[32m2021-11-08 at 13:29:13.487[39m | [34mINFO[39m | mean_critic_loss : 22.520803451538086
+[32m2021-11-08 at 13:29:13.488[39m | [34mINFO[39m | mean_Qmin : -341.87628173828125
+[32m2021-11-08 at 13:29:13.488[39m | [34mINFO[39m | log_alpha : -4.118651866912842
+[32m2021-11-08 at 13:29:13.489[39m | [34mINFO[39m | mean_obs : -0.031714219599962234
+[32m2021-11-08 at 13:29:13.490[39m | [34mINFO[39m | mean_new_action : 0.20930513739585876
+[32m2021-11-08 at 13:29:13.491[39m | [34mINFO[39m | mean_next_obs : -0.0023851196747273207
+[32m2021-11-08 at 13:29:13.491[39m | [34mINFO[39m | mean_next_action : 0.2012777328491211
+[32m2021-11-08 at 13:29:13.491[39m | [34mINFO[39m | mean_alpha_loss : 11.34129810333252
+[32m2021-11-08 at 13:29:13.492[39m | [34mINFO[39m | mean_actor_loss : 342.0169372558594
+average next_obs: 0.47107890248298645
+average reward: -0.29582250118255615
+average uncertainty: 2.992793083190918
+average next_obs: 0.5553930401802063
+average reward: -0.2934567630290985
+average uncertainty: 2.9202423095703125
+average next_obs: 0.19558055698871613
+average reward: -0.2812952697277069
+average uncertainty: 3.1189236640930176
+average next_obs: -0.01526307687163353
+average reward: -0.19446122646331787
+average uncertainty: 2.913832426071167
+average next_obs: 0.058026257902383804
+average reward: -0.19458089768886566
+average uncertainty: 2.557673931121826
+[32m2021-11-08 at 13:31:13.884[39m | [34mINFO[39m | Epoch : 41
+[32m2021-11-08 at 13:31:13.885[39m | [34mINFO[39m | Reward_Mean_Env : -153.1559375896234
+[32m2021-11-08 at 13:31:13.889[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:31:13.891[39m | [34mINFO[39m | Reward_Mean : -154.28143365447994
+[32m2021-11-08 at 13:31:13.892[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:31:13.892[39m | [34mINFO[39m | D4rl_Score : 1.0140612537453453
+[32m2021-11-08 at 13:31:13.892[39m | [34mINFO[39m | uncertainty : 2.557673931121826
+[32m2021-11-08 at 13:31:13.893[39m | [34mINFO[39m | disagreement_uncertainty : 0.8083416223526001
+[32m2021-11-08 at 13:31:13.893[39m | [34mINFO[39m | aleatoric_uncertainty : 2.557673931121826
+[32m2021-11-08 at 13:31:13.894[39m | [34mINFO[39m | reward : -0.19458089768886566
+[32m2021-11-08 at 13:31:13.894[39m | [34mINFO[39m | next_obs : 0.058026257902383804
+[32m2021-11-08 at 13:31:13.895[39m | [34mINFO[39m | mean_action_log_prob : 6.162187576293945
+[32m2021-11-08 at 13:31:13.895[39m | [34mINFO[39m | mean_critic_loss : 26.880062103271484
+[32m2021-11-08 at 13:31:13.896[39m | [34mINFO[39m | mean_Qmin : -339.004150390625
+[32m2021-11-08 at 13:31:13.896[39m | [34mINFO[39m | log_alpha : -3.9124789237976074
+[32m2021-11-08 at 13:31:13.897[39m | [34mINFO[39m | mean_obs : 0.013388621620833874
+[32m2021-11-08 at 13:31:13.897[39m | [34mINFO[39m | mean_new_action : 0.05785902589559555
+[32m2021-11-08 at 13:31:13.898[39m | [34mINFO[39m | mean_next_obs : -0.018787039443850517
+[32m2021-11-08 at 13:31:13.898[39m | [34mINFO[39m | mean_next_action : 0.04598990082740784
+[32m2021-11-08 at 13:31:13.898[39m | [34mINFO[39m | mean_alpha_loss : 0.5879262685775757
+[32m2021-11-08 at 13:31:13.899[39m | [34mINFO[39m | mean_actor_loss : 339.1273498535156
+average next_obs: 0.008840953931212425
+average reward: -0.30037006735801697
+average uncertainty: 3.0226452350616455
+average next_obs: 0.12843020260334015
+average reward: -0.24109713733196259
+average uncertainty: 3.070215940475464
+average next_obs: 0.13171862065792084
+average reward: -0.20704714953899384
+average uncertainty: 2.7306954860687256
+average next_obs: 0.12086339294910431
+average reward: -0.18335093557834625
+average uncertainty: 2.5395283699035645
+average next_obs: 0.08287990838289261
+average reward: -0.17295445501804352
+average uncertainty: 2.440305471420288
+[32m2021-11-08 at 13:33:12.700[39m | [34mINFO[39m | Epoch : 42
+[32m2021-11-08 at 13:33:12.701[39m | [34mINFO[39m | Reward_Mean_Env : -133.04423616033537
+[32m2021-11-08 at 13:33:12.703[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:33:12.704[39m | [34mINFO[39m | Reward_Mean : -133.25166272514372
+[32m2021-11-08 at 13:33:12.704[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:33:12.704[39m | [34mINFO[39m | D4rl_Score : 1.183448831717023
+[32m2021-11-08 at 13:33:12.705[39m | [34mINFO[39m | uncertainty : 2.440305471420288
+[32m2021-11-08 at 13:33:12.706[39m | [34mINFO[39m | disagreement_uncertainty : 0.691959023475647
+[32m2021-11-08 at 13:33:12.707[39m | [34mINFO[39m | aleatoric_uncertainty : 2.440305471420288
+[32m2021-11-08 at 13:33:12.707[39m | [34mINFO[39m | reward : -0.17295445501804352
+[32m2021-11-08 at 13:33:12.708[39m | [34mINFO[39m | next_obs : 0.08287990838289261
+[32m2021-11-08 at 13:33:12.708[39m | [34mINFO[39m | mean_action_log_prob : 5.825496673583984
+[32m2021-11-08 at 13:33:12.709[39m | [34mINFO[39m | mean_critic_loss : 25.587804794311523
+[32m2021-11-08 at 13:33:12.709[39m | [34mINFO[39m | mean_Qmin : -340.2044677734375
+[32m2021-11-08 at 13:33:12.715[39m | [34mINFO[39m | log_alpha : -4.011295795440674
+[32m2021-11-08 at 13:33:12.716[39m | [34mINFO[39m | mean_obs : -0.006617340259253979
+[32m2021-11-08 at 13:33:12.717[39m | [34mINFO[39m | mean_new_action : 0.12036190927028656
+[32m2021-11-08 at 13:33:12.717[39m | [34mINFO[39m | mean_next_obs : 0.032443538308143616
+[32m2021-11-08 at 13:33:12.718[39m | [34mINFO[39m | mean_next_action : 0.10863783955574036
+[32m2021-11-08 at 13:33:12.718[39m | [34mINFO[39m | mean_alpha_loss : -1.5240281820297241
+[32m2021-11-08 at 13:33:12.719[39m | [34mINFO[39m | mean_actor_loss : 340.3099670410156
+average next_obs: 0.359080970287323
+average reward: -0.3160819411277771
+average uncertainty: 3.103550434112549
+average next_obs: 0.1247369572520256
+average reward: -0.27192074060440063
+average uncertainty: 2.7984619140625
+average next_obs: -0.11575429886579514
+average reward: -0.26744315028190613
+average uncertainty: 2.622298002243042
+average next_obs: -0.0975109189748764
+average reward: -0.24027331173419952
+average uncertainty: 2.6137592792510986
+average next_obs: -0.008145006373524666
+average reward: -0.23762673139572144
+average uncertainty: 2.601611614227295
+[32m2021-11-08 at 13:35:11.538[39m | [34mINFO[39m | Epoch : 43
+[32m2021-11-08 at 13:35:11.539[39m | [34mINFO[39m | Reward_Mean_Env : -130.47619380623848
+[32m2021-11-08 at 13:35:11.543[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:35:11.544[39m | [34mINFO[39m | Reward_Mean : -130.66156112383965
+[32m2021-11-08 at 13:35:11.544[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:35:11.545[39m | [34mINFO[39m | D4rl_Score : 1.2043112100291635
+[32m2021-11-08 at 13:35:11.545[39m | [34mINFO[39m | uncertainty : 2.601611614227295
+[32m2021-11-08 at 13:35:11.546[39m | [34mINFO[39m | disagreement_uncertainty : 0.7095491886138916
+[32m2021-11-08 at 13:35:11.547[39m | [34mINFO[39m | aleatoric_uncertainty : 2.601611614227295
+[32m2021-11-08 at 13:35:11.548[39m | [34mINFO[39m | reward : -0.23762673139572144
+[32m2021-11-08 at 13:35:11.548[39m | [34mINFO[39m | next_obs : -0.008145006373524666
+[32m2021-11-08 at 13:35:11.549[39m | [34mINFO[39m | mean_action_log_prob : 6.010703086853027
+[32m2021-11-08 at 13:35:11.549[39m | [34mINFO[39m | mean_critic_loss : 30.26569175720215
+[32m2021-11-08 at 13:35:11.550[39m | [34mINFO[39m | mean_Qmin : -340.0713195800781
+[32m2021-11-08 at 13:35:11.551[39m | [34mINFO[39m | log_alpha : -4.184624671936035
+[32m2021-11-08 at 13:35:11.552[39m | [34mINFO[39m | mean_obs : 0.16983254253864288
+[32m2021-11-08 at 13:35:11.552[39m | [34mINFO[39m | mean_new_action : -0.25977814197540283
+[32m2021-11-08 at 13:35:11.553[39m | [34mINFO[39m | mean_next_obs : 0.04693779721856117
+[32m2021-11-08 at 13:35:11.553[39m | [34mINFO[39m | mean_next_action : -0.25943732261657715
+[32m2021-11-08 at 13:35:11.554[39m | [34mINFO[39m | mean_alpha_loss : -1.7379176616668701
+[32m2021-11-08 at 13:35:11.554[39m | [34mINFO[39m | mean_actor_loss : 340.162841796875
+average next_obs: -0.6041081547737122
+average reward: -0.2995521128177643
+average uncertainty: 2.9674203395843506
+average next_obs: -0.49840858578681946
+average reward: -0.2696491479873657
+average uncertainty: 2.944720506668091
+average next_obs: -0.11515684425830841
+average reward: -0.23475712537765503
+average uncertainty: 2.6336798667907715
+average next_obs: 0.21505074203014374
+average reward: -0.22790975868701935
+average uncertainty: 2.5707693099975586
+average next_obs: 0.2817932367324829
+average reward: -0.2241467982530594
+average uncertainty: 2.525911569595337
+[32m2021-11-08 at 13:37:10.651[39m | [34mINFO[39m | Epoch : 44
+[32m2021-11-08 at 13:37:10.652[39m | [34mINFO[39m | Reward_Mean_Env : -265.79044372384413
+[32m2021-11-08 at 13:37:10.655[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:37:10.655[39m | [34mINFO[39m | Reward_Mean : -266.04717553285917
+[32m2021-11-08 at 13:37:10.656[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:37:10.657[39m | [34mINFO[39m | D4rl_Score : 0.11382661112368428
+[32m2021-11-08 at 13:37:10.658[39m | [34mINFO[39m | uncertainty : 2.525911569595337
+[32m2021-11-08 at 13:37:10.659[39m | [34mINFO[39m | disagreement_uncertainty : 0.7176113724708557
+[32m2021-11-08 at 13:37:10.659[39m | [34mINFO[39m | aleatoric_uncertainty : 2.525911569595337
+[32m2021-11-08 at 13:37:10.660[39m | [34mINFO[39m | reward : -0.2241467982530594
+[32m2021-11-08 at 13:37:10.661[39m | [34mINFO[39m | next_obs : 0.2817932367324829
+[32m2021-11-08 at 13:37:10.662[39m | [34mINFO[39m | mean_action_log_prob : 7.911027908325195
+[32m2021-11-08 at 13:37:10.663[39m | [34mINFO[39m | mean_critic_loss : 23.305309295654297
+[32m2021-11-08 at 13:37:10.663[39m | [34mINFO[39m | mean_Qmin : -337.6739807128906
+[32m2021-11-08 at 13:37:10.664[39m | [34mINFO[39m | log_alpha : -3.9651315212249756
+[32m2021-11-08 at 13:37:10.665[39m | [34mINFO[39m | mean_obs : 0.1109660342335701
+[32m2021-11-08 at 13:37:10.666[39m | [34mINFO[39m | mean_new_action : -0.06532498449087143
+[32m2021-11-08 at 13:37:10.666[39m | [34mINFO[39m | mean_next_obs : 0.03890229016542435
+[32m2021-11-08 at 13:37:10.667[39m | [34mINFO[39m | mean_next_action : -0.047823935747146606
+[32m2021-11-08 at 13:37:10.667[39m | [34mINFO[39m | mean_alpha_loss : 7.0369367599487305
+[32m2021-11-08 at 13:37:10.668[39m | [34mINFO[39m | mean_actor_loss : 337.8240051269531
+average next_obs: -0.04117785766720772
+average reward: -0.3130282461643219
+average uncertainty: 2.990255355834961
+average next_obs: 0.20481064915657043
+average reward: -0.3150480091571808
+average uncertainty: 3.45796275138855
+average next_obs: 0.1570238471031189
+average reward: -0.2739429175853729
+average uncertainty: 3.4892630577087402
+average next_obs: 0.24115176498889923
+average reward: -0.2174447625875473
+average uncertainty: 3.033553123474121
+average next_obs: 0.18080709874629974
+average reward: -0.20002441108226776
+average uncertainty: 2.8160715103149414
+[32m2021-11-08 at 13:39:11.848[39m | [34mINFO[39m | Epoch : 45
+[32m2021-11-08 at 13:39:11.850[39m | [34mINFO[39m | Reward_Mean_Env : 394.017712226432
+[32m2021-11-08 at 13:39:11.853[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:39:11.853[39m | [34mINFO[39m | Reward_Mean : 427.1102956949765
+[32m2021-11-08 at 13:39:11.854[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:39:11.855[39m | [34mINFO[39m | D4rl_Score : 5.696971838847859
+[32m2021-11-08 at 13:39:11.856[39m | [34mINFO[39m | uncertainty : 2.8160715103149414
+[32m2021-11-08 at 13:39:11.857[39m | [34mINFO[39m | disagreement_uncertainty : 0.9423105716705322
+[32m2021-11-08 at 13:39:11.857[39m | [34mINFO[39m | aleatoric_uncertainty : 2.8160715103149414
+[32m2021-11-08 at 13:39:11.858[39m | [34mINFO[39m | reward : -0.20002441108226776
+[32m2021-11-08 at 13:39:11.858[39m | [34mINFO[39m | next_obs : 0.18080709874629974
+[32m2021-11-08 at 13:39:11.859[39m | [34mINFO[39m | mean_action_log_prob : 5.923158168792725
+[32m2021-11-08 at 13:39:11.860[39m | [34mINFO[39m | mean_critic_loss : 28.659881591796875
+[32m2021-11-08 at 13:39:11.861[39m | [34mINFO[39m | mean_Qmin : -339.460693359375
+[32m2021-11-08 at 13:39:11.861[39m | [34mINFO[39m | log_alpha : -4.220671653747559
+[32m2021-11-08 at 13:39:11.862[39m | [34mINFO[39m | mean_obs : 0.09521986544132233
+[32m2021-11-08 at 13:39:11.862[39m | [34mINFO[39m | mean_new_action : 0.14803139865398407
+[32m2021-11-08 at 13:39:11.863[39m | [34mINFO[39m | mean_next_obs : 0.11015437543392181
+[32m2021-11-08 at 13:39:11.864[39m | [34mINFO[39m | mean_next_action : 0.13838666677474976
+[32m2021-11-08 at 13:39:11.865[39m | [34mINFO[39m | mean_alpha_loss : -2.3883438110351562
+[32m2021-11-08 at 13:39:11.865[39m | [34mINFO[39m | mean_actor_loss : 339.5476989746094
+average next_obs: 0.3296917676925659
+average reward: -0.31101828813552856
+average uncertainty: 2.919337749481201
+average next_obs: 0.46416789293289185
+average reward: -0.2467958927154541
+average uncertainty: 2.776686906814575
+average next_obs: -0.04569856449961662
+average reward: -0.23757827281951904
+average uncertainty: 2.696666717529297
+average next_obs: -0.21330265700817108
+average reward: -0.22083428502082825
+average uncertainty: 2.6289749145507812
+average next_obs: -0.18836970627307892
+average reward: -0.19405722618103027
+average uncertainty: 2.5712902545928955
+[32m2021-11-08 at 13:41:12.406[39m | [34mINFO[39m | Epoch : 46
+[32m2021-11-08 at 13:41:12.408[39m | [34mINFO[39m | Reward_Mean_Env : -33.9410723093599
+[32m2021-11-08 at 13:41:12.410[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:41:12.411[39m | [34mINFO[39m | Reward_Mean : -34.051230746075746
+[32m2021-11-08 at 13:41:12.411[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:41:12.412[39m | [34mINFO[39m | D4rl_Score : 1.9824742211585276
+[32m2021-11-08 at 13:41:12.412[39m | [34mINFO[39m | uncertainty : 2.5712902545928955
+[32m2021-11-08 at 13:41:12.413[39m | [34mINFO[39m | disagreement_uncertainty : 0.7671249508857727
+[32m2021-11-08 at 13:41:12.414[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5712902545928955
+[32m2021-11-08 at 13:41:12.415[39m | [34mINFO[39m | reward : -0.19405722618103027
+[32m2021-11-08 at 13:41:12.415[39m | [34mINFO[39m | next_obs : -0.18836970627307892
+[32m2021-11-08 at 13:41:12.416[39m | [34mINFO[39m | mean_action_log_prob : 5.936841011047363
+[32m2021-11-08 at 13:41:12.416[39m | [34mINFO[39m | mean_critic_loss : 21.20037269592285
+[32m2021-11-08 at 13:41:12.417[39m | [34mINFO[39m | mean_Qmin : -341.31781005859375
+[32m2021-11-08 at 13:41:12.418[39m | [34mINFO[39m | log_alpha : -4.345101356506348
+[32m2021-11-08 at 13:41:12.419[39m | [34mINFO[39m | mean_obs : 0.029550183564424515
+[32m2021-11-08 at 13:41:12.419[39m | [34mINFO[39m | mean_new_action : 0.07514450699090958
+[32m2021-11-08 at 13:41:12.420[39m | [34mINFO[39m | mean_next_obs : 0.03300643712282181
+[32m2021-11-08 at 13:41:12.420[39m | [34mINFO[39m | mean_next_action : 0.06678026169538498
+[32m2021-11-08 at 13:41:12.421[39m | [34mINFO[39m | mean_alpha_loss : -2.4004812240600586
+[32m2021-11-08 at 13:41:12.422[39m | [34mINFO[39m | mean_actor_loss : 341.3948059082031
+average next_obs: 0.11819323897361755
+average reward: -0.31497320532798767
+average uncertainty: 2.881713628768921
+average next_obs: 0.2715582251548767
+average reward: -0.28997454047203064
+average uncertainty: 2.735501766204834
+average next_obs: 0.19468384981155396
+average reward: -0.24173538386821747
+average uncertainty: 2.586625814437866
+average next_obs: 0.07739123702049255
+average reward: -0.18508295714855194
+average uncertainty: 2.432825803756714
+average next_obs: 0.04733067750930786
+average reward: -0.17006917297840118
+average uncertainty: 2.339803457260132
+[32m2021-11-08 at 13:43:11.857[39m | [34mINFO[39m | Epoch : 47
+[32m2021-11-08 at 13:43:11.858[39m | [34mINFO[39m | Reward_Mean_Env : 540.8796314805863
+[32m2021-11-08 at 13:43:11.860[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:43:11.861[39m | [34mINFO[39m | Reward_Mean : 543.0205295760506
+[32m2021-11-08 at 13:43:11.862[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:43:11.863[39m | [34mINFO[39m | D4rl_Score : 6.630588940299834
+[32m2021-11-08 at 13:43:11.863[39m | [34mINFO[39m | uncertainty : 2.339803457260132
+[32m2021-11-08 at 13:43:11.864[39m | [34mINFO[39m | disagreement_uncertainty : 0.6565191149711609
+[32m2021-11-08 at 13:43:11.864[39m | [34mINFO[39m | aleatoric_uncertainty : 2.339803457260132
+[32m2021-11-08 at 13:43:11.865[39m | [34mINFO[39m | reward : -0.17006917297840118
+[32m2021-11-08 at 13:43:11.866[39m | [34mINFO[39m | next_obs : 0.04733067750930786
+[32m2021-11-08 at 13:43:11.867[39m | [34mINFO[39m | mean_action_log_prob : 6.181038856506348
+[32m2021-11-08 at 13:43:11.867[39m | [34mINFO[39m | mean_critic_loss : 27.310104370117188
+[32m2021-11-08 at 13:43:11.868[39m | [34mINFO[39m | mean_Qmin : -342.87213134765625
+[32m2021-11-08 at 13:43:11.868[39m | [34mINFO[39m | log_alpha : -4.280257701873779
+[32m2021-11-08 at 13:43:11.869[39m | [34mINFO[39m | mean_obs : 0.08665907382965088
+[32m2021-11-08 at 13:43:11.870[39m | [34mINFO[39m | mean_new_action : -0.12711785733699799
+[32m2021-11-08 at 13:43:11.870[39m | [34mINFO[39m | mean_next_obs : 0.028576325625181198
+[32m2021-11-08 at 13:43:11.871[39m | [34mINFO[39m | mean_next_action : -0.1369849294424057
+[32m2021-11-08 at 13:43:11.871[39m | [34mINFO[39m | mean_alpha_loss : 0.5044741630554199
+[32m2021-11-08 at 13:43:11.872[39m | [34mINFO[39m | mean_actor_loss : 342.9576721191406
+average next_obs: -0.2947804033756256
+average reward: -0.3084487318992615
+average uncertainty: 2.9775137901306152
+average next_obs: -0.1803913116455078
+average reward: -0.2727793753147125
+average uncertainty: 2.890673875808716
+average next_obs: -0.004101837053894997
+average reward: -0.222819522023201
+average uncertainty: 2.767071485519409
+average next_obs: 0.12330473959445953
+average reward: -0.22912272810935974
+average uncertainty: 2.6806812286376953
+average next_obs: 0.06306254863739014
+average reward: -0.20518115162849426
+average uncertainty: 2.5629217624664307
+[32m2021-11-08 at 13:45:11.166[39m | [34mINFO[39m | Epoch : 48
+[32m2021-11-08 at 13:45:11.167[39m | [34mINFO[39m | Reward_Mean_Env : 571.0221359220196
+[32m2021-11-08 at 13:45:11.170[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:45:11.170[39m | [34mINFO[39m | Reward_Mean : 571.7698838170946
+[32m2021-11-08 at 13:45:11.172[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:45:11.172[39m | [34mINFO[39m | D4rl_Score : 6.862155109018625
+[32m2021-11-08 at 13:45:11.173[39m | [34mINFO[39m | uncertainty : 2.5629217624664307
+[32m2021-11-08 at 13:45:11.173[39m | [34mINFO[39m | disagreement_uncertainty : 0.740837037563324
+[32m2021-11-08 at 13:45:11.174[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5629217624664307
+[32m2021-11-08 at 13:45:11.175[39m | [34mINFO[39m | reward : -0.20518115162849426
+[32m2021-11-08 at 13:45:11.175[39m | [34mINFO[39m | next_obs : 0.06306254863739014
+[32m2021-11-08 at 13:45:11.176[39m | [34mINFO[39m | mean_action_log_prob : 6.781502723693848
+[32m2021-11-08 at 13:45:11.177[39m | [34mINFO[39m | mean_critic_loss : 25.998258590698242
+[32m2021-11-08 at 13:45:11.177[39m | [34mINFO[39m | mean_Qmin : -344.41802978515625
+[32m2021-11-08 at 13:45:11.178[39m | [34mINFO[39m | log_alpha : -4.052272319793701
+[32m2021-11-08 at 13:45:11.179[39m | [34mINFO[39m | mean_obs : 0.04023163020610809
+[32m2021-11-08 at 13:45:11.179[39m | [34mINFO[39m | mean_new_action : 0.16534769535064697
+[32m2021-11-08 at 13:45:11.180[39m | [34mINFO[39m | mean_next_obs : 0.016759509220719337
+[32m2021-11-08 at 13:45:11.181[39m | [34mINFO[39m | mean_next_action : 0.16477662324905396
+[32m2021-11-08 at 13:45:11.181[39m | [34mINFO[39m | mean_alpha_loss : 5.3645920753479
+[32m2021-11-08 at 13:45:11.182[39m | [34mINFO[39m | mean_actor_loss : 344.5359191894531
+average next_obs: 0.4667111039161682
+average reward: -0.32872867584228516
+average uncertainty: 3.0975310802459717
+average next_obs: 0.08388489484786987
+average reward: -0.2665640413761139
+average uncertainty: 2.772404193878174
+average next_obs: -0.12652869522571564
+average reward: -0.22649550437927246
+average uncertainty: 2.536280870437622
+average next_obs: -0.035869844257831573
+average reward: -0.21749764680862427
+average uncertainty: 2.5458459854125977
+average next_obs: 0.07352142035961151
+average reward: -0.21270319819450378
+average uncertainty: 2.6342427730560303
+[32m2021-11-08 at 13:47:09.881[39m | [34mINFO[39m | Epoch : 49
+[32m2021-11-08 at 13:47:09.882[39m | [34mINFO[39m | Reward_Mean_Env : -224.5342394474945
+[32m2021-11-08 at 13:47:09.884[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:47:09.885[39m | [34mINFO[39m | Reward_Mean : -224.83618614505033
+[32m2021-11-08 at 13:47:09.886[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:47:09.887[39m | [34mINFO[39m | D4rl_Score : 0.4457669685186184
+[32m2021-11-08 at 13:47:09.888[39m | [34mINFO[39m | uncertainty : 2.6342427730560303
+[32m2021-11-08 at 13:47:09.889[39m | [34mINFO[39m | disagreement_uncertainty : 0.8570758104324341
+[32m2021-11-08 at 13:47:09.890[39m | [34mINFO[39m | aleatoric_uncertainty : 2.6342427730560303
+[32m2021-11-08 at 13:47:09.890[39m | [34mINFO[39m | reward : -0.21270319819450378
+[32m2021-11-08 at 13:47:09.891[39m | [34mINFO[39m | next_obs : 0.07352142035961151
+[32m2021-11-08 at 13:47:09.892[39m | [34mINFO[39m | mean_action_log_prob : 5.837185859680176
+[32m2021-11-08 at 13:47:09.893[39m | [34mINFO[39m | mean_critic_loss : 22.31785774230957
+[32m2021-11-08 at 13:47:09.893[39m | [34mINFO[39m | mean_Qmin : -343.84783935546875
+[32m2021-11-08 at 13:47:09.894[39m | [34mINFO[39m | log_alpha : -4.193844318389893
+[32m2021-11-08 at 13:47:09.894[39m | [34mINFO[39m | mean_obs : 0.06207147613167763
+[32m2021-11-08 at 13:47:09.895[39m | [34mINFO[39m | mean_new_action : -0.12978456914424896
+[32m2021-11-08 at 13:47:09.896[39m | [34mINFO[39m | mean_next_obs : 0.11127582937479019
+[32m2021-11-08 at 13:47:09.896[39m | [34mINFO[39m | mean_next_action : -0.1369212567806244
+[32m2021-11-08 at 13:47:09.897[39m | [34mINFO[39m | mean_alpha_loss : -0.132404625415802
+[32m2021-11-08 at 13:47:09.897[39m | [34mINFO[39m | mean_actor_loss : 343.9359130859375
+average next_obs: -0.5102015733718872
+average reward: -0.29825451970100403
+average uncertainty: 2.9046075344085693
+average next_obs: -0.3128200173377991
+average reward: -0.27005013823509216
+average uncertainty: 2.839810848236084
+average next_obs: -0.07316030561923981
+average reward: -0.24325087666511536
+average uncertainty: 2.5747029781341553
+average next_obs: 0.11413980275392532
+average reward: -0.19677898287773132
+average uncertainty: 2.4907453060150146
+average next_obs: 0.14520388841629028
+average reward: -0.18228599429130554
+average uncertainty: 2.4155666828155518
+[32m2021-11-08 at 13:49:08.024[39m | [34mINFO[39m | Epoch : 50
+[32m2021-11-08 at 13:49:08.025[39m | [34mINFO[39m | Reward_Mean_Env : 613.9650625237356
+[32m2021-11-08 at 13:49:08.029[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:49:08.029[39m | [34mINFO[39m | Reward_Mean : 606.9656733350329
+[32m2021-11-08 at 13:49:08.030[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:49:08.030[39m | [34mINFO[39m | D4rl_Score : 7.145645098580424
+[32m2021-11-08 at 13:49:08.032[39m | [34mINFO[39m | uncertainty : 2.4155666828155518
+[32m2021-11-08 at 13:49:08.032[39m | [34mINFO[39m | disagreement_uncertainty : 0.6776765584945679
+[32m2021-11-08 at 13:49:08.033[39m | [34mINFO[39m | aleatoric_uncertainty : 2.4155666828155518
+[32m2021-11-08 at 13:49:08.033[39m | [34mINFO[39m | reward : -0.18228599429130554
+[32m2021-11-08 at 13:49:08.034[39m | [34mINFO[39m | next_obs : 0.14520388841629028
+[32m2021-11-08 at 13:49:08.034[39m | [34mINFO[39m | mean_action_log_prob : 6.145324230194092
+[32m2021-11-08 at 13:49:08.035[39m | [34mINFO[39m | mean_critic_loss : 19.98025131225586
+[32m2021-11-08 at 13:49:08.036[39m | [34mINFO[39m | mean_Qmin : -341.9606018066406
+[32m2021-11-08 at 13:49:08.037[39m | [34mINFO[39m | log_alpha : -4.393355369567871
+[32m2021-11-08 at 13:49:08.037[39m | [34mINFO[39m | mean_obs : 0.04749220609664917
+[32m2021-11-08 at 13:49:08.038[39m | [34mINFO[39m | mean_new_action : 0.08619189262390137
+[32m2021-11-08 at 13:49:08.038[39m | [34mINFO[39m | mean_next_obs : -0.005103844217956066
+[32m2021-11-08 at 13:49:08.039[39m | [34mINFO[39m | mean_next_action : 0.11227383464574814
+[32m2021-11-08 at 13:49:08.039[39m | [34mINFO[39m | mean_alpha_loss : -0.8159239292144775
+[32m2021-11-08 at 13:49:08.040[39m | [34mINFO[39m | mean_actor_loss : 342.03656005859375
+average next_obs: 0.1803775429725647
+average reward: -0.3009636402130127
+average uncertainty: 2.8899567127227783
+average next_obs: 0.33014675974845886
+average reward: -0.29652079939842224
+average uncertainty: 2.96236252784729
+average next_obs: 0.20563550293445587
+average reward: -0.2996363937854767
+average uncertainty: 3.1212170124053955
+average next_obs: 0.00975740235298872
+average reward: -0.24872826039791107
+average uncertainty: 2.9882540702819824
+average next_obs: -0.05165134742856026
+average reward: -0.23472270369529724
+average uncertainty: 2.901749849319458
+[32m2021-11-08 at 13:51:07.868[39m | [34mINFO[39m | Epoch : 51
+[32m2021-11-08 at 13:51:07.869[39m | [34mINFO[39m | Reward_Mean_Env : -165.0038476165268
+[32m2021-11-08 at 13:51:07.872[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:51:07.873[39m | [34mINFO[39m | Reward_Mean : -189.56600606727244
+[32m2021-11-08 at 13:51:07.873[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:51:07.875[39m | [34mINFO[39m | D4rl_Score : 0.7298561484756678
+[32m2021-11-08 at 13:51:07.875[39m | [34mINFO[39m | uncertainty : 2.901749849319458
+[32m2021-11-08 at 13:51:07.876[39m | [34mINFO[39m | disagreement_uncertainty : 1.0850112438201904
+[32m2021-11-08 at 13:51:07.876[39m | [34mINFO[39m | aleatoric_uncertainty : 2.901749849319458
+[32m2021-11-08 at 13:51:07.877[39m | [34mINFO[39m | reward : -0.23472270369529724
+[32m2021-11-08 at 13:51:07.878[39m | [34mINFO[39m | next_obs : -0.05165134742856026
+[32m2021-11-08 at 13:51:07.878[39m | [34mINFO[39m | mean_action_log_prob : 6.27957010269165
+[32m2021-11-08 at 13:51:07.879[39m | [34mINFO[39m | mean_critic_loss : 18.860660552978516
+[32m2021-11-08 at 13:51:07.879[39m | [34mINFO[39m | mean_Qmin : -345.3004150390625
+[32m2021-11-08 at 13:51:07.880[39m | [34mINFO[39m | log_alpha : -4.238189697265625
+[32m2021-11-08 at 13:51:07.881[39m | [34mINFO[39m | mean_obs : 0.060597047209739685
+[32m2021-11-08 at 13:51:07.882[39m | [34mINFO[39m | mean_new_action : 0.23085200786590576
+[32m2021-11-08 at 13:51:07.882[39m | [34mINFO[39m | mean_next_obs : 0.04504780471324921
+[32m2021-11-08 at 13:51:07.883[39m | [34mINFO[39m | mean_next_action : 0.26013869047164917
+[32m2021-11-08 at 13:51:07.883[39m | [34mINFO[39m | mean_alpha_loss : 0.9882862567901611
+[32m2021-11-08 at 13:51:07.884[39m | [34mINFO[39m | mean_actor_loss : 345.39105224609375
+average next_obs: 0.49297577142715454
+average reward: -0.27696463465690613
+average uncertainty: 2.9348409175872803
+average next_obs: 0.5259069800376892
+average reward: -0.2550826966762543
+average uncertainty: 2.8170199394226074
+average next_obs: 0.0638192892074585
+average reward: -0.22347769141197205
+average uncertainty: 2.839895486831665
+average next_obs: 0.045587584376335144
+average reward: -0.19060656428337097
+average uncertainty: 2.7973074913024902
+average next_obs: 0.023131126537919044
+average reward: -0.17817792296409607
+average uncertainty: 2.731072425842285
+[32m2021-11-08 at 13:53:07.187[39m | [34mINFO[39m | Epoch : 52
+[32m2021-11-08 at 13:53:07.188[39m | [34mINFO[39m | Reward_Mean_Env : -57.95642175754611
+[32m2021-11-08 at 13:53:07.190[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:53:07.191[39m | [34mINFO[39m | Reward_Mean : -58.147037385836356
+[32m2021-11-08 at 13:53:07.192[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:53:07.192[39m | [34mINFO[39m | D4rl_Score : 1.788390779180125
+[32m2021-11-08 at 13:53:07.193[39m | [34mINFO[39m | uncertainty : 2.731072425842285
+[32m2021-11-08 at 13:53:07.194[39m | [34mINFO[39m | disagreement_uncertainty : 0.8913649916648865
+[32m2021-11-08 at 13:53:07.194[39m | [34mINFO[39m | aleatoric_uncertainty : 2.731072425842285
+[32m2021-11-08 at 13:53:07.195[39m | [34mINFO[39m | reward : -0.17817792296409607
+[32m2021-11-08 at 13:53:07.195[39m | [34mINFO[39m | next_obs : 0.023131126537919044
+[32m2021-11-08 at 13:53:07.196[39m | [34mINFO[39m | mean_action_log_prob : 6.897570610046387
+[32m2021-11-08 at 13:53:07.196[39m | [34mINFO[39m | mean_critic_loss : 18.74951934814453
+[32m2021-11-08 at 13:53:07.197[39m | [34mINFO[39m | mean_Qmin : -342.3311767578125
+[32m2021-11-08 at 13:53:07.198[39m | [34mINFO[39m | log_alpha : -4.121955871582031
+[32m2021-11-08 at 13:53:07.198[39m | [34mINFO[39m | mean_obs : 0.07594961673021317
+[32m2021-11-08 at 13:53:07.199[39m | [34mINFO[39m | mean_new_action : -0.015143223106861115
+[32m2021-11-08 at 13:53:07.199[39m | [34mINFO[39m | mean_next_obs : 0.0168306827545166
+[32m2021-11-08 at 13:53:07.201[39m | [34mINFO[39m | mean_next_action : 0.016728868708014488
+[32m2021-11-08 at 13:53:07.201[39m | [34mINFO[39m | mean_alpha_loss : 2.9444055557250977
+[32m2021-11-08 at 13:53:07.201[39m | [34mINFO[39m | mean_actor_loss : 342.4429931640625
+average next_obs: -0.056208476424217224
+average reward: -0.3166844844818115
+average uncertainty: 2.9836537837982178
+average next_obs: -0.03405452147126198
+average reward: -0.3247705101966858
+average uncertainty: 2.9110031127929688
+average next_obs: 0.03590359538793564
+average reward: -0.2552403509616852
+average uncertainty: 2.948737382888794
+average next_obs: 0.12228996306657791
+average reward: -0.22620415687561035
+average uncertainty: 2.8405818939208984
+average next_obs: 0.1277674287557602
+average reward: -0.20510722696781158
+average uncertainty: 2.6235742568969727
+[32m2021-11-08 at 13:55:08.252[39m | [34mINFO[39m | Epoch : 53
+[32m2021-11-08 at 13:55:08.254[39m | [34mINFO[39m | Reward_Mean_Env : -102.66132516598321
+[32m2021-11-08 at 13:55:08.256[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:55:08.257[39m | [34mINFO[39m | Reward_Mean : -102.43898967441105
+[32m2021-11-08 at 13:55:08.257[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:55:08.258[39m | [34mINFO[39m | D4rl_Score : 1.431634324389983
+[32m2021-11-08 at 13:55:08.259[39m | [34mINFO[39m | uncertainty : 2.6235742568969727
+[32m2021-11-08 at 13:55:08.260[39m | [34mINFO[39m | disagreement_uncertainty : 0.8393523097038269
+[32m2021-11-08 at 13:55:08.261[39m | [34mINFO[39m | aleatoric_uncertainty : 2.6235742568969727
+[32m2021-11-08 at 13:55:08.261[39m | [34mINFO[39m | reward : -0.20510722696781158
+[32m2021-11-08 at 13:55:08.261[39m | [34mINFO[39m | next_obs : 0.1277674287557602
+[32m2021-11-08 at 13:55:08.262[39m | [34mINFO[39m | mean_action_log_prob : 6.478478908538818
+[32m2021-11-08 at 13:55:08.263[39m | [34mINFO[39m | mean_critic_loss : 31.969146728515625
+[32m2021-11-08 at 13:55:08.264[39m | [34mINFO[39m | mean_Qmin : -347.37744140625
+[32m2021-11-08 at 13:55:08.264[39m | [34mINFO[39m | log_alpha : -4.280298709869385
+[32m2021-11-08 at 13:55:08.265[39m | [34mINFO[39m | mean_obs : 0.074403777718544
+[32m2021-11-08 at 13:55:08.265[39m | [34mINFO[39m | mean_new_action : -0.08571963012218475
+[32m2021-11-08 at 13:55:08.266[39m | [34mINFO[39m | mean_next_obs : 0.1475013643503189
+[32m2021-11-08 at 13:55:08.267[39m | [34mINFO[39m | mean_next_action : -0.10600446909666061
+[32m2021-11-08 at 13:55:08.267[39m | [34mINFO[39m | mean_alpha_loss : -0.12552286684513092
+[32m2021-11-08 at 13:55:08.268[39m | [34mINFO[39m | mean_actor_loss : 347.46710205078125
+average next_obs: -0.2656930088996887
+average reward: -0.3160349726676941
+average uncertainty: 2.9476318359375
+average next_obs: -0.03084426000714302
+average reward: -0.24516448378562927
+average uncertainty: 2.9095120429992676
+average next_obs: 0.021466705948114395
+average reward: -0.24245785176753998
+average uncertainty: 2.7395637035369873
+average next_obs: 0.0018752405885607004
+average reward: -0.22427226603031158
+average uncertainty: 2.6312921047210693
+average next_obs: 0.04583054035902023
+average reward: -0.17612497508525848
+average uncertainty: 2.5042049884796143
+[32m2021-11-08 at 13:57:07.243[39m | [34mINFO[39m | Epoch : 54
+[32m2021-11-08 at 13:57:07.244[39m | [34mINFO[39m | Reward_Mean_Env : -392.1551868849932
+[32m2021-11-08 at 13:57:07.247[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:57:07.248[39m | [34mINFO[39m | Reward_Mean : -391.8193270817703
+[32m2021-11-08 at 13:57:07.248[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:57:07.250[39m | [34mINFO[39m | D4rl_Score : -0.8992248481025206
+[32m2021-11-08 at 13:57:07.250[39m | [34mINFO[39m | uncertainty : 2.5042049884796143
+[32m2021-11-08 at 13:57:07.251[39m | [34mINFO[39m | disagreement_uncertainty : 0.7618093490600586
+[32m2021-11-08 at 13:57:07.251[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5042049884796143
+[32m2021-11-08 at 13:57:07.252[39m | [34mINFO[39m | reward : -0.17612497508525848
+[32m2021-11-08 at 13:57:07.253[39m | [34mINFO[39m | next_obs : 0.04583054035902023
+[32m2021-11-08 at 13:57:07.253[39m | [34mINFO[39m | mean_action_log_prob : 8.134965896606445
+[32m2021-11-08 at 13:57:07.254[39m | [34mINFO[39m | mean_critic_loss : 21.650615692138672
+[32m2021-11-08 at 13:57:07.254[39m | [34mINFO[39m | mean_Qmin : -345.9398193359375
+[32m2021-11-08 at 13:57:07.255[39m | [34mINFO[39m | log_alpha : -4.028919219970703
+[32m2021-11-08 at 13:57:07.255[39m | [34mINFO[39m | mean_obs : 0.09340836852788925
+[32m2021-11-08 at 13:57:07.256[39m | [34mINFO[39m | mean_new_action : 0.1308484673500061
+[32m2021-11-08 at 13:57:07.257[39m | [34mINFO[39m | mean_next_obs : 0.037582963705062866
+[32m2021-11-08 at 13:57:07.258[39m | [34mINFO[39m | mean_next_action : 0.1186261996626854
+[32m2021-11-08 at 13:57:07.259[39m | [34mINFO[39m | mean_alpha_loss : 9.753623008728027
+[32m2021-11-08 at 13:57:07.259[39m | [34mINFO[39m | mean_actor_loss : 346.0845642089844
+average next_obs: 0.33500346541404724
+average reward: -0.3282994329929352
+average uncertainty: 3.2371480464935303
+average next_obs: 0.18048323690891266
+average reward: -0.2760017216205597
+average uncertainty: 2.945701837539673
+average next_obs: -0.0611388236284256
+average reward: -0.23644192516803741
+average uncertainty: 2.622014284133911
+average next_obs: -0.03849279507994652
+average reward: -0.19719603657722473
+average uncertainty: 2.498462677001953
+average next_obs: 0.07095488905906677
+average reward: -0.17872975766658783
+average uncertainty: 2.5252740383148193
+[32m2021-11-08 at 13:59:05.873[39m | [34mINFO[39m | Epoch : 55
+[32m2021-11-08 at 13:59:05.874[39m | [34mINFO[39m | Reward_Mean_Env : -54.820300193690365
+[32m2021-11-08 at 13:59:05.877[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 13:59:05.878[39m | [34mINFO[39m | Reward_Mean : -54.51108681961338
+[32m2021-11-08 at 13:59:05.878[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 13:59:05.879[39m | [34mINFO[39m | D4rl_Score : 1.8176771114995187
+[32m2021-11-08 at 13:59:05.879[39m | [34mINFO[39m | uncertainty : 2.5252740383148193
+[32m2021-11-08 at 13:59:05.880[39m | [34mINFO[39m | disagreement_uncertainty : 0.7401995658874512
+[32m2021-11-08 at 13:59:05.881[39m | [34mINFO[39m | aleatoric_uncertainty : 2.5252740383148193
+[32m2021-11-08 at 13:59:05.882[39m | [34mINFO[39m | reward : -0.17872975766658783
+[32m2021-11-08 at 13:59:05.882[39m | [34mINFO[39m | next_obs : 0.07095488905906677
+[32m2021-11-08 at 13:59:05.883[39m | [34mINFO[39m | mean_action_log_prob : 5.606664657592773
+[32m2021-11-08 at 13:59:05.883[39m | [34mINFO[39m | mean_critic_loss : 26.236238479614258
+[32m2021-11-08 at 13:59:05.884[39m | [34mINFO[39m | mean_Qmin : -347.9248962402344
+[32m2021-11-08 at 13:59:05.884[39m | [34mINFO[39m | log_alpha : -4.2754316329956055
+[32m2021-11-08 at 13:59:05.884[39m | [34mINFO[39m | mean_obs : 0.11958656460046768
+[32m2021-11-08 at 13:59:05.885[39m | [34mINFO[39m | mean_new_action : -0.05864172801375389
+[32m2021-11-08 at 13:59:05.885[39m | [34mINFO[39m | mean_next_obs : 0.03553685173392296
+[32m2021-11-08 at 13:59:05.886[39m | [34mINFO[39m | mean_next_action : -0.027633002027869225
+[32m2021-11-08 at 13:59:05.886[39m | [34mINFO[39m | mean_alpha_loss : -1.1476359367370605
+[32m2021-11-08 at 13:59:05.887[39m | [34mINFO[39m | mean_actor_loss : 348.00286865234375
+average next_obs: -0.14347673952579498
+average reward: -0.29359298944473267
+average uncertainty: 2.902674674987793
+average next_obs: -0.06490369886159897
+average reward: -0.25531795620918274
+average uncertainty: 2.788022994995117
+average next_obs: 0.18682625889778137
+average reward: -0.2325315624475479
+average uncertainty: 2.5984973907470703
+average next_obs: 0.14930225908756256
+average reward: -0.20593692362308502
+average uncertainty: 2.427058458328247
+average next_obs: 0.1588624119758606
+average reward: -0.17530591785907745
+average uncertainty: 2.3078267574310303
+[32m2021-11-08 at 14:01:03.276[39m | [34mINFO[39m | Epoch : 56
+[32m2021-11-08 at 14:01:03.332[39m | [34mINFO[39m | Reward_Mean_Env : 219.8346131959537
+[32m2021-11-08 at 14:01:03.338[39m | [34mINFO[39m | Length_Mean_Env : 1000.0
+[32m2021-11-08 at 14:01:03.339[39m | [34mINFO[39m | Reward_Mean : 222.9157370687868
+[32m2021-11-08 at 14:01:03.340[39m | [34mINFO[39m | Length_Mean : 1000.0
+[32m2021-11-08 at 14:01:03.342[39m | [34mINFO[39m | D4rl_Score : 4.052254840412261
+[32m2021-11-08 at 14:01:03.344[39m | [34mINFO[39m | uncertainty : 2.3078267574310303
+[32m2021-11-08 at 14:01:03.344[39m | [34mINFO[39m | disagreement_uncertainty : 0.5950801968574524
+[32m2021-11-08 at 14:01:03.347[39m | [34mINFO[39m | aleatoric_uncertainty : 2.3078267574310303
+[32m2021-11-08 at 14:01:03.349[39m | [34mINFO[39m | reward : -0.17530591785907745
+[32m2021-11-08 at 14:01:03.349[39m | [34mINFO[39m | next_obs : 0.1588624119758606
+[32m2021-11-08 at 14:01:03.351[39m | [34mINFO[39m | mean_action_log_prob : 7.294533729553223
+[32m2021-11-08 at 14:01:03.353[39m | [34mINFO[39m | mean_critic_loss : 20.014434814453125
+[32m2021-11-08 at 14:01:03.354[39m | [34mINFO[39m | mean_Qmin : -346.68511962890625
+[32m2021-11-08 at 14:01:03.355[39m | [34mINFO[39m | log_alpha : -4.221712112426758
+[32m2021-11-08 at 14:01:03.356[39m | [34mINFO[39m | mean_obs : 0.1327207386493683
+[32m2021-11-08 at 14:01:03.357[39m | [34mINFO[39m | mean_new_action : 0.1833415925502777
+[32m2021-11-08 at 14:01:03.359[39m | [34mINFO[39m | mean_next_obs : 0.12706777453422546
+[32m2021-11-08 at 14:01:03.360[39m | [34mINFO[39m | mean_next_action : 0.1622816026210785
+[32m2021-11-08 at 14:01:03.361[39m | [34mINFO[39m | mean_alpha_loss : 4.7013630867004395
