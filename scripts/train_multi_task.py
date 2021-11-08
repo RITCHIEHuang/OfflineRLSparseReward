@@ -1,14 +1,17 @@
 import argparse
 import subprocess
 
-from utils.d4rl_tasks import task_list
+from utils.exp_util import get_gpu_count
+from utils.task_util import d4rl_task_list, neorl_task_list
 
-template = (
+d4rl_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
     "python train_d4rl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
 )
-
-count_gpu_shell = "nvidia-smi | grep 'GeFor' | wc -l"
+neorl_template = (
+    "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
+    "python train_neorl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
+)
 
 
 def argsparser():
@@ -24,35 +27,26 @@ def argsparser():
         default="none",
     )
     parser.add_argument(
+        "--domain",
+        help="name of experiment domain",
+        type=str,
+        default="d4rl",
+        choices=["d4rl", "neorl"],
+    )
+    parser.add_argument(
         "--task_id",
         help="task id",
         type=int,
         default=0,
-        choices=list(range(len(task_list))),
     )
     return parser.parse_args()
-
-
-def get_gpu_count():
-    p = subprocess.Popen(
-        count_gpu_shell,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-    while p.poll() is None:
-        line = p.stdout.readline()
-        line = line.strip()
-        if line:
-            out = int(line.decode("utf-8"))
-            print("Subprogram output: [{}]".format(line))
-    return out
 
 
 NUM_GPU = get_gpu_count()
 print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
+domain = args.domain
 algos = [args.algo_name]
 
 # algos = ["mopo"]
@@ -79,8 +73,23 @@ strategies = [args.strategy]
 #     "pg_reshaping",
 # ]
 
+template = None
+if domain == "d4rl":
+    template = d4rl_template
+    try:
+        task = d4rl_task_list[args.task_id]
+    except Exception:
+        exit(-1)
 
-task = task_list[args.task_id]
+elif domain == "neorl":
+    template = neorl_template
+    try:
+        task = neorl_task_list[args.task_id]
+    except Exception:
+        exit(-1)
+else:
+    raise NotImplementedError()
+
 gpu_id = 0
 
 print(f"Train task: {task}")

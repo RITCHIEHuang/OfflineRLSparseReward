@@ -15,8 +15,8 @@ from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.utils.config import parse_config
 
-from utils.exp_utils import setup_exp_args
-from utils.plot_utils import plot_ep_reward, plot_reward_dist
+from utils.exp_util import setup_exp_args
+from utils.plot_util import plot_ep_reward, plot_reward_dist
 
 from datasets.traj_dataset import TrajDataset
 from datasets.qlearning_dataset import qlearning_dataset

@@ -1,4 +1,5 @@
 import argparse
+import subprocess
 
 from datetime import datetime
 
@@ -6,10 +7,29 @@ import wandb
 from loguru import logger
 
 from utils.io_util import proj_path
-from utils.d4rl_tasks import task_list
+from utils.task_util import get_domain_by_task
 
 
 """ Experiment setting """
+
+
+count_gpu_shell = "nvidia-smi | grep 'GeFor' | wc -l"
+
+
+def get_gpu_count():
+    p = subprocess.Popen(
+        count_gpu_shell,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    while p.poll() is None:
+        line = p.stdout.readline()
+        line = line.strip()
+        if line:
+            out = int(line.decode("utf-8"))
+            logger.info(f"Subprogram output: [{line}]")
+    return out
 
 
 def argsparser():
@@ -66,7 +86,6 @@ def argsparser():
         help="task name",
         type=str,
         default="walker2d-expert-v0",
-        choices=task_list,
     )
     parser.add_argument("--log_to_wandb", type=bool, default=True)
 
@@ -76,7 +95,17 @@ def argsparser():
 def setup_exp_args():
     args = argsparser()
     args = vars(args)
-    args["task"] = f"d4rl-{args['task']}"
+
+    domain = get_domain_by_task(args["task"])
+    if domain == "neorl":
+        split_list = args["task"].split("-")
+        args["task_name"] = "-".join(split_list[:2])
+        args["task_data_type"] = split_list[2]
+        args["task_train_num"] = int(split_list[3])
+
+    logger.info(f"Task: {args['task']} in Domain: {domain} !!!")
+
+    args["task"] = f"{domain}-{args['task']}"
     args["log_path"] = f"{proj_path}/logs"
 
     delay_tag = ""
@@ -112,4 +141,5 @@ def setup_exp_args():
             project="OfflineRL_DelayRewards",
             config=args,
         )
+
     return args

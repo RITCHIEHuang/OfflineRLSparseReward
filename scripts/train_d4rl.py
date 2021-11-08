@@ -4,7 +4,7 @@ from offlinerl.data import d4rl
 
 from datasets import delay_d4rl_dataset
 from config import algo_select
-from utils.exp_utils import setup_exp_args
+from utils.exp_util import setup_exp_args
 
 
 def run_algo(kwargs):
