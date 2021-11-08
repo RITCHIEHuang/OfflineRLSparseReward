@@ -1,25 +1,26 @@
+import os
 from copy import deepcopy
 
 import torch
 import gym
 import numpy as np
 from scipy.special import softmax
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 from loguru import logger
 
 from torch.utils.data.dataloader import DataLoader
 
-import d4rl
+import neorl
 from offlinerl.utils.data import SampleBatch
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.utils.config import parse_config
 
 from utils.exp_utils import setup_exp_args
-from utils.plot_utils import plot_ep_reward, plot_reward_dist
+from utils.io_util import proj_path
 
 from datasets.traj_dataset import TrajDataset
-from datasets.qlearning_dataset import qlearning_dataset
 from algos import reward_shaper, reward_decoposer, reward_giver
 from config import shaping_config, decomposer_config, reward_giver_config
 
@@ -31,17 +32,15 @@ def delay_transition_dataset(config):
         config (dict):  dataset configuration
     """
     np.random.seed(config["seed"])
-    env = gym.make(
-        config["task"][5:] if "d4rl" in config["task"] else config["task"]
+    env = neorl.make(config["task"])
+    dataset, val_data = env.get_dataset(
+        data_type=config["task_data_type"],
+        train_num=config["task_train_num"],
+        need_val=False,
     )
-    # dataset = env.get_dataset()
-    dataset = qlearning_dataset(env, terminate_on_end=True)
-    raw_rewards = dataset["rewards"]
-    raw_terminals = dataset["terminals"]
-    raw_timeouts = dataset["timeouts"]
-    episode_ends = np.argwhere(
-        np.logical_or(raw_terminals == True, raw_timeouts == True)
-    )
+    raw_rewards = dataset["reward"]
+    raw_terminals = dataset["done"]
+    episode_ends = np.argwhere(raw_terminals == True)
     data_size = len(raw_rewards)
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
@@ -49,7 +48,9 @@ def delay_transition_dataset(config):
     returns = np.zeros_like(raw_rewards)
 
     trans_idx = 0
-    plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
+    plot_traj_idx_list = [
+        np.random.randint(0, len(episode_ends)) for _ in range(5)
+    ]
 
     if config["delay_mode"] == "constant":
         delay = config["delay"]
@@ -92,23 +93,23 @@ def delay_transition_dataset(config):
 
         trans_idx = episode_end_idx + 1
 
-    dataset["rewards"] = delay_rewards
-    dataset["returns"] = returns
+    dataset["reward"] = delay_rewards
+    dataset["return"] = returns
     logger.info(
         f"[TransDataset] Task: {config['task']}, data size: {len(raw_rewards)}"
     )
     return dataset
 
 
-def load_d4rl_buffer(config):
+def load_neorl_buffer(config):
     dataset = delay_transition_dataset(config)
     buffer = SampleBatch(
-        obs=dataset["observations"],
-        obs_next=dataset["next_observations"],
-        act=dataset["actions"],
-        rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
-        ret=np.expand_dims(np.squeeze(dataset["returns"]), 1),
-        done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
+        obs=dataset["obs"],
+        obs_next=dataset["next_obs"],
+        act=dataset["action"],
+        rew=np.expand_dims(np.squeeze(dataset["reward"]), 1),
+        ret=np.expand_dims(np.squeeze(dataset["return"]), 1),
+        done=np.expand_dims(np.squeeze(dataset["done"]), 1),
     )
 
     logger.info("obs shape: {}", buffer.obs.shape)
@@ -129,17 +130,17 @@ def delay_traj_dataset(config):
         config (dict):  dataset configuration
     """
     np.random.seed(config["seed"])
-    env = gym.make(
-        config["task"][5:] if "d4rl" in config["task"] else config["task"]
+    env = neorl.make(config["task"])
+    dataset, val_data = env.get_dataset(
+        data_type=config["task_data_type"],
+        train_num=config["task_train_num"],
+        need_val=False,
     )
-    # dataset = env.get_dataset()
-    dataset = qlearning_dataset(env, terminate_on_end=True)
-    raw_observations = dataset["observations"]
-    raw_actions = dataset["actions"]
-    raw_rewards = dataset["rewards"]
-    raw_terminals = dataset["terminals"]
-    raw_timeouts = dataset["timeouts"]
-    raw_next_obs = dataset["next_observations"]
+    raw_observations = dataset["obs"]
+    raw_actions = dataset["action"]
+    raw_rewards = dataset["reward"]
+    raw_terminals = dataset["done"]
+    raw_next_obs = dataset["next_obs"]
 
     keys = [
         "observations",
@@ -421,7 +422,7 @@ def load_reward_by_strategy(
             "exp_name"
         ] = f"{config['exp_name']}-reward_shaper-policy_mode-{algo_config['policy_mode']}-shaping_version-{algo_config['shaping_version']}"
 
-        train_buffer = load_d4rl_buffer(config)
+        train_buffer = load_neorl_buffer(config)
 
         algo_init = reward_shaper.algo_init(algo_config)
         algo_trainer = reward_shaper.AlgoTrainer(algo_init, algo_config)
@@ -843,7 +844,7 @@ def load_reward_by_strategy(
     return traj_dataset
 
 
-def load_d4rl_traj_buffer(config):
+def load_neorl_traj_buffer(config):
     traj_dataset = delay_traj_dataset(config)
 
     buffer = SampleBatch(
@@ -872,16 +873,47 @@ def load_d4rl_traj_buffer(config):
     return buffer
 
 
+def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
+    plt.figure()
+    for data, name in zip(data_list, names):
+        plt.plot(range(len(data)), data, label=name)
+    plt.xlabel("t")
+    plt.ylabel("rew")
+    plt.title(f"{config['task']}-{config['delay_tag']}")
+    plt.legend()
+
+    fig_dir = f"{proj_path}/assets/{config['task']}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    plt.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
+
+
+def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
+    plt.figure()
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    axes = axes.ravel()
+    for idx, ax in enumerate(axes):
+        if idx >= len(data_list):
+            break
+        ax.hist(data_list[idx], color="blue", edgecolor="black", bins=1000)
+        ax.set_xlabel("val")
+        ax.set_ylabel("proportion")
+        ax.set_title(names[idx])
+
+    fig_dir = f"{proj_path}/assets/{config['task']}"
+    if not os.path.exists(fig_dir):
+        os.makedirs(fig_dir)
+    plt.savefig(f"{fig_dir}/{config['delay_tag']}_distribution_{suffix}.png")
+
+
 if __name__ == "__main__":
     config = setup_exp_args()
-    if config["log_to_wandb"]:
-        config["log_to_wandb"] = False
     """extract transition buffer"""
-    # load_d4rl_buffer(config)
+    # load_neorl_buffer(config)
 
     """extract traj dataset"""
     # traj_dataset = delay_traj_dataset(config)
     # traj_dataset = delay_transition_dataset(config)
 
     """extract traj buffer"""
-    load_d4rl_traj_buffer(config)
+    load_neorl_traj_buffer(config)

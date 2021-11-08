@@ -1,9 +1,33 @@
 \section*{Appendix}
 \addcontentsline{toc}{section}{Appendices}
-\renewcommand{\thesubsection}{\Alph{subsection}}
+% \renewcommand{\thesubsection}{\Alph{subsection}}
 
-\subsection{First Part}
-\label{appendix: appendix1}
+\section{Reward Modification Implementation Details}
+\label{appendix: rm_imp_details}
+XXXX
 
+\section{Experiment Details}
+\label{appendix: exp_details}
+Our implementation is based on the OfflineRL library released by NeoRL team.
+For all experiments, we used default hyperparameter settings and minimal 
+modifications to public implementations wherever possible, with different 
+training iterations or gradient steps depending on the algorithm. We ran our 
+experiments using single 1080 GPU machines.
 
-% \input{experiments}
+\subsection{D4RL benchmark}\label{appendix: exp_d4rl_details}
+XXX
+
+\subsection{Custom simulated environment}\label{appendix: exp_custom_detials}
+We build our simulated environment on the RecSim framework for its flexibility and scalability, RecSim is published by 
+google research team to build a configurable platform for building simulated environments 
+for recommender systems (RSs) that naturally supports sequential interaction with users.
+
+Datasets are collected by pretraining an agent in Soft Actor-Critic way from scratch and collecting 1000 trajectories at 4 different levels:
+
+\begin{itemize}
+    \item Random: 
+    \item Low: 
+    \item Medium: 
+    \item Expert:
+\end{itemize}
+

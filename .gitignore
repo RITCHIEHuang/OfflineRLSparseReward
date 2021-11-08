@@ -12,11 +12,12 @@ datasets/checkpoint/*
 d3rlpy/
 # OfflineRL/
 decision_transformer/data
-decision_transformer/wandb
-results.csv
 
 paper/RL_Offline_Delay_Rewards/*
 !paper/RL_Offline_Delay_Rewards/*.tex
 !paper/RL_Offline_Delay_Rewards/*.bib
 !paper/RL_Offline_Delay_Rewards/assets
 !paper/RL_Offline_Delay_Rewards/main.pdf
+
+*/wandb
+results.csv

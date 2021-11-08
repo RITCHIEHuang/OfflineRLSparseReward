@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/root/miniconda3/envs/offlinerl/bin/python"
+    "python.pythonPath": "/root/miniconda3/envs/offlinerl/bin/python",
+    "cmake.configureOnOpen": false
 }

@@ -1,12 +1,33 @@
 \section{Method}{\label{sec: method}}
 
-In offline scenarios, trial-and-error and exploration of the environment becomes impossible, and delaying the reward signal in most cases introduces the problem of reward sparsity, which makes the strategy optimization algorithm that optimizes the expected reward from offline data invalid. Our goal is to find the optimal policy $\pi^{*} = \arg \max_{\pi} \mathbb E_{\tau \in D} \left[ R_{\tau} \right]$ that maximizes the cumulative reward from this offline data set of delayed rewards.
+In this section, we present a general framework for addressing delay rewards or sparse rewards problems in offline setting. From a global perspective, the framework consists of two-stage learning tasks, in the first stage we perform reward modification strategy on the offline datasets, and then learn the offline policy from the modified datasets in the latter stage.
 
-In this section, we present a general framework for addressing sparse reward problems in offline setting. From a global perspective, the framework consists of two-stage learning tasks, in the first stage we perform specific modification strategy on the offline datasets, and the second stage is a regular offline reinforcement learning task.
+\subsection{Reward modification} 
 
+Our starting point is to find an appropriate conversion function of the original delayed rewards, such modification restores a dense reward as much as possible so that helps the offline policy learning phase afterwards. Such conversion only occurs at the offline data level, and any offline policy learning algorithm can be seamlessly combined with it in the subsequent strategy learning phase.
 
+Next, we will introduce 3 kinds of reward conversion strategies:
 
-\textbf{Reward modification.} Our starting point is to find an appropriate conversion function $\mathcal F: S \times A \times R \rightarrow R$ of the original delayed rewards, such modification restores a dense reward as much as possible so that helps the offline policy learning phase afterwards. Such conversion only occurs at the offline data level, and any offline policy learning algorithm can be seamlessly combined with it in the subsequent strategy learning phase.
+\begin{enumerate}
+    \item \textbf{Reward Decomposition.} Works in this area \cite{arjona-medinaRUDDERReturnDecomposition2019} consider establishing a decomposition strategy to convert the original delay or sparse rewards into dense rewards under constraints. We can train a parameterized reward network $f_{\theta}(s, a)$ from the original delay rewards (sparse) data obeying that for a trajectory $\tau = \left(s_0, a_0, r_0, \cdots,  s_T, a_T, r_T\right)$ sampled from offline datasets $\mathcal D$, the decomposition operation keeps the decomposed reward $r_t' = f_{\theta}(s_t, a_t)$ and the original reward $r$ to be consistent on the trajectory level, that is: $\sum_{t = 0}^T r_t = \sum_{t = 0}^T r_t'$.
+    
+    \item \textbf{Reward Shaping.} Reward shaping is well studied as it maintains the invariance of policy before and after the reward transformations. We follow the prior work \cite{ngPolicyInvarianceReward1999} by adding an extra bounded real-valued shaping function $F: \mathcal S \times \mathcal A \times S \rightarrow \mathbb R$ to the raw reward function $R$, in practice, we parameterize this shaping reward function by differentiable neural network and train it with Policy Gradient methods \cite{Peters:2010}.
 
-\textbf{Offline policy optimization.}
+    \item \textbf{Reward Smoothing.} Delay rewards deviate greatly from the immediate reward in scale and space, smoothing is the strategy that attemps to re-distribute the single step delayed reward $r_t^{delay}$ to multi-step immediate rewards $r_{t - k: t}$ satisfying the constraints that it keeps the consistency of the reward sum in the interval $[t - k: t]$: $\sum_{i = t-k}^t r_t = r_t^{delay}$. 
+	Specifically, we consider the following smoothing transformations:
+	\begin{enumerate}
+		\item \textbf{Minmax strategy}.
+
+		\item \textbf{Average strategy}.
+
+		\item \textbf{Ensemble strategy}.
+
+	\end{enumerate}
+    
+\end{enumerate}
+
+\subsection{Offline policy learning}
+
+In offline scenarios, trial-and-error and exploration of the environment becomes impossible, and delaying the reward signal in most cases introduces the problem of reward sparsity, which makes the conventional optimization algorithm that maximizing the expected rewards from offline data no longer applicable. Our goal is to find the optimal policy $\pi^{*} = \arg \max_{\pi} \mathbb E_{\tau \in \mathcal D} \left[ R_{\tau} \right]$ that maximizes the cumulative reward from this offline datasets with delayed rewards.
+
 
