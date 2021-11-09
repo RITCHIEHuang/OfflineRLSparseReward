@@ -2,13 +2,13 @@ from loguru import logger
 from ray import tune
 
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
-from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
 
 from datasets import delay_d4rl_dataset
 from config import algo_select
-from utils.exp_utils import setup_exp_args
+from utils.exp_util import setup_exp_args
 from utils.io_util import proj_path
+from evaluation.d4rl_score import d4rl_eval_fn
 
 
 def training_function(config):
@@ -41,10 +41,6 @@ def training_function(config):
 def run_algo(kwargs):
     config = {}
     config["kwargs"] = kwargs
-    # config["kwargs"]["seed"] = random.randint(0, 1000000)
-    config["kwargs"][
-        "exp_name"
-    ] = f"{config['kwargs']['exp_name']}-seed-{kwargs['seed']}"
     logger.info(
         f"Task: {kwargs['task']}, algo: {kwargs['algo_name']}, exp_name: {kwargs['exp_name']}"
     )
@@ -64,7 +60,6 @@ def run_algo(kwargs):
     )
 
 
-# python train_d4rl_tune.py --algo_name=cql --task=walker2d-medium-replay-v0 -delay_mode=constant --delay=20 --strategy=interval_average
 if __name__ == "__main__":
     args = setup_exp_args()
     run_algo(args)
