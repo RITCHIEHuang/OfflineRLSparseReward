@@ -381,6 +381,7 @@ def load_reward_by_strategy(
         algo_config = parse_config(decomposer_config)
         algo_config["task"] = config["task"]
         algo_config["log_path"] = config["log_path"]
+        algo_config["log_to_wandb"] = config["log_to_wandb"]
 
         algo_config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
@@ -413,6 +414,7 @@ def load_reward_by_strategy(
         )
         algo_config["task"] = config["task"]
         algo_config["log_path"] = config["log_path"]
+        algo_config["log_to_wandb"] = config["log_to_wandb"]
         algo_config[
             "exp_name"
         ] = f"{config['exp_name']}-reward_shaper-policy_mode-{algo_config['policy_mode']}-shaping_version-{algo_config['shaping_version']}"
@@ -450,6 +452,7 @@ def load_reward_by_strategy(
         algo_config = parse_config(reward_giver_config)
         algo_config["task"] = config["task"]
         algo_config["log_path"] = config["log_path"]
+        algo_config["log_to_wandb"] = config["log_to_wandb"]
         algo_config["exp_name"] = f"{config['exp_name']}-reward_giver"
         algo_init = reward_giver.algo_init(algo_config)
         algo_trainer = reward_giver.AlgoTrainer(algo_init, algo_config)

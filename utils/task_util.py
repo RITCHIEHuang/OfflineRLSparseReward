@@ -29,12 +29,9 @@ neorl_task_list = {
     3: "HalfCheetah-v3-low-100",
     4: "Hopper-v3-low-100",
     5: "Walker2d-v3-low-100",
-    6: "HalfCheetah-v3-low-100",
-    7: "Hopper-v3-low-100",
-    8: "Walker2d-v3-low-100",
-    9: "HalfCheetah-v3-low-1000",
-    10: "Hopper-v3-low-1000",
-    11: "Walker2d-v3-low-1000",
+    6: "HalfCheetah-v3-low-1000",
+    7: "Hopper-v3-low-1000",
+    8: "Walker2d-v3-low-1000",
 }
 
 
