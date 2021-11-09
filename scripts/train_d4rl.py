@@ -1,10 +1,10 @@
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
-from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.data import d4rl
 
 from datasets import delay_d4rl_dataset
 from config import algo_select
 from utils.exp_util import setup_exp_args
+from evaluation.d4rl_score import d4rl_eval_fn
 
 
 def run_algo(kwargs):
