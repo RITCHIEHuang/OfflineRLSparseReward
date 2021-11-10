@@ -94,10 +94,10 @@ class DecisionTransformer(TrajectoryModel):
         stacked_inputs = (
             torch.stack(
                 (
+                    sar_embeddings,
                     returns_embeddings,
                     state_embeddings,
                     action_embeddings,
-                    sar_embeddings,
                 ),
                 dim=1,
             )
@@ -109,7 +109,13 @@ class DecisionTransformer(TrajectoryModel):
         # to make the attention mask fit the stacked inputs, have to stack it as well
         stacked_attention_mask = (
             torch.stack(
-                (attention_mask, attention_mask, attention_mask, attention_mask), dim=1
+                (
+                    attention_mask,
+                    attention_mask,
+                    attention_mask,
+                    attention_mask,
+                ),
+                dim=1,
             )
             .permute(0, 2, 1)
             .reshape(batch_size, 4 * seq_length)
@@ -124,7 +130,7 @@ class DecisionTransformer(TrajectoryModel):
 
         # reshape x so that the second dimension corresponds to the original
         # returns (0), states (1), or actions (2); i.e. x[:,1,t] is the token for s_t
-        x = x.reshape(batch_size, seq_length, 3, self.hidden_size).permute(
+        x = x.reshape(batch_size, seq_length, 4, self.hidden_size).permute(
             0, 2, 1, 3
         )
 
