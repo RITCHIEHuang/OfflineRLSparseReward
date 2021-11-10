@@ -17,6 +17,10 @@ from decision_transformer.evaluation.evaluate_episodes import (
 from decision_transformer.models.decision_transformer import (
     DecisionTransformer,
 )
+from decision_transformer.models.modified_decision_transformer import (
+    ModifiedDecisionTransformer,
+)
+
 from decision_transformer.models.mlp_bc import MLPBCModel
 from decision_transformer.training.act_trainer import ActTrainer
 from decision_transformer.training.seq_trainer import SequenceTrainer
@@ -301,6 +305,21 @@ def experiment(
             resid_pdrop=variant["dropout"],
             attn_pdrop=variant["dropout"],
         )
+    elif model_type == "mdt":
+        model = ModifiedDecisionTransformer(
+            state_dim=state_dim,
+            act_dim=act_dim,
+            max_length=K,
+            max_ep_len=max_ep_len,
+            hidden_size=variant["embed_dim"],
+            n_layer=variant["n_layer"],
+            n_head=variant["n_head"],
+            n_inner=4 * variant["embed_dim"],
+            activation_function=variant["activation_function"],
+            n_positions=1024,
+            resid_pdrop=variant["dropout"],
+            attn_pdrop=variant["dropout"],
+        )
     elif model_type == "bc":
         model = MLPBCModel(
             state_dim=state_dim,
@@ -324,7 +343,7 @@ def experiment(
         optimizer, lambda steps: min((steps + 1) / warmup_steps, 1)
     )
 
-    if model_type == "dt":
+    if model_type in ["dt", "mdt"]:
         trainer = SequenceTrainer(
             model=model,
             optimizer=optimizer,
