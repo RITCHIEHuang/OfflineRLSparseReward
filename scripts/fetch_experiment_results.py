@@ -4,6 +4,7 @@ import os
 import json
 import re
 import csv
+import shutil
 
 import numpy as np
 from tqdm import tqdm
@@ -31,8 +32,9 @@ def fetch_experiment_results():
     for exp_log_dir in tqdm(exp_logs_list):
         if exp_log_dir == ".aim":
             continue
-        exp_hparam_file = f"{log_path}/{exp_log_dir}/hparams.json"
-        exp_metric_file = f"{log_path}/{exp_log_dir}/metric_logs.json"
+        exp_log_path = f"{log_path}/{exp_log_dir}"
+        exp_hparam_file = f"{exp_log_path}/hparams.json"
+        exp_metric_file = f"{exp_log_path}/metric_logs.json"
 
         if not os.path.exists(exp_hparam_file) or not os.path.exists(
             exp_metric_file
@@ -47,8 +49,18 @@ def fetch_experiment_results():
                 logger.debug(f"{exp_log_dir} Load exp hparam: {exp_hparam}")
 
             task = exp_hparam["task"]
-            if task.startswith("d4rl"):
-                task = task[5:]
+            split_list = task.split("-")
+            domain = split_list[0]
+            if domain == "neorl":
+                # [neorl, HalfCheetah, v3, low, 100]
+                environment = split_list[1].lower()
+                dataset_type = "-".join(split_list[-2:])
+            elif domain == "d4rl":
+                # [d4rl, walker2d, medium, replay, v0]
+                environment = split_list[1]
+                dataset_type = "-".join(split_list[2:-1])
+            else:
+                raise NotImplementedError()
 
             exp_name = exp_hparam["exp_name"]
             strategy = "none"
@@ -56,14 +68,15 @@ def fetch_experiment_results():
                 strategy = exp_hparam["strategy"]
             elif "shaping_method" in exp_hparam:
                 strategy = exp_hparam["shaping_method"]
+            max_epoch = exp_hparam["max_epoch"]
 
-        task_split_list = task.split("-")
         variant_result_info = {
             # "exp_log_dir": exp_log_dir,
             # "task": task,
             # "exp_name": exp_name,
-            "Dataset Type": "-".join(task_split_list[1:-1]),
-            "Environment": task_split_list[0],
+            "Dataset Type": dataset_type,
+            "Environment": environment,
+            "Domain": domain,
             "Delay Mode": exp_hparam["delay_mode"],
             "Delay": exp_hparam["delay"],
             "Algo": exp_hparam["algo_name"],
@@ -74,6 +87,13 @@ def fetch_experiment_results():
         # load metric json file
         with open(exp_metric_file, "rb") as f:
             exp_metrics = json.load(f)
+            exp_max_epoch = sorted(list(map(int, exp_metrics.keys())))[-1]
+
+            if exp_max_epoch + 1 != max_epoch:
+                print("expected", max_epoch, "got", exp_max_epoch + 1)
+                logger.error(f"Experiment {exp_log_path} not finished !!!")
+                continue
+
             for k, v in exp_metrics.items():
                 iteration = int(k)
                 d4rl_score = v["D4rl_Score"]
@@ -110,30 +130,36 @@ def fetch_experiment_results():
             for i_iter, iter_res in v.items()
         ]
 
-        agg_item = deepcopy(v[0][0])
-        sorted_iter_scores = sorted(
-            iter_scores, key=lambda v: v[1], reverse=True
-        )
-        if debug:
-            logger.debug(f"{k}, {len(iter_scores)}")
+        try:
+            agg_item = deepcopy(v[0][0])
+            sorted_iter_scores = sorted(
+                iter_scores, key=lambda v: v[1], reverse=True
+            )
+            if debug:
+                logger.debug(f"{k}, {len(iter_scores)}")
 
-        selected_item = sorted_iter_scores[0]
-        agg_item["Iteration"] = selected_item[0]
-        agg_item["D4rl_Score"] = round(selected_item[1], 1)
-        agg_item["Seed"] = selected_item[2]
-        agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
+            selected_item = sorted_iter_scores[0]
+            agg_item["Iteration"] = selected_item[0]
+            agg_item["D4rl_Score"] = round(selected_item[1], 1)
+            agg_item["Seed"] = selected_item[2]
+            agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
 
-        logger.info(f"{k} aggregating results finish!")
+            logger.info(f"{k} aggregating results finish!")
 
-        agg_fields = list(agg_item.keys())
-        with open(agg_result_file_path, "a+") as f:
-            writer = csv.DictWriter(f, fieldnames=agg_fields)
+            agg_fields = list(agg_item.keys())
+            with open(agg_result_file_path, "a+") as f:
+                writer = csv.DictWriter(f, fieldnames=agg_fields)
 
-            if flag2:
-                writer.writeheader()
-                flag2 = False
+                if flag2:
+                    writer.writeheader()
+                    flag2 = False
 
-            writer.writerow(agg_item)
+                writer.writerow(agg_item)
+
+        except Exception:
+            print("=" * 100)
+            print(k)
+            print("=" * 100)
 
     return exp_variant_mapping
 
