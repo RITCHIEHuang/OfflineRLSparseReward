@@ -18,7 +18,7 @@ max_action = None
 
 max_epoch = 300
 steps_per_epoch = 1000
-policy_bc_steps = 40000
+policy_bc_steps = 0
 
 batch_size = 256
 hidden_layer_size = 256
