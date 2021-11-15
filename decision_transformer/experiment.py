@@ -26,7 +26,7 @@ from decision_transformer.models.mlp_bc import MLPBCModel
 from decision_transformer.training.act_trainer import ActTrainer
 from decision_transformer.training.seq_trainer import SequenceTrainer
 
-from offlinerl.evaluation.d4rl import d4rl_score
+from evaluation.d4rl_score import d4rl_score
 
 
 def discount_cumsum(x, gamma):
@@ -100,8 +100,10 @@ def experiment(
 
     # load dataset
     dataset_path = f"data/{env_name}-{dataset}-v2.pkl"
+    full_task_name = f"d4rl-{env_name}-{dataset}-v2"
     if not os.path.exists(dataset_path):
         dataset_path = f"data/{env_name}-{dataset}.pkl"
+        full_task_name = f"neorl-{env_name}-{dataset}"
     with open(dataset_path, "rb") as f:
         trajectories = pickle.load(f)
 
@@ -295,9 +297,7 @@ def experiment(
                         )
                 returns.append(ret)
                 lengths.append(length)
-                d4rl_scores.append(
-                    d4rl_score(f"{env_name}-{dataset}-v2", ret, length)
-                )
+                d4rl_scores.append(d4rl_score(full_task_name, ret, length))
             return {
                 f"target_{target_rew}_return_mean": np.mean(returns),
                 f"target_{target_rew}_return_std": np.std(returns),
