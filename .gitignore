@@ -11,7 +11,7 @@ datasets/checkpoint/*
 # neorl/
 d3rlpy/
 # OfflineRL/
-decision_transformer/data
+decision_transformer/data/*.pkl
 
 paper/RL_Offline_Delay_Rewards/*
 !paper/RL_Offline_Delay_Rewards/*.tex
