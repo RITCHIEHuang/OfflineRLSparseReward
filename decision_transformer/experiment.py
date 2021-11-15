@@ -49,28 +49,44 @@ def experiment(
     group_name = f"{exp_prefix}-{env_name}-{dataset}"
     exp_prefix = f"{group_name}-{random.randint(int(1e5), int(1e6) - 1)}"
 
-    if "hopper" in env_name.lower():
+    if "hopper" == env_name:
         env = gym.make("Hopper-v3")
         max_ep_len = 1000
         env_targets = [3600, 1800]  # evaluation conditioning targets
         scale = 1000.0  # normalization for rewards/returns
-    elif "halfcheetah" in env_name.lower():
+    elif "halfcheetah" == env_name:
         env = gym.make("HalfCheetah-v3")
         max_ep_len = 1000
         env_targets = [12000, 6000]
         scale = 1000.0
-    elif "walker2d" in env_name.lower():
+    elif "walker2d" == env_name:
         env = gym.make("Walker2d-v3")
         max_ep_len = 1000
         env_targets = [5000, 2500]
         scale = 1000.0
-    elif "reacher2d" in env_name.lower():
+    elif "reacher2d" == env_name:
         from decision_transformer.envs.reacher_2d import Reacher2dEnv
 
         env = Reacher2dEnv()
         max_ep_len = 100
         env_targets = [76, 40]
         scale = 10.0
+    elif env_name in ["HalfCheetah-v3", "Walker2d-v3", "Hopper-v3"]:
+        from neorl.neorl_envs import mujoco
+
+        env = mujoco.make_env(env_name)
+        if env_name == "HalfCheetah-v3":
+            max_ep_len = 1000
+            env_targets = [12000, 6000]
+            scale = 1000.0
+        elif env_name == "Hopper-v3":
+            max_ep_len = 1000
+            env_targets = [3600, 1800]  # evaluation conditioning targets
+            scale = 1000.0  # normalization for rewards/returns
+        else:
+            max_ep_len = 1000
+            env_targets = [5000, 2500]
+            scale = 1000.0
     else:
         raise NotImplementedError
 
