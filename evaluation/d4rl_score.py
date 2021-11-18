@@ -68,3 +68,16 @@ def d4rl_eval_fn(task, eval_episodes=100):
         return res
 
     return d4rl_eval
+
+
+neorl_scores = {
+    "HalfCheetah-v3-low-10": 3260,
+    "HalfCheetah-v3-low-100": 3200,
+    "Hopper-v3-low-10": 515,
+    "Hopper-v3-low-100": 514,
+    "Walker2d-v3-low-10": 1749,
+    "Walker2d-v3-low-100": 1433,
+}
+
+for k, v in neorl_scores.items():
+    print(k, round(d4rl_score("neorl-" +k, v, None), 1))

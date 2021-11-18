@@ -1,12 +1,10 @@
-import os
+from collections import defaultdict
 import time
 import numpy as np
 
-from gym import spaces
-
 from recsim.agent import AbstractEpisodicRecommenderAgent
 
-from envs.rec_env.cs_env import create_env
+from rec_env.env import create_env, get_flatten_obs
 
 
 class RandomAgent(AbstractEpisodicRecommenderAgent):
@@ -25,18 +23,28 @@ def create_agent(environment):
 
 
 def run_episode(ep, env, agent, max_steps_per_episode=27000):
+    observations = []
+    actions = []
+    rewards = []
+    terminals = []
+    next_observations = []
+
     step_number = 0
     total_reward = 0.0
 
     start_time = time.time()
-
     observation = env.reset()
     action = agent.begin_episode(observation)
 
     # Keep interacting until we reach a terminal state.
     while True:
         last_observation = observation
+        observations.append(get_flatten_obs(last_observation, env))
         observation, reward, done, info = env.step(action)
+        next_observations.append(get_flatten_obs(observation, env))
+        actions.append(action)
+        rewards.append(reward)
+        terminals.append(done)
 
         # Update environment-specific metrics with responses to the slate.
         env.update_metrics(observation["response"], info)
@@ -51,8 +59,7 @@ def run_episode(ep, env, agent, max_steps_per_episode=27000):
             break
         else:
             action = agent.step(reward, observation)
-
-        print(f"cum next time: {observation['user']['cum_next_time']}")
+        # print(f"cum next time: {observation['user']['cum_next_time']}")
 
     agent.end_episode(reward, observation)
 
@@ -62,13 +69,44 @@ def run_episode(ep, env, agent, max_steps_per_episode=27000):
         f"Episode {ep} with steps: {step_number}, total reward: {total_reward} in {time_diff} seconds."
     )
 
+    return {
+        "observations": observations,
+        "actions": actions,
+        "rewards": rewards,
+        "next_observations": next_observations,
+        "terminals": terminals,
+    }
 
-max_episodes = 10
 
-cs_environment = create_env()
-random_agent = create_agent(cs_environment)
+def sample_store(n_traj=100):
+    cs_environment = create_env()
+    random_agent = create_agent(cs_environment)
 
-paths = []
-for i in range(max_episodes):
-    path = run_episode(i, cs_environment, random_agent)
-    paths.append(path)
+    traj = defaultdict(list)
+    for i in range(n_traj):
+        path = run_episode(i, cs_environment, random_agent)
+
+        for k, v in path.items():
+            traj[k].append(v)
+
+    for k in [
+        "observations",
+        "next_observations",
+        "actions",
+        "rewards",
+        "terminals",
+    ]:
+        print(np.concatenate(traj[k]).shape)
+
+    np.savez_compressed(
+        f"data/recs-random-{n_traj}.npz",
+        observations=np.concatenate(traj["observations"]),
+        actions=np.concatenate(traj["actions"]),
+        rewards=np.concatenate(traj["rewards"]),
+        terminals=np.concatenate(traj["terminals"]),
+        next_observations=np.concatenate(traj["next_observations"]),
+    )
+
+
+if __name__ == "__main__":
+    sample_store()

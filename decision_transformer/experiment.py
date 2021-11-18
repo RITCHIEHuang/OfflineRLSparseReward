@@ -41,6 +41,10 @@ def experiment(
     exp_prefix,
     variant,
 ):
+    seed = variant.get("seed", 0)
+    random.seed(seed)
+    np.random.seed(seed)
+
     device = variant.get("device", "cuda")
     log_to_wandb = variant.get("log_to_wandb", False)
 
@@ -435,6 +439,7 @@ if __name__ == "__main__":
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--log_to_wandb", "-w", type=bool, default=True)
     parser.add_argument("--delay", type=int, default=20)  # delay frequency
+    parser.add_argument("--seed", type=int, default=10)
 
     args = parser.parse_args()
 

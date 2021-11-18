@@ -28,7 +28,7 @@ here = path.abspath(path.dirname(__file__))
 
 install_requires = [
     "absl-py",
-    # 'dopamine-rl >= 2.0.5',
+    'dopamine-rl',
     "gin-config",
     "gym",
     "numpy",

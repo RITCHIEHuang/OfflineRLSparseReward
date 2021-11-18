@@ -19,5 +19,7 @@ paper/RL_Offline_Delay_Rewards/*
 !paper/RL_Offline_Delay_Rewards/assets
 !paper/RL_Offline_Delay_Rewards/main.pdf
 
+rec_env/data/
+
 */wandb
 results.csv
