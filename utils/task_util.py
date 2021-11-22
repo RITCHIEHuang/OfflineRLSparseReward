@@ -15,7 +15,7 @@ d4rl_task_list = {
     13: "ant-medium-v0",
     14: "ant-medium-replay-v0",
     15: "ant-medium-expert-v0",
-    16: "antmaze-medium-play-v0",
+    16: "antmaze-medium-play-v2",
 }
 
 neorl_task_list = {

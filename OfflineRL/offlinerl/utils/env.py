@@ -15,7 +15,12 @@ def get_env(task: str) -> gym.Env:
         elif task.startswith("d4rl"):
             import d4rl
 
-            env = gym.make(task[5:])
+            task = task[5:]
+            if task.startswith("antmaze"):
+                env = gym.make(task.replace("v2", "v0"))
+            else:
+                env = gym.make(task)
+
             # hack to add terminal function
             if "hopper" in task:
 

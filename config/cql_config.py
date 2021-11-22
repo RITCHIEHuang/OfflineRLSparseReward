@@ -1,6 +1,4 @@
 import torch
-from offlinerl.utils.exp import select_free_cuda
-
 task = "Hopper-v3"
 task_data_type = "low"
 task_train_num = 99
@@ -43,8 +41,6 @@ lagrange_thresh = -1
 
 # extra params
 num_random = 10
-type_q_backup = "min"
-q_backup_lmbda = 0.75
 deterministic_backup = False
 
 discrete = False

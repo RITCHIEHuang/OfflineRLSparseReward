@@ -486,6 +486,8 @@ def load_reward_by_strategy(
                 traj_dataset["delay_rewards"][i]
                 - return_min / traj_dataset["length"][i]
             ) / (return_max - return_min)
+        elif strategy == "scale_shift":
+            pass
         elif strategy == "zscore":
             traj_delay_rewards = (
                 traj_dataset["delay_rewards"][i]

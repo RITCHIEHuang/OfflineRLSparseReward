@@ -3,10 +3,18 @@ from torch import nn as nn
 from torch.distributions import Normal
 
 from offlinerl.utils.net.common import BasePolicy
-from offlinerl.utils.net.continuous import ActorProb
+from offlinerl.utils.net import continuous
+from algos import discrete
 
 
-class GaussianPolicy(ActorProb, BasePolicy):
+class CategoricalPolicy(discrete.ActorProb, BasePolicy):
+    def policy_infer(self, obs):
+        probs = self(obs).probs
+        greedy_actions = torch.argmax(probs, dim=-1, keepdim=True)
+        return greedy_actions
+
+
+class GaussianPolicy(continuous.ActorProb, BasePolicy):
     LOG_SIG_MAX = 2
     LOG_SIG_MIN = -5
     MEAN_MIN = -9.0

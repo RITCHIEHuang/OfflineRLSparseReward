@@ -7,18 +7,31 @@ from d4rl.infos import REF_MIN_SCORE, REF_MAX_SCORE
 from offlinerl.utils.env import get_env
 
 
-Mujoco_REF_MIN_SCORE = deepcopy(REF_MIN_SCORE)
-Mujoco_REF_MAX_SCORE = deepcopy(REF_MAX_SCORE)
+D4RL_REF_MIN_SCORE = deepcopy(REF_MIN_SCORE)
+D4RL_REF_MAX_SCORE = deepcopy(REF_MAX_SCORE)
 
 for env in ["HalfCheetah", "Hopper", "Walker2d", "Ant"]:
     for dset in ["low", "medium", "high", "expert"]:
         for train_num in [10, 100, 1000]:
             dset_name = env + "-v3" + "-" + dset + "-" + str(train_num)
-            Mujoco_REF_MIN_SCORE[dset_name] = REF_MIN_SCORE[
+            D4RL_REF_MIN_SCORE[dset_name] = REF_MIN_SCORE[
                 env.lower() + "-random-v0"
             ]
-            Mujoco_REF_MAX_SCORE[dset_name] = REF_MAX_SCORE[
+            D4RL_REF_MAX_SCORE[dset_name] = REF_MAX_SCORE[
                 env.lower() + "-random-v0"
+            ]
+
+for env in ["antmaze"]:
+    for env_name in REF_MIN_SCORE.keys():
+        if env_name.startswith(env):
+            D4RL_REF_MIN_SCORE[env_name.replace("v0", "v2")] = REF_MIN_SCORE[
+                env_name
+            ]
+
+    for env_name in REF_MAX_SCORE.keys():
+        if env_name.startswith(env):
+            D4RL_REF_MAX_SCORE[env_name.replace("v0", "v2")] = REF_MAX_SCORE[
+                env_name
             ]
 
 
@@ -28,8 +41,8 @@ def d4rl_score(task, rew_mean, len_mean):
     task = task[len(domain) + 1 :]
 
     score = (
-        (rew_mean - Mujoco_REF_MIN_SCORE[task])
-        / (Mujoco_REF_MAX_SCORE[task] - Mujoco_REF_MIN_SCORE[task])
+        (rew_mean - D4RL_REF_MIN_SCORE[task])
+        / (D4RL_REF_MAX_SCORE[task] - D4RL_REF_MIN_SCORE[task])
         * 100
     )
     return score
@@ -80,4 +93,4 @@ neorl_scores = {
 }
 
 for k, v in neorl_scores.items():
-    print(k, round(d4rl_score("neorl-" +k, v, None), 1))
+    print(k, round(d4rl_score("neorl-" + k, v, None), 1))
