@@ -12,7 +12,7 @@ def run_algo(kwargs):
 
     if algo_config["delay_mode"] == "none":
         train_buffer = d4rl.load_d4rl_buffer(algo_config["task"])
-        if algo_config["task"] == "antmaze-medium-play-v2":
+        if algo_config["task"].startswith("antmaze"):
             train_buffer.rew = (train_buffer.rew - 0.5) * 4
 
     elif algo_config["strategy"] == "none":

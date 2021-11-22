@@ -21,20 +21,6 @@ for env in ["HalfCheetah", "Hopper", "Walker2d", "Ant"]:
                 env.lower() + "-random-v0"
             ]
 
-for env in ["antmaze"]:
-    for env_name in REF_MIN_SCORE.keys():
-        if env_name.startswith(env):
-            D4RL_REF_MIN_SCORE[env_name.replace("v0", "v2")] = REF_MIN_SCORE[
-                env_name
-            ]
-
-    for env_name in REF_MAX_SCORE.keys():
-        if env_name.startswith(env):
-            D4RL_REF_MAX_SCORE[env_name.replace("v0", "v2")] = REF_MAX_SCORE[
-                env_name
-            ]
-
-
 def d4rl_score(task, rew_mean, len_mean):
     split_list = task.split("-")
     domain = split_list[0]
