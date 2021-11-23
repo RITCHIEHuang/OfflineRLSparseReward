@@ -39,7 +39,7 @@ lagrange_thresh = 5
 
 # extra params
 num_random = 10
-deterministic_backup = False
+deterministic_backup = True
 
 discrete = False
 

@@ -237,12 +237,13 @@ class AlgoTrainer(BaseAlgo):
             next_obs,
         )
 
-        next_obs_act = torch.cat([next_obs, new_next_actions])
+        next_obs_act = torch.cat([next_obs, new_next_actions], dim=-1)
         target_q_values = torch.min(
             self.critic1_target(next_obs_act),
             self.critic2_target(next_obs_act),
         )
-        target_q_values = target_q_values - alpha * new_log_pi
+        if not self.args["deterministic_backup"]:
+            target_q_values = target_q_values - alpha * new_log_pi
 
         q_target = (
             rewards
