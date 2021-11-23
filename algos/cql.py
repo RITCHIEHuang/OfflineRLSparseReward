@@ -12,8 +12,7 @@ from torch import optim
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.net.common import Net
-from offlinerl.utils.net.continuous import Critic
+from offlinerl.utils.net.common import MLP, Net
 from offlinerl.utils.exp import setup_seed
 
 from algos.sac_policy import GaussianPolicy
@@ -58,26 +57,24 @@ def algo_init(args):
 
     actor_optim = optim.Adam(actor.parameters(), lr=args["actor_lr"])
 
-    net_process = Net(
-        layer_num=args["layer_num"],
-        state_shape=obs_shape,
-        action_shape=action_shape,
-        concat=True,
-        hidden_layer_size=args["hidden_layer_size"],
-    )
-    critic1 = Critic(
-        preprocess_net=net_process,
-        hidden_layer_size=args["hidden_layer_size"],
+    q1 = MLP(
+        obs_shape + action_shape,
+        1,
+        args["hidden_layer_size"],
+        args["hidden_layers"],
+        norm=None,
+        hidden_activation="leakyrelu",
     ).to(args["device"])
-
-    critic2 = Critic(
-        preprocess_net=net_process,
-        hidden_layer_size=args["hidden_layer_size"],
+    q2 = MLP(
+        obs_shape + action_shape,
+        1,
+        args["hidden_layer_size"],
+        args["hidden_layers"],
+        norm=None,
+        hidden_activation="leakyrelu",
     ).to(args["device"])
-
-    critic_optim = optim.Adam(
-        set(critic1.parameters()) | set(critic2.parameters()),
-        lr=args["critic_lr"],
+    critic_optim = torch.optim.Adam(
+        [*q1.parameters(), *q2.parameters()], lr=args["critic_lr"]
     )
 
     if args["use_automatic_entropy_tuning"]:
@@ -93,7 +90,7 @@ def algo_init(args):
 
     nets = {
         "actor": {"net": actor, "opt": actor_optim},
-        "critic": {"net": [critic1, critic2], "opt": critic_optim},
+        "critic": {"net": [q1, q2], "opt": critic_optim},
         "log_alpha": {
             "net": log_alpha,
             "opt": alpha_optimizer,
@@ -169,9 +166,7 @@ class AlgoTrainer(BaseAlgo):
             .repeat(1, num_actions, 1)
             .view(obs.shape[0] * num_actions, obs.shape[1])
         )
-        new_obs_actions, new_obs_log_pi = network(
-            obs_temp
-        )
+        new_obs_actions, new_obs_log_pi = network(obs_temp)
         if not self.args["discrete"]:
             return new_obs_actions, new_obs_log_pi.view(
                 obs.shape[0], num_actions, 1
@@ -187,7 +182,9 @@ class AlgoTrainer(BaseAlgo):
     def _train(self, batch):
         self._current_epoch += 1
         batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
-        rewards = batch.rew
+        rewards = (batch.rew + self.args["reward_shift"]) * self.args[
+            "reward_scale"
+        ]
         terminals = batch.done
         obs = batch.obs
         actions = batch.act
@@ -246,7 +243,7 @@ class AlgoTrainer(BaseAlgo):
         target_q_values = target_q_values - alpha * new_log_pi
 
         q_target = (
-            self.args["reward_scale"] * rewards
+            rewards
             + (1.0 - terminals)
             * self.args["discount"]
             * target_q_values.detach()
