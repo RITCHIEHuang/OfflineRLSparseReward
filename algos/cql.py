@@ -99,7 +99,6 @@ def algo_init(args):
     }
 
     if args["lagrange_thresh"] >= 0:
-        target_action_gap = args["lagrange_thresh"]
         log_alpha_prime = torch.zeros(
             1, requires_grad=True, device=args["device"]
         )
@@ -156,7 +155,8 @@ class AlgoTrainer(BaseAlgo):
             .repeat(1, num_repeat, 1)
             .view(obs.shape[0] * num_repeat, obs.shape[1])
         )
-        preds = network(obs_temp, actions)
+        obs_act = torch.cat([obs_temp, actions], dim=-1)
+        preds = network(obs_act)
         preds = preds.view(obs.shape[0], num_repeat, 1)
         return preds
 
@@ -216,9 +216,9 @@ class AlgoTrainer(BaseAlgo):
             policy_log_prob = self.actor.log_prob(obs, actions)
             policy_loss = (alpha * log_pi - policy_log_prob).mean()
         else:
+            obs_act = torch.cat([obs, new_obs_actions], dim=-1)
             q_new_actions = torch.min(
-                self.critic1(obs, new_obs_actions),
-                self.critic2(obs, new_obs_actions),
+                self.critic1(obs_act), self.critic2(obs_act)
             )
 
             policy_loss = (alpha * log_pi - q_new_actions).mean()
@@ -229,16 +229,18 @@ class AlgoTrainer(BaseAlgo):
         """
         QF Loss
         """
-        q1_pred = self.critic1(obs, actions)
-        q2_pred = self.critic2(obs, actions)
+        obs_act = torch.cat([obs, actions], dim=-1)
+        q1_pred = self.critic1(obs_act)
+        q2_pred = self.critic2(obs_act)
 
         new_next_actions, new_log_pi = self.forward(
             next_obs,
         )
 
+        next_obs_act = torch.cat([next_obs, new_next_actions])
         target_q_values = torch.min(
-            self.critic1_target(next_obs, new_next_actions),
-            self.critic2_target(next_obs, new_next_actions),
+            self.critic1_target(next_obs_act),
+            self.critic2_target(next_obs_act),
         )
         target_q_values = target_q_values - alpha * new_log_pi
 

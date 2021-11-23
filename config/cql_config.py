@@ -35,8 +35,7 @@ min_q_version = 3
 min_q_weight = 5.0
 
 # lagrange
-with_lagrange = False
-lagrange_thresh = -1
+lagrange_thresh = 5
 
 # extra params
 num_random = 10
