@@ -69,11 +69,9 @@ def qlearning_dataset(env, dataset=None, terminate_on_end=False, **kwargs):
         time_out_.append(time_out)
         episode_step += 1
 
-    act_limit = 1 - 1e5
-
     return {
         "observations": np.array(obs_),
-        "actions": np.clip(np.array(action_), -act_limit, act_limit),
+        "actions": np.array(action_),
         "next_observations": np.array(next_obs_),
         "rewards": np.array(reward_),
         "terminals": np.array(done_),

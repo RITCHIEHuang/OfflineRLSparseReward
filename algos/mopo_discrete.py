@@ -220,6 +220,8 @@ class AlgoTrainer(BaseAlgo):
         rew_min = train_buffer["rew"].min()
 
         for epoch in range(self.args["max_epoch"]):
+            metrics = {"epoch": epoch}
+
             # bc update policy
             if epoch <= self.args["bc_epoch"]:
                 for step in range(1, self.args["steps_per_epoch"] + 1):
@@ -237,7 +239,8 @@ class AlgoTrainer(BaseAlgo):
                     loss.backward()
                     self.actor_optim.step()
 
-                metrics = callback_fn(self.get_policy())
+                res = callback_fn(self.get_policy())
+                metrics.update(res)
             else:
                 # collect data
                 with torch.no_grad():
@@ -321,7 +324,6 @@ class AlgoTrainer(BaseAlgo):
 
                     sac_metrics = self._sac_update(batch)
 
-                metrics = {"epoch": epoch}
                 if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                     res = callback_fn(self.get_policy())
                     metrics.update(res)
