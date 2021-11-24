@@ -321,21 +321,22 @@ class AlgoTrainer(BaseAlgo):
 
                     sac_metrics = self._sac_update(batch)
 
-                res = {}
-                if (epoch + 1) % self.args["eval_epoch"] == 0:
+                metrics = {"epoch": epoch}
+                if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                     res = callback_fn(self.get_policy())
+                    metrics.update(res)
 
-                res["uncertainty"] = uncertainty.mean().item()
-                res[
+                metrics["uncertainty"] = uncertainty.mean().item()
+                metrics[
                     "disagreement_uncertainty"
                 ] = disagreement_uncertainty.mean().item()
-                res[
+                metrics[
                     "aleatoric_uncertainty"
                 ] = aleatoric_uncertainty.mean().item()
-                res["reward"] = reward.mean().item()
-                res["next_obs"] = next_obs.mean().item()
+                metrics["reward"] = reward.mean().item()
+                metrics["next_obs"] = next_obs.mean().item()
 
-                res.update(sac_metrics)
+                metrics.update(sac_metrics)
             self.log_res(epoch, res)
 
         return self.get_policy()

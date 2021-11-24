@@ -16,11 +16,11 @@ def load_d4rl_buffer(task):
     else:
         env = gym.make(task)
     dataset = d4rl.qlearning_dataset(env)
-
+    act_limit = 1 - 1e-5
     buffer = SampleBatch(
         obs=dataset["observations"],
         obs_next=dataset["next_observations"],
-        act=dataset["actions"],
+        act=np.clip(dataset["actions"], -act_limit, act_limit),
         rew=np.expand_dims(np.squeeze(dataset["rewards"]), 1),
         done=np.expand_dims(np.squeeze(dataset["terminals"]), 1),
     )
