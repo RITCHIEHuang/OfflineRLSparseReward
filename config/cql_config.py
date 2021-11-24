@@ -25,7 +25,7 @@ critic_lr = 3e-4
 reward_scale = 10
 reward_shift = -0.5
 use_automatic_entropy_tuning = True
-target_entropy = 0.0
+target_entropy = None
 discount = 0.99
 soft_target_tau = 5e-3
 
