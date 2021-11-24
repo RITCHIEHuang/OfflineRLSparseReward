@@ -1,0 +1,12 @@
+Dataset Type,Environment,Delay Mode,Delay,Strategy,Algo,Seed,Iteration,D4rl_Score,D4rl_Score_stddev
+medium-replay-v0,halfcheetah,constant,1000,interval_average,mopo,"[100, 1000, 10]",392,45.5,0.6
+medium-replay-v0,halfcheetah,constant,1,interval_average,mopo,"[1000, 100, 10]",485,58.0,1.0
+medium-replay-v0,halfcheetah,constant,2,interval_average,mopo,"[1000, 100, 10]",483,58.8,1.0
+medium-replay-v0,halfcheetah,constant,3,interval_average,mopo,"[1000, 100, 10]",430,56.2,1.1
+medium-replay-v0,halfcheetah,constant,5,interval_average,mopo,"[1000, 100, 10]",424,58.4,1.1
+medium-replay-v0,halfcheetah,constant,10,interval_average,mopo,"[1000, 100, 10]",266,53.2,0.9
+medium-replay-v0,halfcheetah,constant,50,interval_average,mopo,"[1000, 100, 10]",498,52.4,1.6
+medium-replay-v0,halfcheetah,constant,100,interval_average,mopo,"[1000, 100, 10]",376,52.2,1.9
+medium-replay-v0,halfcheetah,constant,200,interval_average,mopo,"[1000, 100, 10]",433,50.3,1.6
+medium-replay-v0,halfcheetah,constant,500,interval_average,mopo,"[1000, 100, 10]",440,47.2,1.5
+medium-replay-v0,halfcheetah,constant,20,interval_average,mopo,"[10, 1000, 100, 10]",397,53.0,1.8

@@ -15,8 +15,8 @@ from utils.io_util import proj_path
 debug = False
 log_path = f"{proj_path}/logs"
 
-result_file_path = f"{proj_path}/results.csv"
-agg_result_file_path = f"{proj_path}/agg_results.csv"
+result_file_path = f"{proj_path}/assets/results.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results.csv"
 
 if os.path.exists(result_file_path):
     os.remove(result_file_path)
@@ -98,18 +98,18 @@ def fetch_experiment_results():
                 iteration = int(k)
                 d4rl_score = v["D4rl_Score"]
 
-                item_result_info = deepcopy(variant_result_info)
-                item_result_info.update(
+                result_info_item = deepcopy(variant_result_info)
+                result_info_item.update(
                     {"Iteration": iteration, "D4rl_Score": d4rl_score}
                 )
 
                 exp_identity_tag = f"{variant_result_info['Environment']}-{variant_result_info['Dataset Type']}-{variant_result_info['Delay Mode']}-{variant_result_info['Delay']}-{variant_result_info['Algo']}-{variant_result_info['Strategy']}"
 
                 exp_variant_mapping[exp_identity_tag][iteration].append(
-                    item_result_info
+                    result_info_item
                 )
 
-                fields = list(item_result_info.keys())
+                fields = list(result_info_item.keys())
                 with open(result_file_path, "a+") as f:
                     writer = csv.DictWriter(f, fieldnames=fields)
 
@@ -117,7 +117,7 @@ def fetch_experiment_results():
                         writer.writeheader()
                         flag = False
 
-                    writer.writerow(item_result_info)
+                    writer.writerow(result_info_item)
 
     for k, v in exp_variant_mapping.items():
         iter_scores = [

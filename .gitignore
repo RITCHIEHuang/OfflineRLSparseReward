@@ -3,7 +3,11 @@
 *.egg-info/
 *logs
 *tb_logs
-*assets
+
+assets/*
+!assets/*.csv
+!assets/*.png
+
 *tune_results
 datasets/dataset/*
 datasets/checkpoint/*
@@ -22,4 +26,3 @@ paper/RL_Offline_Delay_Rewards/*
 rec_env/data/
 
 */wandb
-results.csv

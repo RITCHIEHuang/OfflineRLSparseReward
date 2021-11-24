@@ -51,3 +51,30 @@ def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
     plt.savefig(f"{fig_dir}/{config['delay_tag']}_distribution_{suffix}.png")
+
+
+def plot_line(df, x_label, y_label, hue_label, style_label, fig_name):
+    # Plot the responses for different events and regions
+    plt.figure()
+    sns.pointplot(
+        x=x_label,
+        y=y_label,
+        hue=hue_label,
+        style=style_label,
+        data=df,
+        linestyles="-.",
+        markers="^",
+    )
+    plt.savefig(f"{proj_path}/assets/{fig_name}.png")
+
+
+if __name__ == "__main__":
+    df = pd.read_csv(f"{proj_path}/Delay_results.csv")
+    plot_line(
+        df,
+        x_label="Delay",
+        y_label="D4rl_Score",
+        hue_label="Strategy",
+        style_label="Strategy",
+        fig_name="performanc_vs_delay_size",
+    )
