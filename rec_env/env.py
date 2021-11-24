@@ -335,3 +335,7 @@ def get_flatten_obs(obs, env):
             spaces.flatten(env.observation_space.spaces["doc"], obs["doc"]),
         ]
     )
+
+
+def make_recs_env(**kwargs):
+    pass

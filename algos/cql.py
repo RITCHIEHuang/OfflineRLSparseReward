@@ -403,8 +403,8 @@ class AlgoTrainer(BaseAlgo):
                 train_data = train_buffer.sample(self.args["batch_size"])
                 self._train(train_data)
 
-            res = callback_fn(self.get_policy())
-
-            self.log_res(epoch, res)
+            if epoch % self.args["eval_epoch"] == 0:
+                res = callback_fn(self.get_policy())
+                self.log_res(epoch, res)
 
         return self.get_policy()
