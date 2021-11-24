@@ -30,6 +30,7 @@ data_collection_per_epoch = 50e3
 steps_per_epoch = 1000
 bc_epoch = 100
 max_epoch = 1500
+eval_epoch = 50
 
 learnable_alpha = True
 uncertainty_mode = "aleatoric"

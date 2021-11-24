@@ -13,7 +13,7 @@ max_action = None
 
 max_epoch = 2000
 steps_per_epoch = 1000
-eval_epoch = 100
+eval_epoch = 50
 policy_bc_steps = 0
 
 batch_size = 256

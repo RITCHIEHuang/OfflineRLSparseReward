@@ -321,7 +321,9 @@ class AlgoTrainer(BaseAlgo):
 
                     sac_metrics = self._sac_update(batch)
 
-                res = callback_fn(self.get_policy())
+                res = {}
+                if (epoch + 1) % self.args["eval_epoch"] == 0:
+                    res = callback_fn(self.get_policy())
 
                 res["uncertainty"] = uncertainty.mean().item()
                 res[
