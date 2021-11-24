@@ -99,7 +99,7 @@ def algo_init(args):
     }
 
     if args["lagrange_thresh"] >= 0:
-        log_alpha_prime = torch.zeros(
+        log_alpha_prime = torch.ones(
             1, requires_grad=True, device=args["device"]
         )
         alpha_prime_optimizer = optim.Adam(
