@@ -11,10 +11,7 @@ from offlinerl.utils.data import SampleBatch
 
 def load_d4rl_buffer(task):
     task = task[5:]
-    if task.startswith("antmaze"):
-        env = gym.make(task.replace("v2", "v0"))
-    else:
-        env = gym.make(task)
+    env = gym.make(task)
     dataset = d4rl.qlearning_dataset(env)
     act_limit = 1 - 1e-5
     buffer = SampleBatch(
