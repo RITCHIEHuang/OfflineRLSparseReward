@@ -5,6 +5,9 @@ from recsim import document
 from recsim import user
 
 from recsim.simulator import environment, recsim_gym
+from recsim.simulator.recsim_gym import RecSimGymEnv
+
+from rec_env.offline_env import OfflineEnv
 
 env_config = {
     # global
@@ -303,6 +306,15 @@ class UserModel(user.AbstractUserModel):
         return self._user_state.cum_next_time >= self.config["time_budget"]
 
 
+def get_flatten_obs(obs, env):
+    return np.concatenate(
+        [
+            spaces.flatten(env.observation_space.spaces["user"], obs["user"]),
+            spaces.flatten(env.observation_space.spaces["doc"], obs["doc"]),
+        ]
+    )
+
+
 def reward_fn(responses):
     total_reward = 0.0
     for response in responses:
@@ -322,20 +334,25 @@ def create_env():
         resample_documents=True,
     )
 
-    return recsim_gym.RecSimGymEnv(
-        env,
-        reward_fn,
-    )
+    return env
 
 
-def get_flatten_obs(obs, env):
-    return np.concatenate(
-        [
-            spaces.flatten(env.observation_space.spaces["user"], obs["user"]),
-            spaces.flatten(env.observation_space.spaces["doc"], obs["doc"]),
-        ]
-    )
+class RecsEnv(RecSimGymEnv, OfflineEnv):
+    def __init__(
+        self,
+        raw_environment,
+        reward_aggregator,
+        **kwargs,
+    ):
+        RecSimGymEnv.__init__(
+            self,
+            raw_environment,
+            reward_aggregator,
+        )
+        OfflineEnv.__init__(self, **kwargs)
 
 
-def make_recs_env(**kwargs):
-    pass
+def get_recs_env(**kwargs):
+    env = create_env()
+    recs_env = RecsEnv(env, reward_fn, **kwargs)
+    return recs_env
