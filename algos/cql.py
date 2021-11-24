@@ -398,12 +398,12 @@ class AlgoTrainer(BaseAlgo):
         return self.actor
 
     def train(self, train_buffer, val_buffer, callback_fn):
-        for epoch in range(1, self.args["max_epoch"] + 1):
-            metrics = {"epoch":  epoch}
+        for epoch in range(self.args["max_epoch"]):
+            metrics = {"epoch": epoch}
             for step in range(1, self.args["steps_per_epoch"] + 1):
                 train_data = train_buffer.sample(self.args["batch_size"])
                 self._train(train_data)
-            if epoch % self.args["eval_epoch"] == 0:
+            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
             self.log_res(epoch, metrics)
