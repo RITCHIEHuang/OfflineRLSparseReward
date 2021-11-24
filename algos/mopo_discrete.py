@@ -237,7 +237,7 @@ class AlgoTrainer(BaseAlgo):
                     loss.backward()
                     self.actor_optim.step()
 
-                res = callback_fn(self.get_policy())
+                metrics = callback_fn(self.get_policy())
             else:
                 # collect data
                 with torch.no_grad():
