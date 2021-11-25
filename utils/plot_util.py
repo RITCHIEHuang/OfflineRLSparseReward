@@ -69,7 +69,7 @@ def plot_line(df, x_label, y_label, hue_label, style_label, fig_name):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(f"{proj_path}/Delay_results.csv")
+    df = pd.read_csv(f"{proj_path}/assets/Delay_results.csv")
     plot_line(
         df,
         x_label="Delay",

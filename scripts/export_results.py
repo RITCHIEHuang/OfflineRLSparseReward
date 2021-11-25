@@ -31,8 +31,9 @@ exp_variant_mapping = defaultdict(lambda: defaultdict(list))
 # {"group": [{iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
 
 filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
-filter_strategy = ["interval_average"]
-
+filter_strategy = ["interval_average", "none"]
+# filter_strategy = ["none"]
+filter_seed = [10, 100, 1000]
 
 # collect
 for run in tqdm(runs):
@@ -55,10 +56,15 @@ for run in tqdm(runs):
     delay_mode = run.config.get("delay_mode", "constant")
     delay = run.config["delay"]
     seed = run.config.get("seed", 0)
+
     algo = run.config["algo_name"]
     strategy = run.config["strategy"]
 
-    if not (group in filter_group and strategy in filter_strategy):
+    if not (
+        group in filter_group
+        and strategy in filter_strategy
+        and seed in filter_seed
+    ):
         continue
 
     variant_result_info = {
@@ -71,14 +77,15 @@ for run in tqdm(runs):
         "Seed": seed,
     }
 
-    history_dict = run.history().to_dict("index")
-    exp_max_epoch = sorted(list(map(int, history_dict.keys())))[-1]
+    history_dict = run.scan_history()
     exp_identity_tag = f"{variant_result_info['Environment']}-{variant_result_info['Dataset Type']}-{variant_result_info['Delay Mode']}-{variant_result_info['Delay']}-{variant_result_info['Algo']}-{variant_result_info['Strategy']}"
 
-    for epoch in range(exp_max_epoch + 1):
+    for history_item in history_dict:
+        epoch = history_item["_step"]
+        if "D4rl_Score" not in history_item:
+            continue
         result_info_item = deepcopy(variant_result_info)
         result_info_item["Iteration"] = epoch
-        history_item = history_dict[epoch]
         result_info_item["D4rl_Score"] = history_item["D4rl_Score"]
 
         exp_variant_mapping[exp_identity_tag][epoch].append(result_info_item)

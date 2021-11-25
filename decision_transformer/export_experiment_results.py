@@ -45,12 +45,11 @@ for run in tqdm(runs):
         "Seed": seed,
     }
 
-    history_dict = run.history().to_dict("index")
-    exp_max_epoch = sorted(list(map(int, history_dict.keys())))[-1]
-    for epoch in range(exp_max_epoch + 1):
+    history_dict = run.scan_history()
+    for history_item in history_dict:
+        epoch = history_item["_step"]
         result_info_item = deepcopy(variant_result_info)
         result_info_item["Iteration"] = epoch
-        history_item = history_dict[epoch]
 
         d4rl_score_mean_list = []
         for k in history_item:
