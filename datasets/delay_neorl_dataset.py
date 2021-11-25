@@ -36,6 +36,8 @@ def delay_transition_dataset(config):
         need_val=False,
     )
 
+    returns = np.zeros_like(dataset["reward"])
+    dataset["return"] = returns
     if config["delay_mode"] == "none":
         return dataset
 
@@ -46,7 +48,6 @@ def delay_transition_dataset(config):
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
     delay_rewards = np.zeros_like(raw_rewards)
-    returns = np.zeros_like(raw_rewards)
 
     trans_idx = 0
     plot_traj_idx_list = [

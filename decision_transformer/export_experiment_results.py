@@ -73,7 +73,6 @@ for k, v in exp_variant_mapping.items():
     ]
 
     try:
-        agg_item = deepcopy(v[0][0])
         sorted_iter_scores = sorted(
             iter_scores, key=lambda v: v[1], reverse=True
         )
@@ -81,6 +80,7 @@ for k, v in exp_variant_mapping.items():
             logger.debug(f"{k}, {len(iter_scores)}")
 
         selected_item = sorted_iter_scores[0]
+        agg_item = deepcopy(v[selected_item[0]][0])
         agg_item["Iteration"] = selected_item[0]
         agg_item["D4rl_Score"] = round(selected_item[1], 1)
         agg_item["Seed"] = selected_item[2]

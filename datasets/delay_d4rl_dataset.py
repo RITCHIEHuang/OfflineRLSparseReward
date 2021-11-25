@@ -36,6 +36,8 @@ def delay_transition_dataset(config):
     )
     # dataset = env.get_dataset()
     dataset = qlearning_dataset(env, terminate_on_end=True)
+    returns = np.zeros_like(dataset["rewards"])
+    dataset["returns"] = returns
     if config["delay_mode"] == "none":
         return dataset
 
@@ -50,7 +52,6 @@ def delay_transition_dataset(config):
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
     delay_rewards = np.zeros_like(raw_rewards)
-    returns = np.zeros_like(raw_rewards)
 
     trans_idx = 0
     plot_traj_idx_list = [np.random.randint(0, len(dataset)) for _ in range(5)]
