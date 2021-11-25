@@ -32,7 +32,7 @@ soft_target_tau = 5e-3
 # min Q
 explore = 1.0
 temp = 1.0
-min_q_version = 3
+use_importance_sample = True
 min_q_weight = 5.0
 
 # lagrange
@@ -46,9 +46,8 @@ discrete = False
 
 # tune
 grid_tune = {
-    # "actor_lr" : [1e-4, 3e-4],
-    "min_q_version": [2, 3],
+    "actor_lr": [1e-4, 3e-4],
+    "use_importance_sample": [True, False],
     "min_q_weight": [2, 5, 10],
     "lagrange_thresh": [-1, 5, 10],
-    "type_q_backup": ["min", "none"],
 }

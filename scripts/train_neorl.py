@@ -10,13 +10,10 @@ from evaluation.d4rl_score import d4rl_eval_fn
 def run_algo(kwargs):
     algo_init_fn, algo_trainer_obj, algo_config = algo_select(kwargs)
 
-    if algo_config["delay_mode"] == "none":
-        train_buffer = load_data_from_neorl(
-            algo_config["task_name"],
-            algo_config["task_data_type"],
-            algo_config["task_train_num"],
-        )
-    elif algo_config["strategy"] == "none":
+    if (
+        algo_config["delay_mode"] == "none"
+        or algo_config["strategy"] == "none"
+    ):
         train_buffer = delay_neorl_dataset.load_neorl_buffer(algo_config)
     else:
         train_buffer = delay_neorl_dataset.load_neorl_traj_buffer(algo_config)

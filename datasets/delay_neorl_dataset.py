@@ -35,6 +35,10 @@ def delay_transition_dataset(config):
         train_num=config["task_train_num"],
         need_val=False,
     )
+
+    if config["delay_mode"] == "none":
+        return dataset
+
     raw_rewards = np.squeeze(dataset["reward"])
     raw_terminals = np.squeeze(dataset["done"])
     episode_ends = np.argwhere(raw_terminals == True)

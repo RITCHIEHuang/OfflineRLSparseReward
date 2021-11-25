@@ -63,7 +63,7 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="leakyrelu",
+        hidden_activation="relu",
     ).to(args["device"])
     q2 = MLP(
         obs_shape + action_shape,
@@ -71,17 +71,17 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="leakyrelu",
+        hidden_activation="relu",
     ).to(args["device"])
     critic_optim = torch.optim.Adam(
         [*q1.parameters(), *q2.parameters()], lr=args["critic_lr"]
     )
 
     if args["use_automatic_entropy_tuning"]:
-        if args["target_entropy"]:
-            target_entropy = args["target_entropy"]
-        else:
+        if args["target_entropy"] >= 0:
             target_entropy = -np.prod(args["action_shape"]).item()
+        else:
+            target_entropy = args["target_entropy"]
         log_alpha = torch.zeros(1, requires_grad=True, device=args["device"])
         alpha_optimizer = optim.Adam(
             [log_alpha],
@@ -166,7 +166,8 @@ class AlgoTrainer(BaseAlgo):
             .repeat(1, num_actions, 1)
             .view(obs.shape[0] * num_actions, obs.shape[1])
         )
-        new_obs_actions, new_obs_log_pi = network(obs_temp)
+        with torch.no_grad():
+            new_obs_actions, new_obs_log_pi = network(obs_temp)
         if not self.args["discrete"]:
             return new_obs_actions, new_obs_log_pi.view(
                 obs.shape[0], num_actions, 1
@@ -187,7 +188,8 @@ class AlgoTrainer(BaseAlgo):
         ]
         terminals = batch.done
         obs = batch.obs
-        actions = batch.act
+        lim = 1 - 1e5
+        actions = np.clip(batch.act, -lim, lim)
         next_obs = batch.obs_next
 
         """
@@ -297,22 +299,22 @@ class AlgoTrainer(BaseAlgo):
             1,
         )
 
-        if self.args["min_q_version"] == 3:
+        if self.args["use_importance_sample"]:
             # importance sammpled version
             random_density = np.log(0.5 ** curr_actions_tensor.shape[-1])
             cat_q1 = torch.cat(
                 [
                     q1_rand - random_density,
-                    q1_next_actions - new_log_pis.detach(),
-                    q1_curr_actions - curr_log_pis.detach(),
+                    q1_next_actions - new_log_pis,
+                    q1_curr_actions - curr_log_pis,
                 ],
                 1,
             )
             cat_q2 = torch.cat(
                 [
                     q2_rand - random_density,
-                    q2_next_actions - new_log_pis.detach(),
-                    q2_curr_actions - curr_log_pis.detach(),
+                    q2_next_actions - new_log_pis,
+                    q2_curr_actions - curr_log_pis,
                 ],
                 1,
             )
@@ -390,9 +392,6 @@ class AlgoTrainer(BaseAlgo):
 
     def get_model(self):
         return self.actor
-
-    # def save_model(self, model_save_path):
-    #    torch.save(self.actor, model_save_path)
 
     def get_policy(self):
         return self.actor

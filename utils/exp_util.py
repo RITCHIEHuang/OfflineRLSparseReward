@@ -57,6 +57,12 @@ def argsparser():
     parser.add_argument(
         "--delay_max", help="max delay steps", type=int, default=50
     )
+    parser.add_argument(
+        "--reward_scale", help="scale for reward", type=float, default=1.0
+    )
+    parser.add_argument(
+        "--reward_shift", help="shift for reward", type=float, default=0.0
+    )
     parser.add_argument("--bc_epoch", help="bc epochs", type=int, default=0)
     parser.add_argument(
         "--strategy",

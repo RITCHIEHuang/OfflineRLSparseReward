@@ -36,9 +36,13 @@ def delay_transition_dataset(config):
     )
     # dataset = env.get_dataset()
     dataset = qlearning_dataset(env, terminate_on_end=True)
+    if config["delay_mode"] == "none":
+        return dataset
+
     raw_rewards = dataset["rewards"]
     raw_terminals = dataset["terminals"]
     raw_timeouts = dataset["timeouts"]
+
     episode_ends = np.argwhere(
         np.logical_or(raw_terminals == True, raw_timeouts == True)
     )
@@ -878,10 +882,12 @@ def load_d4rl_traj_buffer(config):
 
 if __name__ == "__main__":
     config = setup_exp_args()
+    # config["delay_mode"] = "none"
+    # config["task"] = "antmaze-medium-play-v2"
     if config["log_to_wandb"]:
         config["log_to_wandb"] = False
     """extract transition buffer"""
-    # load_d4rl_buffer(config)
+    load_d4rl_buffer(config)
 
     """extract traj dataset"""
     # traj_dataset = delay_traj_dataset(config)

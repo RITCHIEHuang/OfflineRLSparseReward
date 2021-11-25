@@ -10,9 +10,10 @@ from evaluation.d4rl_score import d4rl_eval_fn
 def run_algo(kwargs):
     algo_init_fn, algo_trainer_obj, algo_config = algo_select(kwargs)
 
-    if algo_config["delay_mode"] == "none":
-        train_buffer = d4rl.load_d4rl_buffer(algo_config["task"])
-    elif algo_config["strategy"] == "none":
+    if (
+        algo_config["delay_mode"] == "none"
+        or algo_config["strategy"] == "none"
+    ):
         train_buffer = delay_d4rl_dataset.load_d4rl_buffer(algo_config)
     else:
         train_buffer = delay_d4rl_dataset.load_d4rl_traj_buffer(algo_config)
