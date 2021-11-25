@@ -28,10 +28,11 @@ api = wandb.Api()
 runs = api.runs("ritchiehuang/OfflineRL_DelayRewards")
 
 exp_variant_mapping = defaultdict(lambda: defaultdict(list))
-# {"group": [{iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
+# {"group": [iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
 
 filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
-filter_strategy = ["interval_average", "none"]
+filter_strategy = ["interval_ensemble", "interval_average", "none"]
+# filter_strategy = ["interval_ensemble"]
 # filter_strategy = ["none"]
 filter_seed = [10, 100, 1000]
 
@@ -90,9 +91,9 @@ for run in tqdm(runs):
 
         exp_variant_mapping[exp_identity_tag][epoch].append(result_info_item)
 
-    if debug:
-        with open("test.json", "w") as f:
-            json.dump(exp_variant_mapping, f)
+if debug:
+    with open("test.json", "w") as f:
+        json.dump(exp_variant_mapping, f)
 
 # aggregate
 flag = True
@@ -110,50 +111,42 @@ for k, v in exp_variant_mapping.items():
         if len(iter_res) >= 3
     ]
 
-    try:
-        sorted_iter_scores = sorted(
-            iter_scores, key=lambda v: v[1], reverse=True
-        )
-        if debug:
-            logger.debug(f"{k}, {len(iter_scores)}")
+    sorted_iter_scores = sorted(iter_scores, key=lambda v: v[1], reverse=True)
+    if debug:
+        logger.debug(f"{k}, {len(iter_scores)}")
 
-        selected_item = sorted_iter_scores[0]
+    selected_item = sorted_iter_scores[0]
 
-        normal_item = deepcopy(v[0][0])
-        for seed, score in zip(selected_item[2], selected_item[-1]):
-            # normal_item["Iteration"] = selected_item[0]
-            normal_item["D4rl_Score"] = round(score, 1)
-            normal_item["Seed"] = seed
+    normal_item = deepcopy(v[selected_item[0]][0])
+    for seed, score in zip(selected_item[2], selected_item[-1]):
+        # normal_item["Iteration"] = selected_item[0]
+        normal_item["D4rl_Score"] = round(score, 1)
+        normal_item["Seed"] = seed
 
-            fields = list(normal_item.keys())
-            with open(result_file_path, "a+") as f:
-                writer = csv.DictWriter(f, fieldnames=fields)
+        fields = list(normal_item.keys())
+        with open(result_file_path, "a+") as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
 
-                if flag:
-                    writer.writeheader()
-                    flag = False
-
-                writer.writerow(normal_item)
-
-        agg_item = deepcopy(v[0][0])
-        agg_item["Iteration"] = selected_item[0]
-        agg_item["D4rl_Score"] = round(selected_item[1], 1)
-        agg_item["Seed"] = selected_item[2]
-        agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
-
-        logger.info(f"{k} aggregating results finish!")
-
-        agg_fields = list(agg_item.keys())
-        with open(agg_result_file_path, "a+") as f:
-            writer = csv.DictWriter(f, fieldnames=agg_fields)
-
-            if flag2:
+            if flag:
                 writer.writeheader()
-                flag2 = False
+                flag = False
 
-            writer.writerow(agg_item)
+            writer.writerow(normal_item)
 
-    except Exception:
-        print("=" * 100)
-        print(k)
-        print("=" * 100)
+    agg_item = deepcopy(v[selected_item[0]][0])
+    agg_item["Iteration"] = selected_item[0]
+    agg_item["D4rl_Score"] = round(selected_item[1], 1)
+    agg_item["Seed"] = selected_item[2]
+    agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
+
+    logger.info(f"{k} aggregating results finish!")
+
+    agg_fields = list(agg_item.keys())
+    with open(agg_result_file_path, "a+") as f:
+        writer = csv.DictWriter(f, fieldnames=agg_fields)
+
+        if flag2:
+            writer.writeheader()
+            flag2 = False
+
+        writer.writerow(agg_item)
