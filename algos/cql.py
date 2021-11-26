@@ -182,6 +182,7 @@ class AlgoTrainer(BaseAlgo):
 
     def _train(self, batch):
         self._current_epoch += 1
+        self._n_train_steps_total += 1
         batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
         rewards = (batch.rew + self.args["reward_shift"]) * self.args[
             "reward_scale"
@@ -201,9 +202,6 @@ class AlgoTrainer(BaseAlgo):
             alpha_loss = -(
                 self.log_alpha * (log_pi + self.target_entropy).detach()
             ).mean()
-            self.alpha_opt.zero_grad()
-            alpha_loss.backward()
-            self.alpha_opt.step()
             alpha = self.log_alpha.exp()
         else:
             alpha_loss = 0
@@ -224,9 +222,6 @@ class AlgoTrainer(BaseAlgo):
             )
 
             policy_loss = (alpha * log_pi - q_new_actions).mean()
-        self.actor_opt.zero_grad()
-        policy_loss.backward()
-        self.actor_opt.step()
 
         """
         QF Loss
@@ -257,7 +252,7 @@ class AlgoTrainer(BaseAlgo):
         qf1_loss = self.critic_criterion(q1_pred, q_target)
         qf2_loss = self.critic_criterion(q2_pred, q_target)
 
-        ## add CQL
+        ## CQL Loss
         random_actions_tensor = (
             torch.FloatTensor(
                 q2_pred.shape[0] * self.args["num_random"], actions.shape[-1]
@@ -300,7 +295,6 @@ class AlgoTrainer(BaseAlgo):
         )
 
         if self.args["use_importance_sample"]:
-            # importance sammpled version
             random_density = np.log(0.5 ** curr_actions_tensor.shape[-1])
             cat_q1 = torch.cat(
                 [
@@ -371,9 +365,15 @@ class AlgoTrainer(BaseAlgo):
 
         qf_loss = qf1_loss + qf2_loss
 
-        """
-        Update critic networks
-        """
+        if self.args["use_automatic_entropy_tuning"]:
+            self.alpha_opt.zero_grad()
+            alpha_loss.backward()
+            self.alpha_opt.step()
+
+        self.actor_opt.zero_grad()
+        policy_loss.backward()
+        self.actor_opt.step()
+
         self.critic_opt.zero_grad()
         qf_loss.backward()
         self.critic_opt.step()
@@ -388,7 +388,27 @@ class AlgoTrainer(BaseAlgo):
             self.critic2_target, self.critic2, self.args["soft_target_tau"]
         )
 
-        self._n_train_steps_total += 1
+        metrics = dict(
+            cql_q1_rand=q1_rand.mean().item(),
+            cql_q2_rand=q2_rand.mean().item(),
+            cql_min_qf1_loss=min_qf1_loss.mean().item(),
+            cql_min_qf2_loss=min_qf2_loss.mean().item(),
+            cql_q1_current_actions=q1_curr_actions.mean().item(),
+            cql_q2_current_actions=q2_curr_actions.mean().item(),
+            cql_q1_next_actions=q1_next_actions.mean().item(),
+            cql_q2_next_actions=q2_next_actions.mean().item(),
+            log_pi=log_pi.mean().item(),
+            policy_loss=policy_loss.item(),
+            qf1_loss=qf1_loss.item(),
+            qf2_loss=qf2_loss.item(),
+            alpha_loss=alpha_loss.item(),
+            alpha=alpha.item(),
+            average_qf1=q1_pred.mean().item(),
+            average_qf2=q2_pred.mean().item(),
+            average_target_q=target_q_values.mean().item(),
+            total_steps=self._n_train_steps_total,
+        )
+        return metrics
 
     def get_model(self):
         return self.actor
@@ -401,7 +421,8 @@ class AlgoTrainer(BaseAlgo):
             metrics = {"epoch": epoch}
             for step in range(1, self.args["steps_per_epoch"] + 1):
                 train_data = train_buffer.sample(self.args["batch_size"])
-                self._train(train_data)
+                res = self._train(train_data)
+                metrics.update(res)
             if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
