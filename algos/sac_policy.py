@@ -15,8 +15,8 @@ class CategoricalPolicy(discrete.ActorProb, BasePolicy):
 
 
 class GaussianPolicy(continuous.ActorProb, BasePolicy):
-    LOG_SIG_MAX = 2
-    LOG_SIG_MIN = -5
+    LOG_SIG_MAX = 2.0
+    LOG_SIG_MIN = -20.0
 
     def forward(
         self,
