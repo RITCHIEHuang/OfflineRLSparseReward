@@ -18,7 +18,7 @@ from offlinerl.utils.exp import setup_seed
 from algos.sac_policy import GaussianPolicy
 
 
-def rsample_action_log_prob(dist, eps=1e-6):
+def rsample_action_log_prob(dist, eps=1e-8):
     u = dist.rsample()
     log_prob = dist.log_prob(u)
     action = torch.tanh(u)
@@ -189,8 +189,7 @@ class AlgoTrainer(BaseAlgo):
         ]
         terminals = batch.done
         obs = batch.obs
-        lim = 1 - 1e5
-        actions = np.clip(batch.act, -lim, lim)
+        actions = batch.act
         next_obs = batch.obs_next
 
         """
@@ -234,13 +233,35 @@ class AlgoTrainer(BaseAlgo):
             next_obs,
         )
 
-        next_obs_act = torch.cat([next_obs, new_next_actions], dim=-1)
-        target_q_values = torch.min(
-            self.critic1_target(next_obs_act),
-            self.critic2_target(next_obs_act),
-        )
-        if not self.args["deterministic_backup"]:
-            target_q_values = target_q_values - alpha * new_log_pi
+        if self.args["backup_type"] == "max":
+            next_actions_temp, _ = self._get_policy_actions(
+                next_obs, num_actions=10, network=self.forward
+            )
+            target_qf1_values = (
+                self._get_tensor_values(
+                    next_obs, next_actions_temp, network=self.critic1_target
+                )
+                .max(1)[0]
+                .view(-1, 1)
+            )
+            target_qf2_values = (
+                self._get_tensor_values(
+                    next_obs, next_actions_temp, network=self.critic2_target
+                )
+                .max(1)[0]
+                .view(-1, 1)
+            )
+            target_q_values = torch.min(target_qf1_values, target_qf2_values)
+
+        if self.args["backup_type"] == "min":
+            next_obs_act = torch.cat([next_obs, new_next_actions], dim=-1)
+            target_q_values = torch.min(
+                self.critic1_target(next_obs_act),
+                self.critic2_target(next_obs_act),
+            )
+
+            if self.args["backup_entropy"]:
+                target_q_values = target_q_values - alpha * new_log_pi
 
         q_target = (
             rewards

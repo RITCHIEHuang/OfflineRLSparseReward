@@ -23,7 +23,7 @@ layer_num = 2
 actor_lr = 1e-4
 critic_lr = 3e-4
 reward_scale = 1
-reward_shift = -1
+reward_shift = 0
 use_automatic_entropy_tuning = True
 target_entropy = 0.0
 discount = 0.99
@@ -40,7 +40,8 @@ lagrange_thresh = 5
 
 # extra params
 num_random = 10
-deterministic_backup = True
+backup_type = "max"  # "min"
+backup_entropy = True
 
 discrete = False
 
