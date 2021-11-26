@@ -36,7 +36,7 @@ use_importance_sample = True
 min_q_weight = 5.0
 
 # lagrange
-lagrange_thresh = 5
+lagrange_thresh = 1
 
 # extra params
 num_random = 10
