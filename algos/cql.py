@@ -189,7 +189,7 @@ class AlgoTrainer(BaseAlgo):
         terminals = batch.done
         obs = batch.obs
         lim = 1 - 1e5
-        actions = np.clip(batch.act, -lim, lim)
+        actions = torch.clamp(batch.act, -lim, lim)
         next_obs = batch.obs_next
 
         """

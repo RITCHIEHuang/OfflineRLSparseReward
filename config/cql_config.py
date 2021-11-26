@@ -48,6 +48,6 @@ discrete = False
 grid_tune = {
     "actor_lr": [1e-4, 3e-4],
     "use_importance_sample": [True, False],
-    "min_q_weight": [2, 5, 10],
+    "min_q_weight": [1, 2, 5, 10],
     "lagrange_thresh": [-1, 5, 10],
 }
