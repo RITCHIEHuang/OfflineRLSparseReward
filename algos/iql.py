@@ -34,8 +34,8 @@ def algo_init(args):
         raise NotImplementedError
 
     actor = GaussianActor(
-        state_shape=obs_shape,
-        action_shape=action_shape,
+        obs_dim=obs_shape,
+        action_dim=action_shape,
         hidden_size=args["hidden_layer_size"],
         hidden_layers=args["hidden_layers"],
     ).to(args["device"])
