@@ -13,19 +13,9 @@ from torch import optim
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.net.common import MLP, Net
+from offlinerl.utils.net.common import MLP
+from offlinerl.utils.net.continuous import GaussianActor
 from offlinerl.utils.exp import setup_seed
-
-from algos.sac_policy import GaussianPolicy
-
-
-def rsample_action_log_prob(dist, eps=1e-8):
-    u = dist.rsample()
-    log_prob = dist.log_prob(u)
-    action = torch.tanh(u)
-    log_prob -= torch.log(1.0 - action.pow(2) + eps)
-
-    return action, log_prob.sum(-1, keepdim=True)
 
 
 def algo_init(args):
@@ -43,17 +33,11 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    net_a = Net(
-        layer_num=args["layer_num"],
+    actor = GaussianActor(
         state_shape=obs_shape,
-        hidden_layer_size=args["hidden_layer_size"],
-    )
-
-    actor = GaussianPolicy(
-        preprocess_net=net_a,
         action_shape=action_shape,
-        hidden_layer_size=args["hidden_layer_size"],
-        conditioned_sigma=True,
+        hidden_size=args["hidden_layer_size"],
+        hidden_layers=args["hidden_layers"],
     ).to(args["device"])
 
     actor_optim = optim.Adam(actor.parameters(), lr=args["actor_lr"])
@@ -117,11 +101,6 @@ class AlgoTrainer(BaseAlgo):
         self._n_train_steps_total = 0
         self._current_epoch = 0
 
-    def forward(self, obs):
-        dist = self.actor(obs)
-        action, log_prob = rsample_action_log_prob(dist)
-        return action, log_prob
-
     def _train(self, batch):
         self._current_epoch += 1
         self._n_train_steps_total += 1
@@ -170,7 +149,9 @@ class AlgoTrainer(BaseAlgo):
         """
         Policy Loss
         """
-        _, log_pi = self.forward(obs)
+
+        dist = self.actor(obs)
+        log_pi = dist.log_prob(actions).sum(dim=-1, keepdim=True)
 
         if self._current_epoch < self.args["policy_bc_steps"]:
             """
@@ -178,15 +159,14 @@ class AlgoTrainer(BaseAlgo):
             conventionally, there's not much difference in performance with having 20k
             gradient steps here, or not having it
             """
-            policy_log_prob = self.actor.log_prob(obs, actions)
-            policy_loss = -policy_log_prob.mean()
+            policy_loss = -log_pi.mean()
         else:
             adv = q_pred - vf_pred
             exp_adv = torch.exp(adv / self.args["beta"])
             if self.args["clip_score"] is not None:
                 exp_adv = torch.clamp(exp_adv, max=self.args["clip_score"])
 
-            weights = exp_adv[:, 0].detach()
+            weights = exp_adv.detach()
             policy_loss = (-log_pi * weights).mean()
 
         if self._n_train_steps_total % self.args["q_update_period"] == 0:

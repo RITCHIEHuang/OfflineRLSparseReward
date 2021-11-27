@@ -22,8 +22,7 @@ class GaussianPolicy(continuous.ActorProb, BasePolicy):
         self,
         obs,
         state=None,
-        infor={},
-        reparameterize=True,
+        info={},
     ):
         """
         :param obs: Observation
