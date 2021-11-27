@@ -229,10 +229,6 @@ class AlgoTrainer(BaseAlgo):
         q1_pred = self.critic1(obs_act)
         q2_pred = self.critic2(obs_act)
 
-        new_next_actions, new_log_pi = self.forward(
-            next_obs,
-        )
-
         if self.args["backup_type"] == "max":
             next_actions_temp, _ = self._get_policy_actions(
                 next_obs, num_actions=10, network=self.forward
@@ -254,6 +250,9 @@ class AlgoTrainer(BaseAlgo):
             target_q_values = torch.min(target_qf1_values, target_qf2_values)
 
         if self.args["backup_type"] == "min":
+            new_next_actions, new_log_pi = self.forward(
+                next_obs,
+            )
             next_obs_act = torch.cat([next_obs, new_next_actions], dim=-1)
             target_q_values = torch.min(
                 self.critic1_target(next_obs_act),
