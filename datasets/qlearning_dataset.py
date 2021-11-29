@@ -42,7 +42,8 @@ def qlearning_dataset(env, dataset=None, terminate_on_end=False, **kwargs):
         use_timeouts = True
 
     episode_step = 0
-    for i in range(N - 1):
+    i = 0
+    while i < (N - 1):
         obs = dataset["observations"][i].astype(np.float32)
         new_obs = dataset["observations"][i + 1].astype(np.float32)
         action = dataset["actions"][i].astype(np.float32)
@@ -68,6 +69,12 @@ def qlearning_dataset(env, dataset=None, terminate_on_end=False, **kwargs):
         done_.append(done_bool)
         time_out_.append(time_out)
         episode_step += 1
+
+        # truncate useless data
+        if done_bool:
+            while bool(dataset["terminals"][i + 1]):
+                i += 1
+        i += 1
 
     return {
         "observations": np.array(obs_),
