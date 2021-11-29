@@ -10,29 +10,33 @@ sns.set_context("paper", font_scale=1)
 
 
 def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
-    plt.figure()
     df = pd.DataFrame(data_list)
     df = df.T
     df.columns = names
-    sns.lineplot(data=df, legend=False, ci=None)
+    n_row, n_col = 2, len(names)
+
+    fig, axes = plt.subplots(n_row, n_col, figsize=(12, 8))
+    cur_r, cur_c = 0, 0
+    ax = axes[cur_r, cur_c]
+    sns.lineplot(data=df, legend=False, ci=None, ax=ax)
+    ax.set_xlabel("Time step")
+    ax.set_ylabel("Reward")
+
+    for idx in range(n_col):
+        name = names[idx]
+        cur_c += 1
+        if cur_c == n_col:
+            cur_r += 1
+            cur_c = 0
+        ax = axes[cur_r, cur_c]
+        sns.distplot(df[name], ax=ax)
+
     sns.despine(top=False, right=False, left=False, bottom=False)
-    plt.xlabel("Time step")
-    plt.ylabel("Reward")
-    # plt.title(f"{config['task']}-{config['delay_tag']}")
-    plt.legend(names)
     fig_dir = f"{proj_path}/assets/{config['task']}"
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
-
-    for name in names:
-        plt.figure()
-        sns.displot(data=df[name], kind="hist", legend=False)
-        plt.xlabel("Value")
-        sns.despine(top=False, right=False, left=False, bottom=False)
-        plt.savefig(
-            f"{fig_dir}/{config['delay_tag']}_distribution_{name}_{suffix}.png"
-        )
+    fig.tight_layout()
+    fig.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
 
 
 def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):

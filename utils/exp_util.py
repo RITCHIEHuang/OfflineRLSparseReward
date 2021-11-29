@@ -45,9 +45,7 @@ def argsparser():
         default="constant",
         choices=["constant", "random", "none"],
     )
-    parser.add_argument(
-        "--name", help="experiment name", type=str, default=""
-    )
+    parser.add_argument("--name", help="experiment name", type=str, default="")
     parser.add_argument(
         "--delay", help="constant delay steps", type=int, default=20
     )
@@ -82,7 +80,6 @@ def argsparser():
         #     "interval_random",
         #     "interval_ensemble",
         #     "minmax",
-        #     "zscore",
         #     "transformer_decompose",
         #     "pg_reshaping",
         # ],
@@ -91,7 +88,7 @@ def argsparser():
         "--task",
         help="task name",
         type=str,
-        default="walker2d-expert-v0",
+        default="halfcheetah-medium-expert-v0",
     )
     parser.add_argument("--log_to_wandb", type=bool, default=True)
 
