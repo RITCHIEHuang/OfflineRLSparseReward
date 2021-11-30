@@ -4,7 +4,7 @@ from torch.distributions import Normal
 
 from offlinerl.utils.net.common import BasePolicy
 from offlinerl.utils.net import continuous
-from algos import discrete
+from offlinerl.utils.net import discrete
 
 
 class CategoricalPolicy(discrete.ActorProb, BasePolicy):

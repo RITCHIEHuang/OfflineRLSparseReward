@@ -13,10 +13,15 @@ from offlinerl.utils.data import SampleBatch
 from offlinerl.utils.config import parse_config
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
-
-from algos import reward_shaper, reward_decoposer, reward_giver
-from config import shaping_config, decomposer_config, reward_giver_config
+from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
+from offlinerl.config.algo import (
+    shaping_config,
+    decomposer_config,
+    reward_giver_config,
+)
 from utils.plot_util import plot_ep_reward
+
+EPS = 1e-8
 
 
 def reward_redistributed(predictions, rewards, length):
@@ -62,6 +67,76 @@ def load_traj_buffer(traj_dataset):
 
 
 # Strategies
+def scale_strategy(traj_dataset, config, plot_traj_idx_list=None):
+    all_rewards = np.concatenate(traj_dataset["delay_rewards"])
+    reward_max = all_rewards.max()
+    reward_min = all_rewards.min()
+    reward_mean = all_rewards.mean()
+    reward_std = all_rewards.std()
+    scale_type = config["strategy"].split("_")[-1]
+    for i, traj_length in enumerate(traj_dataset["length"]):
+        if scale_type == "scale":
+            traj_delay_rewards = traj_dataset["delay_rewards"][i] / (
+                reward_max - reward_min + EPS
+            )
+        elif scale_type == "minmax":
+            traj_delay_rewards = (
+                traj_dataset["delay_rewards"][i] - reward_min
+            ) / (reward_max - reward_min + EPS)
+        elif scale_type == "zscore":
+            traj_delay_rewards = (
+                traj_dataset["delay_rewards"][i] - reward_mean
+            ) / (reward_std + EPS)
+        else:
+            raise NotImplementedError()
+
+        if i in plot_traj_idx_list:
+            plot_ep_reward(
+                [
+                    traj_dataset["rewards"][i],
+                    traj_delay_rewards,
+                ],
+                ["raw", "strategy"],
+                config,
+                suffix=f"{i}_scale",
+            )
+        traj_dataset["delay_rewards"][i] = traj_delay_rewards
+        traj_dataset["returns"][i] = np.cumsum(traj_delay_rewards[::-1])[::-1]
+    return traj_dataset
+
+
+def minmax_strategy(traj_dataset, config, plot_traj_idx_list=None):
+    tmp = np.array(
+        [
+            traj_dataset["returns"][i][0]
+            for i in range(len(traj_dataset["returns"]))
+        ]
+    )
+    return_max = np.max(tmp)
+    return_min = np.min(tmp)
+
+    for i, traj_length in enumerate(traj_dataset["length"]):
+        traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
+        traj_delay_rewards = (
+            traj_dataset["delay_rewards"][i]
+            - return_min / traj_dataset["length"][i]
+        ) / (return_max - return_min + EPS)
+
+        if i in plot_traj_idx_list:
+            plot_ep_reward(
+                [
+                    traj_dataset["rewards"][i],
+                    traj_delay_rewards,
+                ],
+                ["raw", "strategy"],
+                config,
+                suffix=f"{i}_minmax",
+            )
+        traj_dataset["delay_rewards"][i] = traj_delay_rewards
+        traj_dataset["returns"][i] = np.cumsum(traj_delay_rewards[::-1])[::-1]
+    return traj_dataset
+
+
 def interval_average_strategy(traj_dataset, config, plot_traj_idx_list=None):
     for i, traj_length in tqdm(enumerate(traj_dataset["length"])):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
@@ -308,38 +383,6 @@ def episodic_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=None):
                     suffix=f"{i}_episodic_ensemble_compare",
                 )
 
-        traj_dataset["delay_rewards"][i] = traj_delay_rewards
-        traj_dataset["returns"][i] = np.cumsum(traj_delay_rewards[::-1])[::-1]
-    return traj_dataset
-
-
-def minmax_strategy(traj_dataset, config, plot_traj_idx_list=None):
-    tmp = np.array(
-        [
-            traj_dataset["returns"][i][0]
-            for i in range(len(traj_dataset["returns"]))
-        ]
-    )
-    return_max = np.max(tmp)
-    return_min = np.min(tmp)
-
-    for i, traj_length in enumerate(traj_dataset["length"]):
-        traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
-        traj_delay_rewards = (
-            traj_dataset["delay_rewards"][i]
-            - return_min / traj_dataset["length"][i]
-        ) / (return_max - return_min)
-
-        if i in plot_traj_idx_list:
-            plot_ep_reward(
-                [
-                    traj_dataset["rewards"][i],
-                    traj_delay_rewards,
-                ],
-                ["raw", "strategy"],
-                config,
-                suffix=f"{i}_minmax",
-            )
         traj_dataset["delay_rewards"][i] = traj_delay_rewards
         traj_dataset["returns"][i] = np.cumsum(traj_delay_rewards[::-1])[::-1]
     return traj_dataset

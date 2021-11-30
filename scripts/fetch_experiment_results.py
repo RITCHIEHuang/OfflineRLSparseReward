@@ -2,9 +2,7 @@ from collections import defaultdict
 from copy import deepcopy
 import os
 import json
-import re
 import csv
-import shutil
 
 import numpy as np
 from tqdm import tqdm
@@ -165,18 +163,3 @@ def fetch_experiment_results():
 
 
 fetch_experiment_results()
-# log_path = f"{log_path}/.aim"
-# for a in os.listdir(log_path):
-#     if a.startswith("d4rl"):
-#         seed_idx = a.index("seed")
-#         stra_idx = a.index("strategy")
-#         if seed_idx < stra_idx:
-#             new_dir_name = (
-#                 a[:seed_idx]
-#                 + a[stra_idx : a.rindex("2021") - 1]
-#                 + "-"
-#                 + a[seed_idx : stra_idx - 1]
-#                 + "_"
-#                 + a[a.rindex("2021") :]
-#             )
-#             os.rename(f"{log_path}/{a}", f"{log_path}/{new_dir_name}")

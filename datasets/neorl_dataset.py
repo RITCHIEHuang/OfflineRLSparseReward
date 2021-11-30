@@ -114,10 +114,8 @@ def delay_traj_dataset(config):
                 suffix=f"{ep}_delayed_compare",
             )
 
-    delay_rewards = np.squeeze(np.concatenate(traj_dataset["delay_rewards"]))
-    # specific processing
+    # strategy processing
     if "strategy" in config:
-        # delay rewards process strategy
         strategies = config["strategy"]
 
         if strategies == "none":
@@ -135,29 +133,13 @@ def delay_traj_dataset(config):
                     traj_dataset, config, plot_traj_idx_list
                 )
 
-            # plot reward distribution
-            # processed_delay_rewards = np.squeeze(
-            #     np.concatenate(traj_dataset["delay_rewards"])
-            # )
-            # raw_rewards = np.squeeze(np.concatenate(traj_dataset["rewards"]))
-            # plot_reward_dist(
-            #     [
-            #         raw_rewards,
-            #         delay_rewards[delay_rewards >= 1e-5],
-            #         processed_delay_rewards,
-            #     ],
-            #     ["raw", "delay", "processed_delay"],
-            #     config,
-            #     config["strategy"],
-            # )
-
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
     )
     return traj_dataset
 
 
-def load_neorl_traj_buffer(config):
+def load_neorl_buffer(config):
     traj_dataset = delay_traj_dataset(config)
     return load_traj_buffer(traj_dataset)
 
@@ -166,12 +148,9 @@ if __name__ == "__main__":
     config = setup_exp_args()
     if config["log_to_wandb"]:
         config["log_to_wandb"] = False
-    """extract transition buffer"""
-    # load_neorl_buffer(config)
 
     """extract traj dataset"""
-    # traj_dataset = delay_traj_dataset(config)
     # traj_dataset = delay_transition_dataset(config)
 
     """extract traj buffer"""
-    load_neorl_traj_buffer(config)
+    load_neorl_buffer(config)

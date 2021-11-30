@@ -15,7 +15,7 @@ from offlinerl.utils.exp import setup_seed
 from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
 
-from algos.sac_policy import CategoricalPolicy
+from offlinerl.utils.net.sac_policy import CategoricalPolicy
 
 
 def prob_log_prob(dist, eps=1e-6):

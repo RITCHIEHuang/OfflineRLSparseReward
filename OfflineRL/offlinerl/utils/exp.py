@@ -2,16 +2,8 @@ import os
 import uuid
 import random
 
-import aim
 import torch
 import numpy as np
-from loguru import logger
-from torch.utils import tensorboard
-
-from torch.utils.tensorboard import SummaryWriter
-
-from offlinerl.utils.logger import log_path
-
 
 def setup_seed(seed=1024):
     torch.manual_seed(seed)
@@ -41,26 +33,3 @@ def set_free_device_fn():
     return device
 
 
-def init_custom_exp_logger(repo=None, experiment_name=None):
-    if repo is None:
-        repo = os.path.join(log_path(), "./logs")
-        if not os.path.exists(repo):
-            logger.info("{} dir is not exist, create {}", repo, repo)
-            os.makedirs(repo)
-
-    tensorboard_logger = SummaryWriter(log_dir=f"{repo}/{experiment_name}")
-    return repo, tensorboard_logger
-
-
-def init_exp_logger(repo, experiment_name=None, flush_frequency=1):
-    repo = os.path.join(repo, "./.aim")
-    if not os.path.exists(repo):
-        logger.info("{} dir is not exist, create {}", repo, repo)
-        os.system(str("cd " + os.path.join(repo, "../") + "&& aim init"))
-
-    aim_logger = aim.Session(
-        repo=repo, experiment=experiment_name, flush_frequency=flush_frequency
-    )
-    aim_logger.experiment_name = experiment_name
-
-    return aim_logger

@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import os
 import uuid
 import json
@@ -5,51 +6,52 @@ from abc import ABC, abstractmethod
 
 import wandb
 import torch
-from collections import OrderedDict
 from loguru import logger
-from offlinerl.utils.exp import init_custom_exp_logger, init_exp_logger
+
+from torch.utils.tensorboard import SummaryWriter
+
+
 from offlinerl.utils.io import create_dir
+from offlinerl.utils.logger import log_path
 
 
 class BaseAlgo(ABC):
     def __init__(self, args):
         logger.info("Init AlgoTrainer")
+
+        self.log_to_wandb = args["log_to_wandb"]
+
         if "exp_name" not in args.keys():
             exp_name = str(uuid.uuid1()).replace("-", "")
         else:
             exp_name = args["exp_name"]
 
         if "log_path" in args.keys():
-            repo = args["log_path"]
+            log_path_ = args["log_path"]
         else:
-            repo = None
+            log_path_ = log_path()
 
-        self.log_to_wandb = args["log_to_wandb"]
+        tb_log_path = os.path.join(log_path_, "./logs")
+        if not os.path.exists(tb_log_path):
+            logger.info(
+                "{} dir is not exist, create {}", tb_log_path, tb_log_path
+            )
+            os.makedirs(tb_log_path)
 
         # setup tensorboard
-        self.repo, self.exp_logger = init_custom_exp_logger(repo, exp_name)
+        self.exp_logger = SummaryWriter(log_dir=f"{tb_log_path}/{exp_name}")
 
         # setup wandb
         if self.log_to_wandb:
             wandb.init(
+                dir=f"{log_path_}/wandb",
                 name=args["exp_name"],
                 group=args["task"],
-                project="OfflineRL_DelayRewards",
+                project=args["project"],
                 config=args,
             )
 
-        # setup aim
-        try:
-            self.aim_exp_logger = init_exp_logger(
-                repo=self.repo, experiment_name=exp_name
-            )
-            self.aim_exp_logger.set_params(args, name="hparams")
-        except:
-            logger.error(f"Error initializing Aim Logger !!!")
-            self.aim_exp_logger = None
-
-        # self.index_path = self.aim_exp_logger.repo.index_path
-        self.index_path = f"{self.repo}/{exp_name}"
+        self.index_path = f"{tb_log_path}/{exp_name}"
         self.models_save_dir = os.path.join(self.index_path, "models")
         self.metric_logs = OrderedDict()
         self.metric_logs_path = os.path.join(
@@ -69,13 +71,6 @@ class BaseAlgo(ABC):
 
         for k, v in result.items():
             logger.info("{} : {}", k, v)
-            if self.aim_exp_logger:
-                self.aim_exp_logger.track(
-                    v,
-                    name=k.split(" ")[0],
-                    epoch=epoch,
-                )
-
             self.exp_logger.add_scalar(k.split(" ")[0], v, epoch)
             self.exp_logger.flush()
 

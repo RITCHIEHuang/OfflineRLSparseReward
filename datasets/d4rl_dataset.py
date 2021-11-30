@@ -121,10 +121,8 @@ def delay_traj_dataset(config):
                 suffix=f"{ep}_delayed_compare",
             )
 
-    delay_rewards = np.squeeze(np.concatenate(traj_dataset["delay_rewards"]))
-    # specific processing
+    # strategy processing
     if "strategy" in config:
-        # delay rewards process strategy
         strategies = config["strategy"]
         logger.info(f"Deal with delay rewards by strategies: {strategies} !!!")
 
@@ -140,29 +138,13 @@ def delay_traj_dataset(config):
                     traj_dataset, config, plot_traj_idx_list
                 )
 
-            # plot reward distribution
-            # processed_delay_rewards = np.squeeze(
-            #     np.concatenate(traj_dataset["delay_rewards"])
-            # )
-            # raw_rewards = np.squeeze(np.concatenate(traj_dataset["rewards"]))
-            # plot_reward_dist(
-            #     [
-            #         raw_rewards,
-            #         delay_rewards[delay_rewards >= 1e-5],
-            #         processed_delay_rewards,
-            #     ],
-            #     ["raw", "delay", "processed_delay"],
-            #     config,
-            #     config["strategy"],
-            # )
-
     logger.info(
         f"Task: {config['task']}, data size: {len(raw_rewards)}, traj num: {len(traj_dataset['length'])}"
     )
     return traj_dataset
 
 
-def load_d4rl_traj_buffer(config):
+def load_d4rl_buffer(config):
     traj_dataset = delay_traj_dataset(config)
     return load_traj_buffer(traj_dataset)
 
@@ -183,4 +165,4 @@ if __name__ == "__main__":
     # traj_dataset = delay_traj_dataset(config)
 
     """extract traj buffer"""
-    load_d4rl_traj_buffer(config)
+    load_d4rl_buffer(config)

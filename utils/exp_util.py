@@ -34,6 +34,9 @@ def get_gpu_count():
 def argsparser():
     parser = argparse.ArgumentParser("D4rl trainer")
     parser.add_argument(
+        "--project", type=str, default="OfflineRL_DelayRewards"
+    )
+    parser.add_argument(
         "--algo_name", help="algorithm", type=str, default="cql"
     )
     parser.add_argument("--seed", help="random seed", type=int, default=2021)

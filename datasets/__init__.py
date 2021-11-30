@@ -8,4 +8,5 @@ STRATEGY_MAPPING = {
     "minmax": minmax_strategy,
     "transformer_decompose": transformer_decompose_strategy,
     "pg_reshaping": pg_reshaping_strategy,
+    "scale": scale_strategy,
 }

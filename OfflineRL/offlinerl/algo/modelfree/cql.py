@@ -15,7 +15,7 @@ from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.net.common import MLP, Net
 from offlinerl.utils.exp import setup_seed
 
-from algos.sac_policy import GaussianPolicy
+from offlinerl.utils.net.sac_policy import GaussianPolicy
 
 
 def rsample_action_log_prob(dist, eps=1e-8):
