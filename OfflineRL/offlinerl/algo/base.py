@@ -8,7 +8,7 @@ import torch
 from collections import OrderedDict
 from loguru import logger
 from offlinerl.utils.exp import init_custom_exp_logger, init_exp_logger
-from offlinerl.utils.io import create_dir, download_helper, read_json
+from offlinerl.utils.io import create_dir
 
 
 class BaseAlgo(ABC):
@@ -25,8 +25,20 @@ class BaseAlgo(ABC):
             repo = None
 
         self.log_to_wandb = args["log_to_wandb"]
+
+        # setup tensorboard
         self.repo, self.exp_logger = init_custom_exp_logger(repo, exp_name)
 
+        # setup wandb
+        if self.log_to_wandb:
+            wandb.init(
+                name=args["exp_name"],
+                group=args["task"],
+                project="OfflineRL_DelayRewards",
+                config=args,
+            )
+
+        # setup aim
         try:
             self.aim_exp_logger = init_exp_logger(
                 repo=self.repo, experiment_name=exp_name
@@ -92,11 +104,9 @@ class BaseAlgo(ABC):
     ):
         pass
 
-    # @abstractmethod
     def save_model(self, model_path):
         torch.save(self.get_policy(), model_path)
 
-    # @abstractmethod
     def load_model(self, model_path):
         model = torch.load(model_path)
 

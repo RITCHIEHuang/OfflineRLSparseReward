@@ -83,7 +83,7 @@ def delay_traj_dataset(config):
                 delay_rewards[trans_idx] = np.sum(
                     raw_rewards[last_delay_idx : trans_idx + 1]
                 )
-                last_delay_idx = trans_idx
+                last_delay_idx = trans_idx + 1
 
                 if config["delay_mode"] == "random":
                     delay = np.random.randint(

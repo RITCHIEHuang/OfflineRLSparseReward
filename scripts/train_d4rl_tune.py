@@ -1,11 +1,10 @@
 from loguru import logger
 from ray import tune
 
+from offlinerl.algo import algo_select
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
-from offlinerl.data import d4rl
 
 from datasets import delay_d4rl_dataset
-from config import algo_select
 from utils.exp_util import setup_exp_args
 from utils.io_util import proj_path
 from evaluation.d4rl_score import d4rl_eval_fn

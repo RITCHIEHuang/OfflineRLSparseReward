@@ -1,6 +1,7 @@
 from collections import defaultdict
 from copy import deepcopy
 
+import json
 import os
 import csv
 
@@ -10,9 +11,10 @@ from tqdm import tqdm
 from loguru import logger
 
 from utils.io_util import proj_path
+from utils.task_util import get_domain_by_task
 
 
-debug = True
+debug = False
 
 agg_result_file_path = f"{proj_path}/assets/DT_agg_results.csv"
 
@@ -20,7 +22,8 @@ if os.path.exists(agg_result_file_path):
     os.remove(agg_result_file_path)
 
 
-algo = "DT"
+filter_model_types = ["dt"]
+
 api = wandb.Api()
 runs = api.runs("ritchiehuang/decision-transformer")
 
@@ -35,13 +38,21 @@ for run in tqdm(runs):
     delay = run.config["delay"]
     seed = run.config.get("seed", 0)
     dataset_type = run.config["dataset"]
+    model_type = run.config["model_type"]
+    # domain = get_domain_by_task(f"{env}-{dataset_type}")
+    # if domain != "neorl":
+    #     domain = "d4rl"
+
+    if model_type not in filter_model_types:
+        continue
 
     variant_result_info = {
         "Dataset Type": dataset_type,
         "Environment": env,
         "Delay Mode": delay_mode,
         "Delay": delay,
-        "Algo": algo,
+        "Strategy": model_type,
+        "Algo": model_type.upper(),
         "Seed": seed,
     }
 
@@ -59,6 +70,11 @@ for run in tqdm(runs):
 
         exp_variant_mapping[group][epoch].append(result_info_item)
 
+if debug:
+    with open("test.json", "w") as f:
+        json.dump(exp_variant_mapping, f)
+
+
 # aggregate
 flag = True
 for k, v in exp_variant_mapping.items():
@@ -70,6 +86,7 @@ for k, v in exp_variant_mapping.items():
             np.std([it["D4rl_Score"] for it in iter_res]),
         )
         for i_iter, iter_res in v.items()
+        if len(iter_res) >= 3
     ]
 
     try:

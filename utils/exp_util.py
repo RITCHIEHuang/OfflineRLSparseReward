@@ -3,7 +3,6 @@ import subprocess
 
 from datetime import datetime
 
-import wandb
 from loguru import logger
 
 from utils.io_util import proj_path
@@ -136,13 +135,5 @@ def setup_exp_args():
     args[
         "exp_name"
     ] = f"{args['exp_name']}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')[:-3]}"
-    # init wandb
-    if args["log_to_wandb"]:
-        wandb.init(
-            name=args["exp_name"],
-            group=args["task"],
-            project="OfflineRL_DelayRewards",
-            config=args,
-        )
 
     return args

@@ -1,9 +1,5 @@
 import torch
 
-task = "Hopper-v3"
-task_data_type = "low"
-task_train_num = 99
-
 seed = 42
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
