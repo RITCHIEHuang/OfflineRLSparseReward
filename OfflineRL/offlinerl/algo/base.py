@@ -31,7 +31,7 @@ class BaseAlgo(ABC):
         else:
             log_path_ = log_path()
 
-        tb_log_path = os.path.join(log_path_, "./logs")
+        tb_log_path = log_path_
         if not os.path.exists(tb_log_path):
             logger.info(
                 "{} dir is not exist, create {}", tb_log_path, tb_log_path
@@ -44,11 +44,14 @@ class BaseAlgo(ABC):
         # setup wandb
         if self.log_to_wandb:
             wandb.init(
-                dir=f"{log_path_}/wandb",
+                dir=f"{log_path_}",
                 name=args["exp_name"],
                 group=args["task"],
                 project=args["project"],
                 config=args,
+            )
+            wandb.run.log_code(
+                root="../", include_fn=lambda path: path.endswith(".py")
             )
 
         self.index_path = f"{tb_log_path}/{exp_name}"
