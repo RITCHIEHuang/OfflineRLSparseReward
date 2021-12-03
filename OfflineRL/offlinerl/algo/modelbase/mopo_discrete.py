@@ -61,9 +61,8 @@ def algo_init(args):
 
     actor = CategoricalPolicy(
         preprocess_net=net_a,
-        action_shape=action_shape[0],
+        action_num=action_shape,
         hidden_layer_size=args["hidden_layer_size"],
-        conditioned_sigma=True,
     ).to(args["device"])
 
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args["actor_lr"])
@@ -72,16 +71,16 @@ def algo_init(args):
     alpha_optimizer = torch.optim.Adam([log_alpha], lr=args["actor_lr"])
 
     q1 = MLP(
-        obs_shape + action_shape,
-        action_shape[0],
+        obs_shape,
+        action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
         hidden_activation="swish",
     ).to(args["device"])
     q2 = MLP(
-        obs_shape + action_shape,
-        action_shape[0],
+        obs_shape,
+        action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
@@ -126,7 +125,7 @@ class AlgoTrainer(BaseAlgo):
             * self.args["horizon"]
             * 5
         )
-        self.args["target_entropy"] = np.log(self.args["action_shape"][0])
+        self.args["target_entropy"] = np.log(self.args["action_shape"])
 
     def train(self, train_buffer, val_buffer, callback_fn):
         if self.args["dynamics_path"] is not None:
@@ -249,7 +248,8 @@ class AlgoTrainer(BaseAlgo):
                     )["obs"]
                     obs = torch.tensor(obs, device=self.device)
                     for t in range(self.args["horizon"]):
-                        action = torch.tanh(self.actor(obs).sample())
+                        action = self.actor(obs).sample()
+                        action = action.unsqueeze(-1)
                         obs_action = torch.cat([obs, action], dim=-1)
                         next_obs_dists = transition(obs_action)
                         next_obses = next_obs_dists.sample()

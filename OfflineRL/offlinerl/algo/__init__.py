@@ -11,6 +11,7 @@ from offlinerl.config.algo import (
     iql_config,
     plas_config,
     mopo_config,
+    mopod_config,
     moose_config,
     bcqd_config,
     bcq_config,
@@ -40,7 +41,7 @@ algo_dict = {
     "cql": {"algo": cql, "config": cql_config},
     "iql": {"algo": iql, "config": iql_config},
     "mopo": {"algo": mopo, "config": mopo_config},
-    "mopo_discrete": {"algo": mopo_discrete, "config": mopo_config},
+    "mopod": {"algo": mopo_discrete, "config": mopod_config},
     # default
     "bc": {"algo": bc, "config": bc_config},
     "bcq": {"algo": bcq, "config": bcq_config},

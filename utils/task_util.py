@@ -35,9 +35,13 @@ neorl_task_list = {
     8: "Walker2d-v3-low-1000",
 }
 
+rec_task_list = {0: "recs-random-v0"}
+
 
 def get_domain_by_task(task: str):
     if task in list(d4rl_task_list.values()):
         return "d4rl"
-    if task in list(neorl_task_list.values()):
+    elif task in list(neorl_task_list.values()):
         return "neorl"
+    elif task in list(rec_task_list.values()):
+        return "recs"

@@ -13,6 +13,14 @@ class CategoricalPolicy(discrete.ActorProb, BasePolicy):
         greedy_actions = torch.argmax(probs, dim=-1, keepdim=True)
         return greedy_actions
 
+    def get_action(self, obs):
+        obs_tensor = torch.as_tensor(
+            obs, device=next(self.parameters()).device, dtype=torch.float32
+        )
+        act = self.policy_infer(obs_tensor)
+        act = act.detach().cpu().numpy()[0]
+        return act
+
 
 class GaussianPolicy(continuous.ActorProb, BasePolicy):
     LOG_SIG_MAX = 2.0

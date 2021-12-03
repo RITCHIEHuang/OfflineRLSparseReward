@@ -21,6 +21,9 @@ for env in ["HalfCheetah", "Hopper", "Walker2d", "Ant"]:
                 env.lower() + "-random-v0"
             ]
 
+D4RL_REF_MIN_SCORE["recs-random-v0"] = 0.0
+D4RL_REF_MAX_SCORE["recs-random-v0"] = 1.0
+
 def d4rl_score(task, rew_mean, len_mean):
     split_list = task.split("-")
     domain = split_list[0]

@@ -12,6 +12,9 @@ def get_env(task: str) -> gym.Env:
             env = neorl.make("Hopper-v3")
         elif "Walker2d-v3" in task:
             env = neorl.make("Walker2d-v3")
+        elif task.startswith("recs"):
+            task = task[5:]
+            env = gym.make(task)
         elif task.startswith("d4rl"):
             import d4rl
 

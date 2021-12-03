@@ -1,340 +1,137 @@
 import numpy as np
 from gym import spaces
-
-from recsim import document
-from recsim import user
-
-from recsim.simulator import environment, recsim_gym
+from recsim.simulator import environment
 from recsim.simulator.recsim_gym import RecSimGymEnv
 
 from rec_env.offline_env import OfflineEnv
-
-env_config = {
-    # global
-    "seed": 9999,
-    "slate_size": 1,
-    "candidate_size": 10,
-    # video
-    "video_num": 10000,
-    "max_video_duration": 5.0,
-    "min_video_duration": 1.0,
-    "emb_dim": 10,
-    # user
-    "time_budget": 9 * 24 * 60,
-    "next_time_mean": 600.0,
-    "alpha_min": 0.001,
-    "alpha_max": 0.01,
-    "max_hist_len": 50,
-    "feature_dim": 10,
-}
+from rec_env.recs_env import create_env, reward_fn
 
 
-class Video(document.AbstractDocument):
-    EMB_DIM = env_config["emb_dim"]
-    MIN_VIDEO_DURATION = env_config["min_video_duration"]
-    MAX_VIDEO_DURATION = env_config["max_video_duration"]
+class ObservationAdapter(object):
+    """An adapter to convert between user/doc observation and images."""
 
-    def __init__(self, v_id, emb, duration):
-        self.emb = emb
-        self.duration = duration
+    def __init__(self, input_observation_space, encode_format="vec"):
+        self._input_observation_space = input_observation_space
+        self._encode_format = encode_format
+        user_space = input_observation_space.spaces["user"]
+        doc_space = input_observation_space.spaces["doc"]
+        self._num_candidates = len(doc_space.spaces)
 
-        super(Video, self).__init__(v_id)
-
-    def create_observation(self):
-        return {
-            "emb": self.emb,
-            "duration": np.array([self.duration]),
-            # "ctr": np.array([self.ctr]),
-        }
-
-    @classmethod
-    def observation_space(cls):
-        return spaces.Dict(
-            {
-                # tag
-                "emb": spaces.Box(
-                    shape=(cls.EMB_DIM,), dtype=np.float32, low=0.0, high=1.0
-                ),
-                # duration min
-                "duration": spaces.Box(
-                    shape=(1,),
-                    dtype=np.float32,
-                    low=cls.MIN_VIDEO_DURATION,
-                    high=cls.MAX_VIDEO_DURATION,
-                ),
-            }
-        )
-
-    def __str__(self):
-        return "Video {} with emb {}, duration {} min".format(
-            self._doc_id, self.emb, self.duration
-        )
-
-
-class VideoSampler(document.AbstractDocumentSampler):
-    def __init__(
-        self,
-        doc_ctor=Video,
-        **kwargs,
-    ):
-        super(VideoSampler, self).__init__(doc_ctor, **kwargs)
-        self._video_count = 0
-
-    def sample_document(self):
-        doc_features = {}
-        doc_features["v_id"] = self._video_count
-        doc_features["emb"] = self._rng.uniform(
-            0,
-            1,
-            self.get_doc_ctor().EMB_DIM,
-        )
-        doc_features["duration"] = self._rng.uniform(
-            self.get_doc_ctor().MIN_VIDEO_DURATION,
-            self.get_doc_ctor().MAX_VIDEO_DURATION,
-        )
-        self._video_count += 1
-        return self._doc_ctor(**doc_features)
-
-
-class UserState(user.AbstractUserState):
-    def __init__(
-        self,
-        interest,
-        next_time_lambda,
-        alpha=0.001,
-        click_list=None,
-        impressed_list=None,
-    ):
-
-        self.interest = interest
-        self.next_time_lambda = next_time_lambda
-
-        self.alpha = alpha
-        self.click_list = click_list
-        self.impressed_list = impressed_list
-
-        self.cum_next_time = 0.0
-        self.day = self.cum_next_time // 1440
-
-    def create_observation(self):
-        return {
-            "interest": self.interest,
-            # "cum_next_time": self.cum_next_time,
-            # "day": self.day,
-        }
-
-    @classmethod
-    def observation_space(cls):
-        return spaces.Dict(
-            {
-                # "cum_next_time": spaces.Box(
-                #     shape=tuple(),
-                #     dtype=np.float32,
-                #     low=0.0,
-                #     high=env_config["time_budget"],
-                # ),
-                # "day": spaces.Box(
-                #     shape=tuple(), dtype=np.int64, low=0, high=10
-                # ),
-                "interest": spaces.Box(
-                    shape=(env_config["feature_dim"],),
-                    dtype=np.float32,
-                    low=0.0,
-                    high=1.0,
-                )
-            }
-        )
-
-    def score_document(self, doc_obs):
-        # the user is more likely to click on the video with similar feature
-        score = (self.interest @ doc_obs["emb"]) / np.sqrt(
-            self.interest @ self.interest * doc_obs["emb"] @ doc_obs["emb"]
-        )
-        return score
-
-
-class UserSampler(user.AbstractUserSampler):
-    def __init__(
-        self,
-        config,
-        user_ctor=UserState,
-        **kwargs,
-    ):
-        self.config = config
-        super(UserSampler, self).__init__(user_ctor, **kwargs)
-
-    def sample_user(self):
-        state_parameters = {
-            "alpha": self._rng.uniform(
-                self.config["alpha_min"],
-                self.config["alpha_max"],
-            ),
-            "click_list": [],
-            "impressed_list": [],
-            "interest": self._rng.uniform(
-                0,
-                1,
-                env_config["feature_dim"],
-            ),
-            "next_time_lambda": self.config["next_time_mean"],
-        }
-        return self._user_ctor(**state_parameters)
-
-
-class UserResponse(user.AbstractResponse):
-    def __init__(self, clicked=False, next_time=0.0, retention=0.0):
-        self.clicked = clicked
-        self.next_time = next_time
-        self.retention = retention
-
-    def create_observation(self):
-        return {
-            "click": int(self.clicked),
-            "next_time": np.array(self.next_time),
-            "retention": np.array(self.retention),
-        }
-
-    @classmethod
-    def response_space(cls):
-        return spaces.Dict(
-            {
-                "click": spaces.Discrete(2),
-                "next_time": spaces.Box(
-                    low=0.0,
-                    high=1440.0,
-                    shape=tuple(),
-                    dtype=np.float32,
-                ),
-                "retention": spaces.Box(
-                    low=0.0,
-                    high=1.0,
-                    shape=tuple(),
-                    dtype=np.float32,
-                ),
-            }
-        )
-
-
-class UserModel(user.AbstractUserModel):
-    def __init__(self, config):
-        super(UserModel, self).__init__(
-            UserResponse,
-            UserSampler(config, UserState, seed=config["seed"]),
-            config["slate_size"],
-        )
-        self.config = config
-        # self.choice_model = MultinomialLogitChoiceModel({})
-
-    def simulate_response(self, slate_documents):
-        # List of empty responses
-        responses = [self._response_model_ctor() for _ in slate_documents]
-        # Get click from of choice model.
-        doc_obs = [doc.create_observation() for doc in slate_documents]
-        # self.choice_model.score_documents(
-        #     self._user_state,
-        #     doc_obs,
-        # )
-        # scores = self.choice_model.scores
-        # selected_index = self.choice_model.choose_item()
-
-        selected_index = 0
-        scores = [self._user_state.score_document(doc) for doc in doc_obs]
-
-        assert selected_index is not None
-        # Populate clicked item.
-        self._generate_response(
-            slate_documents[selected_index],
-            responses[selected_index],
-            scores[selected_index],
-        )
-        return responses
-
-    def _generate_response(self, doc, response, score):
-        next_time = None
-        # print(score)
-        if score >= 0.7:
-            # click case
-            response.clicked = True
-            watch_time = score * doc.duration
-            reaction_time = np.random.uniform(0.02, 0.05)
-            next_time = watch_time + reaction_time
-        else:
-            response.clicked = False
-            next_time = np.random.exponential(
-                self._user_state.next_time_lambda
+        doc_space_shape = spaces.flatdim(list(doc_space.spaces.values())[0])
+        # Use the longer of user_space and doc_space as the shape of each row.
+        if encode_format == "img":
+            obs_shape = (
+                np.max([spaces.flatdim(user_space), doc_space_shape]),
             )
-
-        response.next_time = next_time
-
-        # reward
-        cur_day = self._user_state.cum_next_time // 1440
-        new_day = (self._user_state.cum_next_time + response.next_time) // 1440
-        if new_day - cur_day == 1:
-            response.retention = 1.0
+            self._observation_shape = (self._num_candidates + 1,) + obs_shape
         else:
-            response.retention = 0.0
+            self._observation_shape = [
+                spaces.flatdim(user_space)
+                + doc_space_shape * self._num_candidates
+            ]
 
-    def update_state(self, slate_documents, responses):
-        """Update user state"""
-        for doc, response in zip(slate_documents, responses):
-            self._user_state.impressed_list.append(doc)
+        self._observation_dtype = user_space.dtype
 
-            # update user interest
-            target = doc.emb - self._user_state.interest
-            update = -self._user_state.alpha * target
+    # Pads an array with zeros to make its shape identical to  _observation_shape.
+    def _pad_with_zeros(self, array):
+        width = self._observation_shape[-1] - len(array)
+        return np.pad(array, (0, width), mode="constant")
 
-            if response.clicked:
-                update *= -1.0
-                self._user_state.click_list.append(doc)
+    @property
+    def output_observation_space(self):
+        """The output observation space of the adapter."""
+        user_space = self._input_observation_space.spaces["user"]
+        doc_space = self._input_observation_space.spaces["doc"]
+        user_dim = spaces.flatdim(user_space)
 
-                self._user_state.click_list = self._user_state.click_list[
-                    -self.config["max_hist_len"] :
+        if self._encode_format == "img":
+            low = np.concatenate(
+                [
+                    self._pad_with_zeros(np.ones(user_dim) * -np.inf).reshape(
+                        1, -1
+                    )
                 ]
-
-            self._user_state.cum_next_time += response.next_time
-            self._user_state.interest += update
-            self._user_state.interest = np.clip(
-                self._user_state.interest, 0.0, 1.0
+                + [
+                    self._pad_with_zeros(
+                        np.ones(spaces.flatdim(d)) * -np.inf
+                    ).reshape(1, -1)
+                    for d in doc_space.spaces.values()
+                ]
             )
+            high = np.concatenate(
+                [
+                    self._pad_with_zeros(np.ones(user_dim) * np.inf).reshape(
+                        1, -1
+                    )
+                ]
+                + [
+                    self._pad_with_zeros(
+                        np.ones(spaces.flatdim(d)) * np.inf
+                    ).reshape(1, -1)
+                    for d in doc_space.spaces.values()
+                ]
+            )
+        else:
+            low = np.ones(self._observation_shape[-1]) * -np.inf
+            high = np.ones(self._observation_shape[-1]) * np.inf
+        return spaces.Box(low=low, high=high, dtype=np.float32)
 
-        self._user_state.impress_list = self._user_state.impressed_list[
-            -self.config["max_hist_len"] :
-        ]
+    def encode(self, observation):
+        """Encode user observation and document observations to specific format."""
+        if self._encode_format == "vec":
+            return self._vec_encode(observation)
+        else:
+            return self._img_encode(observation)
 
-    def is_terminal(self):
-        """Returns a boolean indicating if the session is over."""
-        return self._user_state.cum_next_time >= self.config["time_budget"]
+    def _vec_encode(self, observation):
+        """Encode user observation and document observations to a vector."""
+        # It converts the observation from the simulator to a numpy array to be
+        # consumed by agent, which assume the input is a vector Concatenating user's observation and documents' observation.
 
+        doc_space = zip(
+            self._input_observation_space.spaces["doc"].spaces.values(),
+            observation["doc"].values(),
+        )
+        vec = np.concatenate(
+            [
+                spaces.flatten(
+                    self._input_observation_space.spaces["user"],
+                    observation["user"],
+                )
+            ]
+            + [spaces.flatten(doc_space, d) for doc_space, d in doc_space]
+        )
 
-def get_flatten_obs(obs, env):
-    return np.concatenate(
-        [
-            spaces.flatten(env.observation_space.spaces["user"], obs["user"]),
-            spaces.flatten(env.observation_space.spaces["doc"], obs["doc"]),
-        ]
-    )
+        return vec
 
+    def _img_encode(self, observation):
+        """Encode user observation and document observations to an image."""
+        # It converts the observation from the simulator to a numpy array to be
+        # consumed by DQN agent, which assume the input is a "image".
+        # The first row is user's observation. The remaining rows are documents'
+        # observation, one row for each document.
+        image = np.zeros(
+            self._observation_shape + (1,),
+            dtype=self._observation_dtype,
+        )
+        image[0, :, 0] = self._pad_with_zeros(
+            spaces.flatten(
+                self._input_observation_space.spaces["user"],
+                observation["user"],
+            )
+        )
+        doc_space = zip(
+            self._input_observation_space.spaces["doc"].spaces.values(),
+            observation["doc"].values(),
+        )
+        image[1:, :, 0] = np.array(
+            [
+                self._pad_with_zeros(spaces.flatten(doc_space, d))
+                for doc_space, d in doc_space
+            ]
+        )
 
-def reward_fn(responses):
-    total_reward = 0.0
-    for response in responses:
-        total_reward += response.retention
-    return total_reward
-
-
-def create_env():
-    user_model = UserModel(env_config)
-    video_sampler = VideoSampler()
-    # single user environment
-    env = environment.Environment(
-        user_model,
-        video_sampler,
-        env_config["candidate_size"],
-        env_config["slate_size"],
-        resample_documents=True,
-    )
-
-    return env
+        return image
 
 
 class RecsEnv(RecSimGymEnv, OfflineEnv):
@@ -342,6 +139,7 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
         self,
         raw_environment,
         reward_aggregator,
+        obs_encode_format="vec",
         **kwargs,
     ):
         RecSimGymEnv.__init__(
@@ -350,6 +148,96 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
             reward_aggregator,
         )
         OfflineEnv.__init__(self, **kwargs)
+
+        self._obs_adapter = ObservationAdapter(
+            self.raw_observation_space, obs_encode_format
+        )
+
+    @property
+    def raw_observation_space(self):
+        """Returns the observation space of the environment.
+
+        Each observation is a dictionary with three keys `user`, `doc` and
+        `response` that includes observation about user state, document and user
+        response, respectively.
+        """
+        if isinstance(self._environment, environment.MultiUserEnvironment):
+            user_obs_space = self._environment.user_model[
+                0
+            ].observation_space()
+            resp_obs_space = self._environment.user_model[0].response_space()
+            user_obs_space = spaces.Tuple(
+                [user_obs_space] * self._environment.num_users
+            )
+            resp_obs_space = spaces.Tuple(
+                [resp_obs_space] * self._environment.num_users
+            )
+
+        if isinstance(self._environment, environment.SingleUserEnvironment):
+            user_obs_space = self._environment.user_model.observation_space()
+            resp_obs_space = self._environment.user_model.response_space()
+
+        return spaces.Dict(
+            {
+                "user": user_obs_space,
+                "doc": self._environment.candidate_set.observation_space(),
+                "response": resp_obs_space,
+            }
+        )
+
+    @property
+    def observation_space(self):
+        return self._obs_adapter.output_observation_space
+
+    def step(self, action):
+        """Runs one timestep of the environment's dynamics.
+
+        When end of episode is reached, you are responsible for calling `reset()`
+        to reset this environment's state. Accepts an action and returns a tuple
+        (observation, reward, done, info).
+
+        Args:
+        action (object): An action provided by the environment
+
+        Returns:
+        A four-tuple of (observation, reward, done, info) where:
+            observation (object): agent's observation that include
+            1. User's state features
+            2. Document's observation
+            3. Observation about user's slate responses.
+            reward (float) : The amount of reward returned after previous action
+            done (boolean): Whether the episode has ended, in which case further
+            step() calls will return undefined results
+            info (dict): Contains responses for the full slate for
+            debugging/learning.
+        """
+        user_obs, doc_obs, responses, done = self._environment.step(action)
+        if isinstance(self._environment, environment.MultiUserEnvironment):
+            all_responses = tuple(
+                tuple(
+                    response.create_observation()
+                    for response in single_user_resps
+                )
+                for single_user_resps in responses
+            )
+        else:  # single user environment
+            all_responses = tuple(
+                response.create_observation() for response in responses
+            )
+        obs = dict(user=user_obs, doc=doc_obs, response=all_responses)
+
+        # extract rewards from responses
+        reward = self._reward_aggregator(responses)
+        info = self.extract_env_info()
+        info["raw_obs"] = obs
+        encoded_obs = self._obs_adapter.encode(obs)
+        return encoded_obs, reward, done, info
+
+    def reset(self):
+        user_obs, doc_obs = self._environment.reset()
+        obs = dict(user=user_obs, doc=doc_obs, response=None)
+        encoded_obs = self._obs_adapter.encode(obs)
+        return encoded_obs
 
 
 def get_recs_env(**kwargs):
