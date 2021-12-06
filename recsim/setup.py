@@ -27,12 +27,12 @@ from setuptools import setup
 here = path.abspath(path.dirname(__file__))
 
 install_requires = [
-    "absl-py",
-    'dopamine-rl',
+    # "absl-py",
+    "dopamine-rl",
     "gin-config",
-    "gym",
-    "numpy",
-    "scipy",
+    # "gym",
+    # "numpy",
+    # "scipy",
     # 'tensorflow',
 ]
 

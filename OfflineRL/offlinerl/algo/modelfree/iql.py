@@ -105,9 +105,7 @@ class AlgoTrainer(BaseAlgo):
         self._current_epoch += 1
         self._n_train_steps_total += 1
         batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
-        rewards = (batch.rew + self.args["reward_shift"]) * self.args[
-            "reward_scale"
-        ]
+        rewards = batch.rew
         terminals = batch.done
         obs = batch.obs
         actions = batch.act

@@ -22,13 +22,14 @@ from offlinerl.config.algo import (
     shaping_config,
     decomposer_config,
     reward_giver_config,
+    sacd_config,
 )
 
 from offlinerl.utils.config import parse_config
 from offlinerl.algo.modelfree import plas, bcqd, bcq, bc, crr, cql, iql
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
-
+from offlinerl.algo.online import sac_discrete
 
 algo_dict = {
     # custom
@@ -52,6 +53,8 @@ algo_dict = {
     "plas": {"algo": plas, "config": plas_config},
     "moose": {"algo": moose, "config": moose_config},
     "bremen": {"algo": bremen, "config": bremen_config},
+    # online
+    "sacd": {"algo": sac_discrete, "config": sacd_config},
 }
 
 

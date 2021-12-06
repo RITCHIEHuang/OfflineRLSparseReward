@@ -18,8 +18,6 @@ hidden_layers = 3
 layer_num = 2
 actor_lr = 1e-4
 critic_lr = 3e-4
-reward_scale = 1
-reward_shift = 0
 use_automatic_entropy_tuning = True
 target_entropy = 0.0
 discount = 0.99
@@ -36,8 +34,8 @@ lagrange_thresh = 1
 
 # extra params
 num_random = 10
-backup_type = "max"  # "min"
-backup_entropy = True
+backup_type = "min"  # "min"
+backup_entropy = False
 
 discrete = False
 

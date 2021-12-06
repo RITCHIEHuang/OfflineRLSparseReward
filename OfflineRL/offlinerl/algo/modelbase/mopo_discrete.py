@@ -339,7 +339,7 @@ class AlgoTrainer(BaseAlgo):
                 metrics["next_obs"] = next_obs.mean().item()
 
                 metrics.update(sac_metrics)
-            self.log_res(epoch, res)
+            self.log_res(epoch, metrics)
 
         return self.get_policy()
 

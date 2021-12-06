@@ -50,9 +50,9 @@ class BaseAlgo(ABC):
                 project=args["project"],
                 config=args,
             )
-            wandb.run.log_code(
-                root="../", include_fn=lambda path: path.endswith(".py")
-            )
+            # wandb.run.log_code(
+            #     root="../", include_fn=lambda path: path.endswith(".py")
+            # )
 
         self.index_path = f"{tb_log_path}/{exp_name}"
         self.models_save_dir = os.path.join(self.index_path, "models")

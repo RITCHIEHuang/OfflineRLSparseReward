@@ -67,7 +67,7 @@ def load_traj_buffer(traj_dataset):
 
 
 # Strategies
-def scale_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def scale_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     all_rewards = np.concatenate(traj_dataset["delay_rewards"])
     reward_max = all_rewards.max()
     reward_min = all_rewards.min()
@@ -105,7 +105,7 @@ def scale_strategy(traj_dataset, config, plot_traj_idx_list=None):
     return traj_dataset
 
 
-def minmax_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def minmax_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     tmp = np.array(
         [
             traj_dataset["returns"][i][0]
@@ -137,7 +137,7 @@ def minmax_strategy(traj_dataset, config, plot_traj_idx_list=None):
     return traj_dataset
 
 
-def interval_average_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def interval_average_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     for i, traj_length in tqdm(enumerate(traj_dataset["length"])):
         traj_delay_rewards = traj_dataset["delay_rewards"][i].copy()
         episode_idx = 0
@@ -178,9 +178,11 @@ def interval_average_strategy(traj_dataset, config, plot_traj_idx_list=None):
     return traj_dataset
 
 
-def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list):
+def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     logger.info(f"Training reward giver model start...")
-    traj_dataset = interval_average_strategy(traj_dataset, config)
+    traj_dataset = interval_average_strategy(
+        traj_dataset, config, plot_traj_idx_list
+    )
 
     buffer = load_traj_buffer(traj_dataset)
     algo_config = parse_config(reward_giver_config)
@@ -284,7 +286,7 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list):
     return traj_dataset
 
 
-def episodic_average_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def episodic_average_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     for i, traj_length in enumerate(traj_dataset["length"]):
         traj_delay_rewards = np.ones_like(traj_dataset["delay_rewards"][i]) * (
             np.sum(traj_dataset["delay_rewards"][i]) / traj_length
@@ -309,7 +311,7 @@ def episodic_average_strategy(traj_dataset, config, plot_traj_idx_list=None):
     return traj_dataset
 
 
-def episodic_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def episodic_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     logger.info(f"Training reward giver model start...")
     traj_dataset = episodic_average_strategy(traj_dataset, config)
 
@@ -389,7 +391,7 @@ def episodic_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=None):
 
 
 def transformer_decompose_strategy(
-    traj_dataset, config, plot_traj_idx_list=None
+    traj_dataset, config, plot_traj_idx_list=[]
 ):
     # train decompose model
     logger.info(f"Training Transformer decompose model start...")
@@ -469,7 +471,7 @@ def transformer_decompose_strategy(
     return traj_dataset
 
 
-def pg_reshaping_strategy(traj_dataset, config, plot_traj_idx_list=None):
+def pg_reshaping_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     # train reshaping model
     logger.info(f"Training PG reshaping model start...")
     algo_config = parse_config(shaping_config)

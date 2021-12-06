@@ -68,7 +68,6 @@ def delay_traj_dataset(config):
         np.random.randint(0, len(episode_ends)) for _ in range(5)
     ]
     for ep in tqdm(range(len(episode_ends))):
-
         traj_observations = []
         traj_actions = []
         traj_terminals = []
@@ -146,7 +145,12 @@ def delay_traj_dataset(config):
 
 def load_d4rl_buffer(config):
     traj_dataset = delay_traj_dataset(config)
-    return load_traj_buffer(traj_dataset)
+    traj_buffer = load_traj_buffer(traj_dataset)
+
+    reward_scale = config.get("reward_scale", 1.0)
+    reward_shift = config.get("reward_shift", 0.0)
+    traj_buffer.rew = (traj_buffer.rew + reward_shift) * reward_scale
+    return traj_buffer
 
 
 if __name__ == "__main__":
