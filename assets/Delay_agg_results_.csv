@@ -1,0 +1,34 @@
+Dataset Type,Environment,Delay Mode,Delay,Strategy,Algo,Seed,Iteration,D4rl_Score,D4rl_Score_stddev
+medium-replay-v0,halfcheetah,constant,1000,interval_ensemble,mopo,"[1000, 100, 10]",1049,49.3,1.2
+medium-replay-v0,halfcheetah,constant,500,interval_ensemble,mopo,"[1000, 100, 10]",1099,48.8,0.5
+medium-replay-v0,halfcheetah,constant,200,interval_ensemble,mopo,"[1000, 100, 10]",849,53.3,1.1
+medium-replay-v0,halfcheetah,constant,100,interval_ensemble,mopo,"[1000, 100, 10]",1599,54.4,1.1
+medium-replay-v0,halfcheetah,constant,50,interval_ensemble,mopo,"[1000, 100, 10]",1199,54.2,1.5
+medium-replay-v0,halfcheetah,constant,10,interval_ensemble,mopo,"[1000, 100, 10]",1249,52.2,3.4
+medium-replay-v0,halfcheetah,constant,5,interval_ensemble,mopo,"[1000, 100, 10]",1599,56.4,1.4
+medium-replay-v0,halfcheetah,constant,3,interval_ensemble,mopo,"[1000, 100, 10]",1599,53.4,1.4
+medium-replay-v0,halfcheetah,constant,2,interval_ensemble,mopo,"[1000, 100, 10]",1499,52.8,2.6
+medium-replay-v0,halfcheetah,constant,1,interval_ensemble,mopo,"[1000, 100, 10]",1599,57.8,1.6
+medium-replay-v0,halfcheetah,constant,1,none,mopo,"[1000, 100, 10]",1449,57.2,3.0
+medium-replay-v0,halfcheetah,constant,2,none,mopo,"[1000, 100, 10]",549,9.7,1.0
+medium-replay-v0,halfcheetah,constant,3,none,mopo,"[1000, 100, 10]",1249,7.2,0.9
+medium-replay-v0,halfcheetah,constant,5,none,mopo,"[1000, 100, 10]",0,5.4,1.3
+medium-replay-v0,halfcheetah,constant,10,none,mopo,"[1000, 100, 10]",0,6.1,2.1
+medium-replay-v0,halfcheetah,constant,50,none,mopo,"[1000, 100, 10]",0,8.3,0.4
+medium-replay-v0,halfcheetah,constant,100,none,mopo,"[1000, 100, 10]",0,7.0,1.1
+medium-replay-v0,halfcheetah,constant,200,none,mopo,"[1000, 100, 10]",0,7.7,1.4
+medium-replay-v0,halfcheetah,constant,500,none,mopo,"[1000, 100, 10]",0,6.9,0.9
+medium-replay-v0,halfcheetah,constant,1000,none,mopo,"[1000, 100, 10]",0,7.4,1.0
+medium-replay-v0,halfcheetah,constant,1000,interval_average,mopo,"[100, 1000, 10]",936,45.7,1.1
+medium-replay-v0,halfcheetah,constant,1,interval_average,mopo,"[1000, 100, 10]",1261,58.5,1.3
+medium-replay-v0,halfcheetah,constant,2,interval_average,mopo,"[1000, 100, 10]",1437,59.3,1.5
+medium-replay-v0,halfcheetah,constant,3,interval_average,mopo,"[1000, 100, 10]",1309,56.7,1.9
+medium-replay-v0,halfcheetah,constant,5,interval_average,mopo,"[1000, 100, 10]",1276,58.6,1.0
+medium-replay-v0,halfcheetah,constant,10,interval_average,mopo,"[1000, 100, 10]",1142,53.6,1.1
+medium-replay-v0,halfcheetah,constant,50,interval_average,mopo,"[1000, 100, 10]",1458,53.4,1.7
+medium-replay-v0,halfcheetah,constant,100,interval_average,mopo,"[1000, 100, 10]",1213,52.4,0.6
+medium-replay-v0,halfcheetah,constant,200,interval_average,mopo,"[1000, 100, 10]",1347,50.5,0.3
+medium-replay-v0,halfcheetah,constant,500,interval_average,mopo,"[1000, 100, 10]",1257,48.3,1.3
+medium-replay-v0,halfcheetah,constant,20,interval_average,mopo,"[10, 1000, 100, 10]",1150,53.8,3.4
+medium-replay-v0,halfcheetah,constant,20,none,mopo,"[10, 1000, 100, 10]",6,8.7,1.8
+medium-replay-v0,halfcheetah,constant,20,interval_ensemble,mopo,"[100, 1000, 10]",1546,54.9,1.4

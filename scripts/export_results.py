@@ -30,11 +30,14 @@ runs = api.runs("ritchiehuang/OfflineRL_DelayRewards")
 exp_variant_mapping = defaultdict(lambda: defaultdict(list))
 # {"group": [iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
 
-filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
-filter_strategy = ["interval_ensemble", "interval_average", "none"]
+# filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
+# filter_strategy = ["interval_ensemble", "interval_average", "none"]
 # filter_strategy = ["interval_ensemble"]
-# filter_strategy = ["none"]
+filter_strategy = ["none"]
 filter_seed = [10, 100, 1000]
+
+filter_domain = ["neorl", "d4rl"]
+filter_algo = ["iql"]
 
 # collect
 for run in tqdm(runs):
@@ -47,7 +50,7 @@ for run in tqdm(runs):
         # [neorl, HalfCheetah, v3, low, 100]
         env = split_list[1].lower()
         dataset_type = "-".join(split_list[-2:])
-    elif domain == "d4rl":
+    elif domain in ["d4rl", "recs"]:
         # [d4rl, walker2d, medium, replay, v0]
         env = split_list[1]
         dataset_type = "-".join(split_list[2:])
@@ -62,7 +65,8 @@ for run in tqdm(runs):
     strategy = run.config["strategy"]
 
     if not (
-        group in filter_group
+        # group in filter_group
+        algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
     ):
