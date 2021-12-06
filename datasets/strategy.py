@@ -186,6 +186,7 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
 
     buffer = load_traj_buffer(traj_dataset)
     algo_config = parse_config(reward_giver_config)
+    algo_config["project"] = config["project"]
     algo_config["task"] = config["task"]
     algo_config["log_path"] = config["log_path"]
     algo_config["log_to_wandb"] = config["log_to_wandb"]
@@ -313,10 +314,13 @@ def episodic_average_strategy(traj_dataset, config, plot_traj_idx_list=[]):
 
 def episodic_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     logger.info(f"Training reward giver model start...")
-    traj_dataset = episodic_average_strategy(traj_dataset, config)
+    traj_dataset = episodic_average_strategy(
+        traj_dataset, config, plot_traj_idx_list
+    )
 
     buffer = load_traj_buffer(traj_dataset)
     algo_config = parse_config(reward_giver_config)
+    algo_config["project"] = config["project"]
     algo_config["task"] = config["task"]
     algo_config["log_path"] = config["log_path"]
     algo_config["log_to_wandb"] = config["log_to_wandb"]
@@ -398,6 +402,7 @@ def transformer_decompose_strategy(
     dataset = TrajDataset(traj_dataset)
 
     algo_config = parse_config(decomposer_config)
+    algo_config["project"] = config["project"]
     algo_config["task"] = config["task"]
     algo_config["log_path"] = config["log_path"]
     algo_config["log_to_wandb"] = config["log_to_wandb"]
@@ -481,6 +486,7 @@ def pg_reshaping_strategy(traj_dataset, config, plot_traj_idx_list=[]):
             "shaping_version": "v2",
         }  # proximal
     )
+    algo_config["project"] = config["project"]
     algo_config["task"] = config["task"]
     algo_config["log_path"] = config["log_path"]
     algo_config["log_to_wandb"] = config["log_to_wandb"]
