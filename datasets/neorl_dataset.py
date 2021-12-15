@@ -29,6 +29,10 @@ def delay_traj_dataset(config):
     raw_terminals = np.squeeze(dataset["done"])
     raw_next_obs = dataset["next_obs"]
 
+    reward_scale = config.get("reward_scale", 1.0)
+    reward_shift = config.get("reward_shift", 0.0)
+    raw_rewards = (raw_rewards + reward_shift) * reward_scale
+
     keys = [
         "observations",
         "actions",
@@ -142,10 +146,6 @@ def delay_traj_dataset(config):
 def load_neorl_buffer(config):
     traj_dataset = delay_traj_dataset(config)
     traj_buffer = load_traj_buffer(traj_dataset)
-
-    reward_scale = config.get("reward_scale", 1.0)
-    reward_shift = config.get("reward_shift", 0.0)
-    traj_buffer.rew = (traj_buffer.rew + reward_shift) * reward_scale
     return traj_buffer
 
 
