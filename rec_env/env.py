@@ -189,6 +189,19 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
     def observation_space(self):
         return self._obs_adapter.output_observation_space
 
+    @property
+    def action_space(self):
+        """Returns the action space of the environment.
+
+        Each action is a vector that specified document slate. Each element in the
+        vector corresponds to the index of the document in the candidate set.
+        """
+        action_space = spaces.Discrete(
+            self._environment.num_candidates
+            # * np.ones((self._environment.slate_size,))
+        )
+        return action_space
+
     def step(self, action):
         """Runs one timestep of the environment's dynamics.
 
@@ -233,11 +246,15 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
         encoded_obs = self._obs_adapter.encode(obs)
         return encoded_obs, reward, done, info
 
-    def reset(self):
+    def reset(self, return_raw=False):
         user_obs, doc_obs = self._environment.reset()
         obs = dict(user=user_obs, doc=doc_obs, response=None)
         encoded_obs = self._obs_adapter.encode(obs)
-        return encoded_obs
+
+        if return_raw:
+            return encoded_obs, {"raw_obs": obs}
+        else:
+            return encoded_obs
 
 
 def get_recs_env(**kwargs):

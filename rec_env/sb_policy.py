@@ -6,10 +6,11 @@ import numpy as np
 from stable_baselines3 import PPO, DQN
 
 env = gym.make("recs-random-v0")
-
-model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./logs")
-# model = DQN("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=1000000)
+# print(env.observation_space)
+# print(env.action_space.n)
+# model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./logs")
+model = DQN("MlpPolicy", env, verbose=1, tensorboard_log="./logs")
+model.learn(total_timesteps=5000000)
 
 
 # eval
@@ -18,10 +19,10 @@ steps = []
 for _ in range(10):
     episode_reward = 0
     step = 0
-    obs = env.reset()
+    obs, info = env.reset(True)
     while True:
         action, _states = model.predict(obs, deterministic=True)
-        obs, reward, done, info = env.step(action)
+        obs, reward, done, info = env.step(action, info["raw_obs"])
         episode_reward += reward
         step += 1
 

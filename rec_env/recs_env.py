@@ -12,13 +12,14 @@ env_config = {
     "slate_size": 1,
     "candidate_size": 10,
     # video
-    "video_num": 10000,
-    "max_video_duration": 5.0,
-    "min_video_duration": 1.0,
+    "max_video_duration": 0.0,
+    "min_video_duration": 0.0,
     "emb_dim": 10,
     # user
     "time_budget": 9 * 24 * 60,
-    "next_time_mean": 600.0,
+    "click_threshold": 0.70,
+    "leave_prob": 0.0,
+    "next_time_mean": 2881.0,
     "alpha_min": 0.001,
     "alpha_max": 0.01,
     "max_hist_len": 50,
@@ -186,7 +187,7 @@ class UserResponse(user.AbstractResponse):
 
     def create_observation(self):
         return {
-            "click": int(self.clicked),
+            "clicked": int(self.clicked),
             "next_time": np.array(self.next_time),
             "retention": np.array(self.retention),
         }
@@ -195,7 +196,7 @@ class UserResponse(user.AbstractResponse):
     def response_space(cls):
         return spaces.Dict(
             {
-                "click": spaces.Discrete(2),
+                "clicked": spaces.Discrete(2),
                 "next_time": spaces.Box(
                     low=0.0,
                     high=1440.0,
@@ -248,22 +249,24 @@ class UserModel(user.AbstractUserModel):
 
     def _generate_response(self, doc, response, score):
         next_time = None
-        # print(score)
-        if score >= 0.7:
-            # click case
+        if score >= self.config["click_threshold"]:
             response.clicked = True
             watch_time = score * doc.duration
             reaction_time = np.random.uniform(0.02, 0.05)
             next_time = watch_time + reaction_time
         else:
             response.clicked = False
-            next_time = np.random.exponential(
-                self._user_state.next_time_lambda
-            )
+            eps = np.random.random()
+            if eps >= self.config["leave_prob"]:
+                next_time = np.random.exponential(
+                    self._user_state.next_time_lambda
+                )
+            else:
+                next_time = np.random.uniform(0.02, 0.05)
 
         response.next_time = next_time
 
-        # reward
+        # retention
         cur_day = self._user_state.cum_next_time // 1440
         new_day = (self._user_state.cum_next_time + response.next_time) // 1440
         if new_day - cur_day == 1:
@@ -284,9 +287,10 @@ class UserModel(user.AbstractUserModel):
                 update *= -1.0
                 self._user_state.click_list.append(doc)
 
-                self._user_state.click_list = self._user_state.click_list[
-                    -self.config["max_hist_len"] :
-                ]
+                self._user_state.click_list = self._user_state.click_list
+                # self._user_state.click_list = self._user_state.click_list[
+                #     -self.config["max_hist_len"] :
+                # ]
 
             self._user_state.cum_next_time += response.next_time
             self._user_state.interest += update
@@ -294,28 +298,22 @@ class UserModel(user.AbstractUserModel):
                 self._user_state.interest, 0.0, 1.0
             )
 
-        self._user_state.impress_list = self._user_state.impressed_list[
-            -self.config["max_hist_len"] :
-        ]
+        self._user_state.impressed_list = self._user_state.impressed_list
+        # self._user_state.impressed_list = self._user_state.impressed_list[
+        #     -self.config["max_hist_len"] :
+        # ]
 
     def is_terminal(self):
         """Returns a boolean indicating if the session is over."""
         return self._user_state.cum_next_time >= self.config["time_budget"]
 
 
-def get_flatten_obs(obs, env):
-    return np.concatenate(
-        [
-            spaces.flatten(env.observation_space.spaces["user"], obs["user"]),
-            spaces.flatten(env.observation_space.spaces["doc"], obs["doc"]),
-        ]
-    )
-
-
 def reward_fn(responses):
     total_reward = 0.0
     for response in responses:
         total_reward += response.retention
+        # total_reward += response.clicked
+        # total_reward += 100 * response.retention
     return total_reward
 
 

@@ -183,7 +183,9 @@ class SingleUserEnvironment(AbstractEnvironment):
       responses: A list of AbstractResponse objects for each item in the slate
       done: A boolean indicating whether the episode has terminated
     """
-
+    import numpy as np
+    if isinstance(slate, np.int64):
+      slate = [slate]
     assert (len(slate) <= self._slate_size
            ), 'Received unexpectedly large slate size: expecting %s, got %s' % (
                self._slate_size, len(slate))
