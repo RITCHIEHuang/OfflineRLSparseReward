@@ -6,6 +6,8 @@ from torch import nn
 from torch.distributions import Categorical
 import torch.nn.functional as F
 
+from offlinerl.utils.net.common import MLP, DiscretePolicy
+
 
 class ActorProb(nn.Module):
     """Simple actor network (output with a Categorical distribution) with MLP.
@@ -33,4 +35,25 @@ class ActorProb(nn.Module):
         logits, h = self.preprocess(s, state)
         probs = F.softmax(self.head(logits), dim=1)
 
+        return Categorical(probs)
+
+
+class CategoricalActor(nn.Module, DiscretePolicy):
+    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers):
+        super().__init__()
+        self.backbone = MLP(
+            in_features=obs_dim,
+            out_features=action_dim,
+            hidden_features=hidden_size,
+            hidden_layers=hidden_layers,
+        )
+
+    def policy_infer(self, obs):
+        probs = self(obs).probs
+        greedy_actions = torch.argmax(probs, dim=-1, keepdim=True)
+        return greedy_actions
+
+    def forward(self, obs):
+        logits = self.backbone(obs)
+        probs = F.softmax(logits, dim=1)
         return Categorical(probs)

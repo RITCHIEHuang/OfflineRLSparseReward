@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
 from rec_env.env import get_recs_env
-from rec_env.recs_env import VideoSampler, UserSampler
-from rec_env.gen_dataset import create_agent
+from rec_env.recsim_model import VideoSampler, UserSampler
+from rec_env.gen_dataset import create_agent, score_func
 
 
 def test_document():
@@ -38,22 +38,31 @@ def test_env():
     print("env_act_space", env.action_space)
 
     agent = create_agent(env)
-    obs = env.reset()
+    obs, raw_obs = env.reset(True)
     print(obs.shape)
 
     print("=" * 88)
     print("init obs", obs)
     print("=" * 88)
-    action = agent.begin_episode(obs)
 
-    for _ in range(1):
+    for _ in range(5):
+        action = agent.step(obs, raw_obs)
         obs, reward, done, info = env.step(action)
-        action = agent.step(reward, obs)
+        raw_obs = info["raw_obs"]
+        print(
+            "step",
+            _,
+            [
+                score_func(info["raw_obs"]["user"]["interest"], x)
+                for x in info["raw_obs"]["doc"].values()
+            ],
+            info["raw_obs"]["response"],
+        )
 
-        print("obs", obs)
-        print("rew", reward)
-        print("done", done)
-        print("info", info)
+        # print("obs", obs)
+        # print("rew", reward)
+        # print("done", done)
+        # print("info", info)
 
         print("=" * 88)
 

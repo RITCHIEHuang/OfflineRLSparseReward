@@ -73,12 +73,12 @@ def plot_line(df, x_label, y_label, hue_label, style_label, fig_name):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(f"{proj_path}/assets/Delay_results.csv")
+    df = pd.read_csv(f"{proj_path}/assets/Delay_results_walker2d.csv")
     plot_line(
         df,
         x_label="Delay",
         y_label="D4rl_Score",
         hue_label="Strategy",
         style_label="Strategy",
-        fig_name="performanc_vs_delay_size",
+        fig_name="performanc_vs_delay_size_walker2d",
     )

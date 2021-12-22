@@ -2,24 +2,16 @@ import torch
 from torch import nn as nn
 from torch.distributions import Normal
 
-from offlinerl.utils.net.common import BasePolicy
+from offlinerl.utils.net.common import BasePolicy, DiscretePolicy
 from offlinerl.utils.net import continuous
 from offlinerl.utils.net import discrete
 
 
-class CategoricalPolicy(discrete.ActorProb, BasePolicy):
+class CategoricalPolicy(discrete.ActorProb, DiscretePolicy):
     def policy_infer(self, obs):
         probs = self(obs).probs
         greedy_actions = torch.argmax(probs, dim=-1, keepdim=True)
         return greedy_actions
-
-    def get_action(self, obs):
-        obs_tensor = torch.as_tensor(
-            obs, device=next(self.parameters()).device, dtype=torch.float32
-        )
-        act = self.policy_infer(obs_tensor)
-        act = act.detach().cpu().numpy()[0]
-        return act
 
 
 class GaussianPolicy(continuous.ActorProb, BasePolicy):

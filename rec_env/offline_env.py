@@ -52,12 +52,12 @@ class OfflineEnv(gym.Env):
                 str(data_dict["observations"].shape[1:]),
                 str(self.observation_space.shape),
             )
-        assert (
-            data_dict["actions"].shape[1:] == self.action_space.shape
-        ), "Action shape does not match env: %s vs %s" % (
-            str(data_dict["actions"].shape[1:]),
-            str(self.action_space.shape),
-        )
+        # assert (
+        #     data_dict["actions"].shape[1:] == self.action_space.shape
+        # ), "Action shape does not match env: %s vs %s" % (
+        #     str(data_dict["actions"].shape[1:]),
+        #     str(self.action_space.shape),
+        # )
         if data_dict["rewards"].shape == (N_samples, 1):
             data_dict["rewards"] = data_dict["rewards"][:, 0]
         assert data_dict["rewards"].shape == (
