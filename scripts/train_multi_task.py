@@ -6,16 +6,16 @@ from utils.task_util import d4rl_task_list, neorl_task_list
 
 d4rl_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
-    "python train_d4rl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
+    "python train_d4rl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} --reward_scale={7} --reward_shift={8} "
 )
 neorl_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
-    "python train_neorl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
+    "python train_neorl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} --reward_scale={7} --reward_shift={8} "
 )
 
 recs_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
-    "python train_recs.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
+    "python train_recs.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} --reward_scale={7} --reward_shift={8} "
 )
 
 
@@ -44,6 +44,12 @@ def argsparser():
         type=int,
         default=0,
     )
+    parser.add_argument(
+        "--reward_scale", help="scale for reward", type=float, default=1.0
+    )
+    parser.add_argument(
+        "--reward_shift", help="shift for reward", type=float, default=0.0
+    )
     return parser.parse_args()
 
 
@@ -63,6 +69,8 @@ seeds = [10, 100, 1000]
 delays = [20]
 
 strategies = [args.strategy]
+reward_scale = args.reward_scale
+reward_shift = args.reward_shift
 # strategies = ["interval_average"]
 # strategies = [
 #     "none",
@@ -113,6 +121,8 @@ for algo in algos:
                         delay,
                         seed,
                         strategy,
+                        reward_scale,
+                        reward_shift,
                     ]
                     str_command = template.format(*param_list)
 

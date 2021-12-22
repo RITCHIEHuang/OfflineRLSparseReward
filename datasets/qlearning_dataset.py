@@ -71,9 +71,9 @@ def qlearning_dataset(env, dataset=None, terminate_on_end=False, **kwargs):
         episode_step += 1
 
         # truncate useless data
-        # if done_bool:
-        #     while bool(dataset["terminals"][i + 1]):
-        #         i += 1
+        if done_bool:
+            while bool(dataset["terminals"][i + 1]):
+                i += 1
         i += 1
 
     return {
