@@ -13,6 +13,11 @@ neorl_template = (
     "python train_neorl.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
 )
 
+recs_template = (
+    "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
+    "python train_recs.py --algo_name={1} --task={2} --delay_mode={3} --delay={4} --seed={5} --strategy={6} "
+)
+
 
 def argsparser():
     # Experiment setting
@@ -31,7 +36,7 @@ def argsparser():
         help="name of experiment domain",
         type=str,
         default="d4rl",
-        choices=["d4rl", "neorl"],
+        choices=["d4rl", "neorl", "recs"],
     )
     parser.add_argument(
         "--task_id",

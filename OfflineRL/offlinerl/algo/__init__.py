@@ -23,10 +23,22 @@ from offlinerl.config.algo import (
     decomposer_config,
     reward_giver_config,
     sacd_config,
+    cqld_config,
+    iqld_config,
 )
 
 from offlinerl.utils.config import parse_config
-from offlinerl.algo.modelfree import plas, bcqd, bcq, bc, crr, cql, iql
+from offlinerl.algo.modelfree import (
+    plas,
+    bcqd,
+    bcq,
+    bc,
+    crr,
+    cql,
+    iql,
+    cql_discrete,
+    iql_discrete,
+)
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
 from offlinerl.algo.online import sac_discrete
@@ -40,7 +52,9 @@ algo_dict = {
         "config": decomposer_config,
     },
     "cql": {"algo": cql, "config": cql_config},
+    "cqld": {"algo": cql_discrete, "config": cqld_config},
     "iql": {"algo": iql, "config": iql_config},
+    "iqld": {"algo": iql_discrete, "config": iqld_config},
     "mopo": {"algo": mopo, "config": mopo_config},
     "mopod": {"algo": mopo_discrete, "config": mopod_config},
     # default

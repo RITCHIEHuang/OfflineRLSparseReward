@@ -29,6 +29,17 @@ class BasePolicy(ABC):
         act = to_array_as(self.policy_infer(obs_tensor), obs)
         
         return act
+
+class DiscretePolicy(ABC):
+    @abstractmethod 
+    def policy_infer(self, obs):
+        pass
+    
+    def get_action(self, obs):
+        obs_tensor = torch.as_tensor(obs, device=next(self.parameters()).device, dtype=torch.float32)
+        act = self.policy_infer(obs_tensor).detach().cpu().numpy()[0]
+        
+        return act
     
 
 class Net(nn.Module):

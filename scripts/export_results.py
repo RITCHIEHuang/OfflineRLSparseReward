@@ -15,8 +15,8 @@ from utils.io_util import proj_path
 
 debug = False
 
-result_file_path = f"{proj_path}/assets/Delay_results_walker2d.csv"
-agg_result_file_path = f"{proj_path}/assets/Delay_agg_results_walker2d.csv"
+result_file_path = f"{proj_path}/assets/Delay_results_iql.csv"
+agg_result_file_path = f"{proj_path}/assets/Delay_agg_results_iql.csv"
 
 if os.path.exists(result_file_path):
     os.remove(result_file_path)
@@ -38,8 +38,8 @@ filter_strategy = ["interval_ensemble", "interval_average", "none"]
 filter_seed = [10, 100, 1000]
 
 filter_domain = ["neorl", "d4rl"]
-filter_algo = ["mopo"]
-# filter_algo = ["iql"]
+# filter_algo = ["mopo"]
+filter_algo = ["iql"]
 
 # collect
 for run in tqdm(runs):
@@ -67,8 +67,8 @@ for run in tqdm(runs):
     strategy = run.config["strategy"]
 
     if not (
-        group in filter_group
-        and algo in filter_algo
+        # group in filter_group
+        algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
     ):

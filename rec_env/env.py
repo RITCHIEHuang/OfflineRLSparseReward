@@ -4,7 +4,7 @@ from recsim.simulator import environment
 from recsim.simulator.recsim_gym import RecSimGymEnv
 
 from rec_env.offline_env import OfflineEnv
-from rec_env.recs_env import create_env, reward_fn
+from rec_env.recsim_model import create_env, reward_fn
 
 
 class ObservationAdapter(object):
@@ -240,9 +240,10 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
         obs = dict(user=user_obs, doc=doc_obs, response=all_responses)
 
         # extract rewards from responses
-        reward = self._reward_aggregator(responses)
+        reward, reward_info = self._reward_aggregator(responses)
         info = self.extract_env_info()
         info["raw_obs"] = obs
+        info["reward"] = reward_info
         encoded_obs = self._obs_adapter.encode(obs)
         return encoded_obs, reward, done, info
 

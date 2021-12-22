@@ -11,16 +11,12 @@ d4rl_task_list = {
     9: "hopper-medium-v0",
     10: "hopper-medium-replay-v0",
     11: "hopper-medium-expert-v0",
-    12: "ant-random-v0",
-    13: "ant-medium-v0",
-    14: "ant-medium-replay-v0",
-    15: "ant-medium-expert-v0",
-    16: "antmaze-umaze-v2",
-    17: "antmaze-umaze-diverse-v2",
-    18: "antmaze-medium-play-v2",
-    19: "antmaze-medium-diverse-v2",
-    20: "antmaze-large-play-v2",
-    21: "antmaze-large-diverse-v2",
+    12: "antmaze-medium-play-v2",
+    13: "antmaze-umaze-v2",
+    14: "antmaze-umaze-diverse-v2",
+    15: "antmaze-medium-diverse-v2",
+    16: "antmaze-large-play-v2",
+    17: "antmaze-large-diverse-v2",
 }
 
 neorl_task_list = {

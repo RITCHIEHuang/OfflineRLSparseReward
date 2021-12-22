@@ -10,10 +10,8 @@ from rec_env.env import get_recs_env
 class RandomAgent(object):
     def __init__(self, env):
         observation_space = env.raw_observation_space
-        action_space = env.action_space
         self.num_candidates = env.environment._num_candidates
         self._slate_size = env.environment._slate_size
-        # self._slate_size = action_space.nvec.shape[0]
         if len(observation_space["doc"].spaces) < self._slate_size:
             raise RuntimeError("Slate size larger than size of the corpus.")
 
@@ -32,10 +30,8 @@ def score_func(user_interest, doc_obs):
 class GreedyAgent(object):
     def __init__(self, env):
         observation_space = env.raw_observation_space
-        action_space = env.action_space
         self.num_candidates = env.environment._num_candidates
         self._slate_size = env.environment._slate_size
-        # self._slate_size = action_space.nvec.shape[0]
         if len(observation_space["doc"].spaces) < self._slate_size:
             raise RuntimeError("Slate size larger than size of the corpus.")
 

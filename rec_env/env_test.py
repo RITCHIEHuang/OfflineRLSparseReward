@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from rec_env.env import get_recs_env
-from rec_env.recs_env import VideoSampler, UserSampler
+from rec_env.recsim_model import VideoSampler, UserSampler
 from rec_env.gen_dataset import create_agent, score_func
 
 

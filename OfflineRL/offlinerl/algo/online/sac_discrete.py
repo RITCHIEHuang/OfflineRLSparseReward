@@ -105,24 +105,16 @@ class AlgoTrainer(BaseAlgo):
 
         self.device = args["device"]
 
-        self.args["buffer_size"] = (
-            int(self.args["data_collection_per_epoch"])
-            * self.args["horizon"]
-            * 5
-        )
         self.args["target_entropy"] = np.log(self.args["action_shape"])
 
     def train(self, train_buffer, val_buffer, callback_fn):
-        self.train_policy(
-            train_buffer, val_buffer, self.transition, callback_fn
-        )
+        self.train_policy(train_buffer, val_buffer, callback_fn)
 
     def get_policy(self):
         return self.actor
 
-    def train_policy(self, train_buffer, val_buffer, transition, callback_fn):
-        model_batch_size = self.args["policy_batch_size"]
-        model_buffer = ModelBuffer(self.args["buffer_size"])
+    def train_policy(self, train_buffer, val_buffer, callback_fn):
+        buffer = ModelBuffer(self.args["buffer_size"])
 
         for epoch in range(self.args["max_epoch"]):
             metrics = {"epoch": epoch}
@@ -141,18 +133,18 @@ class AlgoTrainer(BaseAlgo):
                             "rew": reward,
                             "ret": reward,
                             "done": done,
-                            "obs_next": next_obs,
+                            "obs_next": new_obs,
                         }
                     )
-                    model_buffer.put(batch_data)
+                    buffer.put(batch_data)
 
                     if done:
                         break
-                    obs = next_obs
+                    obs = new_obs
 
                 # update
                 for _ in range(self.args["steps_per_epoch"]):
-                    batch = model_buffer.sample(model_batch_size)
+                    batch = buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     sac_metrics = self._sac_update(batch)
@@ -161,15 +153,8 @@ class AlgoTrainer(BaseAlgo):
                     res = callback_fn(self.get_policy())
                     metrics.update(res)
 
-                metrics["uncertainty"] = uncertainty.mean().item()
-                metrics[
-                    "disagreement_uncertainty"
-                ] = disagreement_uncertainty.mean().item()
-                metrics[
-                    "aleatoric_uncertainty"
-                ] = aleatoric_uncertainty.mean().item()
                 metrics["reward"] = reward.mean().item()
-                metrics["next_obs"] = next_obs.mean().item()
+                metrics["next_obs"] = new_obs.mean().item()
 
                 metrics.update(sac_metrics)
             self.log_res(epoch, metrics)

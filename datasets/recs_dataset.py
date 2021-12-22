@@ -141,7 +141,7 @@ def delay_traj_dataset(config):
     return traj_dataset
 
 
-def load_rec_sim_buffer(config):
+def load_recs_buffer(config):
     traj_dataset = delay_traj_dataset(config)
     traj_buffer = load_traj_buffer(traj_dataset)
     reward_scale = config.get("reward_scale", 1.0)
