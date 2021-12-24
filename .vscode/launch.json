@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--algo_name=mopo","--task=antmaze-medium-play-v0","--delay_mode=none","--strategy=none"],
+            // "args": ["--algo_name=mopo","--task=antmaze-medium-play-v0","--delay_mode=none","--strategy=none"],
             "env": {
                 "PYTHONPATH": "${workspaceRoot}"
             },

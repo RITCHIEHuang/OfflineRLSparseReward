@@ -15,8 +15,8 @@ from utils.io_util import proj_path
 
 debug = False
 
-result_file_path = f"{proj_path}/assets/Delay_results_iql.csv"
-agg_result_file_path = f"{proj_path}/assets/Delay_agg_results_iql.csv"
+result_file_path = f"{proj_path}/assets/Delay_results_antmaze.csv"
+agg_result_file_path = f"{proj_path}/assets/Delay_agg_results_antmaze.csv"
 
 if os.path.exists(result_file_path):
     os.remove(result_file_path)
@@ -31,7 +31,15 @@ exp_variant_mapping = defaultdict(lambda: defaultdict(list))
 # {"group": [iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
 
 # filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
-filter_group = ["d4rl-walker2d-medium-v0"]
+filter_group = [
+    "d4rl-antmaze-umaze-v2",
+    "d4rl-antmaze-umaze-diverse-v2",
+    "d4rl-antmaze-medium-play-v2",
+    "d4rl-antmaze-medium-diverse-v2",
+    "d4rl-antmaze-large-play-v2",
+    "d4rl-antmaze-large-diverse-v2",
+]
+
 filter_strategy = ["interval_ensemble", "interval_average", "none"]
 # filter_strategy = ["interval_ensemble"]
 # filter_strategy = ["none"]
@@ -67,8 +75,8 @@ for run in tqdm(runs):
     strategy = run.config["strategy"]
 
     if not (
-        # group in filter_group
-        algo in filter_algo
+        group in filter_group
+        and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
     ):

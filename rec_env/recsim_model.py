@@ -1,3 +1,5 @@
+from collections import defaultdict
+import math
 import numpy as np
 from gym import spaces
 
@@ -12,17 +14,18 @@ env_config = {
     "slate_size": 1,
     "candidate_size": 10,
     # video
-    "max_video_duration": 0.0,
-    "min_video_duration": 0.0,
+    "max_video_duration": 1.0,
+    "min_video_duration": 60.0,
     "emb_dim": 10,
     # user
     "time_budget": 9 * 24 * 60,
+    "max_impress_num": 4000,
+    "standard_click_num": 40.0,
     "click_threshold": 0.70,
     "leave_prob": 0.0,
-    "next_time_mean": 2881.0,
+    "next_time_mean": 1440.0,
     "alpha_min": 0.001,
     "alpha_max": 0.01,
-    "max_hist_len": 50,
     "feature_dim": 10,
 }
 
@@ -98,21 +101,21 @@ class UserState(user.AbstractUserState):
     def __init__(
         self,
         interest,
-        next_time_lambda,
+        next_time_mean,
         alpha=0.001,
-        click_list=None,
-        impressed_list=None,
     ):
 
         self.interest = interest
-        self.next_time_lambda = next_time_lambda
+        self.next_time_mean = next_time_mean
 
         self.alpha = alpha
-        self.click_list = click_list
-        self.impressed_list = impressed_list
+        self.click_dict = defaultdict(float)
+        self.impressed_dict = defaultdict(float)
+
+        self.total_impress_num = 0
 
         self.cum_next_time = 0.0
-        self.day = self.cum_next_time // 1440
+        self.last_day = None
 
     def create_observation(self):
         return {
@@ -120,6 +123,13 @@ class UserState(user.AbstractUserState):
             # "cum_next_time": self.cum_next_time,
             # "day": self.day,
         }
+
+    @property
+    def cur_day(self):
+        return self.get_day(self.cum_next_time)
+
+    def get_day(self, cum_next_time):
+        return int(cum_next_time // 1440)
 
     @classmethod
     def observation_space(cls):
@@ -167,14 +177,12 @@ class UserSampler(user.AbstractUserSampler):
                 self.config["alpha_min"],
                 self.config["alpha_max"],
             ),
-            "click_list": [],
-            "impressed_list": [],
             "interest": self._rng.uniform(
                 0,
                 1,
                 env_config["feature_dim"],
             ),
-            "next_time_lambda": self.config["next_time_mean"],
+            "next_time_mean": self.config["next_time_mean"],
         }
         return self._user_ctor(**state_parameters)
 
@@ -258,8 +266,8 @@ class UserModel(user.AbstractUserModel):
             response.clicked = False
             eps = np.random.random()
             if eps >= self.config["leave_prob"]:
-                next_time = np.random.exponential(
-                    self._user_state.next_time_lambda
+                next_time = max(
+                    np.random.exponential(self._user_state.next_time_mean), 1
                 )
             else:
                 next_time = np.random.uniform(0.02, 0.05)
@@ -267,8 +275,10 @@ class UserModel(user.AbstractUserModel):
         response.next_time = next_time
 
         # retention
-        cur_day = self._user_state.cum_next_time // 1440
-        new_day = (self._user_state.cum_next_time + response.next_time) // 1440
+        cur_day = self._user_state.cur_day
+        new_day = self._user_state.get_day(
+            self._user_state.cum_next_time + response.next_time
+        )
         if new_day - cur_day == 1:
             response.retention = 1.0
         else:
@@ -277,35 +287,70 @@ class UserModel(user.AbstractUserModel):
     def update_state(self, slate_documents, responses):
         """Update user state"""
         for doc, response in zip(slate_documents, responses):
-            self._user_state.impressed_list.append(doc)
+            self._user_state.total_impress_num += 1
+            # update time
+            cur_day = self._user_state.cur_day
+            self._user_state.cum_next_time += response.next_time
+            new_day = self._user_state.cur_day
 
+            if cur_day != new_day:
+                self._user_state.last_day = cur_day
             # update user interest
             target = doc.emb - self._user_state.interest
             update = -self._user_state.alpha * target
 
             if response.clicked:
                 update *= -1.0
-                self._user_state.click_list.append(doc)
+                self._user_state.click_dict[cur_day] += 1
 
-                self._user_state.click_list = self._user_state.click_list
-                # self._user_state.click_list = self._user_state.click_list[
-                #     -self.config["max_hist_len"] :
-                # ]
-
-            self._user_state.cum_next_time += response.next_time
+            self._user_state.impressed_dict[cur_day] += 1
             self._user_state.interest += update
             self._user_state.interest = np.clip(
                 self._user_state.interest, 0.0, 1.0
             )
 
-        self._user_state.impressed_list = self._user_state.impressed_list
-        # self._user_state.impressed_list = self._user_state.impressed_list[
-        #     -self.config["max_hist_len"] :
-        # ]
+            # update user_next_time_lambda according to the last few days' watch num
+
+            if (
+                self._user_state.last_day is not None
+                and self._user_state.cur_day != self._user_state.last_day
+                and new_day != cur_day
+            ):
+                hist_watch_dict = {1: 0, 2: 0, 3: 0}
+                for k in hist_watch_dict:
+                    if new_day > k:
+                        hist_watch_dict[k] = self._user_state.click_dict[
+                            new_day - k
+                        ]
+
+                self._user_state.next_time_mean = (
+                    self.config["next_time_mean"]
+                    * 1.0
+                    / max(
+                        min(
+                            hist_watch_dict[1]
+                            * 1.0
+                            / self.config["standard_click_num"],
+                            5,
+                        ),
+                        1,
+                    )
+                )
+                # print(
+                #     "next_mean",
+                #     self._user_state.next_time_mean,
+                #     hist_watch_dict[1],
+                # )
+                # print("hist", hist_watch_dict)
+                # print("click", self._user_state.click_dict)
 
     def is_terminal(self):
         """Returns a boolean indicating if the session is over."""
-        return self._user_state.cum_next_time >= self.config["time_budget"]
+        return (
+            self._user_state.cum_next_time >= self.config["time_budget"]
+            or self._user_state.total_impress_num
+            >= self.config["max_impress_num"]
+        )
 
 
 def reward_fn(responses):
@@ -315,6 +360,8 @@ def reward_fn(responses):
     for response in responses:
         reward_info["retention"] += response.retention
         reward_info["click"] += response.clicked
+    # reward = reward_info["click"]
+    # reward = reward_info["retention"]
     reward = 100 * reward_info["retention"] + reward_info["click"]
     return reward, reward_info
 

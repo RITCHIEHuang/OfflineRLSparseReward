@@ -120,7 +120,7 @@ def sample_store(n_traj=100):
         "terminals",
         "timeouts",
     ]:
-        print(np.concatenate(traj[k]).shape)
+        print(f"{k} shape", np.concatenate(traj[k]).shape)
 
     np.savez_compressed(
         f"data/recs-random-{n_traj}.npz",

@@ -58,7 +58,6 @@ def evaluate_policy(
     episode_retentions = []
     episode_clicks = []
     episode_lengths = []
-    print(env,"xxxxxxxx") 
 
     for _ in range(n_eval_episodes):
         current_rewards = 0.0
