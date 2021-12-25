@@ -27,17 +27,20 @@ policy_update_period = 1
 target_update_period = 1
 
 # update
-# beta = 0.1
-beta = 1.0 / 3
-# quantile = 0.9
-quantile = 0.7
+# antmaze
+beta = 0.1
+quantile = 0.9
+# gym
+# beta = 1.0 / 3
+# quantile = 0.7
 clip_score = 100
 
 
 # tune
 grid_tune = {
-    "soft_target_tau": [1e-2, 5e-2, 1e-3, 5e-3],
-    "actor_lr": [1e-4, 3e-4],
-    "beta": [0.1, 0.3, 0.5, 1.0],
-    "quantile": [0.6, 0.7, 0.8, 0.9],
+    # "soft_target_tau": [1e-2, 5e-2, 1e-3, 5e-3],
+    # "actor_lr": [1e-4, 3e-4],
+    "clip_score": [20, 50, 100, 150, 200],
+    "beta": [0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 1.0],
+    "quantile": [0.6, 0.7, 0.8, 0.85, 0.9, 0.95],
 }
