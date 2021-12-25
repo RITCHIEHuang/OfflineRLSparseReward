@@ -23,7 +23,7 @@ env_config = {
     "standard_click_num": 40.0,
     "click_threshold": 0.70,
     "leave_prob": 0.0,
-    "next_time_mean": 1440.0,
+    "next_time_mean": 600.0,
     "alpha_min": 0.001,
     "alpha_max": 0.01,
     "feature_dim": 10,
@@ -328,12 +328,15 @@ class UserModel(user.AbstractUserModel):
                     * 1.0
                     / max(
                         min(
-                            hist_watch_dict[1]
-                            * 1.0
+                            (
+                                5.0 * hist_watch_dict[1]
+                                + 2.0 * hist_watch_dict[2]
+                                + hist_watch_dict[3]
+                            )
                             / self.config["standard_click_num"],
                             5,
                         ),
-                        1,
+                        0.2,
                     )
                 )
                 # print(
@@ -362,7 +365,7 @@ def reward_fn(responses):
         reward_info["click"] += response.clicked
     # reward = reward_info["click"]
     reward = reward_info["retention"]
-    # reward = 100 * reward_info["retention"] + reward_info["click"]
+    # reward = 10 * reward_info["retention"] + reward_info["click"]
     return reward, reward_info
 
 
