@@ -2,7 +2,7 @@ import argparse
 import subprocess
 
 from utils.exp_util import get_gpu_count
-from utils.task_util import d4rl_task_list, neorl_task_list
+from utils.task_util import d4rl_task_list, neorl_task_list, rec_task_list
 
 d4rl_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
@@ -64,7 +64,7 @@ algos = [args.algo_name]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
-delay_modes = ["constant"]
+delay_modes = ["none"]
 seeds = [10, 100, 1000]
 delays = [20]
 
@@ -98,6 +98,12 @@ elif domain == "neorl":
     template = neorl_template
     try:
         task = neorl_task_list[args.task_id]
+    except Exception:
+        exit(-1)
+elif domain == "recs":
+    template = recs_template
+    try:
+        task = rec_task_list[args.task_id]
     except Exception:
         exit(-1)
 else:
