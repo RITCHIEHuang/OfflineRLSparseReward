@@ -12,10 +12,10 @@ from torch import optim
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.net.common import MLP, Net
+from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.net.sac_policy import CategoricalPolicy
+from offlinerl.utils.net.discrete import CategoricalActor
 
 
 def sample_action_log_prob(dist):
@@ -40,16 +40,24 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    net_a = Net(
-        layer_num=args["layer_num"],
-        state_shape=obs_shape,
-        hidden_layer_size=args["hidden_layer_size"],
-    )
-    actor = CategoricalPolicy(
-        preprocess_net=net_a,
-        action_num=action_shape,
-        hidden_layer_size=args["hidden_layer_size"],
+    
+    actor = CategoricalActor(
+        obs_dim=obs_shape,
+        action_dim=action_shape,
+        hidden_size=args["hidden_layer_size"],
+        hidden_layers=args["layer_num"],
     ).to(args["device"])
+
+    # net_a = Net(
+    #     layer_num=args["layer_num"],
+    #     state_shape=obs_shape,
+    #     hidden_layer_size=args["hidden_layer_size"],
+    # )
+    # actor = CategoricalPolicy(
+    #     preprocess_net=net_a,
+    #     action_num=action_shape,
+    #     hidden_layer_size=args["hidden_layer_size"],
+    # ).to(args["device"])
 
     actor_optim = optim.Adam(actor.parameters(), lr=args["actor_lr"])
 

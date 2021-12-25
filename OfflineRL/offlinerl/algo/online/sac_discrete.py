@@ -1,7 +1,3 @@
-# MOPO: Model-based Offline Policy Optimization
-# https://arxiv.org/abs/2005.13239
-# https://github.com/tianheyu927/mopo
-
 import torch
 import numpy as np
 from copy import deepcopy
@@ -9,11 +5,11 @@ from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.data import Batch
-from offlinerl.utils.net.common import MLP, Net
+from offlinerl.utils.net.common import MLP
+from offlinerl.utils.net.discrete import CategoricalActor
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.data import ModelBuffer
-from offlinerl.utils.net.sac_policy import CategoricalPolicy
 from offlinerl.utils.env import get_env
 
 
@@ -39,16 +35,11 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    net_a = Net(
-        layer_num=args["hidden_layers"],
-        state_shape=obs_shape,
-        hidden_layer_size=args["hidden_layer_size"],
-    )
-
-    actor = CategoricalPolicy(
-        preprocess_net=net_a,
-        action_num=action_shape,
-        hidden_layer_size=args["hidden_layer_size"],
+    actor = CategoricalActor(
+        obs_dim=obs_shape,
+        action_dim=action_shape,
+        hidden_size=args["hidden_layer_size"],
+        hidden_layers=args["hidden_layers"],
     ).to(args["device"])
 
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args["actor_lr"])
@@ -107,13 +98,13 @@ class AlgoTrainer(BaseAlgo):
 
         self.args["target_entropy"] = np.log(self.args["action_shape"])
 
-    def train(self, train_buffer, val_buffer, callback_fn):
-        self.train_policy(train_buffer, val_buffer, callback_fn)
+    def train(self, callback_fn):
+        self.train_policy(callback_fn)
 
     def get_policy(self):
         return self.actor
 
-    def train_policy(self, train_buffer, val_buffer, callback_fn):
+    def train_policy(self, callback_fn):
         buffer = ModelBuffer(self.args["buffer_size"])
 
         for epoch in range(self.args["max_epoch"]):
@@ -121,19 +112,21 @@ class AlgoTrainer(BaseAlgo):
             # collect data
             with torch.no_grad():
                 obs = self.env.reset()
-                obs_t = torch.tensor(obs, device=self.device)
                 while True:
+                    obs_t = torch.tensor(obs, device=self.device)
+                    obs_t = obs_t.unsqueeze(0)
                     action = self.actor(obs_t).sample()
+                    action = action.detach().cpu().numpy()
                     new_obs, reward, done, _ = self.env.step(action)
 
                     batch_data = Batch(
                         {
-                            "obs": obs,
-                            "act": action,
-                            "rew": reward,
-                            "ret": reward,
-                            "done": done,
-                            "obs_next": new_obs,
+                            "obs": obs_t.detach().cpu().numpy(),
+                            "act": np.expand_dims(action, 0),
+                            "rew": [reward],
+                            # "ret": reward,
+                            "done": [done],
+                            "obs_next": np.expand_dims(new_obs, 0),
                         }
                     )
                     buffer.put(batch_data)
@@ -142,21 +135,18 @@ class AlgoTrainer(BaseAlgo):
                         break
                     obs = new_obs
 
-                # update
-                for _ in range(self.args["steps_per_epoch"]):
-                    batch = buffer.sample(self.args["batch_size"])
-                    batch.to_torch(device=self.device)
+            # update
+            for _ in range(self.args["steps_per_epoch"]):
+                batch = buffer.sample(self.args["batch_size"])
+                batch.to_torch(device=self.device)
 
-                    sac_metrics = self._sac_update(batch)
+                sac_metrics = self._sac_update(batch)
 
-                if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
-                    res = callback_fn(self.get_policy())
-                    metrics.update(res)
+            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
+                res = callback_fn(self.get_policy())
+                metrics.update(res)
 
-                metrics["reward"] = reward.mean().item()
-                metrics["next_obs"] = new_obs.mean().item()
-
-                metrics.update(sac_metrics)
+            metrics.update(sac_metrics)
             self.log_res(epoch, metrics)
 
         return self.get_policy()
@@ -169,8 +159,11 @@ class AlgoTrainer(BaseAlgo):
         done = batch_data["done"]
 
         # update critic
-        _q1 = self.q1(obs).gather(1, action.long())
-        _q2 = self.q2(obs).gather(1, action.long())
+        # print(
+        #     obs.shape, action.shape, next_obs.shape, reward.shape, done.shape
+        # )
+        _q1 = self.q1(obs).gather(-1, action.long())
+        _q2 = self.q2(obs).gather(-1, action.long())
 
         with torch.no_grad():
             next_action_dist = self.actor(next_obs)
@@ -247,8 +240,6 @@ class AlgoTrainer(BaseAlgo):
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
         metrics["mean_Qmin"] = torch.mean(q).item()
         metrics["log_alpha"] = self.log_alpha.item()
-        metrics["mean_obs"] = torch.mean(obs).item()
-        metrics["mean_next_obs"] = torch.mean(next_obs).item()
         metrics["mean_alpha_loss"] = torch.mean(alpha_loss).item()
         metrics["mean_actor_loss"] = torch.mean(actor_loss).item()
         return metrics

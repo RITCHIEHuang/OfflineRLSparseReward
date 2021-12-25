@@ -55,5 +55,5 @@ class CategoricalActor(nn.Module, DiscretePolicy):
 
     def forward(self, obs):
         logits = self.backbone(obs)
-        probs = F.softmax(logits, dim=1)
+        probs = F.softmax(logits, dim=-1)
         return Categorical(probs)

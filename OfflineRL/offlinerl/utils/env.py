@@ -1,5 +1,6 @@
 import gym
 import neorl
+import rec_env
 import numpy as np
 from typing import Tuple
 

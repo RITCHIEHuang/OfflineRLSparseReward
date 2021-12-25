@@ -2,6 +2,7 @@
 # https://arxiv.org/abs/2005.13239
 # https://github.com/tianheyu927/mopo
 
+from offlinerl.utils.net.discrete import CategoricalActor
 import torch
 import numpy as np
 from copy import deepcopy
@@ -9,13 +10,11 @@ from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.data import Batch
-from offlinerl.utils.net.common import MLP, Net
+from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
-
-from offlinerl.utils.net.sac_policy import CategoricalPolicy
 
 
 def prob_log_prob(dist, eps=1e-6):
@@ -53,16 +52,22 @@ def algo_init(args):
         weight_decay=0.000075,
     )
 
-    net_a = Net(
-        layer_num=args["hidden_layers"],
-        state_shape=obs_shape,
-        hidden_layer_size=args["hidden_layer_size"],
-    )
+    # net_a = Net(
+    #     layer_num=args["hidden_layers"],
+    #     state_shape=obs_shape,
+    #     hidden_layer_size=args["hidden_layer_size"],
+    # )
 
-    actor = CategoricalPolicy(
-        preprocess_net=net_a,
-        action_num=action_shape,
-        hidden_layer_size=args["hidden_layer_size"],
+    # actor = CategoricalPolicy(
+    #     preprocess_net=net_a,
+    #     action_num=action_shape,
+    #     hidden_layer_size=args["hidden_layer_size"],
+    # ).to(args["device"])
+    actor = CategoricalActor(
+        obs_dim=obs_shape,
+        action_dim=action_shape,
+        hidden_size=args["hidden_layer_size"],
+        hidden_layers=args["hidden_layers"],
     ).to(args["device"])
 
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args["actor_lr"])

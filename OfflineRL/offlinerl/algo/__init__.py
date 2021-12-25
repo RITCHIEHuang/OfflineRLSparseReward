@@ -22,9 +22,9 @@ from offlinerl.config.algo import (
     shaping_config,
     decomposer_config,
     reward_giver_config,
-    sacd_config,
     cqld_config,
     iqld_config,
+    online_sacd_config,
 )
 
 from offlinerl.utils.config import parse_config
@@ -68,7 +68,7 @@ algo_dict = {
     "moose": {"algo": moose, "config": moose_config},
     "bremen": {"algo": bremen, "config": bremen_config},
     # online
-    "sacd": {"algo": sac_discrete, "config": sacd_config},
+    "sacd": {"algo": sac_discrete, "config": online_sacd_config},
 }
 
 
