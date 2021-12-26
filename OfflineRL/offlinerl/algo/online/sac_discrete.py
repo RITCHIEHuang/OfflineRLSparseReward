@@ -96,7 +96,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.device = args["device"]
 
-        self.args["target_entropy"] = np.log(self.args["action_shape"])
+        self.args["target_entropy"] = -np.log(1.0 / self.args["action_shape"])
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -197,12 +197,17 @@ class AlgoTrainer(BaseAlgo):
             soft_target_tau=self.args["soft_target_tau"],
         )
 
+        action_dist = self.actor(obs)
+        action_prob, action_log_prob = prob_log_prob(action_dist)
+
         if self.args["learnable_alpha"]:
             # update alpha
-            entropy = -torch.sum(prob * log_prob, dim=-1, keepdim=True)
+            entropy = -torch.sum(
+                action_prob * action_log_prob, dim=-1, keepdim=True
+            )
             alpha_loss = -torch.mean(
                 self.log_alpha
-                * (-entropy + self.args["target_entropy"]).detach()
+                * (-entropy.detach() + self.args["target_entropy"]).detach()
             )
 
             self.log_alpha_optim.zero_grad()
@@ -213,17 +218,15 @@ class AlgoTrainer(BaseAlgo):
             self.log_alpha_optim.step()
 
         # update actor
-        action_dist = self.actor(obs)
-        action_prob, action_log_prob = prob_log_prob(action_dist)
-
         entropy = -torch.sum(
             action_prob * action_log_prob, dim=-1, keepdim=True
         )
-        q = torch.sum(
-            action_prob * torch.min(self.q1(obs), self.q2(obs)),
-            dim=-1,
-            keepdim=True,
-        )
+        with torch.no_grad():
+            q = torch.sum(
+                action_prob * torch.min(self.q1(obs), self.q2(obs)),
+                dim=-1,
+                keepdim=True,
+            )
 
         actor_loss = (-q - torch.exp(self.log_alpha) * entropy).mean()
 

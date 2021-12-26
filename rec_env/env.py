@@ -15,19 +15,27 @@ class ObservationAdapter(object):
         self._encode_format = encode_format
         user_space = input_observation_space.spaces["user"]
         doc_space = input_observation_space.spaces["doc"]
-        self._num_candidates = len(doc_space.spaces)
+        response_space = input_observation_space.spaces["response"]
 
-        doc_space_shape = spaces.flatdim(list(doc_space.spaces.values())[0])
+        self._num_candidates = len(doc_space.spaces)
+        self.doc_space_shape = spaces.flatdim(
+            list(doc_space.spaces.values())[0]
+        )
+        self.response_space_shape = sum(
+            [spaces.flatdim(space) for space in response_space.spaces]
+        )
         # Use the longer of user_space and doc_space as the shape of each row.
         if encode_format == "img":
+            # TODO: add response
             obs_shape = (
-                np.max([spaces.flatdim(user_space), doc_space_shape]),
+                np.max([spaces.flatdim(user_space), self.doc_space_shape]),
             )
             self._observation_shape = (self._num_candidates + 1,) + obs_shape
         else:
             self._observation_shape = [
                 spaces.flatdim(user_space)
-                + doc_space_shape * self._num_candidates
+                + self.doc_space_shape * self._num_candidates
+                + self.response_space_shape
             ]
 
         self._observation_dtype = user_space.dtype
@@ -42,6 +50,7 @@ class ObservationAdapter(object):
         """The output observation space of the adapter."""
         user_space = self._input_observation_space.spaces["user"]
         doc_space = self._input_observation_space.spaces["doc"]
+        response_space = self._input_observation_space.spaces["response"]
         user_dim = spaces.flatdim(user_space)
 
         if self._encode_format == "img":
@@ -92,6 +101,13 @@ class ObservationAdapter(object):
             self._input_observation_space.spaces["doc"].spaces.values(),
             observation["doc"].values(),
         )
+
+        response = np.zeros(self.response_space_shape)
+        if observation["response"] is not None:
+            response = spaces.flatten(
+                self._input_observation_space.spaces["response"],
+                observation["response"],
+            )
         vec = np.concatenate(
             [
                 spaces.flatten(
@@ -100,6 +116,7 @@ class ObservationAdapter(object):
                 )
             ]
             + [spaces.flatten(doc_space, d) for doc_space, d in doc_space]
+            + [response]
         )
 
         return vec

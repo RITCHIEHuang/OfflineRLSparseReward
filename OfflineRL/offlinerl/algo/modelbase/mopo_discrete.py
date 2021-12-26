@@ -391,12 +391,16 @@ class AlgoTrainer(BaseAlgo):
             soft_target_tau=self.args["soft_target_tau"],
         )
 
+        action_dist = self.actor(obs)
+        action_prob, action_log_prob = prob_log_prob(action_dist)
         if self.args["learnable_alpha"]:
             # update alpha
-            entropy = -torch.sum(prob * log_prob, dim=-1, keepdim=True)
+            entropy = -torch.sum(
+                action_prob * action_log_prob, dim=-1, keepdim=True
+            )
             alpha_loss = -torch.mean(
                 self.log_alpha
-                * (-entropy + self.args["target_entropy"]).detach()
+                * (-entropy.detach() + self.args["target_entropy"]).detach()
             )
 
             self.log_alpha_optim.zero_grad()
@@ -407,8 +411,6 @@ class AlgoTrainer(BaseAlgo):
             self.log_alpha_optim.step()
 
         # update actor
-        action_dist = self.actor(obs)
-        action_prob, action_log_prob = prob_log_prob(action_dist)
 
         entropy = -torch.sum(
             action_prob * action_log_prob, dim=-1, keepdim=True

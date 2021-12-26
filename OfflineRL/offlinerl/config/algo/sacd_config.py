@@ -21,6 +21,7 @@ actor_lr = 3e-4
 critic_lr = 3e-4
 discount = 0.99
 soft_target_tau = 5e-3
+target_entropy_ratio = 0.98
 
 # tune
 grid_tune = {

@@ -1,5 +1,4 @@
 from collections import defaultdict
-import math
 import numpy as np
 from gym import spaces
 
@@ -197,7 +196,7 @@ class UserResponse(user.AbstractResponse):
         return {
             "clicked": int(self.clicked),
             "next_time": np.array(self.next_time),
-            "retention": np.array(self.retention),
+            "retention": int(self.retention),
         }
 
     @classmethod
@@ -207,16 +206,11 @@ class UserResponse(user.AbstractResponse):
                 "clicked": spaces.Discrete(2),
                 "next_time": spaces.Box(
                     low=0.0,
-                    high=1440.0,
+                    high=np.inf,
                     shape=tuple(),
                     dtype=np.float32,
                 ),
-                "retention": spaces.Box(
-                    low=0.0,
-                    high=1.0,
-                    shape=tuple(),
-                    dtype=np.float32,
-                ),
+                "retention": spaces.Discrete(2),
             }
         )
 
@@ -363,8 +357,8 @@ def reward_fn(responses):
     for response in responses:
         reward_info["retention"] += response.retention
         reward_info["click"] += response.clicked
-    # reward = reward_info["click"]
-    reward = reward_info["retention"]
+    reward = reward_info["click"]
+    # reward = reward_info["retention"]
     # reward = 10 * reward_info["retention"] + reward_info["click"]
     return reward, reward_info
 

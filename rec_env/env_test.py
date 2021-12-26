@@ -1,3 +1,4 @@
+from gym import spaces
 import matplotlib.pyplot as plt
 
 from rec_env.env import get_recs_env
@@ -34,6 +35,8 @@ def test_env():
     )
 
     print("=" * 88)
+    # print("env_raw_obs_space", env.raw_observation_space)
+
     print("env_obs_space", env.observation_space)
     print("env_act_space", env.action_space)
 
