@@ -14,9 +14,8 @@ setup(
         "h5py",
         "termcolor",  # adept_envs dependency
         "click",  # adept_envs dependency
-        #   'dm_control' if 'macOS' in platform() else
-        "dm_control @ git+https://github.com/deepmind/dm_control@master#egg=dm_control",
-        "mjrl @ git+https://github.com/aravindr93/mjrl@master#egg=mjrl",
+        "dm_control",
+        "mjrl",
     ],
     packages=find_packages(),
     package_data={

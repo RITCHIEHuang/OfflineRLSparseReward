@@ -13,13 +13,6 @@ from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.env import get_env
 
 
-def prob_log_prob(dist, eps=1e-6):
-    probs = dist.probs
-    z = (probs == 0.0).float() * eps
-    log_probs = torch.log(probs + z)
-    return probs, log_probs
-
-
 def algo_init(args):
     logger.info("Run algo_init function")
 
@@ -53,7 +46,7 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="swish",
+        hidden_activation="relu",
     ).to(args["device"])
     q2 = MLP(
         obs_shape,
@@ -61,7 +54,7 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="swish",
+        hidden_activation="relu",
     ).to(args["device"])
     critic_optim = torch.optim.Adam(
         [*q1.parameters(), *q2.parameters()], lr=args["actor_lr"]
@@ -96,7 +89,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.device = args["device"]
 
-        self.args["target_entropy"] = -np.log(1.0 / self.args["action_shape"])
+        self.args["target_entropy"] = np.log(self.args["action_shape"])
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -110,43 +103,43 @@ class AlgoTrainer(BaseAlgo):
         for epoch in range(self.args["max_epoch"]):
             metrics = {"epoch": epoch}
             # collect data
-            with torch.no_grad():
-                obs = self.env.reset()
-                while True:
-                    obs_t = torch.tensor(obs, device=self.device)
+            obs = self.env.reset()
+            while True:
+                with torch.no_grad():
+                    obs_t = torch.tensor(obs, device=self.device).float()
                     obs_t = obs_t.unsqueeze(0)
                     action = self.actor(obs_t).sample()
-                    action = action.detach().cpu().numpy()
+                    action = action.cpu().numpy()
                     new_obs, reward, done, _ = self.env.step(action)
 
-                    batch_data = Batch(
-                        {
-                            "obs": obs_t.detach().cpu().numpy(),
-                            "act": np.expand_dims(action, 0),
-                            "rew": [reward],
-                            # "ret": reward,
-                            "done": [done],
-                            "obs_next": np.expand_dims(new_obs, 0),
-                        }
-                    )
-                    buffer.put(batch_data)
+                batch_data = Batch(
+                    {
+                        "obs": np.expand_dims(obs, 0),
+                        "act": np.expand_dims(action, 0),
+                        "rew": [reward],
+                        # "ret": reward,
+                        "done": [done],
+                        "obs_next": np.expand_dims(new_obs, 0),
+                    }
+                )
+                buffer.put(batch_data)
 
-                    if done:
-                        break
-                    obs = new_obs
+                if done:
+                    break
+                obs = new_obs
 
-            # update
-            for _ in range(self.args["steps_per_epoch"]):
-                batch = buffer.sample(self.args["batch_size"])
-                batch.to_torch(device=self.device)
+            if len(buffer) >= self.args["warmup_size"]:
+                for _ in range(self.args["steps_per_epoch"]):
+                    batch = buffer.sample(self.args["batch_size"])
+                    batch.to_torch(device=self.device)
 
-                sac_metrics = self._sac_update(batch)
+                    sac_metrics = self._sac_update(batch)
+                    metrics.update(sac_metrics)
 
             if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
 
-            metrics.update(sac_metrics)
             self.log_res(epoch, metrics)
 
         return self.get_policy()
@@ -155,26 +148,33 @@ class AlgoTrainer(BaseAlgo):
         obs = batch_data["obs"]
         action = batch_data["act"]
         next_obs = batch_data["obs_next"]
-        reward = batch_data["rew"]
-        done = batch_data["done"]
+        reward = batch_data["rew"].unsqueeze(-1)
+        done = batch_data["done"].unsqueeze(-1)
 
         # update critic
-        # print(
-        #     obs.shape, action.shape, next_obs.shape, reward.shape, done.shape
-        # )
         _q1 = self.q1(obs).gather(-1, action.long())
         _q2 = self.q2(obs).gather(-1, action.long())
 
         with torch.no_grad():
             next_action_dist = self.actor(next_obs)
-            prob, log_prob = prob_log_prob(next_action_dist)
-
+            probs = next_action_dist.probs
+            entropy = next_action_dist.entropy().unsqueeze(-1)
             _target_q1 = self.target_q1(next_obs)
             _target_q2 = self.target_q2(next_obs)
             alpha = torch.exp(self.log_alpha)
+            target_q = probs * torch.min(_target_q1, _target_q2)
+
             y = reward + self.args["discount"] * (1 - done) * (
-                prob * (torch.min(_target_q1, _target_q2) - alpha * log_prob)
-            ).sum(dim=-1, keepdim=True)
+                target_q.sum(dim=-1, keepdim=True) + alpha * entropy
+            )
+
+        # print("action", action.shape)
+        # print("reward", reward.shape)
+        # print("done", done.shape)
+        # print("entropy", entropy.shape)
+        # print("target_q", target_q.shape)
+        # print("y", y.shape)
+        # print("q1", _q1.shape)
 
         critic_loss = ((y - _q1) ** 2).mean() + ((y - _q2) ** 2).mean()
 
@@ -198,37 +198,17 @@ class AlgoTrainer(BaseAlgo):
         )
 
         action_dist = self.actor(obs)
-        action_prob, action_log_prob = prob_log_prob(action_dist)
-
-        if self.args["learnable_alpha"]:
-            # update alpha
-            entropy = -torch.sum(
-                action_prob * action_log_prob, dim=-1, keepdim=True
-            )
-            alpha_loss = -torch.mean(
-                self.log_alpha
-                * (-entropy.detach() + self.args["target_entropy"]).detach()
-            )
-
-            self.log_alpha_optim.zero_grad()
-            alpha_loss.backward()
-            torch.nn.utils.clip_grad.clip_grad_norm_(
-                [self.log_alpha], max_norm=1.0
-            )
-            self.log_alpha_optim.step()
+        probs = action_dist.probs
+        entropy = action_dist.entropy().unsqueeze(-1)
 
         # update actor
-        entropy = -torch.sum(
-            action_prob * action_log_prob, dim=-1, keepdim=True
-        )
         with torch.no_grad():
-            q = torch.sum(
-                action_prob * torch.min(self.q1(obs), self.q2(obs)),
-                dim=-1,
-                keepdim=True,
-            )
+            q1 = self.q1(obs)
+            q2 = self.q2(obs)
+            q = torch.min(q1, q2)
 
-        actor_loss = (-q - torch.exp(self.log_alpha) * entropy).mean()
+        q = torch.sum(q * probs, dim=-1, keepdim=True)
+        actor_loss = -(q + alpha * entropy).mean()
 
         self.actor_optim.zero_grad()
         actor_loss.backward()
@@ -237,9 +217,21 @@ class AlgoTrainer(BaseAlgo):
         )
         self.actor_optim.step()
 
+        if self.args["learnable_alpha"]:
+            # update alpha
+            log_prob = -entropy.detach() + self.args["target_entropy"]
+            alpha_loss = -(self.log_alpha * log_prob).mean()
+
+            self.log_alpha_optim.zero_grad()
+            alpha_loss.backward()
+            torch.nn.utils.clip_grad.clip_grad_norm_(
+                [self.log_alpha], max_norm=1.0
+            )
+            self.log_alpha_optim.step()
+
         # DEBUGGING INFORMATION
         metrics = {}
-        metrics["mean_action_log_prob"] = torch.mean(action_log_prob).item()
+        metrics["mean_action_prob"] = torch.mean(probs).item()
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
         metrics["mean_Qmin"] = torch.mean(q).item()
         metrics["log_alpha"] = self.log_alpha.item()

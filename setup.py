@@ -7,6 +7,7 @@ setup(
     version="0.0.1",
     python_requires=">=3.6",
     install_requires=[
+        "absl-py",
         "loguru",
         "gym",
         "seaborn",
@@ -15,13 +16,17 @@ setup(
         "scipy",
         "numpy",
         "matplotlib",
-        "absl-py",
-        "gin-config",
         "wandb",
+        # decision transformer
         "transformers",
-        "ml_collections"
-        # "scipy",
-        # "neorl @ git+https://agit.ai/Polixir/neorl.git",
-        # "OfflineRL @ git+https://agit.ai/Polixir/OfflineRL.git@master#egg=OfflineRL",
+        # rec_sim
+        "gin-config",
+        "dopamine-rl",
+        # d4rl
+        "h5py",
+        "mujoco_py",
+        "pybullet",
+        "dm_control",
+        "mjrl",
     ],
 )

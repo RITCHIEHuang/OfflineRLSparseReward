@@ -361,14 +361,18 @@ class AlgoTrainer(BaseAlgo):
 
         with torch.no_grad():
             next_action_dist = self.actor(next_obs)
-            prob, log_prob = prob_log_prob(next_action_dist)
+            prob = next_action_dist.probs
+            entropy = next_action_dist.entropy().unsqueeze(-1)
 
             _target_q1 = self.target_q1(next_obs)
             _target_q2 = self.target_q2(next_obs)
             alpha = torch.exp(self.log_alpha)
+            target_q = (prob * torch.min(_target_q1, _target_q2)).sum(
+                -1, keepdim=True
+            )
             y = reward + self.args["discount"] * (1 - done) * (
-                prob * (torch.min(_target_q1, _target_q2) - alpha * log_prob)
-            ).sum(dim=-1, keepdim=True)
+                target_q + alpha * entropy
+            )
 
         critic_loss = ((y - _q1) ** 2).mean() + ((y - _q2) ** 2).mean()
 
@@ -392,12 +396,31 @@ class AlgoTrainer(BaseAlgo):
         )
 
         action_dist = self.actor(obs)
-        action_prob, action_log_prob = prob_log_prob(action_dist)
+        action_prob = action_dist.probs
+        entropy = action_dist.entropy().squeeze(-1)
+
+        # update actor
+        with torch.no_grad():
+            q1 = self.q1(obs)
+            q2 = self.q2(obs)
+
+        q = torch.sum(
+            action_prob * torch.min(q1, q2),
+            dim=-1,
+            keepdim=True,
+        )
+
+        actor_loss = -(q + alpha * entropy).mean()
+
+        self.actor_optim.zero_grad()
+        actor_loss.backward()
+        # torch.nn.utils.clip_grad.clip_grad_norm_(
+        #     self.actor.parameters(), max_norm=1.0
+        # )
+        self.actor_optim.step()
+
         if self.args["learnable_alpha"]:
             # update alpha
-            entropy = -torch.sum(
-                action_prob * action_log_prob, dim=-1, keepdim=True
-            )
             alpha_loss = -torch.mean(
                 self.log_alpha
                 * (-entropy.detach() + self.args["target_entropy"]).detach()
@@ -405,34 +428,14 @@ class AlgoTrainer(BaseAlgo):
 
             self.log_alpha_optim.zero_grad()
             alpha_loss.backward()
-            torch.nn.utils.clip_grad.clip_grad_norm_(
-                [self.log_alpha], max_norm=1.0
-            )
+            # torch.nn.utils.clip_grad.clip_grad_norm_(
+            #     [self.log_alpha], max_norm=1.0
+            # )
             self.log_alpha_optim.step()
-
-        # update actor
-
-        entropy = -torch.sum(
-            action_prob * action_log_prob, dim=-1, keepdim=True
-        )
-        q = torch.sum(
-            action_prob * torch.min(self.q1(obs), self.q2(obs)),
-            dim=-1,
-            keepdim=True,
-        )
-
-        actor_loss = (-q - torch.exp(self.log_alpha) * entropy).mean()
-
-        self.actor_optim.zero_grad()
-        actor_loss.backward()
-        torch.nn.utils.clip_grad.clip_grad_norm_(
-            self.actor.parameters(), max_norm=1.0
-        )
-        self.actor_optim.step()
 
         # DEBUGGING INFORMATION
         metrics = {}
-        metrics["mean_action_log_prob"] = torch.mean(action_log_prob).item()
+        metrics["mean_action_prob"] = torch.mean(action_prob).item()
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
         metrics["mean_Qmin"] = torch.mean(q).item()
         metrics["log_alpha"] = self.log_alpha.item()

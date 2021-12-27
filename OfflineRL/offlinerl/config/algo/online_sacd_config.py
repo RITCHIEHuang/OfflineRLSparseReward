@@ -10,15 +10,16 @@ max_action = None
 hidden_layer_size = 256
 hidden_layers = 2
 
-batch_size = 64
-buffer_size = 1e6
+batch_size = 256
+buffer_size = 1e5
+warmup_size = 10000
 steps_per_epoch = 100
-max_epoch = 1500
+max_epoch = 5000
 eval_epoch = 10
 
 learnable_alpha = True
-actor_lr = 3e-4
-critic_lr = 3e-4
+actor_lr = 3e-3
+critic_lr = 3e-3
 discount = 0.99
 soft_target_tau = 5e-3
 
