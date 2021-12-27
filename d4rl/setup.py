@@ -14,7 +14,7 @@ setup(
         "h5py",
         "termcolor",  # adept_envs dependency
         "click",  # adept_envs dependency
-        "dm_control",
+        'dm_control', 
         "mjrl",
     ],
     packages=find_packages(),
