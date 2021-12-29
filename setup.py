@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
     name="mbsorl",
     version="0.0.1",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=[
         "absl-py",
         "loguru",
