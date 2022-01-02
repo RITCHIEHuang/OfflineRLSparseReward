@@ -28,5 +28,6 @@ setup(
         "pybullet",
         "dm_control",
         "mjrl",
+        "stable-baselines3",
     ],
 )
