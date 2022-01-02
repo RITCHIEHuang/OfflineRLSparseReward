@@ -3,7 +3,6 @@ from gym import spaces
 from recsim.simulator import environment
 from recsim.simulator.recsim_gym import RecSimGymEnv
 
-from rec_env.offline_env import OfflineEnv
 from rec_env.recsim_model import create_env, reward_fn
 
 
@@ -151,7 +150,7 @@ class ObservationAdapter(object):
         return image
 
 
-class RecsEnv(RecSimGymEnv, OfflineEnv):
+class RecsEnv(RecSimGymEnv):
     def __init__(
         self,
         raw_environment,
@@ -164,8 +163,6 @@ class RecsEnv(RecSimGymEnv, OfflineEnv):
             raw_environment,
             reward_aggregator,
         )
-        OfflineEnv.__init__(self, **kwargs)
-
         self._obs_adapter = ObservationAdapter(
             self.raw_observation_space, obs_encode_format
         )

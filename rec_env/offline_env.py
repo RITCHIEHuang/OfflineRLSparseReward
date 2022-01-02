@@ -1,6 +1,8 @@
 import numpy as np
 import gym
 
+from rec_env.env import get_recs_env
+
 
 class OfflineEnv(gym.Env):
     """
@@ -82,3 +84,9 @@ class OfflineEnvWrapper(gym.Wrapper, OfflineEnv):
 
     def reset(self):
         return self.env.reset()
+
+
+def get_recs_offline_env(**kwargs):
+    recs_env = get_recs_env(**kwargs)
+    recs_offline_env = OfflineEnvWrapper(recs_env, **kwargs)
+    return recs_offline_env
