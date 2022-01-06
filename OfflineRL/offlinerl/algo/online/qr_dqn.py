@@ -147,8 +147,8 @@ class AlgoTrainer(BaseAlgo):
         obs = batch_data["obs"]
         action = batch_data["act"]
         next_obs = batch_data["obs_next"]
-        reward = batch_data["rew"]
-        done = batch_data["done"]
+        reward = batch_data["rew"].unsqueeze(-1)
+        done = batch_data["done"].unsqueeze(-1)
 
         # update critic
         # [batch, N, 1]
@@ -160,6 +160,10 @@ class AlgoTrainer(BaseAlgo):
             next_quantiles = self._calc_quantiles(
                 self.target_q, next_obs, next_action
             )
+            reward = reward.expand(-1, self.args["num_quantiles"]).unsqueeze(
+                -1
+            )
+            done = done.expand(-1, self.args["num_quantiles"]).unsqueeze(-1)
             y = reward + self.args["discount"] * (1 - done) * next_quantiles
 
         huber_loss = self.loss_fn(y, cur_quantiles)
@@ -170,14 +174,14 @@ class AlgoTrainer(BaseAlgo):
 
         critic_loss = (torch.abs(self.tau - delta) * huber_loss).mean()
 
-        print("next_q", next_q.shape)
-        print("next_a", next_action.shape)
-        print("next_quantiles", next_quantiles.shape)
-        print("y", y.shape)
-        print("cur_quantiles", cur_quantiles.shape)
-        print("tau", self.tau.shape)
-        print("delta", delta.shape)
-        print("huberloss", huber_loss.shape)
+        # print("next_q", next_q.shape)
+        # print("next_a", next_action.shape)
+        # print("next_quantiles", next_quantiles.shape)
+        # print("y", y.shape)
+        # print("cur_quantiles", cur_quantiles.shape)
+        # print("tau", self.tau.shape)
+        # print("delta", delta.shape)
+        # print("huberloss", huber_loss.shape)
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
@@ -203,6 +207,7 @@ class AlgoTrainer(BaseAlgo):
         metrics = {}
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
         metrics["mean_huber_loss"] = torch.mean(huber_loss).item()
-        metrics["mean_Q"] = torch.mean(_q).item()
+        metrics["mean_q_quantile"] = torch.mean(cur_quantiles).item()
+        metrics["mean_next_q_quantile"] = torch.mean(next_quantiles).item()
         metrics["exploration_rate"] = self.exploration_rate
         return metrics
