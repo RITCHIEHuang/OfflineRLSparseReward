@@ -1,16 +1,12 @@
 import torch
-import numpy as np
+import torch.nn as nn
 from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch
-from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
-from offlinerl.utils.env import get_env
-from offlinerl.utils.net.discrete import QuantileQPolicyWrapper
+from offlinerl.utils.net.discrete import QuantileQNet, QuantileQPolicyWrapper
 
 
 def algo_init(args):
@@ -59,7 +55,7 @@ class AlgoTrainer(BaseAlgo):
         self.device = args["device"]
 
         tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
-        self.tau = ((tau[:-1] + tau[1:])/2).view(1, -1, 1).to(self.device)
+        self.tau = ((tau[:-1] + tau[1:]) / 2).view(1, -1, 1).to(self.device)
 
     def train(self, train_buffer, val_buffer, callback_fn):
         for epoch in range(self.args["max_epoch"]):
@@ -88,11 +84,20 @@ class AlgoTrainer(BaseAlgo):
 
     def _train(self, batch):
         self.total_train_steps += 1
-        obs = batch_data["obs"]
-        action = batch_data["act"]
-        next_obs = batch_data["obs_next"]
-        reward = batch_data["rew"].view(-1, 1, 1).repeat(1, self.args["num_quantiles"], 1)
-        done = batch_data["done"].view(-1, 1, 1).repeat(1, self.args["num_quantiles"], 1)
+
+        obs = batch["obs"]
+        action = batch["act"]
+        next_obs = batch["obs_next"]
+        reward = (
+            batch["rew"]
+            .view(-1, 1, 1)
+            .repeat(1, self.args["num_quantiles"], 1)
+        )
+        done = (
+            batch["done"]
+            .view(-1, 1, 1)
+            .repeat(1, self.args["num_quantiles"], 1)
+        )
 
         # update critic
         # [batch, N, 1]
@@ -138,9 +143,6 @@ class AlgoTrainer(BaseAlgo):
                 soft_target_tau=self.args["soft_target_tau"],
             )
 
-        self.exploration_rate = self.exploration_schedule(
-            1.0 - 1.0 * self.train_epoch / self.args["max_epoch"]
-        )
         self.actor.q_net = self.q
 
         # DEBUGGING INFORMATION
@@ -151,5 +153,3 @@ class AlgoTrainer(BaseAlgo):
         metrics["mean_next_q_quantile"] = torch.mean(next_quantiles).item()
         metrics["exploration_rate"] = self.exploration_rate
         return metrics
-
-        

@@ -1,15 +1,11 @@
 import torch
-import numpy as np
 from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
-from offlinerl.utils.env import get_env
 from offlinerl.utils.net.discrete import QPolicyWrapper
 
 
