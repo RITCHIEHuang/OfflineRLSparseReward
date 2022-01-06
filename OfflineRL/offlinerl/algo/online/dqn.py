@@ -86,21 +86,25 @@ class AlgoTrainer(BaseAlgo):
             self.train_epoch <= self.args["max_epoch"]
             or self.total_train_steps <= self.args["max_step"]
         ):
-            metrics = {"epoch": self.train_epoch}
+            metrics = {
+                "epoch": self.train_epoch,
+                "step": self.total_train_steps
+                }
             # collect data
             obs = self.env.reset()
             while True:
-                with torch.no_grad():
-                    obs_t = torch.tensor(obs, device=self.device).float()
-                    obs_t = obs_t.unsqueeze(0)
+                if np.random.rand() < self.exploration_rate:
+                    action = np.array([self.env.action_space.sample()])
+                else:
+                    with torch.no_grad():
+                        obs_t = torch.tensor(obs, device=self.device).float()
+                        obs_t = obs_t.unsqueeze(0)
 
-                    if np.random.rand() < self.exploration_rate:
-                        action = np.array([self.env.action_space.sample()])
-                    else:
-                        action = self.actor(obs_t)[0].long()
-                        action = action.cpu().numpy()
-                    new_obs, reward, done, _ = self.env.step(action)
+                        
+                            action = self.actor(obs_t)[0].long()
+                            action = action.cpu().numpy()
 
+                new_obs, reward, done, _ = self.env.step(action)
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
@@ -116,7 +120,8 @@ class AlgoTrainer(BaseAlgo):
                     break
                 obs = new_obs
 
-                if len(buffer) >= self.args["warmup_size"]:
+                self.total_train_steps += 1
+                if self.total_train_steps >= self.args["warmup_size"]:
                     batch = buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
@@ -136,7 +141,6 @@ class AlgoTrainer(BaseAlgo):
         return self.get_policy()
 
     def _dqn_update(self, batch_data):
-        self.total_train_steps += 1
 
         obs = batch_data["obs"]
         action = batch_data["act"]
