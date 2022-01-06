@@ -68,7 +68,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.exploration_rate = self.exploration_schedule(1.0)
         self.total_train_steps = 0
-        self.cur_epoch = None
+        self.train_epoch = 0 
         self.loss_fn = nn.SmoothL1Loss(reduction="none")
         self.device = args["device"]
 
@@ -86,9 +86,8 @@ class AlgoTrainer(BaseAlgo):
     def train_policy(self, callback_fn):
         buffer = ModelBuffer(self.args["buffer_size"])
 
-        for epoch in range(self.args["max_epoch"]):
-            self.cur_epoch = epoch
-            metrics = {"epoch": epoch}
+        while self.train_epoch <= self.args["max_epoch"] or self.total_train_steps <= self.args["max_step"]:
+            metrics = {"epoch": self.train_epoch}
             # collect data
             obs = self.env.reset()
             while True:
@@ -125,11 +124,12 @@ class AlgoTrainer(BaseAlgo):
                     dqn_metrics = self._qr_dqn_update(batch)
                     metrics.update(dqn_metrics)
 
-            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
+            if self.train_epoch== 0 or (self.train_epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.actor)
                 metrics.update(res)
 
-            self.log_res(epoch, metrics)
+            self.log_res(self.train_epoch, metrics)
+            self.train_epoch += 1
 
         return self.get_policy()
 
@@ -199,7 +199,7 @@ class AlgoTrainer(BaseAlgo):
             )
 
         self.exploration_rate = self.exploration_schedule(
-            1.0 - 1.0 * self.cur_epoch / self.args["max_epoch"]
+            1.0 - 1.0 * self.train_epoch / self.args["max_epoch"]
         )
         self.actor.q_net = self.q
 
