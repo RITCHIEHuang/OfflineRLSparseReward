@@ -68,7 +68,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.exploration_rate = self.exploration_schedule(1.0)
         self.total_train_steps = 0
-        self.train_epoch = 0 
+        self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss(reduction="none")
         self.device = args["device"]
 
@@ -87,12 +87,12 @@ class AlgoTrainer(BaseAlgo):
         buffer = ModelBuffer(self.args["buffer_size"])
 
         while (
-            self.train_epoch <= self.args["max_epoch"] 
+            self.train_epoch <= self.args["max_epoch"]
             or self.total_train_steps <= self.args["max_step"]
         ):
             metrics = {
                 "epoch": self.train_epoch,
-                "step": self.total_train_steps
+                "step": self.total_train_steps,
             }
             # collect data
             obs = self.env.reset()
@@ -104,8 +104,8 @@ class AlgoTrainer(BaseAlgo):
                         obs_t = torch.tensor(obs, device=self.device).float()
                         obs_t = obs_t.unsqueeze(0)
 
-                            action = self.actor(obs_t)[0].long()
-                            action = action.cpu().numpy()
+                        action = self.actor(obs_t)[0].long()
+                        action = action.cpu().numpy()
 
                 new_obs, reward, done, _ = self.env.step(action)
                 batch_data = Batch(
@@ -131,7 +131,10 @@ class AlgoTrainer(BaseAlgo):
                     dqn_metrics = self._qr_dqn_update(batch)
                     metrics.update(dqn_metrics)
 
-            if self.train_epoch== 0 or (self.train_epoch + 1) % self.args["eval_epoch"] == 0:
+            if (
+                self.train_epoch == 0
+                or (self.train_epoch + 1) % self.args["eval_epoch"] == 0
+            ):
                 res = callback_fn(self.actor)
                 metrics.update(res)
 

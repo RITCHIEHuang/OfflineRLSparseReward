@@ -88,8 +88,8 @@ class AlgoTrainer(BaseAlgo):
         ):
             metrics = {
                 "epoch": self.train_epoch,
-                "step": self.total_train_steps
-                }
+                "step": self.total_train_steps,
+            }
             # collect data
             obs = self.env.reset()
             while True:
@@ -99,10 +99,8 @@ class AlgoTrainer(BaseAlgo):
                     with torch.no_grad():
                         obs_t = torch.tensor(obs, device=self.device).float()
                         obs_t = obs_t.unsqueeze(0)
-
-                        
-                            action = self.actor(obs_t)[0].long()
-                            action = action.cpu().numpy()
+                        action = self.actor(obs_t)[0].long()
+                        action = action.cpu().numpy()
 
                 new_obs, reward, done, _ = self.env.step(action)
                 batch_data = Batch(
