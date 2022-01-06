@@ -1,17 +1,16 @@
 import torch
-import torch.nn as nn
 import numpy as np
 from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.data import Batch
+from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.env import get_env
-from offlinerl.utils.net.discrete import QuantileQPolicyWrapper, QuantileQNet
-from offlinerl.utils.function import get_linear_fn
+from offlinerl.utils.net.discrete import QuantileQPolicyWrapper
 
 
 def algo_init(args):
@@ -40,17 +39,8 @@ def algo_init(args):
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
-    env = get_env(args["task"])
-
-    exploration_schedule = get_linear_fn(
-        args["exploration_init_eps"],
-        args["exploration_final_eps"],
-    )
-
     return {
-        "env": env,
         "critic": {"net": q, "opt": critic_optim},
-        "exploration_schedule": exploration_schedule,
     }
 
 
@@ -59,87 +49,34 @@ class AlgoTrainer(BaseAlgo):
         super(AlgoTrainer, self).__init__(args)
         self.args = args
 
-        self.env = algo_init["env"]
         self.q = algo_init["critic"]["net"]
         self.actor = QuantileQPolicyWrapper(self.q)
         self.target_q = deepcopy(self.q)
         self.critic_optim = algo_init["critic"]["opt"]
-        self.exploration_schedule = algo_init["exploration_schedule"]
 
-        self.exploration_rate = self.exploration_schedule(1.0)
         self.total_train_steps = 0
-        self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss(reduction="none")
         self.device = args["device"]
 
         tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
         self.tau = ((tau[:-1] + tau[1:])/2).view(1, -1, 1).to(self.device)
 
-    def train(self, callback_fn):
-        self.train_policy(callback_fn)
+    def train(self, train_buffer, val_buffer, callback_fn):
+        for epoch in range(self.args["max_epoch"]):
+            metrics = {"epoch": epoch}
+            for step in range(1, self.args["steps_per_epoch"] + 1):
+                train_data = train_buffer.sample(self.args["batch_size"])
+                res = self._train(train_data)
+                metrics.update(res)
+            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
+                res = callback_fn(self.get_policy())
+                metrics.update(res)
+            self.log_res(epoch, metrics)
+
+        return self.get_policy()
 
     def get_policy(self):
         return self.q
-
-    def train_policy(self, callback_fn):
-        buffer = ModelBuffer(self.args["buffer_size"])
-
-        while (
-            self.train_epoch <= self.args["max_epoch"]
-            or self.total_train_steps <= self.args["max_step"]
-        ):
-            metrics = {
-                "epoch": self.train_epoch,
-                "step": self.total_train_steps,
-            }
-            # collect data
-            obs = self.env.reset()
-            while True:
-                if np.random.rand() < self.exploration_rate:
-                    action = np.array([self.env.action_space.sample()])
-                else:
-                    with torch.no_grad():
-                        obs_t = torch.tensor(obs, device=self.device).float()
-                        obs_t = obs_t.unsqueeze(0)
-
-                        action = self.actor(obs_t)[0].long()
-                        action = action.cpu().numpy()
-
-                new_obs, reward, done, _ = self.env.step(action)
-                batch_data = Batch(
-                    {
-                        "obs": np.expand_dims(obs, 0),
-                        "act": np.expand_dims(action, 0),
-                        "rew": [reward],
-                        "done": [done],
-                        "obs_next": np.expand_dims(new_obs, 0),
-                    }
-                )
-                buffer.put(batch_data)
-
-                if done:
-                    break
-                obs = new_obs
-
-                self.total_train_steps += 1
-                if self.total_train_steps >= self.args["warmup_size"]:
-                    batch = buffer.sample(self.args["batch_size"])
-                    batch.to_torch(device=self.device)
-
-                    dqn_metrics = self._qr_dqn_update(batch)
-                    metrics.update(dqn_metrics)
-
-            if (
-                self.train_epoch == 0
-                or (self.train_epoch + 1) % self.args["eval_epoch"] == 0
-            ):
-                res = callback_fn(self.actor)
-                metrics.update(res)
-
-            self.log_res(self.train_epoch, metrics)
-            self.train_epoch += 1
-
-        return self.get_policy()
 
     def _calc_quantiles(self, network, obs, actions):
         # update critic
@@ -149,7 +86,8 @@ class AlgoTrainer(BaseAlgo):
         _q = cur_quantiles.gather(-1, action_idx.long())
         return _q
 
-    def _qr_dqn_update(self, batch_data):
+    def _train(self, batch):
+        self.total_train_steps += 1
         obs = batch_data["obs"]
         action = batch_data["act"]
         next_obs = batch_data["obs_next"]
@@ -213,3 +151,5 @@ class AlgoTrainer(BaseAlgo):
         metrics["mean_next_q_quantile"] = torch.mean(next_quantiles).item()
         metrics["exploration_rate"] = self.exploration_rate
         return metrics
+
+        

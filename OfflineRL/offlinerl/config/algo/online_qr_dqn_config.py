@@ -18,10 +18,10 @@ max_step = 1e7
 max_epoch = 10000
 eval_epoch = 10
 
-lr = 2e-4
+lr = 1e-4
 exploration_init_eps = 0.2
 exploration_final_eps = 0.02
-target_update_interval = 2000
+target_update_interval = 10000
 discount = 0.99
 soft_target_tau = 0
 

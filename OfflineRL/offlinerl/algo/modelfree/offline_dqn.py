@@ -11,7 +11,6 @@ from offlinerl.utils.exp import setup_seed
 from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.env import get_env
 from offlinerl.utils.net.discrete import QPolicyWrapper
-from offlinerl.utils.function import get_linear_fn
 
 
 def algo_init(args):
