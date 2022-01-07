@@ -64,7 +64,7 @@ algo_dict = {
     "mopo": {"algo": mopo, "config": mopo_config},
     "mopod": {"algo": mopo_discrete, "config": mopod_config},
     "offline_dqn": {"algo": offline_dqn, "config": offline_dqn_config},
-    "offline_qr_dqn": {"algo": offine_qr_dqn, "config": offline_qr_dqn_config},
+    "offline_qr_dqn": {"algo": offline_qr_dqn, "config": offline_qr_dqn_config},
     # default
     "bc": {"algo": bc, "config": bc_config},
     "bcq": {"algo": bcq, "config": bcq_config},
