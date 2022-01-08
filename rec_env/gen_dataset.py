@@ -2,7 +2,6 @@ from collections import defaultdict
 import time
 import numpy as np
 
-from recsim.agent import AbstractEpisodicRecommenderAgent
 
 from rec_env.env import get_recs_env
 

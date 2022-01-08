@@ -29,6 +29,7 @@ from offlinerl.config.algo import (
     online_qr_dqn_config,
     offline_dqn_config,
     offline_qr_dqn_config,
+    bcd_config,
 )
 
 from offlinerl.utils.config import parse_config
@@ -44,6 +45,7 @@ from offlinerl.algo.modelfree import (
     iql_discrete,
     offline_dqn,
     offline_qr_dqn,
+    bcd,
 )
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
@@ -64,7 +66,11 @@ algo_dict = {
     "mopo": {"algo": mopo, "config": mopo_config},
     "mopod": {"algo": mopo_discrete, "config": mopod_config},
     "offline_dqn": {"algo": offline_dqn, "config": offline_dqn_config},
-    "offline_qr_dqn": {"algo": offline_qr_dqn, "config": offline_qr_dqn_config},
+    "offline_qr_dqn": {
+        "algo": offline_qr_dqn,
+        "config": offline_qr_dqn_config,
+    },
+    "bcd": {"algo": bcd, "config": bcd_config},
     # default
     "bc": {"algo": bc, "config": bc_config},
     "bcq": {"algo": bcq, "config": bcq_config},
