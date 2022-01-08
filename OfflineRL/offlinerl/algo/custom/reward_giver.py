@@ -66,15 +66,16 @@ class AlgoTrainer(BaseAlgo):
     ):
         loss_fn = nn.MSELoss()
 
-        train_buffer.to_torch(device=self.device)
-        data_size = len(train_buffer)
-        val_size = min(int(data_size * 0.2) + 1, 1000)
-        train_size = data_size - val_size
-        train_splits, val_splits = torch.utils.data.random_split(
-            range(data_size), (train_size, val_size)
-        )
-        valdata = train_buffer[val_splits.indices]
-        train_buffer = train_buffer[train_splits.indices]
+        if val_buffer is None:
+            train_buffer.to_torch(device=self.device)
+            data_size = len(train_buffer)
+            val_size = min(int(data_size * 0.2) + 1, 1000)
+            train_size = data_size - val_size
+            train_splits, val_splits = torch.utils.data.random_split(
+                range(data_size), (train_size, val_size)
+            )
+            valdata = train_buffer[val_splits.indices]
+            train_buffer = train_buffer[train_splits.indices]
         batch_size = self.batch_size
 
         idxs = np.arange(train_buffer.shape[0])
@@ -110,7 +111,6 @@ class AlgoTrainer(BaseAlgo):
                 self.best_loss = val_loss
                 self.best_model.load_state_dict(self.reward_net.state_dict())
 
-            # res = callback_fn(self.get_policy())
             res = {}
             res["loss"] = val_loss
             self.log_res(epoch, res)

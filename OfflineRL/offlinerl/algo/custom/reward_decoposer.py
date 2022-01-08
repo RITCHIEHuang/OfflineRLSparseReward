@@ -169,7 +169,7 @@ class AlgoTrainer(BaseAlgo):
             ep_loss = 0
             for batch, s in enumerate(train_loader):
                 key_padding_mask = create_key_padding_mask(
-                    s["length"], dataset.max_length
+                    s["length"], train_loader.dataset.max_length
                 ).to(self.device)
                 reward_pre = self.model(
                     s["obs_act_pair"].to(self.device),
@@ -177,7 +177,7 @@ class AlgoTrainer(BaseAlgo):
                 ).squeeze(dim=-1)
                 reward_mask = torch.where(
                     key_padding_mask.view(
-                        len(s["length"]), dataset.max_length, 1
+                        len(s["length"]), train_loader.dataset.max_length, 1
                     )
                     == 0,
                     1,
@@ -204,7 +204,6 @@ class AlgoTrainer(BaseAlgo):
                 self.best_loss = ep_loss
                 self.best_model.load_state_dict(self.model.state_dict())
 
-            # res = callback_fn(self.get_policy())
             res = {}
             res["loss"] = ep_loss
             self.log_res(epoch, res)

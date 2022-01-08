@@ -135,7 +135,7 @@ class AlgoTrainer(BaseAlgo):
                 self.args["dynamics_path"], map_location="cpu"
             ).to(self.device)
         else:
-            self.train_transition(train_buffer)
+            self.train_transition(train_buffer, val_buffer)
             if self.args["dynamics_save_path"] is not None:
                 torch.save(self.transition, self.args["dynamics_save_path"])
         self.transition.requires_grad_(False)
@@ -146,16 +146,17 @@ class AlgoTrainer(BaseAlgo):
     def get_policy(self):
         return self.actor
 
-    def train_transition(self, buffer):
-        data_size = len(buffer)
-        val_size = min(int(data_size * 0.2) + 1, 1000)
-        train_size = data_size - val_size
-        train_splits, val_splits = torch.utils.data.random_split(
-            range(data_size), (train_size, val_size)
-        )
-        train_buffer = buffer[train_splits.indices]
-        valdata = buffer[val_splits.indices]
-        batch_size = self.args["transition_batch_size"]
+    def train_transition(self, train_buffer, val_buffer=None):
+        if val_buffer is None:
+            data_size = len(train_buffer)
+            val_size = min(int(data_size * 0.2) + 1, 1000)
+            train_size = data_size - val_size
+            train_splits, val_splits = torch.utils.data.random_split(
+                range(data_size), (train_size, val_size)
+            )
+            val_buffer = train_buffer[val_splits.indices]
+            train_buffer = train_buffer[train_splits.indices]
+            batch_size = self.args["transition_batch_size"]
 
         val_losses = [
             float("inf") for i in range(self.transition.ensemble_size)
@@ -177,7 +178,7 @@ class AlgoTrainer(BaseAlgo):
                 self._train_transition(
                     self.transition, batch, self.transition_optim
                 )
-            new_val_losses = self._eval_transition(self.transition, valdata)
+            new_val_losses = self._eval_transition(self.transition, val_buffer)
             print("eval transition loss", new_val_losses)
 
             indexes = []

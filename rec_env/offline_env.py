@@ -41,7 +41,7 @@ class OfflineEnv(gym.Env):
         npz_path = self._dataset_path
 
         data_dict = np.load(npz_path)
-
+        data_dict = {k: data_dict[k] for k in list(data_dict.keys())}
         # Run a few quick sanity checks
         for key in ["observations", "actions", "rewards", "terminals"]:
             assert key in data_dict, "Dataset is missing key %s" % key

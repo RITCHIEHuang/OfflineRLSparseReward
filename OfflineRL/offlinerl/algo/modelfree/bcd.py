@@ -50,6 +50,16 @@ class AlgoTrainer(BaseAlgo):
         self.best_loss = float("inf")
 
     def train(self, train_buffer, val_buffer, callback_fn):
+        if val_buffer is None:
+            data_size = len(train_buffer)
+            val_size = min(int(data_size * 0.2) + 1, 1000)
+            train_size = data_size - val_size
+            train_splits, val_splits = torch.utils.data.random_split(
+                range(data_size), (train_size, val_size)
+            )
+            val_buffer = train_buffer[val_splits.indices]
+            train_buffer = train_buffer[train_splits.indices]
+
         for epoch in range(self.args["max_epoch"]):
             for i in range(self.args["steps_per_epoch"]):
                 batch_data = train_buffer.sample(self.batch_size)
@@ -58,7 +68,7 @@ class AlgoTrainer(BaseAlgo):
                 action = batch_data["act"].squeeze(-1)
 
                 action_dist = self.actor(obs)
-                loss = self.loss_fn(action_dist.probs, action)
+                loss = self.loss_fn(action_dist.probs, action.long())
 
                 self.actor_optim.zero_grad()
                 loss.backward()
@@ -79,7 +89,9 @@ class AlgoTrainer(BaseAlgo):
 
                     action_dist = self.actor(obs)
 
-                    val_loss += self.loss_fn(action_dist.probs, action).item()
+                    val_loss += self.loss_fn(
+                        action_dist.probs, action.long()
+                    ).item()
 
             if val_loss < self.best_loss:
                 self.best_loss = val_loss

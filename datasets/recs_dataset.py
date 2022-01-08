@@ -5,7 +5,7 @@ from loguru import logger
 
 import rec_env
 from utils.exp_util import setup_exp_args
-from utils.plot_util import plot_ep_reward, plot_reward_dist
+from utils.plot_util import plot_ep_reward
 
 from datasets.strategy import load_traj_buffer
 from datasets import STRATEGY_MAPPING
@@ -41,9 +41,7 @@ def delay_traj_dataset(config):
     ]
     traj_dataset = {k: [] for k in keys}
 
-    episode_ends = np.argwhere(
-        np.logical_or(raw_terminals == True, raw_timeouts == True)
-    )
+    episode_ends = np.argwhere(raw_terminals == True)
     data_size = len(raw_rewards)
     if episode_ends[-1][0] + 1 != data_size:
         episode_ends = np.append(episode_ends, data_size - 1)
@@ -166,4 +164,4 @@ if __name__ == "__main__":
     # traj_dataset = delay_traj_dataset(config)
 
     """extract traj buffer"""
-    load_rec_sim_buffer(config)
+    load_recs_buffer(config)
