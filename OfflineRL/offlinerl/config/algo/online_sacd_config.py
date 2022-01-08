@@ -1,4 +1,5 @@
 import torch
+from utils.io_util import proj_path
 
 seed = 42
 
@@ -10,11 +11,13 @@ max_action = None
 hidden_layer_size = 256
 hidden_layers = 2
 
+log_data_path = f"{proj_path}/rec_env/data"
 batch_size = 256
-buffer_size = 1e5
+buffer_size = 1e6
 warmup_size = 10000
-steps_per_epoch = 100
-max_epoch = 5000
+steps_per_epoch = 50
+max_epoch = 10000
+max_step = 1e7
 eval_epoch = 10
 
 learnable_alpha = True

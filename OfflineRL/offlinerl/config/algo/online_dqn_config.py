@@ -1,5 +1,7 @@
 import torch
 
+from utils.io_util import proj_path
+
 seed = 42
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -10,7 +12,8 @@ max_action = None
 hidden_layer_size = 256
 hidden_layers = 2
 
-batch_size = 256 
+log_data_path = f"{proj_path}/rec_env/data"
+batch_size = 256
 buffer_size = 1e6
 warmup_size = 10000
 max_step = 1e7

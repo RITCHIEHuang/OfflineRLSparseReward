@@ -9,7 +9,7 @@ from offlinerl.utils.data import Batch
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
+from offlinerl.utils.data import LoggedReplayBuffer
 from offlinerl.utils.env import get_env
 from offlinerl.utils.net.discrete import QPolicyWrapper
 from offlinerl.utils.function import get_linear_fn
@@ -71,6 +71,10 @@ class AlgoTrainer(BaseAlgo):
         self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss()
 
+        self.replay_buffer = LoggedReplayBuffer(
+            self.args["buffer_size"],
+            log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
+        )
         self.device = args["device"]
 
     def train(self, callback_fn):
@@ -80,7 +84,6 @@ class AlgoTrainer(BaseAlgo):
         return self.q
 
     def train_policy(self, callback_fn):
-        buffer = ModelBuffer(self.args["buffer_size"])
 
         while (
             self.train_epoch <= self.args["max_epoch"]
@@ -112,7 +115,7 @@ class AlgoTrainer(BaseAlgo):
                         "obs_next": np.expand_dims(new_obs, 0),
                     }
                 )
-                buffer.put(batch_data)
+                self.replay_buffer.put(batch_data)
 
                 if done:
                     break
@@ -120,7 +123,7 @@ class AlgoTrainer(BaseAlgo):
 
                 self.total_train_steps += 1
                 if self.total_train_steps >= self.args["warmup_size"]:
-                    batch = buffer.sample(self.args["batch_size"])
+                    batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     dqn_metrics = self._dqn_update(batch)

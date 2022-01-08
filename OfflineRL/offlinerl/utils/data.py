@@ -1,3 +1,4 @@
+import os
 import torch
 import pprint
 import numpy as np
@@ -6,6 +7,8 @@ from typing import *
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import dataset
 from torch.utils.data import dataloader
+
+from loguru import logger
 
 
 def to_array_as(x, y):
@@ -284,6 +287,64 @@ class ModelBuffer:
 
         if len(self) > self.buffer_size:
             self.data = self.data[len(self) - self.buffer_size :]
+
+    def __len__(self):
+        if self.data is None:
+            return 0
+        return self.data.shape[0]
+
+    def sample(self, batch_size):
+        indexes = np.random.randint(0, len(self), size=(batch_size))
+        return self.data[indexes]
+
+
+class LoggedReplayBuffer:
+    def __init__(self, buffer_size, log_path=None):
+        self.data = None
+        self.add_count = 0
+        self.log_count = 0
+        self.buffer_size = int(buffer_size)
+        self.log_path = log_path
+
+    def put(self, batch_data: Batch):
+        batch_data.to_torch(device="cpu")
+
+        if self.data is None:
+            self.data = batch_data
+        else:
+            self.data = Batch.cat([self.data, batch_data], axis=0)
+
+        self.add_count += 1
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]
+
+        if self.add_count % self.buffer_size == 0:
+            self._log_data()
+
+    def _log_data(self):
+        # logging data to file
+        if self.log_path is None:
+            return
+        else:
+            if not os.path.exists(self.log_path):
+                logger.info(f"{self.log_path} not exists, creating!!!")
+                os.makedirs(self.log_path)
+
+        full_log_path = f"{self.log_path}/part-{self.log_count}.npz"
+        if full_log_path is not None and os.path.exists(full_log_path):
+            logger.info(f"{full_log_path} exists !!!")
+        else:
+            np.savez_compressed(
+                full_log_path,
+                observations=self.data["obs"].numpy(),
+                actions=self.data["act"].numpy(),
+                rewards=self.data["rew"].numpy(),
+                terminals=self.data["done"].numpy(),
+                timeouts=self.data["done"].numpy(),
+                next_observations=self.data["obs_next"].numpy(),
+            )
+            logger.info(f"Logging buffer to {full_log_path}.")
+            self.log_count += 1
 
     def __len__(self):
         if self.data is None:

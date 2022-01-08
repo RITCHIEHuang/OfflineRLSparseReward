@@ -5,10 +5,9 @@ from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch
+from offlinerl.utils.data import Batch, LoggedReplayBuffer
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.env import get_env
 from offlinerl.utils.net.discrete import QuantileQPolicyWrapper, QuantileQNet
 from offlinerl.utils.function import get_linear_fn
@@ -73,7 +72,12 @@ class AlgoTrainer(BaseAlgo):
         self.device = args["device"]
 
         tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
-        self.tau = ((tau[:-1] + tau[1:])/2).view(1, -1, 1).to(self.device)
+        self.tau = ((tau[:-1] + tau[1:]) / 2).view(1, -1, 1).to(self.device)
+
+        self.replay_buffer = LoggedReplayBuffer(
+            self.args["buffer_size"],
+            log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
+        )
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -82,7 +86,6 @@ class AlgoTrainer(BaseAlgo):
         return self.q
 
     def train_policy(self, callback_fn):
-        buffer = ModelBuffer(self.args["buffer_size"])
 
         while (
             self.train_epoch <= self.args["max_epoch"]
@@ -115,7 +118,7 @@ class AlgoTrainer(BaseAlgo):
                         "obs_next": np.expand_dims(new_obs, 0),
                     }
                 )
-                buffer.put(batch_data)
+                self.replay_buffer.put(batch_data)
 
                 if done:
                     break
@@ -123,7 +126,7 @@ class AlgoTrainer(BaseAlgo):
 
                 self.total_train_steps += 1
                 if self.total_train_steps >= self.args["warmup_size"]:
-                    batch = buffer.sample(self.args["batch_size"])
+                    batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     dqn_metrics = self._qr_dqn_update(batch)
@@ -153,8 +156,16 @@ class AlgoTrainer(BaseAlgo):
         obs = batch_data["obs"]
         action = batch_data["act"]
         next_obs = batch_data["obs_next"]
-        reward = batch_data["rew"].view(-1, 1, 1).repeat(1, self.args["num_quantiles"], 1)
-        done = batch_data["done"].view(-1, 1, 1).repeat(1, self.args["num_quantiles"], 1)
+        reward = (
+            batch_data["rew"]
+            .view(-1, 1, 1)
+            .repeat(1, self.args["num_quantiles"], 1)
+        )
+        done = (
+            batch_data["done"]
+            .view(-1, 1, 1)
+            .repeat(1, self.args["num_quantiles"], 1)
+        )
 
         # update critic
         # [batch, N, 1]

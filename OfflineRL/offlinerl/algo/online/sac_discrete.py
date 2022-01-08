@@ -4,12 +4,11 @@ from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch
+from offlinerl.utils.data import Batch, LoggedReplayBuffer
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.net.discrete import CategoricalActor
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
 from offlinerl.utils.env import get_env
 
 
@@ -91,6 +90,14 @@ class AlgoTrainer(BaseAlgo):
 
         self.args["target_entropy"] = np.log(self.args["action_shape"])
 
+        self.total_train_steps = 0
+        self.train_epoch = 0
+
+        self.replay_buffer = LoggedReplayBuffer(
+            self.args["buffer_size"],
+            log_path=f'{self.args["log_data_path"]}/SAC/{self.env.spec.id}',
+        )
+
     def train(self, callback_fn):
         self.train_policy(callback_fn)
 
@@ -98,10 +105,15 @@ class AlgoTrainer(BaseAlgo):
         return self.actor
 
     def train_policy(self, callback_fn):
-        buffer = ModelBuffer(self.args["buffer_size"])
 
-        for epoch in range(self.args["max_epoch"]):
-            metrics = {"epoch": epoch}
+        while (
+            self.train_epoch <= self.args["max_epoch"]
+            or self.total_train_steps <= self.args["max_step"]
+        ):
+            metrics = {
+                "epoch": self.train_epoch,
+                "step": self.total_train_steps,
+            }
             # collect data
             obs = self.env.reset()
             while True:
@@ -122,25 +134,30 @@ class AlgoTrainer(BaseAlgo):
                         "obs_next": np.expand_dims(new_obs, 0),
                     }
                 )
-                buffer.put(batch_data)
+                self.replay_buffer.put(batch_data)
 
                 if done:
                     break
                 obs = new_obs
+                self.total_train_steps += 1
 
-            if len(buffer) >= self.args["warmup_size"]:
+            if self.total_train_steps >= self.args["warmup_size"]:
                 for _ in range(self.args["steps_per_epoch"]):
-                    batch = buffer.sample(self.args["batch_size"])
+                    batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     sac_metrics = self._sac_update(batch)
                     metrics.update(sac_metrics)
 
-            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
+            if (
+                self.train_epoch == 0
+                or (self.train_epoch + 1) % self.args["eval_epoch"] == 0
+            ):
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
 
-            self.log_res(epoch, metrics)
+            self.log_res(self.train_epoch, metrics)
+            self.train_epoch += 1
 
         return self.get_policy()
 
