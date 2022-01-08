@@ -7,34 +7,39 @@ from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import dataset
 from torch.utils.data import dataloader
 
-def to_array_as(x, y):    
+
+def to_array_as(x, y):
     if isinstance(x, torch.Tensor) and isinstance(y, np.ndarray):
         return x.detach().cpu().numpy().astype(y.dtype)
     elif isinstance(x, np.ndarray) and isinstance(y, torch.Tensor):
         return torch.as_tensor(x).to(y)
     else:
         return x
-    
+
+
 class BufferDataset(dataset.Dataset):
     def __init__(self, buffer, batch_size=256):
         self.buffer = buffer
         self.batch_size = batch_size
         self.length = len(self.buffer)
-        
+
     def __getitem__(self, index):
         indices = np.random.randint(0, self.length, self.batch_size)
         data = self.buffer[indices]
-        
+
         return data
-        
+
     def __len__(self):
         return self.length
-    
-    
-class BufferDataloader(dataloader.DataLoader):        
-    def sample(self, batch_size=None): 
-        if not hasattr(self, 'buffer_loader') or batch_size != self.buffer_loader._dataset.batch_size:
-            if not hasattr(self, 'buffer_loader'):
+
+
+class BufferDataloader(dataloader.DataLoader):
+    def sample(self, batch_size=None):
+        if (
+            not hasattr(self, "buffer_loader")
+            or batch_size != self.buffer_loader._dataset.batch_size
+        ):
+            if not hasattr(self, "buffer_loader"):
                 self.buffer_loader = self.__iter__()
             elif batch_size is None:
                 pass
@@ -47,20 +52,22 @@ class BufferDataloader(dataloader.DataLoader):
             self.buffer_loader = self.__iter__()
             return self.buffer_loader.__next__()
 
+
 class Batch:
     """A batch of named data."""
+
     def __init__(self, *args, **kwargs):
         self.__dict__.update(dict(*args, **kwargs))
 
-    def __setattr__(self, key : str, value : Any) -> None:
+    def __setattr__(self, key: str, value: Any) -> None:
         """Set self.key = value."""
         self.__dict__[key] = value
 
-    def __getattr__(self, key : str) -> Any:
+    def __getattr__(self, key: str) -> Any:
         """Return self.key."""
         return getattr(self.__dict__, key)
 
-    def __contains__(self, key : str) -> bool:
+    def __contains__(self, key: str) -> bool:
         """Return key in self."""
         return key in self.__dict__
 
@@ -76,7 +83,7 @@ class Batch:
             state[k] = v
         return state
 
-    def __setstate__(self, state : Dict[str, Any]) -> None:
+    def __setstate__(self, state: Dict[str, Any]) -> None:
         """Unpickling interface.
 
         At this point, self is an empty Batch instance that has not been
@@ -86,14 +93,16 @@ class Batch:
 
     def keys(self):
         return self.__dict__.keys()
-    
+
     def values(self):
         return self.__dict__.values()
 
     def items(self):
         return self.__dict__.items()
 
-    def __getitem__(self, index : Union[str, Union[slice, int, np.ndarray, List[int]]]) -> 'Batch':
+    def __getitem__(
+        self, index: Union[str, Union[slice, int, np.ndarray, List[int]]]
+    ) -> "Batch":
         """Return self[index]."""
         if isinstance(index, str):
             return self.__dict__[index]
@@ -102,7 +111,11 @@ class Batch:
             batch[k] = v[index]
         return batch
 
-    def __setitem__(self, index : Union[str, Union[slice, int, np.ndarray, List[int]]], value: Any) -> None:
+    def __setitem__(
+        self,
+        index: Union[str, Union[slice, int, np.ndarray, List[int]]],
+        value: Any,
+    ) -> None:
         """Assign value to self[index]."""
         if isinstance(index, str):
             self.__dict__[index] = value
@@ -126,21 +139,23 @@ class Batch:
             s = self.__class__.__name__ + "()"
         return s
 
-    def to_numpy(self) -> 'Batch':
+    def to_numpy(self) -> "Batch":
         """Change all torch.Tensor to numpy.ndarray in-place."""
         for k, v in self.items():
             if isinstance(v, torch.Tensor):
                 self[k] = v.detach().cpu().numpy()
         return self
 
-    def to_torch(self, dtype : torch.dtype = torch.float32, device: str = "cpu") -> 'Batch':
+    def to_torch(
+        self, dtype: torch.dtype = torch.float32, device: str = "cpu"
+    ) -> "Batch":
         """Change all numpy.ndarray to torch.Tensor in-place."""
         for k, v in self.items():
             self[k] = torch.as_tensor(v, dtype=dtype, device=device)
         return self
 
     @staticmethod
-    def cat(batches : List["Batch"], axis : int = 0) -> "Batch":
+    def cat(batches: List["Batch"], axis: int = 0) -> "Batch":
         """Concatenate a list of Batch object into a single new batch."""
         if isinstance(list(batches[0].values())[0], np.ndarray):
             cat_func = np.concatenate
@@ -152,7 +167,7 @@ class Batch:
         return batch
 
     @staticmethod
-    def stack(batches : List["Batch"], axis : int = 0) -> "Batch":
+    def stack(batches: List["Batch"], axis: int = 0) -> "Batch":
         """Stack a list of Batch object into a single new batch."""
         if isinstance(list(batches[0].values())[0], np.ndarray):
             stack_func = np.stack
@@ -174,10 +189,21 @@ class Batch:
                 data_shape.append(list(v.shape))
             except AttributeError:
                 data_shape.append([])
-        return list(map(min, zip(*data_shape))) if len(data_shape) > 1 \
+        return (
+            list(map(min, zip(*data_shape)))
+            if len(data_shape) > 1
             else data_shape[0]
+        )
 
-    def split(self, size : int, shuffle : bool = True, merge_last : bool = False) -> Iterator["Batch"]:
+    def split(self, size: Union[int, List[int]], shuffle: bool = True):
+        if type(size) == list:
+            return self._split_with_sizes(size, shuffle)
+        else:
+            return self._split_with_chunk(size, shuffle)
+
+    def _split_with_chunk(
+        self, size: int, shuffle: bool = True, merge_last: bool = False
+    ) -> Iterator["Batch"]:
         length = len(self)
         assert 1 <= size  # size can be greater than length, return whole batch
         if shuffle:
@@ -189,31 +215,59 @@ class Batch:
             if merge_last and idx + size + size >= length:
                 yield self[indices[idx:]]
                 break
-            yield self[indices[idx:idx + size]]
-    
+            yield self[indices[idx : idx + size]]
+
+    def _split_with_sizes(
+        self, sizes: List[int], shuffle: bool = True
+    ) -> List["Batch"]:
+        length = len(self)
+        assert sum(sizes) == length, "Wrong sizes"
+        if shuffle:
+            indices = np.random.permutation(length)
+        else:
+            indices = np.arange(length)
+
+        res = []
+        start_size = 0
+        for size in sizes:
+            res.append(self[indices[start_size : start_size + size]])
+            start_size += size
+        return res
+
+    def sample(self, batch_size):
+        length = len(self)
+        assert 1 <= batch_size
+
+        indices = np.random.randint(0, length, batch_size)
+
+        return self[indices]
+
+
 class SampleBatch(Batch):
     def sample(self, batch_size):
         length = len(self)
         assert 1 <= batch_size
-        
+
         indices = np.random.randint(0, length, batch_size)
-        
+
         return self[indices]
 
-def sample(batch : Batch, batch_size : int):
+
+def sample(batch: Batch, batch_size: int):
     length = len(batch)
     assert 1 <= batch_size
-    
+
     indices = np.random.randint(0, length, batch_size)
 
     return batch[indices]
 
 
 def get_scaler(data):
-    scaler = MinMaxScaler((-1,1))
+    scaler = MinMaxScaler((-1, 1))
     scaler.fit(data)
-    
+
     return scaler
+
 
 class ModelBuffer:
     def __init__(self, buffer_size):
@@ -221,18 +275,19 @@ class ModelBuffer:
         self.buffer_size = int(buffer_size)
 
     def put(self, batch_data):
-        batch_data.to_torch(device='cpu')
+        batch_data.to_torch(device="cpu")
 
         if self.data is None:
             self.data = batch_data
         else:
             self.data = Batch.cat([self.data, batch_data], axis=0)
-        
+
         if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size : ]
+            self.data = self.data[len(self) - self.buffer_size :]
 
     def __len__(self):
-        if self.data is None: return 0
+        if self.data is None:
+            return 0
         return self.data.shape[0]
 
     def sample(self, batch_size):

@@ -6,7 +6,7 @@ from loguru import logger
 import d4rl
 
 from utils.exp_util import setup_exp_args
-from utils.plot_util import plot_ep_reward, plot_reward_dist
+from utils.plot_util import plot_ep_reward
 
 from datasets.qlearning_dataset import qlearning_dataset
 from datasets.strategy import load_traj_buffer
