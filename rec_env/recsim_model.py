@@ -357,8 +357,8 @@ def reward_fn(responses):
     for response in responses:
         reward_info["retention"] += response.retention
         reward_info["click"] += response.clicked
-    reward = reward_info["click"]
-    # reward = reward_info["retention"]
+    # reward = reward_info["click"]
+    reward = reward_info["retention"]
     # reward = 10 * reward_info["retention"] + reward_info["click"]
     return reward, reward_info
 

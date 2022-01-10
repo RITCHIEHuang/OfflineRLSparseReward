@@ -5,11 +5,14 @@ from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch
+from offlinerl.utils.data import (
+    Batch,
+    TrajAveragedReplayBuffer,
+    LoggedReplayBuffer,
+)
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import LoggedReplayBuffer
 from offlinerl.utils.env import get_env
 from offlinerl.utils.net.discrete import QPolicyWrapper
 from offlinerl.utils.function import get_linear_fn
@@ -71,10 +74,13 @@ class AlgoTrainer(BaseAlgo):
         self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss()
 
-        self.replay_buffer = LoggedReplayBuffer(
+        self.replay_buffer = TrajAveragedReplayBuffer(
             self.args["buffer_size"],
-            log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
         )
+        # self.replay_buffer = LoggedReplayBuffer(
+        #     self.args["buffer_size"],
+        #     log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
+        # )
         self.device = args["device"]
 
     def train(self, callback_fn):
@@ -95,6 +101,7 @@ class AlgoTrainer(BaseAlgo):
             }
             # collect data
             obs = self.env.reset()
+            traj_batch = None
             while True:
                 if np.random.rand() < self.exploration_rate:
                     action = np.array([self.env.action_space.sample()])
@@ -105,7 +112,7 @@ class AlgoTrainer(BaseAlgo):
                         action = self.actor(obs_t)[0].long()
                         action = action.cpu().numpy()
 
-                new_obs, reward, done, _ = self.env.step(action)
+                new_obs, reward, done, info = self.env.step(action)
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
@@ -113,9 +120,17 @@ class AlgoTrainer(BaseAlgo):
                         "rew": [reward],
                         "done": [done],
                         "obs_next": np.expand_dims(new_obs, 0),
+                        "retention": [info["reward"]["retention"]],
                     }
                 )
-                self.replay_buffer.put(batch_data)
+
+                if isinstance(self.replay_buffer, LoggedReplayBuffer):
+                    self.replay_buffer.put(batch_data)
+                else:
+                    if traj_batch is None:
+                        traj_batch = batch_data
+                    else:
+                        traj_batch = Batch.cat([traj_batch, batch_data])
 
                 if done:
                     break
@@ -128,6 +143,9 @@ class AlgoTrainer(BaseAlgo):
 
                     dqn_metrics = self._dqn_update(batch)
                     metrics.update(dqn_metrics)
+
+            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
+                self.replay_buffer.put(traj_batch)
 
             if (
                 self.train_epoch == 0

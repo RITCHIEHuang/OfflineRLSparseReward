@@ -1,4 +1,6 @@
+from copy import deepcopy
 import os
+from offlinerl.utils.segtree import SegmentTree
 import torch
 import pprint
 import numpy as np
@@ -331,7 +333,7 @@ class LoggedReplayBuffer:
                 os.makedirs(self.log_path)
 
         full_log_path = f"{self.log_path}/part-{self.log_count}.npz"
-        if full_log_path is not None and os.path.exists(full_log_path):
+        if os.path.exists(full_log_path):
             logger.info(f"{full_log_path} exists !!!")
         else:
             np.savez_compressed(
@@ -342,6 +344,112 @@ class LoggedReplayBuffer:
                 terminals=self.data["done"].numpy(),
                 timeouts=self.data["done"].numpy(),
                 next_observations=self.data["obs_next"].numpy(),
+                retentions=self.data["retention"].numpy(),
+            )
+            logger.info(f"Logging buffer to {full_log_path}.")
+            self.log_count += 1
+
+    def __len__(self):
+        if self.data is None:
+            return 0
+        return self.data.shape[0]
+
+    def sample(self, batch_size):
+        indexes = np.random.randint(0, len(self), size=(batch_size))
+        return self.data[indexes]
+
+
+class TrajAveragedReplayBuffer:
+    def __init__(self, buffer_size):
+        self.data = None
+        self.buffer_size = int(buffer_size)
+
+    def _average(self, batch_data: Batch):
+        # average reward in batch(traj)
+        last_idx = 0
+        idx = 0
+        avg_rews = deepcopy(batch_data["rew"])
+        while idx < len(batch_data):
+            cur_rew = batch_data[idx]["rew"]
+            if abs(cur_rew) >= 1e-5:
+                avg_rew = cur_rew / (idx - last_idx + 1)
+                avg_rews[last_idx : idx + 1] = avg_rew
+                last_idx = idx + 1
+            idx += 1
+        batch_data["rew"] = avg_rews
+        return batch_data
+
+    def put(self, batch_data: Batch):
+        batch_data.to_torch(device="cpu")
+        batch_data = self._average(batch_data)
+        if self.data is None:
+            self.data = batch_data
+        else:
+            self.data = Batch.cat([self.data, batch_data], axis=0)
+
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]
+
+    def __len__(self):
+        if self.data is None:
+            return 0
+        return self.data.shape[0]
+
+    def sample(self, batch_size):
+        indexes = np.random.randint(0, len(self), size=(batch_size))
+        return self.data[indexes]
+
+
+class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
+    def __init__(
+        self, buffer_size, alpha, beta, weight_norm=True, log_path=None
+    ):
+        LoggedReplayBuffer.__init__(self, buffer_size, log_path)
+        self.alpha = alpha
+        self.beta = beta
+        self.max_prio = self.min_prio = 1.0
+        self.weight = SegmentTree(buffer_size)
+        self.weight_norm = weight_norm
+
+        self.eps = np.finfo(np.float32).eps.item()
+
+    def put(self, batch_data: Batch):
+        batch_data.to_torch(device="cpu")
+
+        if self.data is None:
+            self.data = batch_data
+        else:
+            self.data = Batch.cat([self.data, batch_data], axis=0)
+
+        self.add_count += 1
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]
+
+        if self.add_count % self.buffer_size == 0:
+            self._log_data()
+
+    def _log_data(self):
+        # logging data to file
+        if self.log_path is None:
+            return
+        else:
+            if not os.path.exists(self.log_path):
+                logger.info(f"{self.log_path} not exists, creating!!!")
+                os.makedirs(self.log_path)
+
+        full_log_path = f"{self.log_path}/part-{self.log_count}.npz"
+        if os.path.exists(full_log_path):
+            logger.info(f"{full_log_path} exists !!!")
+        else:
+            np.savez_compressed(
+                full_log_path,
+                observations=self.data["obs"].numpy(),
+                actions=self.data["act"].numpy(),
+                rewards=self.data["rew"].numpy(),
+                terminals=self.data["done"].numpy(),
+                timeouts=self.data["done"].numpy(),
+                next_observations=self.data["obs_next"].numpy(),
+                retentions=self.data["retention"].numpy(),
             )
             logger.info(f"Logging buffer to {full_log_path}.")
             self.log_count += 1

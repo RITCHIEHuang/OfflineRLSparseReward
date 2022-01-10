@@ -122,7 +122,7 @@ class AlgoTrainer(BaseAlgo):
                     obs_t = obs_t.unsqueeze(0)
                     action = self.actor(obs_t).sample()
                     action = action.cpu().numpy()
-                    new_obs, reward, done, _ = self.env.step(action)
+                    new_obs, reward, done, info = self.env.step(action)
 
                 batch_data = Batch(
                     {
@@ -132,6 +132,7 @@ class AlgoTrainer(BaseAlgo):
                         # "ret": reward,
                         "done": [done],
                         "obs_next": np.expand_dims(new_obs, 0),
+                        "retention": [info["reward"]["retention"]],
                     }
                 )
                 self.replay_buffer.put(batch_data)
