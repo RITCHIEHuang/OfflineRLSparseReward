@@ -19,7 +19,7 @@ env_config = {
     # user
     "time_budget": 9 * 24 * 60,
     "max_impress_num": 4000,
-    "standard_click_num": 40.0,
+    "standard_click_num": 20.0,
     "click_threshold": 0.70,
     "leave_prob": 0.0,
     # "next_time_mean": 600.0,
@@ -324,16 +324,27 @@ class UserModel(user.AbstractUserModel):
                     / max(
                         min(
                             (
-                                5.0 * hist_watch_dict[1]
-                                + 2.0 * hist_watch_dict[2]
-                                + hist_watch_dict[3]
+                                (
+                                    5.0 * hist_watch_dict[1]
+                                    + 2.0 * hist_watch_dict[2]
+                                    + hist_watch_dict[3]
+                                )
+                                - 3 * self.config["standard_click_num"]
                             )
                             / self.config["standard_click_num"],
-                            5,
+                            20,
                         ),
                         0.2,
                     )
                 )
+                # print(
+                #     (
+                #         5.0 * hist_watch_dict[1]
+                #         + 2.0 * hist_watch_dict[2]
+                #         + hist_watch_dict[3]
+                #     )
+                #     / self.config["standard_click_num"]
+                # )
                 # print(
                 #     "next_mean",
                 #     self._user_state.next_time_mean,

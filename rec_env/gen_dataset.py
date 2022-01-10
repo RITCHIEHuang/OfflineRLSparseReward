@@ -123,7 +123,7 @@ def sample_store(n_traj=100):
     ]:
         print(f"{k} shape", np.concatenate(traj[k]).shape)
 
-    data_dir = f"{proj_path}/recs_env/data/"
+    data_dir = f"{proj_path}/rec_env/data/"
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
