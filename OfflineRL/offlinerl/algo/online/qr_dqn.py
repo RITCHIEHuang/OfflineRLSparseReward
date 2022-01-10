@@ -5,7 +5,11 @@ from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch, LoggedReplayBuffer
+from offlinerl.utils.data import (
+    Batch,
+    LoggedReplayBuffer,
+    TrajAveragedReplayBuffer,
+)
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.env import get_env
@@ -74,10 +78,15 @@ class AlgoTrainer(BaseAlgo):
         tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
         self.tau = ((tau[:-1] + tau[1:]) / 2).view(1, -1, 1).to(self.device)
 
-        self.replay_buffer = LoggedReplayBuffer(
-            self.args["buffer_size"],
-            log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
-        )
+        if self.args["buffer_type"] == "log_transition":
+            self.replay_buffer = LoggedReplayBuffer(
+                self.args["buffer_size"],
+                log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
+            )
+        elif self.args["buffer_type"] == "avg_traj":
+            self.replay_buffer = TrajAveragedReplayBuffer(
+                self.args["buffer_size"],
+            )
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -97,6 +106,7 @@ class AlgoTrainer(BaseAlgo):
             }
             # collect data
             obs = self.env.reset()
+            traj_batch = None
             while True:
                 if np.random.rand() < self.exploration_rate:
                     action = np.array([self.env.action_space.sample()])
@@ -119,7 +129,13 @@ class AlgoTrainer(BaseAlgo):
                         "retention": [info["reward"]["retention"]],
                     }
                 )
-                self.replay_buffer.put(batch_data)
+                if isinstance(self.replay_buffer, LoggedReplayBuffer):
+                    self.replay_buffer.put(batch_data)
+                else:
+                    if traj_batch is None:
+                        traj_batch = batch_data
+                    else:
+                        traj_batch = Batch.cat([traj_batch, batch_data])
 
                 if done:
                     break
@@ -132,6 +148,9 @@ class AlgoTrainer(BaseAlgo):
 
                     dqn_metrics = self._qr_dqn_update(batch)
                     metrics.update(dqn_metrics)
+
+            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
+                self.replay_buffer.put(traj_batch)
 
             if (
                 self.train_epoch == 0

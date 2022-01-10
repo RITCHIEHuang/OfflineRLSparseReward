@@ -74,13 +74,15 @@ class AlgoTrainer(BaseAlgo):
         self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss()
 
-        self.replay_buffer = TrajAveragedReplayBuffer(
-            self.args["buffer_size"],
-        )
-        # self.replay_buffer = LoggedReplayBuffer(
-        #     self.args["buffer_size"],
-        #     log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
-        # )
+        if self.args["buffer_type"] == "log_transition":
+            self.replay_buffer = LoggedReplayBuffer(
+                self.args["buffer_size"],
+                log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
+            )
+        elif self.args["buffer_type"] == "avg_traj":
+            self.replay_buffer = TrajAveragedReplayBuffer(
+                self.args["buffer_size"],
+            )
         self.device = args["device"]
 
     def train(self, callback_fn):

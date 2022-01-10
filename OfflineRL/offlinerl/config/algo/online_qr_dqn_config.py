@@ -14,8 +14,9 @@ hidden_layers = 2
 num_quantiles = 20
 
 log_data_path = f"{proj_path}/rec_env/data"
-batch_size = 256 
+buffer_type = "avg_traj"  # log_transition
 buffer_size = 1e6
+batch_size = 256
 warmup_size = 10000
 max_step = 1e7
 max_epoch = 10000

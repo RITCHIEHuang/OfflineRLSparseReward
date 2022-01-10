@@ -4,7 +4,11 @@ from copy import deepcopy
 from loguru import logger
 
 from offlinerl.algo.base import BaseAlgo
-from offlinerl.utils.data import Batch, LoggedReplayBuffer
+from offlinerl.utils.data import (
+    Batch,
+    LoggedReplayBuffer,
+    TrajAveragedReplayBuffer,
+)
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.net.discrete import CategoricalActor
 from offlinerl.utils.exp import setup_seed
@@ -93,10 +97,15 @@ class AlgoTrainer(BaseAlgo):
         self.total_train_steps = 0
         self.train_epoch = 0
 
-        self.replay_buffer = LoggedReplayBuffer(
-            self.args["buffer_size"],
-            log_path=f'{self.args["log_data_path"]}/SAC/{self.env.spec.id}',
-        )
+        if self.args["buffer_type"] == "log_transition":
+            self.replay_buffer = LoggedReplayBuffer(
+                self.args["buffer_size"],
+                log_path=f'{self.args["log_data_path"]}/SAC/{self.env.spec.id}',
+            )
+        elif self.args["buffer_type"] == "avg_traj":
+            self.replay_buffer = TrajAveragedReplayBuffer(
+                self.args["buffer_size"],
+            )
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -116,6 +125,7 @@ class AlgoTrainer(BaseAlgo):
             }
             # collect data
             obs = self.env.reset()
+            traj_batch = None
             while True:
                 with torch.no_grad():
                     obs_t = torch.tensor(obs, device=self.device).float()
@@ -135,12 +145,21 @@ class AlgoTrainer(BaseAlgo):
                         "retention": [info["reward"]["retention"]],
                     }
                 )
-                self.replay_buffer.put(batch_data)
+                if isinstance(self.replay_buffer, LoggedReplayBuffer):
+                    self.replay_buffer.put(batch_data)
+                else:
+                    if traj_batch is None:
+                        traj_batch = batch_data
+                    else:
+                        traj_batch = Batch.cat([traj_batch, batch_data])
 
                 if done:
                     break
                 obs = new_obs
                 self.total_train_steps += 1
+
+            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
+                self.replay_buffer.put(traj_batch)
 
             if self.total_train_steps >= self.args["warmup_size"]:
                 for _ in range(self.args["steps_per_epoch"]):
