@@ -67,12 +67,12 @@ class AlgoTrainer(BaseAlgo):
             if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
-            self.log_res(epoch, metrics)
+            self.log_res(epoch, metrics, save_model=False)
 
         return self.get_policy()
 
     def get_policy(self):
-        return self.q
+        return self.actor
 
     def _calc_quantiles(self, network, obs, actions):
         # update critic
@@ -85,6 +85,7 @@ class AlgoTrainer(BaseAlgo):
     def _train(self, batch):
         self.total_train_steps += 1
 
+        batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
         obs = batch["obs"]
         action = batch["act"]
         next_obs = batch["obs_next"]
@@ -151,5 +152,5 @@ class AlgoTrainer(BaseAlgo):
         metrics["mean_huber_loss"] = torch.mean(huber_loss).item()
         metrics["mean_q_quantile"] = torch.mean(cur_quantiles).item()
         metrics["mean_next_q_quantile"] = torch.mean(next_quantiles).item()
-        metrics["exploration_rate"] = self.exploration_rate
+        # metrics["exploration_rate"] = self.exploration_rate
         return metrics

@@ -38,7 +38,6 @@ def algo_init(args):
         "critic": {"net": q, "opt": critic_optim},
     }
 
-
 class AlgoTrainer(BaseAlgo):
     def __init__(self, algo_init, args):
         super(AlgoTrainer, self).__init__(args)
@@ -63,16 +62,17 @@ class AlgoTrainer(BaseAlgo):
             if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
                 res = callback_fn(self.get_policy())
                 metrics.update(res)
-            self.log_res(epoch, metrics)
+            self.log_res(epoch, metrics, save_model=False)
 
         return self.get_policy()
 
     def get_policy(self):
-        return self.q
+        return self.actor
 
     def _train(self, batch):
         self.total_train_steps += 1
 
+        batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
         obs = batch["obs"]
         action = batch["act"]
         next_obs = batch["obs_next"]
@@ -111,5 +111,5 @@ class AlgoTrainer(BaseAlgo):
         metrics = {}
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
         metrics["mean_Q"] = torch.mean(_q).item()
-        metrics["exploration_rate"] = self.exploration_rate
+        # metrics["exploration_rate"] = self.exploration_rate
         return metrics

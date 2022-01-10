@@ -44,289 +44,322 @@ import six
 
 @six.add_metaclass(abc.ABCMeta)
 class AbstractEnvironment(object):
-  """Abstract class representing the recommender system environment.
+    """Abstract class representing the recommender system environment.
 
-  Attributes:
-    user_model: An list or single instantiation of AbstractUserModel
-      representing the user/users.
-    document_sampler: An instantiation of AbstractDocumentSampler.
-    num_candidates: An integer representing the size of the candidate_set.
-    slate_size: An integer representing the slate size.
-    candidate_set: An instantiation of CandidateSet.
-    num_clusters: An integer representing the number of document clusters.
-  """
-
-  def __init__(self,
-               user_model,
-               document_sampler,
-               num_candidates,
-               slate_size,
-               resample_documents=True):
-    """Initializes a new simulation environment.
-
-    Args:
-      user_model: An instantiation of AbstractUserModel or list of such
-        instantiations
-      document_sampler: An instantiation of AbstractDocumentSampler
-      num_candidates: An integer representing the size of the candidate_set
-      slate_size: An integer representing the slate size
-      resample_documents: A boolean indicating whether to resample the candidate
-        set every step
-    """
-    self._user_model = user_model
-    self._document_sampler = document_sampler
-    self._slate_size = slate_size
-    self._num_candidates = num_candidates
-    self._resample_documents = resample_documents
-
-    # Create a candidate set.
-    self._do_resample_documents()
-    assert (slate_size <= num_candidates
-           ), 'Slate size %d cannot be larger than number of candidates %d' % (
-               slate_size, num_candidates)
-
-  def _do_resample_documents(self):
-    # TODO(sanmit): eventually model this creation with content creators.
-    self._candidate_set = document.CandidateSet()
-    for _ in range(self._num_candidates):
-      self._candidate_set.add_document(self._document_sampler.sample_document())
-
-  @abc.abstractmethod
-  def reset(self):
-    """Resets the environment and return the first observation.
-
-    Returns:
-      user_obs: An array of floats representing observations of the user's
-        current state
-      doc_obs: An OrderedDict of document observations keyed by document ids
+    Attributes:
+      user_model: An list or single instantiation of AbstractUserModel
+        representing the user/users.
+      document_sampler: An instantiation of AbstractDocumentSampler.
+      num_candidates: An integer representing the size of the candidate_set.
+      slate_size: An integer representing the slate size.
+      candidate_set: An instantiation of CandidateSet.
+      num_clusters: An integer representing the number of document clusters.
     """
 
-  @abc.abstractmethod
-  def reset_sampler(self):
-    """Resets the relevant samplers of documents and user/users."""
+    def __init__(
+        self,
+        user_model,
+        document_sampler,
+        num_candidates,
+        slate_size,
+        resample_documents=True,
+    ):
+        """Initializes a new simulation environment.
 
-  @property
-  def num_candidates(self):
-    return self._num_candidates
+        Args:
+          user_model: An instantiation of AbstractUserModel or list of such
+            instantiations
+          document_sampler: An instantiation of AbstractDocumentSampler
+          num_candidates: An integer representing the size of the candidate_set
+          slate_size: An integer representing the slate size
+          resample_documents: A boolean indicating whether to resample the candidate
+            set every step
+        """
+        self._user_model = user_model
+        self._document_sampler = document_sampler
+        self._slate_size = slate_size
+        self._num_candidates = num_candidates
+        self._resample_documents = resample_documents
 
-  @property
-  def slate_size(self):
-    return self._slate_size
+        # Create a candidate set.
+        self._do_resample_documents()
+        assert (
+            slate_size <= num_candidates
+        ), "Slate size %d cannot be larger than number of candidates %d" % (
+            slate_size,
+            num_candidates,
+        )
 
-  @property
-  def candidate_set(self):
-    return self._candidate_set
+    def _do_resample_documents(self):
+        # TODO(sanmit): eventually model this creation with content creators.
+        self._candidate_set = document.CandidateSet()
+        for _ in range(self._num_candidates):
+            self._candidate_set.add_document(
+                self._document_sampler.sample_document()
+            )
 
-  @property
-  def user_model(self):
-    return self._user_model
+    @abc.abstractmethod
+    def reset(self):
+        """Resets the environment and return the first observation.
 
-  @abc.abstractmethod
-  def step(self, slate):
-    """Executes the action, returns next state observation and reward.
+        Returns:
+          user_obs: An array of floats representing observations of the user's
+            current state
+          doc_obs: An OrderedDict of document observations keyed by document ids
+        """
 
-    Args:
-      slate: An integer array of size slate_size (or list of such arrays), where
-      each element is an index into the set of current_documents presented.
+    @abc.abstractmethod
+    def reset_sampler(self):
+        """Resets the relevant samplers of documents and user/users."""
 
-    Returns:
-      user_obs: A gym observation representing the user's next state
-      doc_obs: A list of observations of the documents
-      responses: A list of AbstractResponse objects for each item in the slate
-      done: A boolean indicating whether the episode has terminated
-    """
+    @property
+    def num_candidates(self):
+        return self._num_candidates
+
+    @property
+    def slate_size(self):
+        return self._slate_size
+
+    @property
+    def candidate_set(self):
+        return self._candidate_set
+
+    @property
+    def user_model(self):
+        return self._user_model
+
+    @abc.abstractmethod
+    def step(self, slate):
+        """Executes the action, returns next state observation and reward.
+
+        Args:
+          slate: An integer array of size slate_size (or list of such arrays), where
+          each element is an index into the set of current_documents presented.
+
+        Returns:
+          user_obs: A gym observation representing the user's next state
+          doc_obs: A list of observations of the documents
+          responses: A list of AbstractResponse objects for each item in the slate
+          done: A boolean indicating whether the episode has terminated
+        """
 
 
 class SingleUserEnvironment(AbstractEnvironment):
-  """Class to represent the environment with one user.
+    """Class to represent the environment with one user.
 
-  Attributes:
-    user_model: An instantiation of AbstractUserModel that represents a user.
-    document_sampler: An instantiation of AbstractDocumentSampler.
-    num_candidates: An integer representing the size of the candidate_set.
-    slate_size: An integer representing the slate size.
-    candidate_set: An instantiation of CandidateSet.
-    num_clusters: An integer representing the number of document clusters.
-  """
-
-  def reset(self):
-    """Resets the environment and return the first observation.
-
-    Returns:
-      user_obs: An array of floats representing observations of the user's
-        current state
-      doc_obs: An OrderedDict of document observations keyed by document ids
+    Attributes:
+      user_model: An instantiation of AbstractUserModel that represents a user.
+      document_sampler: An instantiation of AbstractDocumentSampler.
+      num_candidates: An integer representing the size of the candidate_set.
+      slate_size: An integer representing the slate size.
+      candidate_set: An instantiation of CandidateSet.
+      num_clusters: An integer representing the number of document clusters.
     """
-    self._user_model.reset()
-    user_obs = self._user_model.create_observation()
-    if self._resample_documents:
-      self._do_resample_documents()
-    self._current_documents = collections.OrderedDict(
-        self._candidate_set.create_observation())
-    return (user_obs, self._current_documents)
 
-  def reset_sampler(self):
-    """Resets the relevant samplers of documents and user/users."""
-    self._document_sampler.reset_sampler()
-    self._user_model.reset_sampler()
+    def reset(self):
+        """Resets the environment and return the first observation.
 
-  def step(self, slate):
-    """Executes the action, returns next state observation and reward.
+        Returns:
+          user_obs: An array of floats representing observations of the user's
+            current state
+          doc_obs: An OrderedDict of document observations keyed by document ids
+        """
+        self._user_model.reset()
+        user_obs = self._user_model.create_observation()
+        if self._resample_documents:
+            self._do_resample_documents()
+        self._current_documents = collections.OrderedDict(
+            self._candidate_set.create_observation()
+        )
+        return (user_obs, self._current_documents)
 
-    Args:
-      slate: An integer array of size slate_size, where each element is an index
-        into the set of current_documents presented
+    def reset_sampler(self):
+        """Resets the relevant samplers of documents and user/users."""
+        self._document_sampler.reset_sampler()
+        self._user_model.reset_sampler()
 
-    Returns:
-      user_obs: A gym observation representing the user's next state
-      doc_obs: A list of observations of the documents
-      responses: A list of AbstractResponse objects for each item in the slate
-      done: A boolean indicating whether the episode has terminated
-    """
-    import numpy as np
-    if isinstance(slate, np.int64):
-      slate = [slate]
-    assert (len(slate) <= self._slate_size
-           ), 'Received unexpectedly large slate size: expecting %s, got %s' % (
-               self._slate_size, len(slate))
+    def step(self, slate):
+        """Executes the action, returns next state observation and reward.
 
-    # Get the documents associated with the slate
-    doc_ids = list(self._current_documents)  # pytype: disable=attribute-error
-    mapped_slate = [doc_ids[x] for x in slate]
-    documents = self._candidate_set.get_documents(mapped_slate)
-    # Simulate the user's response
-    responses = self._user_model.simulate_response(documents)
+        Args:
+          slate: An integer array of size slate_size, where each element is an index
+            into the set of current_documents presented
 
-    # Update the user's state.
-    self._user_model.update_state(documents, responses)
+        Returns:
+          user_obs: A gym observation representing the user's next state
+          doc_obs: A list of observations of the documents
+          responses: A list of AbstractResponse objects for each item in the slate
+          done: A boolean indicating whether the episode has terminated
+        """
+        import numpy as np
 
-    # Update the documents' state.
-    self._document_sampler.update_state(documents, responses)
+        if isinstance(slate, int):
+            slate = [slate]
+        elif isinstance(slate, np.ndarray):
+            slate = [slate.item()]
+        assert (
+            len(slate) <= self._slate_size
+        ), "Received unexpectedly large slate size: expecting %s, got %s" % (
+            self._slate_size,
+            len(slate),
+        )
 
-    # Obtain next user state observation.
-    user_obs = self._user_model.create_observation()
+        # Get the documents associated with the slate
+        doc_ids = list(
+            self._current_documents
+        )  # pytype: disable=attribute-error
+        mapped_slate = [doc_ids[x] for x in slate]
+        documents = self._candidate_set.get_documents(mapped_slate)
+        # Simulate the user's response
+        responses = self._user_model.simulate_response(documents)
 
-    # Check if reaches a terminal state and return.
-    done = self._user_model.is_terminal()
+        # Update the user's state.
+        self._user_model.update_state(documents, responses)
 
-    # Optionally, recreate the candidate set to simulate candidate
-    # generators for the next query.
-    if self._resample_documents:
-      self._do_resample_documents()
+        # Update the documents' state.
+        self._document_sampler.update_state(documents, responses)
 
-    # Create observation of candidate set.
-    self._current_documents = collections.OrderedDict(
-        self._candidate_set.create_observation())
+        # Obtain next user state observation.
+        user_obs = self._user_model.create_observation()
 
-    return (user_obs, self._current_documents, responses, done)
+        # Check if reaches a terminal state and return.
+        done = self._user_model.is_terminal()
+
+        # Optionally, recreate the candidate set to simulate candidate
+        # generators for the next query.
+        if self._resample_documents:
+            self._do_resample_documents()
+
+        # Create observation of candidate set.
+        self._current_documents = collections.OrderedDict(
+            self._candidate_set.create_observation()
+        )
+
+        return (user_obs, self._current_documents, responses, done)
 
 
 Environment = SingleUserEnvironment  # for backwards compatability
 
 
 class MultiUserEnvironment(AbstractEnvironment):
-  """Class to represent environment with multiple users.
+    """Class to represent environment with multiple users.
 
-  Attributes:
-    user_model: A list of AbstractUserModel instances that represent users.
-    num_users: An integer representing the number of users.
-    document_sampler: An instantiation of AbstractDocumentSampler.
-    num_candidates: An integer representing the size of the candidate_set.
-    slate_size: An integer representing the slate size.
-    candidate_set: An instantiation of CandidateSet.
-    num_clusters: An integer representing the number of document clusters.
-  """
-
-  def reset(self):
-    """Resets the environment and return the first observation.
-
-    Returns:
-      user_obs: An array of floats representing observations of the user's
-        current state
-      doc_obs: An OrderedDict of document observations keyed by document ids
-    """
-    for user_model in self.user_model:
-      user_model.reset()
-    user_obs = [
-        user_model.create_observation() for user_model in self.user_model
-    ]
-    if self._resample_documents:
-      self._do_resample_documents()
-    self._current_documents = collections.OrderedDict(
-        self._candidate_set.create_observation())
-    return (user_obs, self._current_documents)
-
-  def reset_sampler(self):
-    self._document_sampler.reset_sampler()
-    for user_model in self.user_model:
-      user_model.reset_sampler()
-
-  @property
-  def num_users(self):
-    return len(self.user_model)
-
-  def step(self, slates):
-    """Executes the action, returns next state observation and reward.
-
-    Args:
-      slates: A list of slates, where each slate is an integer array of size
-        slate_size, where each element is an index into the set of
-        current_documents presented
-
-    Returns:
-      user_obs: A list of gym observation representing all users' next state
-      doc_obs: A list of observations of the documents
-      responses: A list of AbstractResponse objects for each item in the slate
-      done: A boolean indicating whether the episode has terminated
+    Attributes:
+      user_model: A list of AbstractUserModel instances that represent users.
+      num_users: An integer representing the number of users.
+      document_sampler: An instantiation of AbstractDocumentSampler.
+      num_candidates: An integer representing the size of the candidate_set.
+      slate_size: An integer representing the slate size.
+      candidate_set: An instantiation of CandidateSet.
+      num_clusters: An integer representing the number of document clusters.
     """
 
-    assert (len(slates) == self.num_users
-           ), 'Received unexpected number of slates: expecting %s, got %s' % (
-               self._slate_size, len(slates))
-    for i, slate in enumerate(slates):
-      assert (len(slate) <= self._slate_size
-             ), 'Slate %s is too large : expecting size %s, got %s' % (
-                 i, self._slate_size, len(slate))
+    def reset(self):
+        """Resets the environment and return the first observation.
 
-    all_user_obs = []
-    all_documents = []  # Accumulate documents served to each user.
-    all_responses = []  # Accumulate each user's responses to served documents.
-    for user_model, slate in zip(self.user_model, slates):
-      # Get the documents associated with the slate
-      doc_ids = list(self._current_documents)  # pytype: disable=attribute-error
-      mapped_slate = [doc_ids[x] for x in slate]
-      documents = self._candidate_set.get_documents(mapped_slate)
-      if user_model.is_terminal():
-        responses = []
-      else:
-        # Simulate the user's response
-        responses = user_model.simulate_response(documents)
+        Returns:
+          user_obs: An array of floats representing observations of the user's
+            current state
+          doc_obs: An OrderedDict of document observations keyed by document ids
+        """
+        for user_model in self.user_model:
+            user_model.reset()
+        user_obs = [
+            user_model.create_observation() for user_model in self.user_model
+        ]
+        if self._resample_documents:
+            self._do_resample_documents()
+        self._current_documents = collections.OrderedDict(
+            self._candidate_set.create_observation()
+        )
+        return (user_obs, self._current_documents)
 
-        # Update the user's state.
-        user_model.update_state(documents, responses)
+    def reset_sampler(self):
+        self._document_sampler.reset_sampler()
+        for user_model in self.user_model:
+            user_model.reset_sampler()
 
-      # Obtain next user state observation.
-      all_user_obs.append(user_model.create_observation())
-      all_documents.append(documents)
-      all_responses.append(responses)
+    @property
+    def num_users(self):
+        return len(self.user_model)
 
-    def flatten(list_):
-      return list(itertools.chain(*list_))
+    def step(self, slates):
+        """Executes the action, returns next state observation and reward.
 
-    # Update the documents' state.
-    self._document_sampler.update_state(
-        flatten(all_documents), flatten(all_responses))
+        Args:
+          slates: A list of slates, where each slate is an integer array of size
+            slate_size, where each element is an index into the set of
+            current_documents presented
 
-    # Check if reaches a terminal state and return.
-    done = all([user_model.is_terminal() for user_model in self.user_model])
+        Returns:
+          user_obs: A list of gym observation representing all users' next state
+          doc_obs: A list of observations of the documents
+          responses: A list of AbstractResponse objects for each item in the slate
+          done: A boolean indicating whether the episode has terminated
+        """
 
-    # Optionally, recreate the candidate set to simulate candidate
-    # generators for the next query.
-    if self._resample_documents:
-      self._do_resample_documents()
+        assert (
+            len(slates) == self.num_users
+        ), "Received unexpected number of slates: expecting %s, got %s" % (
+            self._slate_size,
+            len(slates),
+        )
+        for i, slate in enumerate(slates):
+            assert (
+                len(slate) <= self._slate_size
+            ), "Slate %s is too large : expecting size %s, got %s" % (
+                i,
+                self._slate_size,
+                len(slate),
+            )
 
-    # Create observation of candidate set.
-    self._current_documents = collections.OrderedDict(
-        self._candidate_set.create_observation())
+        all_user_obs = []
+        all_documents = []  # Accumulate documents served to each user.
+        all_responses = (
+            []
+        )  # Accumulate each user's responses to served documents.
+        for user_model, slate in zip(self.user_model, slates):
+            # Get the documents associated with the slate
+            doc_ids = list(
+                self._current_documents
+            )  # pytype: disable=attribute-error
+            mapped_slate = [doc_ids[x] for x in slate]
+            documents = self._candidate_set.get_documents(mapped_slate)
+            if user_model.is_terminal():
+                responses = []
+            else:
+                # Simulate the user's response
+                responses = user_model.simulate_response(documents)
 
-    return (all_user_obs, self._current_documents, all_responses, done)
+                # Update the user's state.
+                user_model.update_state(documents, responses)
+
+            # Obtain next user state observation.
+            all_user_obs.append(user_model.create_observation())
+            all_documents.append(documents)
+            all_responses.append(responses)
+
+        def flatten(list_):
+            return list(itertools.chain(*list_))
+
+        # Update the documents' state.
+        self._document_sampler.update_state(
+            flatten(all_documents), flatten(all_responses)
+        )
+
+        # Check if reaches a terminal state and return.
+        done = all(
+            [user_model.is_terminal() for user_model in self.user_model]
+        )
+
+        # Optionally, recreate the candidate set to simulate candidate
+        # generators for the next query.
+        if self._resample_documents:
+            self._do_resample_documents()
+
+        # Create observation of candidate set.
+        self._current_documents = collections.OrderedDict(
+            self._candidate_set.create_observation()
+        )
+
+        return (all_user_obs, self._current_documents, all_responses, done)

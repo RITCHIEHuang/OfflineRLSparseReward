@@ -3,6 +3,7 @@ import subprocess
 
 from utils.exp_util import get_gpu_count
 from utils.task_util import d4rl_task_list, neorl_task_list, rec_task_list
+from utils.gpu_util import get_gpu_memory_desc_iter
 
 d4rl_template = (
     "sleep 1 && export CUDA_VISIBLE_DEVICES={0} && "
@@ -110,6 +111,7 @@ else:
     raise NotImplementedError()
 
 gpu_id = 0
+gpu_id_iter = get_gpu_memory_desc_iter()
 
 print(f"Train task: {task}")
 process_buffer = []
@@ -120,7 +122,7 @@ for algo in algos:
             for strategy in strategies:
                 for seed in seeds:
                     param_list = [
-                        gpu_id % NUM_GPU,
+                        next(gpu_id_iter),
                         algo,
                         task,
                         delay_mode,

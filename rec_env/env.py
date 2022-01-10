@@ -271,6 +271,9 @@ class RecsEnv(RecSimGymEnv):
         else:
             return encoded_obs
 
+    def close(self):
+        pass
+
 
 def get_recs_env(**kwargs):
     env = create_env()

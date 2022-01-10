@@ -19,3 +19,4 @@ decision_transformer/data/*.pkl
 
 rec_env/data/
 */wandb
+scripts/wandb.sh

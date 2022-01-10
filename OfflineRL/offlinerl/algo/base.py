@@ -66,7 +66,7 @@ class BaseAlgo(ABC):
         with open(self.hparams_path, "w") as f:
             json.dump(args, f)
 
-    def log_res(self, epoch, result):
+    def log_res(self, epoch, result, save_model=True):
         logger.info("Epoch : {}", epoch)
 
         if self.log_to_wandb:
@@ -80,7 +80,8 @@ class BaseAlgo(ABC):
         self.metric_logs[str(epoch)] = result
         with open(self.metric_logs_path, "w") as f:
             json.dump(self.metric_logs, f)
-        self.save_model(os.path.join(self.models_save_dir, str(epoch) + ".pt"))
+        if save_model:
+            self.save_model(os.path.join(self.models_save_dir, str(epoch) + ".pt"))
 
     @abstractmethod
     def train(
