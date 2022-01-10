@@ -22,7 +22,8 @@ env_config = {
     "standard_click_num": 40.0,
     "click_threshold": 0.70,
     "leave_prob": 0.0,
-    "next_time_mean": 600.0,
+    # "next_time_mean": 600.0,
+    "next_time_mean": 24 * 60 * 2.0,  # min
     "alpha_min": 0.001,
     "alpha_max": 0.01,
     "feature_dim": 10,
@@ -357,8 +358,8 @@ def reward_fn(responses):
     for response in responses:
         reward_info["retention"] += response.retention
         reward_info["click"] += response.clicked
-    # reward = reward_info["click"]
-    reward = reward_info["retention"]
+    reward = reward_info["click"]
+    # reward = reward_info["retention"]
     # reward = 10 * reward_info["retention"] + reward_info["click"]
     return reward, reward_info
 

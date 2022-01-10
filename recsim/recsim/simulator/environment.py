@@ -193,7 +193,7 @@ class SingleUserEnvironment(AbstractEnvironment):
         """
         import numpy as np
 
-        if isinstance(slate, int):
+        if isinstance(slate, (int, np.int64)):
             slate = [slate]
         elif isinstance(slate, np.ndarray):
             slate = [slate.item()]

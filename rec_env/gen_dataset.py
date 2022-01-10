@@ -1,9 +1,11 @@
+import os
 from collections import defaultdict
 import time
 import numpy as np
 
 
 from rec_env.env import get_recs_env
+from utils.io_util import proj_path
 
 
 class RandomAgent(object):
@@ -121,8 +123,12 @@ def sample_store(n_traj=100):
     ]:
         print(f"{k} shape", np.concatenate(traj[k]).shape)
 
+    data_dir = f"{proj_path}/recs_env/data/"
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
     np.savez_compressed(
-        f"data/recs-random-{n_traj}.npz",
+        f"{data_dir}/recs-random-{n_traj}.npz",
         observations=np.concatenate(traj["observations"]),
         actions=np.concatenate(traj["actions"]),
         rewards=np.concatenate(traj["rewards"]),
