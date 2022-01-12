@@ -19,7 +19,7 @@ env_config = {
     # user
     "time_budget": 9 * 24 * 60,
     "max_impress_num": 4000,
-    "standard_click_num": 20.0,
+    "standard_click_num": 30.0,
     "click_threshold": 0.70,
     "leave_prob": 0.0,
     # "next_time_mean": 600.0,
@@ -155,8 +155,11 @@ class UserState(user.AbstractUserState):
 
     def score_document(self, doc_obs):
         # the user is more likely to click on the video with similar feature
-        score = (self.interest @ doc_obs["emb"]) / np.sqrt(
-            self.interest @ self.interest * doc_obs["emb"] @ doc_obs["emb"]
+        score = (self.interest @ doc_obs["emb"]) / (
+            np.sqrt(
+                self.interest @ self.interest * doc_obs["emb"] @ doc_obs["emb"]
+                + 1e-8
+            )
         )
         return score
 
@@ -172,11 +175,12 @@ class UserSampler(user.AbstractUserSampler):
         super(UserSampler, self).__init__(user_ctor, **kwargs)
 
     def sample_user(self):
+        alpha = self._rng.uniform(
+            self.config["alpha_min"],
+            self.config["alpha_max"],
+        )
         state_parameters = {
-            "alpha": self._rng.uniform(
-                self.config["alpha_min"],
-                self.config["alpha_max"],
-            ),
+            "alpha": alpha,
             "interest": self._rng.uniform(
                 0,
                 1,
@@ -259,8 +263,7 @@ class UserModel(user.AbstractUserModel):
             next_time = watch_time + reaction_time
         else:
             response.clicked = False
-            eps = np.random.random()
-            if eps >= self.config["leave_prob"]:
+            if np.random.random() >= self.config["leave_prob"]:
                 next_time = max(
                     np.random.exponential(self._user_state.next_time_mean), 1
                 )

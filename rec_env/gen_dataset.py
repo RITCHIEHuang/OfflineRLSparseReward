@@ -47,9 +47,11 @@ class GreedyAgent(object):
         return action
 
 
-def create_agent(environment):
-    return RandomAgent(environment)
-    # return GreedyAgent(environment)
+AGENT_MAPPING = {"random": RandomAgent, "greedy": GreedyAgent}
+
+
+def create_agent(environment, agent_type: RandomAgent):
+    return agent_type(environment)
 
 
 def run_episode(ep, env, agent, max_steps_per_episode=27000):
@@ -59,6 +61,8 @@ def run_episode(ep, env, agent, max_steps_per_episode=27000):
     terminals = []
     next_observations = []
     timeouts = []
+    clicks = []
+    retentions = []
 
     step_number = 0
     total_reward = 0.0
@@ -75,6 +79,8 @@ def run_episode(ep, env, agent, max_steps_per_episode=27000):
         actions.append(action)
         rewards.append(reward)
         terminals.append(done)
+        clicks.append(info["reward"]["click"])
+        retentions.append(info["reward"]["retention"])
         timeouts.append(bool(step_number == max_steps_per_episode))
 
         # Update environment-specific metrics with responses to the slate.
@@ -99,12 +105,16 @@ def run_episode(ep, env, agent, max_steps_per_episode=27000):
         "next_observations": next_observations,
         "terminals": terminals,
         "timeouts": timeouts,
+        "clicks": clicks,
+        "retentions": retentions,
     }
 
 
-def sample_store(n_traj=100):
+def sample_store(n_traj=100, agent_name="random"):
     cs_environment = get_recs_env()
-    random_agent = create_agent(cs_environment)
+    random_agent = create_agent(
+        cs_environment, agent_type=AGENT_MAPPING[agent_name]
+    )
 
     traj = defaultdict(list)
     for i in range(n_traj):
@@ -120,6 +130,8 @@ def sample_store(n_traj=100):
         "rewards",
         "terminals",
         "timeouts",
+        "clicks",
+        "retentions",
     ]:
         print(f"{k} shape", np.concatenate(traj[k]).shape)
 
@@ -128,17 +140,23 @@ def sample_store(n_traj=100):
         os.makedirs(data_dir)
 
     np.savez_compressed(
-        f"{data_dir}/recs-random-{n_traj}.npz",
+        f"{data_dir}/recs-{agent_name}-{n_traj}.npz",
         observations=np.concatenate(traj["observations"]),
         actions=np.concatenate(traj["actions"]),
         rewards=np.concatenate(traj["rewards"]),
         terminals=np.concatenate(traj["terminals"]),
         timeouts=np.concatenate(traj["timeouts"]),
         next_observations=np.concatenate(traj["next_observations"]),
+        clicks=np.concatenate(traj["clicks"]),
+        retentions=np.concatenate(traj["retentions"]),
     )
 
+    print('=' * 80)
     print("average reward", np.sum(np.concatenate(traj["rewards"])) / n_traj)
-
+    print("average click", np.sum(np.concatenate(traj["clicks"])) / n_traj)
+    print("average retention", np.sum(np.concatenate(traj["retentions"])) / n_traj)
+    print('=' * 80)
 
 if __name__ == "__main__":
-    sample_store()
+    sample_store(agent_name="random")
+    # sample_store(agent_name="greedy")
