@@ -32,6 +32,11 @@ def algo_init(args):
         args["obs_shape"], args["action_shape"] = obs_shape, action_shape
     else:
         raise NotImplementedError
+    
+    use_noisy_linear = False
+    if "use_noisy_linear" in args and args["use_noisy_linear"]: 
+        use_noisy_linear=True
+        print("use noisy linear network!!!")
 
     q = MLP(
         obs_shape,
@@ -40,6 +45,7 @@ def algo_init(args):
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
+        use_noisy_linear=use_noisy_linear
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 

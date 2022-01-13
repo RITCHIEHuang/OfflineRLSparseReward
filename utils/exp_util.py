@@ -15,6 +15,17 @@ from utils.task_util import get_domain_by_task
 count_gpu_shell = "nvidia-smi | grep 'GeFor' | wc -l"
 
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "y", "1"):
+        return True
+    elif v.lower() in ("no", "false", "f", "n", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Boolean value expected.")
+
+
 def get_gpu_count():
     p = subprocess.Popen(
         count_gpu_shell,
@@ -62,6 +73,14 @@ def argsparser():
     )
     parser.add_argument(
         "--reward_shift", help="shift for reward", type=float, default=0.0
+    )
+    parser.add_argument(
+        "--use_noisy_linear",
+        type=str2bool,
+        nargs="?",
+        const=True,
+        default=False,
+        help="Activate nice mode.",
     )
     parser.add_argument("--bc_epoch", help="bc epochs", type=int, default=0)
     parser.add_argument(

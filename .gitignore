@@ -20,3 +20,6 @@ decision_transformer/data/*.pkl
 rec_env/data/
 */wandb
 scripts/wandb.sh
+scripts/*.ipynb
+scripts/jupyter_exp
+scripts/.ipynb*

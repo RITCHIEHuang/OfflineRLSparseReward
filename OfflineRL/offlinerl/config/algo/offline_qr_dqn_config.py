@@ -19,7 +19,7 @@ eval_epoch = 10
 lr = 1e-4
 target_update_interval = 50
 discount = 0.99
-soft_target_tau = 0
+soft_target_tau = 1.0
 
 # tune
 grid_tune = {
