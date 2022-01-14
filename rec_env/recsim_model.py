@@ -365,19 +365,6 @@ class UserModel(user.AbstractUserModel):
         )
 
 
-def reward_fn(responses):
-    reward_info = {}
-    reward_info["retention"] = 0.0
-    reward_info["click"] = 0.0
-    for response in responses:
-        reward_info["retention"] += response.retention
-        reward_info["click"] += response.clicked
-    reward = reward_info["click"]
-    # reward = reward_info["retention"]
-    # reward = 10 * reward_info["retention"] + reward_info["click"]
-    return reward, reward_info
-
-
 def create_env():
     user_model = UserModel(env_config)
     video_sampler = VideoSampler()

@@ -13,8 +13,8 @@ hidden_layer_size = 256
 hidden_layers = 2
 
 log_data_path = f"{proj_path}/rec_env/data"
-# buffer_type = "log_transition"  # log_transition
-buffer_type = "avg_traj"  # log_transition
+buffer_type = "log_transition"  # log_transition
+# buffer_type = "avg_traj"  # log_transition
 buffer_size = 1e6
 batch_size = 256
 warmup_size = 10000

@@ -1,9 +1,10 @@
+from functools import partial
 import numpy as np
 from gym import spaces
 from recsim.simulator import environment
 from recsim.simulator.recsim_gym import RecSimGymEnv
 
-from rec_env.recsim_model import create_env, reward_fn
+from rec_env.recsim_model import create_env
 
 
 class ObservationAdapter(object):
@@ -275,7 +276,30 @@ class RecsEnv(RecSimGymEnv):
         pass
 
 
+def reward_fn(responses, rew_type="click"):
+    reward_info = {}
+    reward_info["retention"] = 0.0
+    reward_info["click"] = 0.0
+    for response in responses:
+        reward_info["retention"] += response.retention
+        reward_info["click"] += response.clicked
+    
+    if rew_type == "click":
+        reward = reward_info["click"]
+    elif rew_type == "retention":
+        reward = reward_info["retention"]
+    elif rew_type == "weighted":
+        reward = 20 * reward_info["retention"] + reward_info["click"]
+    else:
+        raise NotImplementedError()
+
+    return reward, reward_info
+
 def get_recs_env(**kwargs):
     env = create_env()
-    recs_env = RecsEnv(env, reward_fn, **kwargs)
+    print("*" * 100)
+    reward_type = kwargs.get("reward_type", "click")
+    print("reward_type", reward_type)
+    print("*" * 100)
+    recs_env = RecsEnv(env, partial(reward_fn, rew_type=reward_type), **kwargs)
     return recs_env

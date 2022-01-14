@@ -151,12 +151,16 @@ def sample_store(n_traj=100, agent_name="random"):
         retentions=np.concatenate(traj["retentions"]),
     )
 
-    print('=' * 80)
+    print("=" * 80)
     print("average reward", np.sum(np.concatenate(traj["rewards"])) / n_traj)
     print("average click", np.sum(np.concatenate(traj["clicks"])) / n_traj)
-    print("average retention", np.sum(np.concatenate(traj["retentions"])) / n_traj)
-    print('=' * 80)
+    print(
+        "average retention",
+        np.sum(np.concatenate(traj["retentions"])) / n_traj,
+    )
+    print("=" * 80)
+
 
 if __name__ == "__main__":
-    sample_store(agent_name="random")
+    sample_store(agent_name="random", n_traj=10000)
     # sample_store(agent_name="greedy")

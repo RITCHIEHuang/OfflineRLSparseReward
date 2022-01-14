@@ -78,7 +78,9 @@ class AlgoTrainer(BaseAlgo):
         # update critic
         cur_quantiles = network(obs)
         batch_size, N, _ = cur_quantiles.shape
-        action_idx = actions[..., None].expand(batch_size, N, 1)
+        action_idx = actions.unsqueeze(-1).expand(
+            -1, self.args["num_quantiles"], -1
+        )
         _q = cur_quantiles.gather(-1, action_idx.long())
         return _q
 
@@ -118,7 +120,7 @@ class AlgoTrainer(BaseAlgo):
             diff = y - cur_quantiles
             delta = (diff < 0).float()
 
-        critic_loss = (torch.abs(self.tau - delta) * huber_loss).mean()
+        critic_loss = (torch.abs(self.tau - delta) * huber_loss).sum(1).mean()
 
         # print("next_q", next_q.shape)
         # print("next_a", next_action.shape)

@@ -69,30 +69,23 @@ class QuantileQNet(nn.Module):
         norm: str = None,
         hidden_activation: str = "leakyrelu",
         output_activation: str = "identity",
-        n_quantile: int = 200,
+        n_quantile: int = 20,
     ):
         super().__init__()
         self.n = n_quantile
         self.action_dim = action_dim
         self.q_backbone = MLP(
             obs_dim,
-            1024,
+            n_quantile * action_dim,
             hidden_size,
             hidden_layers,
             norm,
             hidden_activation,
             output_activation,
         )
-        self.quantile_head = nn.Sequential(
-            nn.Linear(1024, 512),
-            nn.LeakyReLU(),
-            nn.Linear(512, n_quantile * action_dim),
-        )
 
     def forward(self, obs):
-        batch_size = obs.shape[0]
-        out = self.q_backbone(obs)
-        out = self.quantile_head(out).view(batch_size, self.n, self.action_dim)
+        out = self.q_backbone(obs).view(-1, self.n, self.action_dim)
         return out
 
     def q_value(self, obs):

@@ -30,5 +30,6 @@ setup(
         "mjrl",
         "stable-baselines3",
         "numba",
+        "ray[tune]",
     ],
 )
