@@ -21,7 +21,6 @@ def delay_traj_dataset(config):
     env = gym.make(
         config["task"][5:] if "recs" in config["task"] else config["task"]
     )
-    print(type(env))
     dataset = env.get_dataset()
     raw_observations = dataset["observations"]
     raw_actions = dataset["actions"]

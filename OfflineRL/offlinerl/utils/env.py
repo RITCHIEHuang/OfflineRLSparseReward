@@ -170,6 +170,15 @@ def get_env_action_range(task: str) -> Tuple[float, float]:
     return act_max, act_min
 
 
+def get_env_action_type(task: str) -> Tuple[int, int]:
+    env = get_env(task)
+
+    if hasattr(env.action_space, "n"):
+        return "discrete"
+    else:
+        return "continuous"
+
+
 def get_env_state_range(task: str) -> Tuple[float, float]:
     env = get_env(task)
     obs_max = float(env.observation_space.high[0])

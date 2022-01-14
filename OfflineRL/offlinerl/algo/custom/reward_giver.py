@@ -1,8 +1,10 @@
-import torch
-import torch.nn as nn
 from copy import deepcopy
 from loguru import logger
 import numpy as np
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.net.common import MLP
@@ -17,10 +19,11 @@ def algo_init(args):
     if args["obs_shape"] and args["action_shape"]:
         obs_shape, action_shape = args["obs_shape"], args["action_shape"]
     elif "task" in args.keys():
-        from offlinerl.utils.env import get_env_shape, get_env_action_range
+        from offlinerl.utils.env import get_env_shape, get_env_action_type
 
         obs_shape, action_shape = get_env_shape(args["task"])
         args["obs_shape"], args["action_shape"] = obs_shape, action_shape
+        args["action_type"] = get_env_action_type(args["task"])
     else:
         raise NotImplementedError
 
@@ -86,6 +89,15 @@ class AlgoTrainer(BaseAlgo):
                 batch = train_buffer[batch_idxs]
                 obs = batch["obs"]
                 action = batch["act"]
+                if self.args["action_type"] == "discrete":
+                    action = (
+                        F.one_hot(
+                            action.long(),
+                            num_classes=self.args["action_shape"],
+                        )
+                        .squeeze(1)
+                        .float()
+                    )
                 rew = batch["rew"]
                 obs_act = torch.cat([obs, action], dim=-1)
                 pre_rew = self.reward_net(obs_act)
@@ -98,6 +110,15 @@ class AlgoTrainer(BaseAlgo):
             with torch.no_grad():
                 obs = valdata["obs"]
                 action = valdata["act"]
+                if self.args["action_type"] == "discrete":
+                    action = (
+                        F.one_hot(
+                            action.long(),
+                            num_classes=self.args["action_shape"],
+                        )
+                        .squeeze(1)
+                        .float()
+                    )
                 rew = valdata["rew"]
                 obs_act = torch.cat([obs, action], dim=-1)
                 pre_rew = self.reward_net(obs_act)
