@@ -17,12 +17,14 @@ class OfflineEnv(gym.Env):
         dataset_path=None,
         ref_max_score=None,
         ref_min_score=None,
+        reward_key="reward",
         **kwargs
     ):
         super(OfflineEnv, self).__init__(**kwargs)
         self.dataset_path = self._dataset_path = dataset_path
         self.ref_max_score = ref_max_score
         self.ref_min_score = ref_min_score
+        self.reward_key = reward_key
 
     def get_normalized_score(self, score):
         if (self.ref_max_score is None) or (self.ref_min_score is None):
@@ -43,7 +45,14 @@ class OfflineEnv(gym.Env):
         data_dict = np.load(npz_path)
         data_dict = {k: data_dict[k] for k in list(data_dict.keys())}
         # Run a few quick sanity checks
-        for key in ["observations", "actions", "rewards", "terminals"]:
+        for key in [
+            "observations",
+            "next_observations",
+            "actions",
+            "rewards",
+            "terminals",
+            self.reward_key,
+        ]:
             assert key in data_dict, "Dataset is missing key %s" % key
         N_samples = data_dict["observations"].shape[0]
         if self.observation_space.shape is not None:
@@ -54,12 +63,15 @@ class OfflineEnv(gym.Env):
                 str(data_dict["observations"].shape[1:]),
                 str(self.observation_space.shape),
             )
-        # assert (
-        #     data_dict["actions"].shape[1:] == self.action_space.shape
-        # ), "Action shape does not match env: %s vs %s" % (
-        #     str(data_dict["actions"].shape[1:]),
-        #     str(self.action_space.shape),
-        # )
+        assert data_dict["actions"].shape == (
+            N_samples,
+            1,
+        ), "Action shape does not match env: %s vs %s" % (
+            str(data_dict["actions"].shape),
+            str(self.action_space.shape),
+        )
+
+        data_dict["rewards"] = data_dict[self.reward_key]
         if data_dict["rewards"].shape == (N_samples, 1):
             data_dict["rewards"] = data_dict["rewards"][:, 0]
         assert data_dict["rewards"].shape == (

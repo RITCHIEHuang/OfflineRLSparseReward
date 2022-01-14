@@ -26,7 +26,7 @@ eval_epoch = 10
 lr = 1e-4
 exploration_init_eps = 0.2
 exploration_final_eps = 0.02
-target_update_interval = 1000
+target_update_interval = 2000
 discount = 0.99
 soft_target_tau = 1.0
 
