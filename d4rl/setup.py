@@ -1,5 +1,4 @@
 from distutils.core import setup
-from platform import platform
 
 from setuptools import find_packages
 
@@ -15,7 +14,7 @@ setup(
         "termcolor",  # adept_envs dependency
         "click",  # adept_envs dependency
         'dm_control', 
-        "mjrl",
+        "mjrl@git+https://github.com/aravindr93/mjrl@master#egg=mjrl"
     ],
     packages=find_packages(),
     package_data={
