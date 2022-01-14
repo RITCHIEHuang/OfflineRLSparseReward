@@ -20,7 +20,7 @@ class OfflineEnv(gym.Env):
         reward_key="reward",
         **kwargs
     ):
-        super(OfflineEnv, self).__init__(**kwargs)
+        # super(OfflineEnv, self).__init__(**kwargs)
         self.dataset_path = self._dataset_path = dataset_path
         self.ref_max_score = ref_max_score
         self.ref_min_score = ref_min_score

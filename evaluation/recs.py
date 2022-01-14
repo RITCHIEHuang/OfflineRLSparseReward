@@ -20,6 +20,7 @@ for env in ["HalfCheetah", "Hopper", "Walker2d", "Ant"]:
             D4RL_REF_MAX_SCORE[dset_name] = REF_MAX_SCORE[
                 env.lower() + "-random-v0"
             ]
+
 for env in ["recs"]:
     for dset in ["", "random", "replay"]:
         if len(dset) != 0:
@@ -27,7 +28,7 @@ for env in ["recs"]:
         else:
             dset_name = env + "-v0"
         D4RL_REF_MIN_SCORE[dset_name] = 0.0
-        D4RL_REF_MAX_SCORE[dset_name] = 1.0
+        D4RL_REF_MAX_SCORE[dset_name] = 9.0
 
 
 def d4rl_score(task, rew_mean, len_mean):

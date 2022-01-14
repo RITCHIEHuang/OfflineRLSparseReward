@@ -11,7 +11,7 @@ hidden_layer_size = 256
 hidden_layers = 2
 
 batch_size = 256
-max_epoch = 1000
+max_epoch = 3000
 steps_per_epoch = 1000
 eval_epoch = 10
 

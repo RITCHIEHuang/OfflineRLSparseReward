@@ -22,8 +22,8 @@ max_step = 1e7
 eval_epoch = 10
 
 learnable_alpha = True
-actor_lr = 3e-3
-critic_lr = 3e-3
+actor_lr = 3e-4
+critic_lr = 3e-4
 discount = 0.99
 soft_target_tau = 5e-3
 

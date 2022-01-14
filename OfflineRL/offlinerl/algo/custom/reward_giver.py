@@ -16,12 +16,10 @@ def algo_init(args):
 
     if args["obs_shape"] and args["action_shape"]:
         obs_shape, action_shape = args["obs_shape"], args["action_shape"]
-        max_action = args["max_action"]
     elif "task" in args.keys():
         from offlinerl.utils.env import get_env_shape, get_env_action_range
 
         obs_shape, action_shape = get_env_shape(args["task"])
-        max_action, _ = get_env_action_range(args["task"])
         args["obs_shape"], args["action_shape"] = obs_shape, action_shape
     else:
         raise NotImplementedError
