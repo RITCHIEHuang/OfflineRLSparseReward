@@ -1,6 +1,8 @@
 from copy import deepcopy
 
 import torch
+import torch.nn.functional as F
+
 import numpy as np
 from tqdm import tqdm
 from loguru import logger
@@ -196,9 +198,10 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
     init_reward_giver_model = deepcopy(algo_trainer.get_policy())
 
     algo_trainer.train(buffer, None, None)
-
     trained_reward_giver_model = algo_trainer.get_policy()
     device = algo_trainer.device
+    action_type = algo_config["action_type"]
+    action_shape = algo_config["action_shape"]
 
     logger.info(f"Training reward giver model end...")
     for i, traj_length in enumerate(traj_dataset["length"]):
@@ -212,7 +215,14 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
                 device
             )
             traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(device)
-            traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
+            if action_type == "discrete":
+                traj_act = (
+                    F.one_hot(
+                        traj_act.long(),
+                        num_classes=action_shape,
+                    ).squeeze(1).float()
+                )
+            traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1).float()
             # init
             init_reward_pre = (
                 init_reward_giver_model(
