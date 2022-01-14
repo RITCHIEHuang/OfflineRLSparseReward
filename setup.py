@@ -29,5 +29,6 @@ setup(
         "dm_control",
         "mjrl",
         "stable-baselines3",
+        "numba",
     ],
 )
