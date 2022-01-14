@@ -93,6 +93,47 @@ class QuantileQNet(nn.Module):
         q = quantile.mean(dim=1)
         return q
 
+class MultiQNet(nn.Module):
+    def __init__(
+        self,
+        obs_dim: int,
+        action_dim: int,
+        hidden_size: int,
+        hidden_layers: int,
+        norm: str = None,
+        hidden_activation: str = "leakyrelu",
+        output_activation: str = "identity",
+        num_networks: int = 10,
+        num_convexs: int = 10,
+    ):
+        super().__init__()
+        self.num_networks = num_networks
+        self.num_convexs = num_convexs
+        self.action_dim = action_dim
+        self.qnets = [MLP(
+            obs_dim,
+            action_dim,
+            hidden_size,
+            hidden_layers,
+            norm,
+            hidden_activation,
+            output_activation,
+        ) for _ in range(num_networks)]
+
+    def forward(self, obs):
+        unorder_outs = [qnet(obs) for qnet in self.qnets]
+        unorder_outs = torch.stack(unorder_outs, dim=1) # [batch, K, action]
+        stochastic_matrix = torch.rand((self.num_networks, self.num_convexs))
+        stochastic_matrix /= torch.norm(stochastic_matrix, p=1, dim=0, keepdim=True) # [K, convex]
+        combined_outs = torch.einsum('bka,kc->bca', unorder_outs, stochastic_matrix)
+
+        return combined_outs 
+
+    def q_value(self, obs):
+        quantile = self(obs)
+        q = quantile.mean(dim=1)
+        return q
+
 
 class QPolicyWrapper(nn.Module, DiscretePolicy):
     def __init__(self, q_net):
