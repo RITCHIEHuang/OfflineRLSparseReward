@@ -2,7 +2,7 @@ from loguru import logger
 from ray import tune
 
 from offlinerl.algo import algo_select
-from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
+from offlinerl.evaluation import CallBackFunctionList
 
 from datasets import recs_dataset
 from utils.exp_util import setup_exp_args
@@ -20,12 +20,8 @@ def training_function(config):
     algo_init = algo_init_fn(algo_config)
     algo_trainer = algo_trainer_obj(algo_init, algo_config)
 
-    callback = OnlineCallBackFunction()
-    callback.initialize(
-        train_buffer=train_buffer, val_buffer=None, task=algo_config["task"]
-    )
     callback_list = CallBackFunctionList(
-        [callback, recs_eval_fn(task=algo_config["task"])]
+        [recs_eval_fn(task=algo_config["task"])]
     )
 
     score = algo_trainer.train(train_buffer, None, callback_fn=callback_list)

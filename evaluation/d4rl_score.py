@@ -1,7 +1,7 @@
 from copy import deepcopy
+from collections import OrderedDict
 
 import numpy as np
-from collections import OrderedDict
 from d4rl.infos import REF_MIN_SCORE, REF_MAX_SCORE
 
 from offlinerl.utils.env import get_env
@@ -35,28 +35,30 @@ def d4rl_score(task, rew_mean, len_mean):
     return score
 
 
+def run_episode(args):
+    env, policy, _ = args
+    state, done = env.reset(), False
+    rewards = 0
+    lengths = 0
+    while not done:
+        state = state[np.newaxis]
+        action = policy.get_action(state)
+        state, reward, done, _ = env.step(action)
+        rewards += reward
+        lengths += 1
+    return rewards, lengths
+
+
 def d4rl_eval_fn(task, eval_episodes=100):
     env = get_env(task)
 
     def d4rl_eval(policy):
-        episode_rewards = []
-        episode_lengths = []
-        for _ in range(eval_episodes):
-            state, done = env.reset(), False
-            rewards = 0
-            lengths = 0
-            while not done:
-                state = state[np.newaxis]
-                action = policy.get_action(state)
-                state, reward, done, _ = env.step(action)
-                rewards += reward
-                lengths += 1
+        results = []
+        for i in range(eval_episodes):
+            results.append(run_episode((env, policy, i)))
 
-            episode_rewards.append(rewards)
-            episode_lengths.append(lengths)
-
-        rew_mean = np.mean(episode_rewards)
-        len_mean = np.mean(episode_lengths)
+        rew_mean = np.mean(list(map(lambda x: x[0], results)))
+        len_mean = np.mean(list(map(lambda x: x[1], results)))
 
         score = d4rl_score(task, rew_mean, len_mean)
 

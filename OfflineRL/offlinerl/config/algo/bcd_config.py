@@ -14,11 +14,12 @@ max_action = None
 actor_features = 256
 actor_layers = 2
 
-batch_size = 64 
+batch_size = 64
 steps_per_epoch = 1000
-max_epoch = 500
+max_epoch = 1000
+eval_epoch = 10
 
-actor_lr = 1e-3
+actor_lr = 1e-4
 
 # tune
 params_tune = {

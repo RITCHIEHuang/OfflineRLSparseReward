@@ -6,7 +6,7 @@ from loguru import logger
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.net.discrete import QuantileQNet, QuantileQPolicyWrapper
+from offlinerl.utils.net.discrete import MultiQNet
 
 
 def algo_init(args):
@@ -24,14 +24,15 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    q = QuantileQNet(
+    q = MultiQNet(
         obs_shape,
         action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        n_quantile=args["num_quantiles"],
+        num_networks=args["num_networks"],
+        num_convexs=args["num_convexs"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 

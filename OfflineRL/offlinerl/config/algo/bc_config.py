@@ -17,6 +17,7 @@ actor_layers = 2
 batch_size = 256
 steps_per_epoch = 1000
 max_epoch = 300
+eval_epoch = 10
 
 actor_lr = 1e-3
 

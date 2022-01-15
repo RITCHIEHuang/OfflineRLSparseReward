@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from copy import deepcopy
 from loguru import logger
+import numpy as np
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.net.discrete import CategoricalActor
@@ -59,6 +60,7 @@ class AlgoTrainer(BaseAlgo):
             )
 
         for epoch in range(self.args["max_epoch"]):
+            metrics = {"epoch": epoch}
             for i in range(self.args["steps_per_epoch"]):
                 batch_data = train_buffer.sample(self.batch_size)
                 batch_data.to_torch(device=self.device)
@@ -73,7 +75,7 @@ class AlgoTrainer(BaseAlgo):
                 self.actor_optim.step()
 
             with torch.no_grad():
-                val_loss = 0
+                val_losses = []
                 for i in range(
                     len(val_buffer) // self.batch_size
                     + (len(val_buffer) % self.batch_size > 0)
@@ -87,19 +89,24 @@ class AlgoTrainer(BaseAlgo):
 
                     action_dist = self.actor(obs)
 
-                    val_loss += self.loss_fn(
+                    val_loss = self.loss_fn(
                         action_dist.probs, action.long()
                     ).item()
+                    val_losses.append(val_loss)
+                val_loss = np.mean(val_losses)
 
             if val_loss < self.best_loss:
                 self.best_loss = val_loss
                 self.best_actor.load_state_dict(self.actor.state_dict())
 
-            res = callback_fn(self.get_policy())
-            res["epoch"] = epoch
-            res["loss"] = val_loss
+            metrics["train_loss"] = loss.item()
+            metrics["eval_loss"] = val_loss
 
-            self.log_res(epoch, res)
+            if epoch == 0 or (epoch + 1) % self.args["eval_epoch"] == 0:
+                res = callback_fn(self.get_policy())
+                metrics.update(res)
+
+            self.log_res(epoch, metrics)
 
         return self.get_policy()
 
