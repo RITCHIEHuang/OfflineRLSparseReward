@@ -122,15 +122,6 @@ class AlgoTrainer(BaseAlgo):
 
         critic_loss = (torch.abs(self.tau - delta) * huber_loss).sum(1).mean()
 
-        # print("next_q", next_q.shape)
-        # print("next_a", next_action.shape)
-        # print("next_quantiles", next_quantiles.shape)
-        # print("y", y.shape)
-        # print("cur_quantiles", cur_quantiles.shape)
-        # print("tau", self.tau.shape)
-        # print("delta", delta.shape)
-        # print("huberloss", huber_loss.shape)
-
         self.critic_optim.zero_grad()
         critic_loss.backward()
         torch.nn.utils.clip_grad.clip_grad_norm_(

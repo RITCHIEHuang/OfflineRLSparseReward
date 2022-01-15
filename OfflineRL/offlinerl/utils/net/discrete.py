@@ -59,7 +59,7 @@ class CategoricalActor(nn.Module, DiscretePolicy):
         return Categorical(probs)
 
 
-class QuantileQNet(nn.Module):
+class MultiHeadQNet(nn.Module):
     def __init__(
         self,
         obs_dim: int,
@@ -69,14 +69,19 @@ class QuantileQNet(nn.Module):
         norm: str = None,
         hidden_activation: str = "leakyrelu",
         output_activation: str = "identity",
-        n_quantile: int = 20,
+        n_head: int = 20,
+        n_convex: int = 1,
+        combine_type: str = "identity",
     ):
         super().__init__()
-        self.n = n_quantile
+        self.n_head = n_head
+        self.n_convex = n_convex
+        self.combine_type = combine_type
+
         self.action_dim = action_dim
         self.q_backbone = MLP(
             obs_dim,
-            n_quantile * action_dim,
+            n_head * action_dim,
             hidden_size,
             hidden_layers,
             norm,
@@ -105,7 +110,7 @@ class MultiQNet(nn.Module):
         hidden_activation: str = "leakyrelu",
         output_activation: str = "identity",
         num_networks: int = 10,
-        num_convexs: int = 10,
+        num_convexs: int = 1,
     ):
         super().__init__()
         self.num_networks = num_networks

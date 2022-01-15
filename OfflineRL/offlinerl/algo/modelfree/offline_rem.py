@@ -6,7 +6,7 @@ from loguru import logger
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.net.discrete import MultiQNet
+from offlinerl.utils.net.discrete import MultiQNet, MultiQPolicyWrapper
 
 
 def algo_init(args):
@@ -47,16 +47,13 @@ class AlgoTrainer(BaseAlgo):
         self.args = args
 
         self.q = algo_init["critic"]["net"]
-        self.actor = QuantileQPolicyWrapper(self.q)
+        self.actor = MultiQPolicyWrapper(self.q)
         self.target_q = deepcopy(self.q)
         self.critic_optim = algo_init["critic"]["opt"]
 
         self.total_train_steps = 0
         self.loss_fn = nn.SmoothL1Loss(reduction="none")
         self.device = args["device"]
-
-        tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
-        self.tau = ((tau[:-1] + tau[1:]) / 2).view(1, -1, 1).to(self.device)
 
     def train(self, train_buffer, val_buffer, callback_fn):
         for epoch in range(self.args["max_epoch"]):
@@ -75,14 +72,13 @@ class AlgoTrainer(BaseAlgo):
     def get_policy(self):
         return self.actor
 
-    def _calc_quantiles(self, network, obs, actions):
+    def _calc_q(self, network, obs, actions):
         # update critic
-        cur_quantiles = network(obs)
-        batch_size, N, _ = cur_quantiles.shape
+        cur_convex = network.q_convex(obs)  # [batch, convex, action]
         action_idx = actions.unsqueeze(-1).expand(
-            -1, self.args["num_quantiles"], -1
+            -1, self.args["num_convexs"], -1
         )
-        _q = cur_quantiles.gather(-1, action_idx.long())
+        _q = cur_convex.gather(-1, action_idx.long())
         return _q
 
     def _train(self, batch):
@@ -93,44 +89,29 @@ class AlgoTrainer(BaseAlgo):
         action = batch["act"]
         next_obs = batch["obs_next"]
         reward = (
-            batch["rew"]
-            .view(-1, 1, 1)
-            .repeat(1, self.args["num_quantiles"], 1)
+            batch["rew"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
         )
         done = (
-            batch["done"]
-            .view(-1, 1, 1)
-            .repeat(1, self.args["num_quantiles"], 1)
+            batch["done"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
         )
 
         # update critic
-        # [batch, N, 1]
-        cur_quantiles = self._calc_quantiles(self.q, obs, action)
+        # [batch, convex, 1]
+        cur_q_values = self._calc_q(self.q, obs, action)
 
         with torch.no_grad():
-            next_q = self.target_q.q_value(next_obs)
+            next_q = self.target_q.q_convex(next_obs)
             next_action = torch.argmax(next_q, dim=-1, keepdim=True)
-            next_quantiles = self._calc_quantiles(
-                self.target_q, next_obs, next_action
-            )
-            y = reward + self.args["discount"] * (1 - done) * next_quantiles
+            next_q_values = self._calc_q(self.target_q, next_obs, next_action)
+            y = reward + self.args["discount"] * (1 - done) * next_q_values
 
-        huber_loss = self.loss_fn(y, cur_quantiles)
+        critic_loss = self.loss_fn(y, cur_q_values).sum(1).mean()
 
-        with torch.no_grad():
-            diff = y - cur_quantiles
-            delta = (diff < 0).float()
-
-        critic_loss = (torch.abs(self.tau - delta) * huber_loss).sum(1).mean()
-
-        # print("next_q", next_q.shape)
-        # print("next_a", next_action.shape)
-        # print("next_quantiles", next_quantiles.shape)
-        # print("y", y.shape)
-        # print("cur_quantiles", cur_quantiles.shape)
-        # print("tau", self.tau.shape)
-        # print("delta", delta.shape)
-        # print("huberloss", huber_loss.shape)
+        print("next_q", next_q.shape)
+        print("next_a", next_action.shape)
+        print("next_quantiles", next_q_values.shape)
+        print("y", y.shape)
+        print("cur_quantiles", cur_q_values.shape)
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
@@ -152,8 +133,6 @@ class AlgoTrainer(BaseAlgo):
         # DEBUGGING INFORMATION
         metrics = {}
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
-        metrics["mean_huber_loss"] = torch.mean(huber_loss).item()
-        metrics["mean_q_quantile"] = torch.mean(cur_quantiles).item()
-        metrics["mean_next_q_quantile"] = torch.mean(next_quantiles).item()
-        # metrics["exploration_rate"] = self.exploration_rate
+        metrics["mean_q_value"] = torch.mean(cur_q_values).item()
+        metrics["mean_next_q_value"] = torch.mean(next_q_values).item()
         return metrics
