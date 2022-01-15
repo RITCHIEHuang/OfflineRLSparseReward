@@ -7,7 +7,7 @@ from loguru import logger
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.net.discrete import MultiQNet, MultiQPolicyWrapper
+from offlinerl.utils.net.discrete import MultiHeadQNet, MultiHeadQPolicyWrapper
 from offlinerl.utils.data import (
     Batch,
     LoggedReplayBuffer,
@@ -32,15 +32,14 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    q = MultiQNet(
+    q = MultiHeadQNet(
         obs_shape,
         action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        num_networks=args["num_networks"],
-        num_convexs=args["num_convexs"],
+        n_head=args["num_heads"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -65,7 +64,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.env = algo_init["env"]
         self.q = algo_init["critic"]["net"]
-        self.actor = MultiQPolicyWrapper(self.q)
+        self.actor = MultiHeadQPolicyWrapper(self.q)
         self.target_q = deepcopy(self.q)
         self.critic_optim = algo_init["critic"]["opt"]
         self.exploration_schedule = algo_init["exploration_schedule"]
@@ -163,10 +162,8 @@ class AlgoTrainer(BaseAlgo):
 
     def _calc_q(self, network, obs, actions):
         # update critic
-        cur_convex = network.q_convex(obs)  # [batch, convex, action]
-        action_idx = actions.unsqueeze(-1).expand(
-            -1, self.args["num_convexs"], -1
-        )
+        cur_convex = network.q_convex(obs)  # [batch, 1, action]
+        action_idx = actions.unsqueeze(-1).expand(-1, 1, -1)
         _q = cur_convex.gather(-1, action_idx.long())
         return _q
 
@@ -174,20 +171,16 @@ class AlgoTrainer(BaseAlgo):
         obs = batch["obs"]
         action = batch["act"]
         next_obs = batch["obs_next"]
-        reward = (
-            batch["rew"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
-        )
-        done = (
-            batch["done"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
-        )
+        reward = batch["rew"].view(-1, 1, 1)
+        done = batch["done"].view(-1, 1, 1)
 
         # update critic
-        # [batch, convex, 1]
+        # [batch, 1, 1]
         cur_q_values = self._calc_q(self.q, obs, action)
 
         with torch.no_grad():
             next_q = self.target_q.q_convex(next_obs)
-            next_action = torch.argmax(next_q, dim=-1, keepdim=True)
+            next_action = torch.argmax(next_q, dim=-1)  # [batch, 1]
             next_q_values = self._calc_q(self.target_q, next_obs, next_action)
             y = reward + self.args["discount"] * (1 - done) * next_q_values
 

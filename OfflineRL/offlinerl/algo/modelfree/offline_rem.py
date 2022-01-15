@@ -6,7 +6,7 @@ from loguru import logger
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.net.discrete import MultiQNet, MultiQPolicyWrapper
+from offlinerl.utils.net.discrete import MultiHeadQNet, MultiHeadQPolicyWrapper
 
 
 def algo_init(args):
@@ -24,15 +24,14 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    q = MultiQNet(
+    q = MultiHeadQNet(
         obs_shape,
         action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        num_networks=args["num_networks"],
-        num_convexs=args["num_convexs"],
+        n_head=args["num_networks"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -47,7 +46,7 @@ class AlgoTrainer(BaseAlgo):
         self.args = args
 
         self.q = algo_init["critic"]["net"]
-        self.actor = MultiQPolicyWrapper(self.q)
+        self.actor = MultiHeadQPolicyWrapper(self.q)
         self.target_q = deepcopy(self.q)
         self.critic_optim = algo_init["critic"]["opt"]
 

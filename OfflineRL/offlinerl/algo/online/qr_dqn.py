@@ -13,7 +13,7 @@ from offlinerl.utils.data import (
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.env import get_env
-from offlinerl.utils.net.discrete import QuantileQPolicyWrapper, QuantileQNet
+from offlinerl.utils.net.discrete import MultiHeadQNet, MultiHeadQPolicyWrapper
 from offlinerl.utils.function import get_linear_fn
 
 
@@ -32,14 +32,14 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    q = QuantileQNet(
+    q = MultiHeadQNet(
         obs_shape,
         action_shape,
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        n_quantile=args["num_quantiles"],
+        n_head=args["num_heads"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -65,7 +65,7 @@ class AlgoTrainer(BaseAlgo):
         self.env = algo_init["env"]
         self.q = algo_init["critic"]["net"]
         self.target_q = deepcopy(self.q)
-        self.actor = QuantileQPolicyWrapper(self.q)
+        self.actor = MultiHeadQPolicyWrapper(self.q)
         self.critic_optim = algo_init["critic"]["opt"]
         self.exploration_schedule = algo_init["exploration_schedule"]
 

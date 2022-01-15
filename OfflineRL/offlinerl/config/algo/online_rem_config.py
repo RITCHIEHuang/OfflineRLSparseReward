@@ -11,8 +11,7 @@ max_action = None
 
 hidden_layer_size = 256
 hidden_layers = 2
-num_convexs = 1
-num_networks = 10
+num_heads = 20
 
 log_data_path = f"{proj_path}/rec_env/data"
 buffer_type = "avg_traj"  # log_transition

@@ -59,6 +59,35 @@ class CategoricalActor(nn.Module, DiscretePolicy):
         return Categorical(probs)
 
 
+def combine_function(raw_outputs, combine_type):
+    # raw_outputs [batch, N, action]
+    N = raw_outputs.shape[1]
+    if combine_type == "identity":
+        return raw_outputs
+    elif combine_type == "random":
+        # REM random convex combination
+        stochastic_matrix = torch.rand((N, 1))
+        stochastic_matrix /= torch.norm(
+            stochastic_matrix, p=1, dim=0, keepdim=True
+        )  # [K, convex]
+        q_convex = torch.einsum(
+            "bka,kc->bca", raw_outputs, stochastic_matrix
+        )  # [batch, 1, action]
+
+        return q_convex
+    elif combine_type == "mean":
+        # [batch, action]
+        return torch.mean(raw_outputs, dim=1)
+    elif combine_type == "min":
+        # [batch, action]
+        return torch.min(raw_outputs, dim=1)
+    elif combine_type == "max":
+        # [batch, action]
+        return torch.max(raw_outputs, dim=1)
+    else:
+        raise NotImplementedError()
+
+
 class MultiHeadQNet(nn.Module):
     def __init__(
         self,
@@ -70,12 +99,10 @@ class MultiHeadQNet(nn.Module):
         hidden_activation: str = "leakyrelu",
         output_activation: str = "identity",
         n_head: int = 20,
-        n_convex: int = 1,
-        combine_type: str = "identity",
+        combine_type: str = "identity",  # ["identity", "random", "min", "mean", "max"]
     ):
         super().__init__()
         self.n_head = n_head
-        self.n_convex = n_convex
         self.combine_type = combine_type
 
         self.action_dim = action_dim
@@ -93,10 +120,13 @@ class MultiHeadQNet(nn.Module):
         out = self.q_backbone(obs).view(-1, self.n, self.action_dim)
         return out
 
+    def q_convex(self, obs):
+        unorder_outs = self(obs)
+        return combine_function(unorder_outs, "random")
+
     def q_value(self, obs):
-        quantile = self(obs)
-        q = quantile.mean(dim=1)
-        return q
+        unorder_outs = self(obs)
+        return combine_function(unorder_outs, "mean")
 
 
 class MultiQNet(nn.Module):
@@ -110,12 +140,13 @@ class MultiQNet(nn.Module):
         hidden_activation: str = "leakyrelu",
         output_activation: str = "identity",
         num_networks: int = 10,
-        num_convexs: int = 1,
+        combine_type: str = "random",  # ["identity", "random", "min", "mean", "max"]
     ):
         super().__init__()
         self.num_networks = num_networks
-        self.num_convexs = num_convexs
         self.action_dim = action_dim
+        self.combine_type = combine_type
+
         self.qnets = [
             MLP(
                 obs_dim,
@@ -136,19 +167,11 @@ class MultiQNet(nn.Module):
 
     def q_convex(self, obs):
         unorder_outs = self(obs)
-        stochastic_matrix = torch.rand((self.num_networks, self.num_convexs))
-        stochastic_matrix /= torch.norm(
-            stochastic_matrix, p=1, dim=0, keepdim=True
-        )  # [K, convex]
-        q_convex = torch.einsum(
-            "bka,kc->bca", unorder_outs, stochastic_matrix
-        )  # [batch, convex, action]
-        return q_convex
+        return combine_function(unorder_outs, "random")
 
     def q_value(self, obs):
         unorder_outs = self(obs)
-        q_values = torch.mean(unorder_outs, dim=1)  # [batch, action]
-        return q_values
+        return combine_function(unorder_outs, "mean")
 
 
 class QPolicyWrapper(nn.Module, DiscretePolicy):
@@ -165,7 +188,7 @@ class QPolicyWrapper(nn.Module, DiscretePolicy):
         return self.policy_infer(obs)
 
 
-class QuantileQPolicyWrapper(nn.Module, DiscretePolicy):
+class MultiHeadQPolicyWrapper(nn.Module, DiscretePolicy):
     def __init__(self, q_net):
         super().__init__()
         self.q_net = q_net
@@ -179,7 +202,7 @@ class QuantileQPolicyWrapper(nn.Module, DiscretePolicy):
         return self.policy_infer(obs)
 
 
-class MultiQPolicyWrapper(nn.Module, DiscretePolicy):
+class MultiNetQPolicyWrapper(nn.Module, DiscretePolicy):
     def __init__(self, q_net):
         super().__init__()
         self.q_net = q_net
