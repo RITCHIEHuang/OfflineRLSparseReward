@@ -187,12 +187,6 @@ class AlgoTrainer(BaseAlgo):
 
         critic_loss = self.loss_fn(y, cur_q_values).mean()
 
-        # print("next_q", next_q.shape)
-        # print("next_a", next_action.shape)
-        # print("next_quantiles", next_q_values.shape)
-        # print("y", y.shape)
-        # print("cur_quantiles", cur_q_values.shape)
-
         self.critic_optim.zero_grad()
         critic_loss.backward()
         torch.nn.utils.clip_grad.clip_grad_norm_(
@@ -208,7 +202,7 @@ class AlgoTrainer(BaseAlgo):
                 soft_target_tau=self.args["soft_target_tau"],
             )
         self.exploration_rate = self.exploration_schedule(
-            1.0 - 1.0 * self.train_epoch / self.args["max_epoch"]
+            np.clip(1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0)
         )
         self.actor.q_net = self.q
 

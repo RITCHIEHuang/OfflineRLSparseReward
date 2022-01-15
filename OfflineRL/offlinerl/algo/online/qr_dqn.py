@@ -208,15 +208,6 @@ class AlgoTrainer(BaseAlgo):
 
         critic_loss = (torch.abs(self.tau - delta) * huber_loss).sum(1).mean()
 
-        # print("next_q", next_q.shape)
-        # print("next_a", next_action.shape)
-        # print("next_quantiles", next_quantiles.shape)
-        # print("y", y.shape)
-        # print("cur_quantiles", cur_quantiles.shape)
-        # print("tau", self.tau.shape)
-        # print("delta", delta.shape)
-        # print("huberloss", huber_loss.shape)
-
         self.critic_optim.zero_grad()
         critic_loss.backward()
         torch.nn.utils.clip_grad.clip_grad_norm_(
@@ -233,7 +224,7 @@ class AlgoTrainer(BaseAlgo):
             )
 
         self.exploration_rate = self.exploration_schedule(
-            1.0 - 1.0 * self.train_epoch / self.args["max_epoch"]
+            np.clip(1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0)
         )
         self.actor.q_net = self.q
 

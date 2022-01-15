@@ -64,16 +64,57 @@ def run_episode(args):
 
 def recs_eval_fn(task, eval_episodes=100):
     env = get_env(task)
-    results = []
+
+    # results = []
+    # def recs_eval(policy):
+    #     for i in range(eval_episodes):
+    #         results.append(run_episode((env, policy, i)))
+
+    #     rew_mean = np.mean(list(map(lambda x: x[0], results)))
+    #     len_mean = np.mean(list(map(lambda x: x[1], results)))
+    #     retention_mean = np.mean(list(map(lambda x: x[2], results)))
+    #     click_mean = np.mean(list(map(lambda x: x[3], results)))
+
+    #     score = d4rl_score(task, rew_mean, len_mean)
+
+    #     res = OrderedDict()
+    #     res["Reward_Mean"] = rew_mean
+    #     res["Retention_Mean"] = retention_mean
+    #     res["Click_Mean"] = click_mean
+    #     res["Length_Mean"] = len_mean
+    #     res["D4rl_Score"] = score
+
+    #     return res
 
     def recs_eval(policy):
-        for i in range(eval_episodes):
-            results.append(run_episode((env, policy, i)))
+        episode_rewards = []
+        episode_retentions = []
+        episode_clicks = []
+        episode_lengths = []
+        for _ in range(eval_episodes):
+            state, done = env.reset(), False
+            rewards = 0
+            retentions = 0
+            clicks = 0
+            lengths = 0
+            while not done:
+                state = state[np.newaxis]
+                action = policy.get_action(state)
+                state, reward, done, info = env.step(action)
+                rewards += reward
+                retentions += info["reward"]["retention"]
+                clicks += info["reward"]["click"]
+                lengths += 1
 
-        rew_mean = np.mean(list(map(lambda x: x[0], results)))
-        len_mean = np.mean(list(map(lambda x: x[1], results)))
-        retention_mean = np.mean(list(map(lambda x: x[2], results)))
-        click_mean = np.mean(list(map(lambda x: x[3], results)))
+            episode_rewards.append(rewards)
+            episode_retentions.append(retentions)
+            episode_clicks.append(clicks)
+            episode_lengths.append(lengths)
+
+        rew_mean = np.mean(episode_rewards)
+        retention_mean = np.mean(episode_retentions)
+        click_mean = np.mean(episode_clicks)
+        len_mean = np.mean(episode_lengths)
 
         score = d4rl_score(task, rew_mean, len_mean)
 

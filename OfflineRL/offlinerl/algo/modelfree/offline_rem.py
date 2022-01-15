@@ -98,7 +98,7 @@ class AlgoTrainer(BaseAlgo):
             next_q_values = self._calc_q(self.target_q, next_obs, next_action)
             y = reward + self.args["discount"] * (1 - done) * next_q_values
 
-        critic_loss = self.loss_fn(y, cur_q_values).sum(1).mean()
+        critic_loss = self.loss_fn(y, cur_q_values).mean()
 
         self.critic_optim.zero_grad()
         critic_loss.backward()

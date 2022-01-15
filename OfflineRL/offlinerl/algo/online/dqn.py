@@ -202,7 +202,7 @@ class AlgoTrainer(BaseAlgo):
             )
 
         self.exploration_rate = self.exploration_schedule(
-            1.0 - 1.0 * self.train_epoch / self.args["max_epoch"]
+            np.clip(1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0)
         )
         self.actor.q_net = self.q
 
