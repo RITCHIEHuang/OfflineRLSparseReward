@@ -49,7 +49,6 @@ from offlinerl.algo.modelfree import (
     offline_qr_dqn,
     bcd,
     offline_rem,
-    rem,
 )
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver

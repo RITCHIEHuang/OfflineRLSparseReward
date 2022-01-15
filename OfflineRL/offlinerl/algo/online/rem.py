@@ -71,6 +71,7 @@ class AlgoTrainer(BaseAlgo):
 
         self.exploration_rate = self.exploration_schedule(1.0)
 
+        self.train_epoch = 0
         self.total_train_steps = 0
         self.loss_fn = nn.SmoothL1Loss(reduction="none")
         self.device = args["device"]
@@ -184,13 +185,13 @@ class AlgoTrainer(BaseAlgo):
             next_q_values = self._calc_q(self.target_q, next_obs, next_action)
             y = reward + self.args["discount"] * (1 - done) * next_q_values
 
-        critic_loss = self.loss_fn(y, cur_q_values).sum(1).mean()
+        critic_loss = self.loss_fn(y, cur_q_values).mean()
 
-        print("next_q", next_q.shape)
-        print("next_a", next_action.shape)
-        print("next_quantiles", next_q_values.shape)
-        print("y", y.shape)
-        print("cur_quantiles", cur_q_values.shape)
+        # print("next_q", next_q.shape)
+        # print("next_a", next_action.shape)
+        # print("next_quantiles", next_q_values.shape)
+        # print("y", y.shape)
+        # print("cur_quantiles", cur_q_values.shape)
 
         self.critic_optim.zero_grad()
         critic_loss.backward()

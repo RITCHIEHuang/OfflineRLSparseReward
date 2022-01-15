@@ -66,7 +66,7 @@ def combine_function(raw_outputs, combine_type):
         return raw_outputs
     elif combine_type == "random":
         # REM random convex combination
-        stochastic_matrix = torch.rand((N, 1))
+        stochastic_matrix = torch.rand((N, 1), device=raw_outputs.device)
         stochastic_matrix /= torch.norm(
             stochastic_matrix, p=1, dim=0, keepdim=True
         )  # [K, convex]
@@ -117,7 +117,7 @@ class MultiHeadQNet(nn.Module):
         )
 
     def forward(self, obs):
-        out = self.q_backbone(obs).view(-1, self.n, self.action_dim)
+        out = self.q_backbone(obs).view(-1, self.n_head, self.action_dim)
         return out
 
     def q_convex(self, obs):

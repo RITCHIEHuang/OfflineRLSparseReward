@@ -31,7 +31,7 @@ def algo_init(args):
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        n_head=args["num_networks"],
+        n_head=args["num_heads"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -74,9 +74,7 @@ class AlgoTrainer(BaseAlgo):
     def _calc_q(self, network, obs, actions):
         # update critic
         cur_convex = network.q_convex(obs)  # [batch, convex, action]
-        action_idx = actions.unsqueeze(-1).expand(
-            -1, self.args["num_convexs"], -1
-        )
+        action_idx = actions.unsqueeze(-1).expand(-1, 1, -1)
         _q = cur_convex.gather(-1, action_idx.long())
         return _q
 
@@ -87,30 +85,20 @@ class AlgoTrainer(BaseAlgo):
         obs = batch["obs"]
         action = batch["act"]
         next_obs = batch["obs_next"]
-        reward = (
-            batch["rew"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
-        )
-        done = (
-            batch["done"].view(-1, 1, 1).repeat(1, self.args["num_convexs"], 1)
-        )
+        reward = batch["rew"].view(-1, 1, 1)
+        done = batch["done"].view(-1, 1, 1)
 
         # update critic
-        # [batch, convex, 1]
+        # [batch, 1, 1]
         cur_q_values = self._calc_q(self.q, obs, action)
 
         with torch.no_grad():
             next_q = self.target_q.q_convex(next_obs)
-            next_action = torch.argmax(next_q, dim=-1, keepdim=True)
+            next_action = torch.argmax(next_q, dim=-1)
             next_q_values = self._calc_q(self.target_q, next_obs, next_action)
             y = reward + self.args["discount"] * (1 - done) * next_q_values
 
         critic_loss = self.loss_fn(y, cur_q_values).sum(1).mean()
-
-        print("next_q", next_q.shape)
-        print("next_a", next_action.shape)
-        print("next_quantiles", next_q_values.shape)
-        print("y", y.shape)
-        print("cur_quantiles", cur_q_values.shape)
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
