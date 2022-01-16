@@ -79,7 +79,7 @@ class AlgoTrainer(BaseAlgo):
         if self.args["buffer_type"] == "log_transition":
             self.replay_buffer = LoggedReplayBuffer(
                 self.args["buffer_size"],
-                log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
+                log_path=f'{self.args["log_data_path"]}/REM/{self.env.spec.id}',
             )
         elif self.args["buffer_type"] == "avg_traj":
             self.replay_buffer = TrajAveragedReplayBuffer(
