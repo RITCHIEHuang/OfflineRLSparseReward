@@ -23,7 +23,7 @@ max_epoch = 10000
 eval_epoch = 10
 use_noisy_linear = False
 
-lr = 2e-4
+lr = 1e-4
 exploration_init_eps = 0.2
 exploration_final_eps = 0.02
 target_update_interval = 2000

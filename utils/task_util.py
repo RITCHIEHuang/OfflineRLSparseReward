@@ -31,7 +31,7 @@ neorl_task_list = {
     8: "Walker2d-v3-low-1000",
 }
 
-rec_task_list = {0: "recs-random-v0", 1: "recs-replay-v0", 2: "recs-v0"}
+rec_task_list = {0: "recs-random-large-v0", 1: "recs-replay-v0", 2: "recs-v0"}
 
 
 def get_domain_by_task(task: str):

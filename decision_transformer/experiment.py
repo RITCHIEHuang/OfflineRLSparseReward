@@ -91,6 +91,13 @@ def experiment(
             max_ep_len = 1000
             env_targets = [5000, 2500]
             scale = 1000.0
+    elif env_name in ["recs-random-v0"]:
+        import rec_env
+
+        env = gym.make(env_name)
+        max_ep_len = 4000
+        env_targets = [4.0, 9.0]
+        scale = 1.0
     else:
         raise NotImplementedError
 

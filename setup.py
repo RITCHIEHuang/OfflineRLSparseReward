@@ -31,5 +31,7 @@ setup(
         "stable-baselines3",
         "numba",
         "ray[tune]",
+        # gdown
+        "gdown",
     ],
 )

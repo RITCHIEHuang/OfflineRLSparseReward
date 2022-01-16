@@ -1,7 +1,30 @@
+import os
+
 import numpy as np
 import gym
+import gdown
 
 from rec_env.env import get_recs_env
+from utils.io_util import proj_path
+
+
+def set_dataset_path(path):
+    global DATASET_PATH
+    DATASET_PATH = path
+    os.makedirs(path, exist_ok=True)
+
+
+set_dataset_path(f"{proj_path}/.recs/datasets")
+
+
+def download_dataset_from_url(dataset_name, dataset_url):
+    filepath = f"{proj_path}/.recs/datasets/{dataset_name}"
+    if not os.path.exists(filepath):
+        print("Downloading dataset:", dataset_url, "to", filepath)
+        gdown.download(dataset_url, quiet=False)
+    if not os.path.exists(filepath):
+        raise IOError("Failed to download dataset from %s" % dataset_url)
+    return filepath
 
 
 class OfflineEnv(gym.Env):
@@ -14,13 +37,15 @@ class OfflineEnv(gym.Env):
 
     def __init__(
         self,
+        dataset_name=None,
         dataset_path=None,
         ref_max_score=None,
         ref_min_score=None,
         reward_key="reward",
-        **kwargs
+        **kwargs,
     ):
         # super(OfflineEnv, self).__init__(**kwargs)
+        self.dataset_name = dataset_name
         self.dataset_path = self._dataset_path = dataset_path
         self.ref_max_score = ref_max_score
         self.ref_min_score = ref_min_score
@@ -38,9 +63,20 @@ class OfflineEnv(gym.Env):
         return self.dataset_path
 
     def get_dataset(self, npz_path=None):
-        if npz_path is None and self._dataset_path is None:
-            raise ValueError("Offline env not configured with a dataset path.")
-        npz_path = self._dataset_path
+        if npz_path is None:
+            if self._dataset_path is None:
+                raise ValueError(
+                    "Offline env not configured with a dataset path."
+                )
+            if not self._dataset_path.startswith("http") and os.path.exists(
+                self._dataset_path
+            ):
+                print("Loading dataset from local path", self._dataset_path)
+                npz_path = self._dataset_path
+            else:
+                npz_path = download_dataset_from_url(
+                    self.dataset_name, self._dataset_path
+                )
 
         data_dict = np.load(npz_path)
         data_dict = {k: data_dict[k] for k in list(data_dict.keys())}

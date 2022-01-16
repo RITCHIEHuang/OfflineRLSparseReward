@@ -5,48 +5,36 @@ import numpy as np
 import collections
 import pickle
 
-import neorl
-
+import rec_env
 
 datasets = []
 
-for env_name in ["HalfCheetah-v3", "Hopper-v3", "Walker2d-v3"]:
-    for dataset_type in ["low"]:
-        for dataset_num in [10, 100]:
-            name = f"{env_name}-{dataset_type}-{dataset_num}"
+for env_name in ["recs"]:
+    for dataset_type in ["random"]:
+        for dataset_size in ["large"]:
+            name = f"{env_name}-{dataset_type}-{dataset_size}-v0"
             if os.path.exists(f"{name}.pkl"):
                 print("Dataset exists!!!")
                 continue
-            env = neorl.make(name)
-            dataset, _ = env.get_dataset(
-                data_type=dataset_type, train_num=dataset_num, need_val=False
-            )
+            env = gym.make(name)
+            dataset = env.get_dataset()
 
-            N = dataset["reward"].shape[0]
+            N = dataset["rewards"].shape[0]
             data_ = collections.defaultdict(list)
 
             episode_step = 0
             paths = []
             for i in range(N):
-                done_bool = bool(dataset["done"][i])
+                done_bool = bool(dataset["terminals"][i])
 
-                for k, map_k in zip(
-                    [
-                        "obs",
-                        "next_obs",
-                        "action",
-                        "reward",
-                        "done",
-                    ],
-                    [
-                        "observations",
-                        "next_observations",
-                        "actions",
-                        "rewards",
-                        "terminals",
-                    ],
-                ):
-                    data_[map_k].append(dataset[k][i])
+                for k in [
+                    "observations",
+                    "next_observations",
+                    "actions",
+                    "rewards",
+                    "terminals",
+                ]:
+                    data_[k].append(dataset[k][i])
                 if done_bool:
                     episode_step = 0
                     episode_data = {}
