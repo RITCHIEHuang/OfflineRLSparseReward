@@ -39,7 +39,7 @@ def algo_init(args):
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        n_head=args["num_heads"],
+        n_head=args["num_quantiles"],
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -78,7 +78,7 @@ class AlgoTrainer(BaseAlgo):
         tau = torch.linspace(0, 1, self.args["num_quantiles"] + 1)
         self.tau = ((tau[:-1] + tau[1:]) / 2).view(1, -1, 1).to(self.device)
 
-        if self.args["buffer_type"] == "log_transition":
+        if self.args["buffer_type"] in ["log_transition", "log_traj"]:
             self.replay_buffer = LoggedReplayBuffer(
                 self.args["buffer_size"],
                 log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
@@ -129,7 +129,7 @@ class AlgoTrainer(BaseAlgo):
                         "retention": [info["reward"]["retention"]],
                     }
                 )
-                if isinstance(self.replay_buffer, LoggedReplayBuffer):
+                if "transition" in self.args["buffer_type"]:
                     self.replay_buffer.put(batch_data)
                 else:
                     if traj_batch is None:
@@ -142,14 +142,15 @@ class AlgoTrainer(BaseAlgo):
                 obs = new_obs
 
                 self.total_train_steps += 1
-                if self.total_train_steps >= self.args["warmup_size"]:
+
+                if self.total_train_steps >= self.args["warmup_size"] and self.total_train_steps % self.args["train_freq"] == 0:
                     batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     dqn_metrics = self._qr_dqn_update(batch)
                     metrics.update(dqn_metrics)
 
-            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
+            if "traj" in self.args["buffer_type"]:
                 self.replay_buffer.put(traj_batch)
 
             if (

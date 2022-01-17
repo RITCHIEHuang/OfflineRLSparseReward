@@ -6,14 +6,14 @@ import d4rl
 import numpy as np
 from loguru import logger
 
-from offlinerl.utils.data import SampleBatch
+from offlinerl.utils.data import Batch
 
 
 def load_d4rl_buffer(task):
     task = task[5:]
     env = gym.make(task)
     dataset = d4rl.qlearning_dataset(env)
-    buffer = SampleBatch(
+    buffer = Batch(
         obs=dataset["observations"],
         obs_next=dataset["next_observations"],
         act=dataset["actions"],

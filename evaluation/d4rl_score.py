@@ -52,13 +52,42 @@ def run_episode(args):
 def d4rl_eval_fn(task, eval_episodes=100):
     env = get_env(task)
 
-    def d4rl_eval(policy):
-        results = []
-        for i in range(eval_episodes):
-            results.append(run_episode((env, policy, i)))
+    # def d4rl_eval(policy):
+    #     results = []
+    #     for i in range(eval_episodes):
+    #         results.append(run_episode((env, policy, i)))
 
-        rew_mean = np.mean(list(map(lambda x: x[0], results)))
-        len_mean = np.mean(list(map(lambda x: x[1], results)))
+    #     rew_mean = np.mean(list(map(lambda x: x[0], results)))
+    #     len_mean = np.mean(list(map(lambda x: x[1], results)))
+
+    #     score = d4rl_score(task, rew_mean, len_mean)
+
+    #     res = OrderedDict()
+    #     res["Reward_Mean"] = rew_mean
+    #     res["Length_Mean"] = len_mean
+    #     res["D4rl_Score"] = score
+
+    #     return res
+
+    def d4rl_eval(policy):
+        episode_rewards = []
+        episode_lengths = []
+        for _ in range(eval_episodes):
+            state, done = env.reset(), False
+            rewards = 0
+            lengths = 0
+            while not done:
+                state = state[np.newaxis]
+                action = policy.get_action(state)
+                state, reward, done, _ = env.step(action)
+                rewards += reward
+                lengths += 1
+
+            episode_rewards.append(rewards)
+            episode_lengths.append(lengths)
+
+        rew_mean = np.mean(episode_rewards)
+        len_mean = np.mean(episode_lengths)
 
         score = d4rl_score(task, rew_mean, len_mean)
 

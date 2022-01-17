@@ -17,6 +17,20 @@ register(
 )
 
 register(
+    id="recs-replay-v0",
+    entry_point="rec_env.offline_env:get_recs_offline_env",
+    max_episode_steps=4000,
+    kwargs={
+        "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
+        "data_limit": int(1_000_000),
+        "ref_min_score": 0.0,
+        "ref_max_score": 9.0,
+        "reward_key": "retentions",
+        "reward_type": "retention",
+    },
+)
+
+register(
     id="recs-random-large-v0",
     entry_point="rec_env.offline_env:get_recs_offline_env",
     max_episode_steps=4000,
@@ -30,19 +44,6 @@ register(
     },
 )
 
-
-# register(
-#     id="recs-replay-v0",
-#     entry_point="rec_env.offline_env:get_recs_offline_env",
-#     max_episode_steps=4000,
-#     kwargs={
-#         "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
-#         "ref_min_score": 0.0,
-#         "ref_max_score": 9.0,
-#         "reward_key": "retentions",
-#         "reward_type": "retention",
-#     },
-# )
 
 register(
     id="recs-v0",

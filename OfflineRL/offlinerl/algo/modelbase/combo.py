@@ -13,7 +13,7 @@ from offlinerl.utils.net.common import MLP, Net
 from offlinerl.utils.net.tanhpolicy import TanhGaussianPolicy
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ModelBuffer
+from offlinerl.utils.data import ReplayBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
 
 
@@ -207,7 +207,7 @@ class AlgoTrainer(BaseAlgo):
         )
         model_batch_size = self.args["policy_batch_size"] - real_batch_size
 
-        model_buffer = ModelBuffer(self.args["buffer_size"])
+        model_buffer = ReplayBuffer(self.args["buffer_size"])
 
         for epoch in range(self.args["max_epoch"]):
             # collect data

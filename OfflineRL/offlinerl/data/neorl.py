@@ -1,11 +1,10 @@
 import numpy as np
 from loguru import logger
 
-from offlinerl.utils.data import SampleBatch, get_scaler
-from offlinerl.utils.data import BufferDataset, BufferDataloader
+from offlinerl.utils.data import Batch
 
 def load_neorl_buffer(data):
-    buffer = SampleBatch(
+    buffer = Batch(
         obs = data["obs"],
         obs_next = data["next_obs"],
         act = data["action"],

@@ -10,9 +10,9 @@ max_action = None
 hidden_layer_size = 256
 hidden_layers = 2
 
-batch_size = 64 
+batch_size = 256
 max_epoch = 1000
-steps_per_epoch = 1000
+steps_per_epoch = 3000
 eval_epoch = 10
 
 lr = 1e-4

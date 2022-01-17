@@ -80,7 +80,7 @@ class AlgoTrainer(BaseAlgo):
         self.train_epoch = 0
         self.loss_fn = nn.SmoothL1Loss()
 
-        if self.args["buffer_type"] == "log_transition":
+        if self.args["buffer_type"] in ["log_transition", "log_traj"]:
             self.replay_buffer = LoggedReplayBuffer(
                 self.args["buffer_size"],
                 log_path=f'{self.args["log_data_path"]}/DQN/{self.env.spec.id}',
@@ -132,7 +132,7 @@ class AlgoTrainer(BaseAlgo):
                     }
                 )
 
-                if isinstance(self.replay_buffer, LoggedReplayBuffer):
+                if "transition" in self.args["buffer_type"]:
                     self.replay_buffer.put(batch_data)
                 else:
                     if traj_batch is None:
@@ -145,14 +145,14 @@ class AlgoTrainer(BaseAlgo):
                 obs = new_obs
 
                 self.total_train_steps += 1
-                if self.total_train_steps >= self.args["warmup_size"]:
+                if self.total_train_steps >= self.args["warmup_size"] and self.total_train_steps % self.args["train_freq"] == 0:
                     batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
                     dqn_metrics = self._dqn_update(batch)
                     metrics.update(dqn_metrics)
 
-            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
+            if "traj" in self.args["buffer_type"]:
                 self.replay_buffer.put(traj_batch)
 
             if (

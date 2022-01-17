@@ -14,11 +14,11 @@ def set_dataset_path(path):
     os.makedirs(path, exist_ok=True)
 
 
-set_dataset_path(f"{proj_path}/.recs/datasets")
+set_dataset_path(f"{proj_path}/rec_env/data")
 
 
 def download_dataset_from_url(dataset_name, dataset_url):
-    filepath = f"{proj_path}/.recs/datasets/{dataset_name}"
+    filepath = f"{proj_path}/rec_env/data/{dataset_name}"
     if not os.path.exists(filepath):
         print("Downloading dataset:", dataset_url, "to", filepath)
         gdown.download(dataset_url, quiet=False)
@@ -45,6 +45,7 @@ class OfflineEnv(gym.Env):
         **kwargs,
     ):
         # super(OfflineEnv, self).__init__(**kwargs)
+        self.data_limit = kwargs.get("data_limit", -1)
         self.dataset_name = dataset_name
         self.dataset_path = self._dataset_path = dataset_path
         self.ref_max_score = ref_max_score
@@ -79,6 +80,7 @@ class OfflineEnv(gym.Env):
                 )
 
         data_dict = np.load(npz_path)
+
         data_dict = {k: data_dict[k] for k in list(data_dict.keys())}
         # Run a few quick sanity checks
         for key in [
@@ -91,6 +93,9 @@ class OfflineEnv(gym.Env):
         ]:
             assert key in data_dict, "Dataset is missing key %s" % key
         N_samples = data_dict["observations"].shape[0]
+        if self.data_limit != -1:
+            N_samples = min(self.data_limit, N_samples)
+        data_dict = {k: data_dict[k][:N_samples, ...] for k in data_dict}
         if self.observation_space.shape is not None:
             assert (
                 data_dict["observations"].shape[1:]

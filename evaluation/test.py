@@ -34,7 +34,9 @@ def recs_eval_fn(task, eval_episodes=100):
     def recs_eval(policy):
         start_time = time.time()
         for i in range(eval_episodes):
-            results.append(run_episode((env, policy, i)))
+            results.append(
+                run_episode((deepcopy(env), deepcopy(policy).to("cpu"), i))
+            )
 
         rew_mean = np.mean(list(map(lambda x: x[0], results)))
         len_mean = np.mean(list(map(lambda x: x[1], results)))

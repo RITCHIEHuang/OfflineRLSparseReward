@@ -65,10 +65,13 @@ def run_episode(args):
 def recs_eval_fn(task, eval_episodes=100):
     env = get_env(task)
 
-    # results = []
+    results = []
+
     # def recs_eval(policy):
     #     for i in range(eval_episodes):
-    #         results.append(run_episode((env, policy, i)))
+    #         results.append(
+    #             run_episode((deepcopy(env), deepcopy(policy).to("cpu"), i))
+    #         )
 
     #     rew_mean = np.mean(list(map(lambda x: x[0], results)))
     #     len_mean = np.mean(list(map(lambda x: x[1], results)))

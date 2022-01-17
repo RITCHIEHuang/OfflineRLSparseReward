@@ -1,10 +1,10 @@
+from typing import *
 from copy import deepcopy
 import os
-from offlinerl.utils.segtree import SegmentTree
-import torch
 import pprint
+
+import torch
 import numpy as np
-from typing import *
 
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import dataset
@@ -12,6 +12,7 @@ from torch.utils.data import dataloader
 
 from loguru import logger
 
+from offlinerl.utils.segtree import SegmentTree
 
 def to_array_as(x, y):
     if isinstance(x, torch.Tensor) and isinstance(y, np.ndarray):
@@ -248,24 +249,6 @@ class Batch:
         return self[indices]
 
 
-class SampleBatch(Batch):
-    def sample(self, batch_size):
-        length = len(self)
-        assert 1 <= batch_size
-
-        indices = np.random.randint(0, length, batch_size)
-
-        return self[indices]
-
-
-def sample(batch: Batch, batch_size: int):
-    length = len(batch)
-    assert 1 <= batch_size
-
-    indices = np.random.randint(0, length, batch_size)
-
-    return batch[indices]
-
 
 def get_scaler(data):
     scaler = MinMaxScaler((-1, 1))
@@ -274,7 +257,8 @@ def get_scaler(data):
     return scaler
 
 
-class ModelBuffer:
+
+class ReplayBuffer:
     def __init__(self, buffer_size):
         self.data = None
         self.buffer_size = int(buffer_size)
@@ -300,13 +284,13 @@ class ModelBuffer:
         return self.data[indexes]
 
 
-class LoggedReplayBuffer:
+
+class LoggedReplayBuffer(ReplayBuffer):
     def __init__(self, buffer_size, log_path=None):
-        self.data = None
+        ReplayBuffer.__init__(self, buffer_size)
+        self.log_path = log_path
         self.add_count = 0
         self.log_count = 0
-        self.buffer_size = int(buffer_size)
-        self.log_path = log_path
 
     def put(self, batch_data: Batch):
         batch_data.to_torch(device="cpu")
@@ -316,11 +300,11 @@ class LoggedReplayBuffer:
         else:
             self.data = Batch.cat([self.data, batch_data], axis=0)
 
-        self.add_count += 1
+        self.add_count += len(batch_data)
         if len(self) > self.buffer_size:
             self.data = self.data[len(self) - self.buffer_size :]
 
-        if self.add_count % self.buffer_size == 0:
+        if self.add_count >= (self.log_count + 1) * self.buffer_size:
             self._log_data()
 
     def _log_data(self):
@@ -349,55 +333,6 @@ class LoggedReplayBuffer:
             logger.info(f"Logging buffer to {full_log_path}.")
             self.log_count += 1
 
-    def __len__(self):
-        if self.data is None:
-            return 0
-        return self.data.shape[0]
-
-    def sample(self, batch_size):
-        indexes = np.random.randint(0, len(self), size=(batch_size))
-        return self.data[indexes]
-
-
-class TrajAveragedReplayBuffer:
-    def __init__(self, buffer_size):
-        self.data = None
-        self.buffer_size = int(buffer_size)
-
-    def _average(self, batch_data: Batch):
-        # average reward in batch(traj)
-        last_idx = 0
-        idx = 0
-        avg_rews = deepcopy(batch_data["rew"])
-        while idx < len(batch_data):
-            cur_rew = batch_data[idx]["rew"]
-            if abs(cur_rew) >= 1e-5:
-                avg_rew = cur_rew / (idx - last_idx + 1)
-                avg_rews[last_idx : idx + 1] = avg_rew
-                last_idx = idx + 1
-            idx += 1
-        batch_data["rew"] = avg_rews
-        return batch_data
-
-    def put(self, batch_data: Batch):
-        batch_data.to_torch(device="cpu")
-        batch_data = self._average(batch_data)
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
-
-    def __len__(self):
-        if self.data is None:
-            return 0
-        return self.data.shape[0]
-
-    def sample(self, batch_size):
-        indexes = np.random.randint(0, len(self), size=(batch_size))
-        return self.data[indexes]
 
 
 class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
@@ -427,38 +362,34 @@ class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
 
         if self.add_count % self.buffer_size == 0:
             self._log_data()
+   
 
-    def _log_data(self):
-        # logging data to file
-        if self.log_path is None:
-            return
-        else:
-            if not os.path.exists(self.log_path):
-                logger.info(f"{self.log_path} not exists, creating!!!")
-                os.makedirs(self.log_path)
+class TrajAveragedReplayBuffer(ReplayBuffer):
+    def __init__(self, buffer_size):
+        ReplayBuffer.__init__(self, buffer_size)
 
-        full_log_path = f"{self.log_path}/part-{self.log_count}.npz"
-        if os.path.exists(full_log_path):
-            logger.info(f"{full_log_path} exists !!!")
-        else:
-            np.savez_compressed(
-                full_log_path,
-                observations=self.data["obs"].numpy(),
-                actions=self.data["act"].numpy(),
-                rewards=self.data["rew"].numpy(),
-                terminals=self.data["done"].numpy(),
-                timeouts=self.data["done"].numpy(),
-                next_observations=self.data["obs_next"].numpy(),
-                retentions=self.data["retention"].numpy(),
-            )
-            logger.info(f"Logging buffer to {full_log_path}.")
-            self.log_count += 1
+    def _average(self, batch_data: Batch):
+        # average reward in batch(traj)
+        last_idx = 0
+        idx = 0
+        avg_rews = deepcopy(batch_data["rew"])
+        while idx < len(batch_data):
+            cur_rew = batch_data[idx]["rew"]
+            if abs(cur_rew) >= 1e-5:
+                avg_rew = cur_rew / (idx - last_idx + 1)
+                avg_rews[last_idx : idx + 1] = avg_rew
+                last_idx = idx + 1
+            idx += 1
+        batch_data["rew"] = avg_rews
+        return batch_data
 
-    def __len__(self):
+    def put(self, batch_data: Batch):
+        batch_data.to_torch(device="cpu")
+        batch_data = self._average(batch_data)
         if self.data is None:
-            return 0
-        return self.data.shape[0]
+            self.data = batch_data
+        else:
+            self.data = Batch.cat([self.data, batch_data], axis=0)
 
-    def sample(self, batch_size):
-        indexes = np.random.randint(0, len(self), size=(batch_size))
-        return self.data[indexes]
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]

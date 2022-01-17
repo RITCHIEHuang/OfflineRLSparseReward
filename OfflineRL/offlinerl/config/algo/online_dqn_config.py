@@ -18,9 +18,10 @@ buffer_type = "log_transition"  # log_transition
 buffer_size = 1e6
 batch_size = 256
 warmup_size = 10000
+train_freq = 4
 max_step = 1e7
 max_epoch = 10000
-eval_epoch = 10
+eval_epoch = 50
 use_noisy_linear = False
 
 lr = 1e-4

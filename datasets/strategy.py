@@ -11,7 +11,7 @@ from torch.utils.data.dataloader import DataLoader
 
 from datasets.traj_dataset import TrajDataset
 
-from offlinerl.utils.data import SampleBatch
+from offlinerl.utils.data import Batch
 from offlinerl.utils.config import parse_config
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
@@ -42,7 +42,7 @@ def reward_redistributed(predictions, rewards, length):
 
 
 def load_traj_buffer(traj_dataset):
-    buffer = SampleBatch(
+    buffer = Batch(
         obs=np.concatenate(traj_dataset["observations"], axis=0),
         obs_next=np.concatenate(traj_dataset["next_observations"], axis=0),
         act=np.concatenate(traj_dataset["actions"], axis=0),
