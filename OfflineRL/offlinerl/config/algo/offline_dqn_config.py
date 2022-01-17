@@ -11,9 +11,9 @@ hidden_layer_size = 256
 hidden_layers = 2
 
 batch_size = 256
-max_epoch = 1000
+max_epoch = 700
 steps_per_epoch = 3000
-eval_epoch = 10
+eval_epoch = 50
 
 lr = 1e-4
 target_update_interval = 2000
