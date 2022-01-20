@@ -7,6 +7,7 @@ import numpy as np
 from stable_baselines3 import PPO, DQN
 
 from rec_env.sb_callback import EvalCallback
+from tqdm import tqdm
 
 
 env = gym.make("recs-v0")
@@ -15,7 +16,7 @@ eval_env = gym.make("recs-v0")
 # print(env.action_space.n)
 
 # model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./logs")
-buffer_size = int(1_000_000)
+buffer_size = int(200_000)
 model = DQN(
     "MlpPolicy",
     env,
@@ -29,39 +30,9 @@ model = DQN(
 eval_callback = EvalCallback(eval_env, n_eval_episodes=100)
 
 model.learn(total_timesteps=buffer_size, callback=eval_callback)
+total_steps = 1000_000
 
 
-def save_buffer():
-    buffer = model.replay_buffer
-    obs_dim = buffer.obs_shape[0]
-    act_dim = buffer.action_dim
-    np.savez_compressed(
-        f"data/recs-replay-v0.npz",
-        observations=buffer.observations[: buffer.size(), ...].reshape(
-            -1, obs_dim
-        ),
-        actions=buffer.actions[: buffer.size(), ...].reshape(-1, act_dim),
-        rewards=buffer.rewards[: buffer.size(), ...].reshape(
-            -1,
-        ),
-        retentions=buffer.retentions[: buffer.size(), ...].reshape(
-            -1,
-        ),
-        clicks=buffer.clicks[: buffer.size(), ...].reshape(
-            -1,
-        ),
-        terminals=buffer.dones[: buffer.size(), ...].reshape(
-            -1,
-        ),
-        timeouts=buffer.timeouts[: buffer.size(), ...].reshape(
-            -1,
-        ),
-        next_observations=buffer.next_observations[
-            : buffer.size(), ...
-        ].reshape(-1, obs_dim),
-    )
-
-    print("Save buffer", buffer.size())
 
 
 # eval
@@ -69,32 +40,68 @@ rewards = []
 retentions = []
 clicks = []
 steps = []
-for _ in range(100):
+observations = []
+actions = []
+dones = []
+timeouts=[]
+next_observations = []
+obs_shape=env.reset().shape
+print("obs shape:",obs_shape)
+act_dim = 10
+step = 0
+global_done = False
+def generator():
+  while step<total_steps:
+    print("steps:",step)
+    yield
+
+for _ in tqdm(generator()):
     episode_reward = 0
     episode_retention = 0
     episode_click = 0
-    step = 0
     obs = env.reset()
     while True:
+        observations.append(obs)
         action, _states = model.predict(obs, deterministic=True)
+        actions.append(action)
         obs, reward, done, info = env.step(action)
+        next_observations.append(obs)
         episode_reward += reward
         episode_retention += info["reward"]["retention"]
         episode_click += info["reward"]["click"]
+        rewards.append(info["reward"]["retention"])
+        retentions.append(info["reward"]["retention"])
+        dones.append(done)
+        timeouts.append(0)
 
         step += 1
+        if step==total_steps:
+            global_done = True
+            break
 
         if done:
             break
+    if global_done:
+        break
 
-    rewards.append(episode_reward)
-    retentions.append(episode_retention)
-    clicks.append(episode_click)
-    steps.append(step)
+obs_shape=env.reset().shape
+print("obs shape:",obs_shape)
+act_dim = 1
+observations = np.reshape(np.array(observations),(-1,obs_shape[0]))
+actions = np.reshape(np.array(actions),(-1,act_dim))
+next_observations = np.reshape(np.array(next_observations),(-1,obs_shape[0]))
+rewards = np.reshape(np.array(actions),-1)
+timeouts= np.reshape(np.array(timeouts),-1)
+terminals= np.reshape(np.array(dones),-1)
+retentions= np.reshape(np.array(retentions),-1)
+np.savez_compressed(
+    f"./data/recs-medium-v0.npz",
+    observations=observations,
+    actions=actions,
+    rewards=rewards,
+    terminals=terminals,
+    timeouts=timeouts,
+    next_observations=next_observations,
+    retentions=retentions
+)
 
-print("mean episode_reward", np.mean(rewards))
-print("mean episode_retention", np.mean(retentions))
-print("mean episode_click", np.mean(clicks))
-print("mean episode_steps", np.mean(steps))
-
-save_buffer()

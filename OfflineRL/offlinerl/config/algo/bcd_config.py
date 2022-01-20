@@ -11,10 +11,10 @@ obs_shape = None
 act_shape = None
 max_action = None
 
-actor_features = 256
+actor_features = 64
 actor_layers = 2
 
-batch_size = 64
+batch_size = 32
 steps_per_epoch = 1000
 max_epoch = 300
 eval_epoch = 10

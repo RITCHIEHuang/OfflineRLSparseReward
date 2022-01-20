@@ -35,7 +35,8 @@ rec_task_list = {
     0: "recs-random-v0", 
     1: "recs-replay-v0", 
     2: "recs-random-large-v0", 
-    3: "recs-v0"
+    3: "recs-v0",
+    4: "recs-medium-v0"
 }
 
 

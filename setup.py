@@ -27,7 +27,7 @@ setup(
         "mujoco_py",
         "pybullet",
         "dm_control",
-        "mjrl",
+#        "mjrl",
         "stable-baselines3",
         "numba",
         "ray[tune]",

@@ -139,6 +139,7 @@ def get_env(task: str) -> gym.Env:
                 env.get_done_func = lambda: terminal_function
         else:
             task_name = task.strip().split("-")[0]
+            print(f"task:{task},task_name:{task_name}")
             env = neorl.make(task_name)
     except:
         raise NotImplementedError
