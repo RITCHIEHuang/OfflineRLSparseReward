@@ -39,13 +39,14 @@ class ActorProb(nn.Module):
 
 
 class CategoricalActor(nn.Module, DiscretePolicy):
-    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers):
+    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers, hidden_activation='leakyrelu'):
         super().__init__()
         self.backbone = MLP(
             in_features=obs_dim,
             out_features=hidden_size,
             hidden_features=hidden_size,
             hidden_layers=hidden_layers,
+            hidden_activation=hidden_activation
         )
         self.front = MLP(in_features=hidden_size,out_features=action_dim,hidden_layers=1,hidden_features=action_dim)
 

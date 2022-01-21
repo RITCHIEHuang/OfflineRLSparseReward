@@ -25,7 +25,7 @@ def algo_init(args):
     else:
         raise NotImplementedError
     bc_actor = CategoricalActor(
-        obs_shape, action_shape, args["hidden_layer_size"], args["hidden_layers"]
+        obs_shape, action_shape, args["hidden_layer_size"], args["hidden_layers"],hidden_activation='tanh'
     ).to(args["device"])
 
     q = MLP(
@@ -34,7 +34,7 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="relu",
+        hidden_activation="tanh",
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
     actor_optim = torch.optim.Adam(bc_actor.parameters(), lr=args["lr"])
