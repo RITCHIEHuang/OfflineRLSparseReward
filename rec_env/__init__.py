@@ -50,6 +50,7 @@ register(
     entry_point="rec_env.env:get_recs_env",
     max_episode_steps=4000,
     kwargs={
-        "reward_type": "click",
+        # "reward_type": "click",
+        "reward_type": "retention",
     },
 )

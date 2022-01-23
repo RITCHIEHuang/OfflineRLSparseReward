@@ -16,12 +16,13 @@ num_quantiles = 20
 log_data_path = f"{proj_path}/rec_env/data"
 # buffer_type = "avg_traj"  # log_transition
 buffer_type = "log_transition"  # log_transition
+# buffer_type = "log_avg_traj"  # log_transition
 
-buffer_size = 1e6
+buffer_size = 1e5
 batch_size = 256
 warmup_size = 10000
-train_freq = 4
-max_step = 1e7
+train_freq = 1
+max_step = 1e6
 max_epoch = 10000
 eval_epoch = 50
 

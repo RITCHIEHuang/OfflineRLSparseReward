@@ -59,15 +59,15 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 domain = args.domain
-algos = [args.algo_name]
+# algos = [args.algo_name]
 
-# algos = ["mopo"]
+algos = ["iql"]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
 delay_modes = ["none"]
 seeds = [10, 100, 1000]
-delays = [20]
+delays = [1]
 
 strategies = [args.strategy]
 reward_scale = args.reward_scale
@@ -110,7 +110,6 @@ elif domain == "recs":
 else:
     raise NotImplementedError()
 
-gpu_id = 0
 gpu_id_iter = get_gpu_memory_desc_iter()
 
 print(f"Train task: {task}")
@@ -136,7 +135,5 @@ for algo in algos:
 
                     process = subprocess.Popen(str_command, shell=True)
                     process_buffer.append(process)
-
-                    gpu_id += 1
 
 output = [p.wait() for p in process_buffer]

@@ -362,11 +362,42 @@ class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
 
         if self.add_count % self.buffer_size == 0:
             self._log_data()
-   
+
 
 class TrajAveragedReplayBuffer(ReplayBuffer):
     def __init__(self, buffer_size):
         ReplayBuffer.__init__(self, buffer_size)
+
+    def _average(self, batch_data: Batch):
+        # average reward in batch(traj)
+        last_idx = 0
+        idx = 0
+        avg_rews = deepcopy(batch_data["rew"])
+        while idx < len(batch_data):
+            cur_rew = batch_data[idx]["rew"]
+            if abs(cur_rew) >= 1e-5:
+                avg_rew = cur_rew / (idx - last_idx + 1)
+                avg_rews[last_idx : idx + 1] = avg_rew
+                last_idx = idx + 1
+            idx += 1
+        batch_data["rew"] = avg_rews
+        return batch_data
+
+    def put(self, batch_data: Batch):
+        batch_data.to_torch(device="cpu")
+        batch_data = self._average(batch_data)
+        if self.data is None:
+            self.data = batch_data
+        else:
+            self.data = Batch.cat([self.data, batch_data], axis=0)
+
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]
+
+
+class LoggedTrajAveragedReplayBuffer(LoggedReplayBuffer):
+    def __init__(self, buffer_size, log_path=None):
+        LoggedReplayBuffer.__init__(self, buffer_size, log_path)
 
     def _average(self, batch_data: Batch):
         # average reward in batch(traj)

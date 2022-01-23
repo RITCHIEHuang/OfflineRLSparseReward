@@ -9,6 +9,7 @@ from offlinerl.utils.data import (
     Batch,
     LoggedReplayBuffer,
     TrajAveragedReplayBuffer,
+    LoggedTrajAveragedReplayBuffer,
 )
 from offlinerl.utils.exp import setup_seed
 
@@ -80,6 +81,11 @@ class AlgoTrainer(BaseAlgo):
 
         if self.args["buffer_type"] in ["log_transition", "log_traj"]:
             self.replay_buffer = LoggedReplayBuffer(
+                self.args["buffer_size"],
+                log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
+            )
+        elif self.args["buffer_type"] == "log_avg_traj":
+            self.replay_buffer = LoggedTrajAveragedReplayBuffer(
                 self.args["buffer_size"],
                 log_path=f'{self.args["log_data_path"]}/QRDQN/{self.env.spec.id}',
             )
