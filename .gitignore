@@ -23,3 +23,6 @@ scripts/wandb.sh
 scripts/*.ipynb
 scripts/jupyter_exp
 scripts/.ipynb*
+
+# ----- GPU43 ---------
+utils/exp_util.py
