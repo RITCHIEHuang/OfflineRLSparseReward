@@ -20,16 +20,17 @@ actor_lr = 3e-4
 critic_lr = 3e-4
 
 discount = 0.99
-soft_target_tau = 5e-3
+# soft_target_tau = 5e-3
+soft_target_tau = 1.0
 
 q_update_period = 1
 policy_update_period = 1
-target_update_period = 1
+target_update_period = 10
 
 # update
-beta = 0.3
+beta = 0.01
 # beta = 1.0 / 3
-quantile = 0.7
+quantile = 0.8
 # quantile = 0.7
 clip_score = 100
 
