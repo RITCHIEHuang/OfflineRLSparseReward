@@ -15,21 +15,17 @@ from utils.io_util import proj_path
 
 debug = False
 
-result_file_path = f"{proj_path}/assets/results_mopo_delay_mujoco_v0.csv"
-agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_delay_mujoco_v0.csv"
+result_file_path = f"{proj_path}/assets/iql/d4rl"
 
+if not os.path.exists(result_file_path):
+    os.makedirs(result_file_path)
 
-if os.path.exists(result_file_path):
-    os.remove(result_file_path)
-
-if os.path.exists(agg_result_file_path):
-    os.remove(agg_result_file_path)
 
 api = wandb.Api()
 runs = api.runs("ritchiehuang/OfflineRL_DelayRewards")
 
-exp_variant_mapping = defaultdict(lambda: defaultdict(list))
-# {"group": [iter-0: [{seed1}, {seed2}, ...{}], }, {iter-1}, ..., {iter-}]}
+exp_variant_mapping = defaultdict(list)
+# {"group": [{}, {}]}
 
 # filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
 filter_group = [
@@ -42,16 +38,21 @@ filter_group = [
 ]
 # filter_group = None
 
-# filter_strategy = ["interval_ensemble", "interval_average", "none"]
+filter_strategy = ["interval_ensemble", "interval_average", "none"]
 # filter_strategy = ["interval_ensemble"]
-filter_strategy = ["none"]
+# filter_strategy = ["none"]
+
+filter_delaymode = ["constant"]
+# filter_delaymode = ["none"]
+
+filter_delay = [20]
 filter_seed = [10, 100, 1000]
 
 # filter_domain = ["neorl", "d4rl"]
 filter_domain = ["d4rl"]
 
-filter_algo = ["mopo"]
-# filter_algo = ["iql"]
+# filter_algo = ["mopo"]
+filter_algo = ["iql"]
 
 # collect
 for run in tqdm(runs):
@@ -83,12 +84,14 @@ for run in tqdm(runs):
 
     if not (
         (filter_domain is None or domain in filter_domain)
+        and (filter_delaymode is None or delay_mode in filter_delaymode)
+        # and group in filter_group
         and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
+        and delay in filter_delay
     ):
         continue
-
 
     variant_result_info = {
         "Dataset Type": dataset_type,
@@ -111,7 +114,7 @@ for run in tqdm(runs):
         result_info_item["Iteration"] = epoch
         result_info_item["D4rl_Score"] = history_item["D4rl_Score"]
 
-        exp_variant_mapping[exp_identity_tag][epoch].append(result_info_item)
+        exp_variant_mapping[exp_identity_tag].append(result_info_item)
 
 if debug:
     with open("test.json", "w") as f:
@@ -119,56 +122,24 @@ if debug:
 
 # aggregate
 flag = True
-flag2 = True
 for k, v in exp_variant_mapping.items():
-    iter_scores = [
-        (
-            i_iter,
-            np.mean([it["D4rl_Score"] for it in iter_res]),
-            [it["Seed"] for it in iter_res],
-            np.std([it["D4rl_Score"] for it in iter_res]),
-            [it["D4rl_Score"] for it in iter_res],
-        )
-        for i_iter, iter_res in v.items()
-        if len(iter_res) >= 3
-    ]
+    task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"] + "-strategy"
+    # task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"]
+    result_file_path_ = f"{result_file_path}/{task_name}.csv"
+    if os.path.exists(result_file_path_):
+        flag = False
+    else:
+        flag = True
+    logger.info(f"Start writing {task_name} to {result_file_path}!")
+    with open(result_file_path_, "a+") as f:
+        fields = list(v[0].keys())
 
-    sorted_iter_scores = sorted(iter_scores, key=lambda v: v[1], reverse=True)
-    if debug:
-        logger.debug(f"{k}, {len(iter_scores)}")
+        writer = csv.DictWriter(f, fieldnames=fields)
 
-    selected_item = sorted_iter_scores[0]
-
-    normal_item = deepcopy(v[selected_item[0]][0])
-    for seed, score in zip(selected_item[2], selected_item[-1]):
-        # normal_item["Iteration"] = selected_item[0]
-        normal_item["D4rl_Score"] = round(score, 1)
-        normal_item["Seed"] = seed
-
-        fields = list(normal_item.keys())
-        with open(result_file_path, "a+") as f:
-            writer = csv.DictWriter(f, fieldnames=fields)
-
-            if flag:
-                writer.writeheader()
-                flag = False
-
-            writer.writerow(normal_item)
-
-    agg_item = deepcopy(v[selected_item[0]][0])
-    agg_item["Iteration"] = selected_item[0]
-    agg_item["D4rl_Score"] = round(selected_item[1], 1)
-    agg_item["Seed"] = selected_item[2]
-    agg_item["D4rl_Score_stddev"] = round(selected_item[3], 1)
-
-    logger.info(f"{k} aggregating results finish!")
-
-    agg_fields = list(agg_item.keys())
-    with open(agg_result_file_path, "a+") as f:
-        writer = csv.DictWriter(f, fieldnames=agg_fields)
-
-        if flag2:
+        if flag:
             writer.writeheader()
-            flag2 = False
+            flag = False
+        for row in v:
+            writer.writerow(row)
 
-        writer.writerow(agg_item)
+    logger.info(f"Write {task_name} to {result_file_path} finished!")
