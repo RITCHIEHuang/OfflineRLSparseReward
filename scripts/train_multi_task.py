@@ -58,7 +58,8 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 domain = args.domain
-algos = ["iql"]
+# algos = ["iql"]
+algos = ["mopo"]
 # algos = [args.algo_name]
 
 # algos = ["mopo"]
