@@ -228,7 +228,9 @@ def plot_delay_vs_nodelay(
     )
 
 
-def process_lineplot(dfs, x_label, y_label, hue_label=None, style_label=None, fig_name=""):
+def process_lineplot(
+    dfs, x_label, y_label, hue_label=None, style_label=None, fig_name=""
+):
     # Plot the responses for different events and regions
     fig, axes = plt.subplots(3, len(dfs) // 3, figsize=(12, 8))
 
@@ -246,7 +248,8 @@ def process_lineplot(dfs, x_label, y_label, hue_label=None, style_label=None, fi
             style=style_label,
             data=df,
             ax=ax,
-            # ci="sd",
+            ci="sd",
+            hue_order=["IUPM", "IUS", "None"],
         )
         # ax.set_xlabel(r"$Delay\ interval\ size\ (K)$")
         ax.set_xlabel("")
@@ -263,21 +266,26 @@ def process_lineplot(dfs, x_label, y_label, hue_label=None, style_label=None, fi
 
 def plot_implementation(
     file_dir=f"{proj_path}/assets/iql/d4rl",
-    fig_name="Iql_d4rl_reimpl_performance",
+    fig_name="IQL_performance_mujoco",
 ):
 
-    file_paths = sorted([p for p in os.listdir(file_dir) if p.endswith("v0.csv")])
-    dfs = [
-        pd.read_csv(os.path.join(file_dir, p)) for p in file_paths
-    ]
+    file_paths = sorted([p for p in os.listdir(file_dir) if p.endswith("v0-strategy.csv")])
+    # file_paths = sorted([p for p in os.listdir(file_dir) if "strategy" in p])
+    dfs = []
+    for p in file_paths:
+        df = pd.read_csv(os.path.join(file_dir, p))
+        df = df.replace("interval_ensemble", "IUPM")
+        df = df.replace("interval_average", "IUS")
+        df = df.replace("none", "None")
+        dfs.append(df)
     print("Datasets num", len(dfs))
 
     process_lineplot(
         dfs,
         x_label="Iteration",
         y_label="D4rl_Score",
-        # hue_label="Seed",
-        # style_label="Seed",
+        hue_label="Strategy",
+        style_label="Strategy",
         fig_name=fig_name,
     )
 

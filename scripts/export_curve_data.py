@@ -38,11 +38,14 @@ filter_group = [
 ]
 # filter_group = None
 
-# filter_strategy = ["interval_ensemble", "interval_average", "none"]
+filter_strategy = ["interval_ensemble", "interval_average", "none"]
 # filter_strategy = ["interval_ensemble"]
-filter_strategy = ["none"]
+# filter_strategy = ["none"]
 
-filter_delaymode = ["none"]
+filter_delaymode = ["constant"]
+# filter_delaymode = ["none"]
+
+filter_delay = [20]
 filter_seed = [10, 100, 1000]
 
 # filter_domain = ["neorl", "d4rl"]
@@ -76,12 +79,17 @@ for run in tqdm(runs):
     algo = run.config["algo_name"]
     strategy = run.config["strategy"]
 
+    if group in filter_group:
+        continue
+
     if not (
         (filter_domain is None or domain in filter_domain)
         and (filter_delaymode is None or delay_mode in filter_delaymode)
+        # and group in filter_group
         and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
+        and delay in filter_delay
     ):
         continue
 
@@ -115,7 +123,8 @@ if debug:
 # aggregate
 flag = True
 for k, v in exp_variant_mapping.items():
-    task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"]
+    task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"] + "-strategy"
+    # task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"]
     result_file_path_ = f"{result_file_path}/{task_name}.csv"
     if os.path.exists(result_file_path_):
         flag = False

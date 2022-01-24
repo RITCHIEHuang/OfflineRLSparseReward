@@ -15,8 +15,8 @@ from utils.io_util import proj_path
 
 debug = False
 
-result_file_path = f"{proj_path}/assets/results_iql_reimpl.csv"
-agg_result_file_path = f"{proj_path}/assets/agg_results_iql_reimpl.csv"
+result_file_path = f"{proj_path}/assets/results_mopo_delay_mujoco_v0.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_delay_mujoco_v0.csv"
 
 
 if os.path.exists(result_file_path):
@@ -50,8 +50,8 @@ filter_seed = [10, 100, 1000]
 # filter_domain = ["neorl", "d4rl"]
 filter_domain = ["d4rl"]
 
-# filter_algo = ["mopo"]
-filter_algo = ["iql"]
+filter_algo = ["mopo"]
+# filter_algo = ["iql"]
 
 # collect
 for run in tqdm(runs):
@@ -78,6 +78,9 @@ for run in tqdm(runs):
     algo = run.config["algo_name"]
     strategy = run.config["strategy"]
 
+    if group in filter_group:
+        continue
+
     if not (
         (filter_domain is None or domain in filter_domain)
         and algo in filter_algo
@@ -85,6 +88,7 @@ for run in tqdm(runs):
         and seed in filter_seed
     ):
         continue
+
 
     variant_result_info = {
         "Dataset Type": dataset_type,
