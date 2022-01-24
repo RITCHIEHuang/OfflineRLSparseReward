@@ -39,16 +39,16 @@ class ActorProb(nn.Module):
 
 
 class CategoricalActor(nn.Module, DiscretePolicy):
-    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers, hidden_activation='leakyrelu'):
+    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers, hidden_activation='tanh'):
         super().__init__()
         self.backbone = MLP(
             in_features=obs_dim,
-            out_features=hidden_size,
+            out_features=action_dim,
             hidden_features=hidden_size,
             hidden_layers=hidden_layers,
             hidden_activation=hidden_activation
         )
-        self.front = MLP(in_features=hidden_size,out_features=action_dim,hidden_layers=1,hidden_features=action_dim)
+        #self.front = MLP(in_features=hidden_size,out_features=action_dim,hidden_layers=1,hidden_features=action_dim)
 
     def policy_infer(self, obs):
         probs = self(obs).probs
@@ -56,8 +56,8 @@ class CategoricalActor(nn.Module, DiscretePolicy):
         return greedy_actions
 
     def forward(self, obs):
-        emb= self.backbone(obs)
-        logits = self.front(emb)
+        logits= self.backbone(obs)
+        #logits = self.front(emb)
         probs = F.softmax(logits, dim=-1)
         return Categorical(probs)
 
