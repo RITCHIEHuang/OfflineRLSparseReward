@@ -1,15 +1,28 @@
-import gym
-#gym.logger.set_level(gym.logger.DEBUG)
+# import gym
+# gym.logger.set_level(gym.logger.DEBUG)
+import cv2
+from tqdm import tqdm
+import os
 from offlinerl.algo import algo_select
-from offlinerl.evaluation import CallBackFunctionList
-from offlinerl.utils.env import get_env
+#from offlinerl.evaluation import CallBackFunctionList
+#from offlinerl.utils.env import get_env
 
-from datasets import d4rl_dataset
 from utils.exp_util import setup_exp_args
-from evaluation.d4rl_score import d4rl_eval_fn
 from gym.wrappers import Monitor
 import numpy as np
-from gym.envs.mujoco import HalfCheetahEnv, AntEnv, HopperEnv, Walker2dEnv
+from gym.envs.mujoco import HalfCheetahEnv, HopperEnv, Walker2dEnv
+
+def mp4_to_frame(dir,file):
+    print(f"transform {file} to frames!")
+    vidcap = cv2.VideoCapture(file)
+    success,image = vidcap.read()
+    count = 0
+    while success:
+      cv2.imwrite(dir+os.sep+"frame%d.jpg" % count, image)     
+      success,image = vidcap.read()
+      print('Read a new frame: ', success)
+      count += 1
+
 def my_get_env(task:str):
     if 'hopper' in task:
         return HopperEnv()
@@ -20,20 +33,27 @@ def my_get_env(task:str):
 
 def record_video(task,policy,exp_name):
     env = my_get_env(task)
-    env = Monitor(env, f'./{exp_name}-video', force=True)
+    directory = f'./{exp_name}-video'
+    env = Monitor(env, directory, force=True)
     state, done = env.reset(), False
     rewards = 0
     lengths = 0
-    max_step = 1000
+    max_step = 10
     cur = 0
-    while not done and cur<max_step:
+    for _ in tqdm(range(max_step)):
         cur += 1
-        print(f"step:{cur}\n")
         state = state[np.newaxis]
         action = policy.get_action(state)
         state, reward, done, _ = env.step(action)
         rewards += reward
         lengths += 1
+        if done:
+            break
+    env.close()
+    mp4_files = filter(lambda x:x.endswith('mp4'),os.listdir(directory))
+    mp4_files = map(lambda x:directory+os.sep+x,mp4_files)
+    for mp4 in mp4_files:
+        mp4_to_frame(directory,mp4)
 
 
 def run_algo(kwargs):

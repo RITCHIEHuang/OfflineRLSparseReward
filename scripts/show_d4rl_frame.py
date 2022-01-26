@@ -27,11 +27,12 @@ def show_images(images: List[numpy.ndarray]) -> None:
     for i in range(n):
         # Debug, plot figure
         f.add_subplot(1, n, i + 1)
+        plt.gca().axes.get_yaxis().set_visible(False)
+        plt.gca().axes.get_xaxis().set_visible(False)
         plt.imshow(images[i])
-
     plt.show(block=True)
 
-def main(dir='./hopper-none1/'):
+def main(dir='./hopper-none/'):
     im = []
     idx = 0
     for i in range(9):
@@ -41,7 +42,5 @@ def main(dir='./hopper-none1/'):
 
     
 
-
-
-
-main()
+if __name__ == "__main__":
+    main()
