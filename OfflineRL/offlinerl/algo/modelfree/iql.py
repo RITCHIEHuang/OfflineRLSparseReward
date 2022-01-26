@@ -101,8 +101,8 @@ class AlgoTrainer(BaseAlgo):
 
         self._n_train_steps_total = 0
         self._current_epoch = 0
-        if self.args["load_model"] and self.args["load_epoch"]:
-            self.load_model(os.path.join(self.models_save_dir, str(self.args["load_epoch"]) + ".pt"))
+        if self.args["model_path"]!="":
+            self.actor = self.load_model(self.args["model_path"])
 
     def _train(self, batch):
         self._current_epoch += 1
