@@ -6,7 +6,7 @@ import neorl
 from datasets import STRATEGY_MAPPING
 from datasets.strategy import load_traj_buffer
 
-from utils.plot_util import plot_ep_reward, plot_reward_dist
+from utils.plot_util import plot_ep_reward
 from utils.exp_util import setup_exp_args
 
 

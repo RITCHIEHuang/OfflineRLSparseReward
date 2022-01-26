@@ -13,10 +13,10 @@ from loguru import logger
 from utils.io_util import proj_path
 
 
-debug = False
+debug = False 
 
-result_file_path = f"{proj_path}/assets/results_mopo_delay_mujoco_v0.csv"
-agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_delay_mujoco_v0.csv"
+result_file_path = f"{proj_path}/assets/results_mopo_reimpl.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_reimpl.csv"
 
 
 if os.path.exists(result_file_path):
@@ -52,7 +52,8 @@ filter_domain = ["d4rl"]
 
 filter_algo = ["mopo"]
 # filter_algo = ["iql"]
-
+filter_delaymode = ["none"]
+filter_delay = [1]
 # collect
 for run in tqdm(runs):
     group = run.group
@@ -83,12 +84,13 @@ for run in tqdm(runs):
 
     if not (
         (filter_domain is None or domain in filter_domain)
+        and (filter_delaymode is None or delay_mode in filter_delaymode)
         and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
+        and delay in filter_delay
     ):
         continue
-
 
     variant_result_info = {
         "Dataset Type": dataset_type,

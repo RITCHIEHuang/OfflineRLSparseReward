@@ -165,7 +165,7 @@ if __name__ == "__main__":
         config["exp_name"] = "example"
 
     """extract traj dataset"""
-    # traj_dataset = delay_traj_dataset(config)
+    traj_dataset = delay_traj_dataset(config)
 
     """extract traj buffer"""
-    load_d4rl_buffer(config)
+    # load_d4rl_buffer(config)
