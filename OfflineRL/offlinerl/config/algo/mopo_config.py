@@ -36,7 +36,7 @@ discount = 0.99
 soft_target_tau = 5e-3
 
 horizon = 5
-lam = 2
+lam = 5
 
 # tune
 params_tune = {

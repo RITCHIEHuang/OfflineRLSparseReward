@@ -155,9 +155,10 @@ def load_d4rl_buffer(config):
 
 if __name__ == "__main__":
     config = setup_exp_args()
-    # config["task"] = "antmaze-medium-play-v2"
+    # config["task"] = "antmaze-umaze-diverse-v2"
+    config["task"] = "hopper-medium-replay-v0"
     # config["strategy"] = "interval_average"
-    # config["delay_mode"] = "none"
+    config["delay_mode"] = "none"
     if config["log_to_wandb"]:
         config["log_to_wandb"] = False
 
@@ -169,3 +170,6 @@ if __name__ == "__main__":
 
     """extract traj buffer"""
     load_d4rl_buffer(config)
+
+
+
