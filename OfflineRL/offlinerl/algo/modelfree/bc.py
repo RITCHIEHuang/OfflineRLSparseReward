@@ -2,6 +2,7 @@ import torch
 from copy import deepcopy
 from loguru import logger
 import numpy as np
+import os
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.net.continuous import GaussianActor
@@ -47,6 +48,8 @@ class AlgoTrainer(BaseAlgo):
 
         self.best_actor = deepcopy(self.actor)
         self.best_loss = float("inf")
+        if self.args["load_model"] and self.args["load_epoch"]:
+            self.load_model(os.path.join(self.models_save_dir, str(self.args["load_epoch"]) + ".pt"))
 
     def train(self, train_buffer, val_buffer, callback_fn):
         if val_buffer is None:

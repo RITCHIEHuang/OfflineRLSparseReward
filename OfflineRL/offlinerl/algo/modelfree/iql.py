@@ -11,6 +11,7 @@ import numpy as np
 from torch import nn
 from torch import optim
 from loguru import logger
+import os
 
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.net.common import MLP
@@ -100,6 +101,8 @@ class AlgoTrainer(BaseAlgo):
 
         self._n_train_steps_total = 0
         self._current_epoch = 0
+        if self.args["model_path"]!="":
+            self.actor = self.load_model(self.args["model_path"])
 
     def _train(self, batch):
         self._current_epoch += 1

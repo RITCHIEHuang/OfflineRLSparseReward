@@ -39,6 +39,7 @@ class BaseAlgo(ABC):
             os.makedirs(tb_log_path)
 
         # setup tensorboard
+        self.exp_name = exp_name
         self.exp_logger = SummaryWriter(log_dir=f"{tb_log_path}/{exp_name}")
 
         # setup wandb
@@ -107,6 +108,6 @@ class BaseAlgo(ABC):
         torch.save(self.get_policy(), model_path)
 
     def load_model(self, model_path):
-        model = torch.load(model_path)
+        model = torch.load(model_path,map_location=torch.device('cpu'))
 
         return model

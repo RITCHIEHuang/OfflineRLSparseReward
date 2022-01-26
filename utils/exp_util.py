@@ -40,6 +40,7 @@ def argsparser():
         choices=["constant", "random", "none"],
     )
     parser.add_argument("--name", help="experiment name", type=str, default="")
+    parser.add_argument("--model_path", help="model path", type=str, default="")
     parser.add_argument(
         "--delay", help="constant delay steps", type=int, default=20
     )
