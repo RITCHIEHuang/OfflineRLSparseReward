@@ -153,7 +153,7 @@ class AlgoTrainer(BaseAlgo):
         self.model = algo_init["model"]["net"]
         self.model_optim = algo_init["model"]["opt"]
 
-        self.batch_size = 64
+        self.batch_size = 32
         self.device = self.args["device"]
 
         self.best_model = deepcopy(self.model)
