@@ -14,7 +14,7 @@ hidden_features = 128
 hidden_layers = 4
 dropout = 0.1
 
-batch_size = 256
+batch_size = 32 
 steps_per_epoch = 1000
 max_epoch = 100
 
