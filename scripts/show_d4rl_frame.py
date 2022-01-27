@@ -32,12 +32,12 @@ def show_images(images: List[numpy.ndarray]) -> None:
         plt.imshow(images[i])
     plt.show(block=True)
 
-def main(dir='./hopper-none/'):
+def main(dir='./half-ie-video/'):
     im = []
     idx = 0
     for i in range(9):
         im.append(load_image(dir+'frame'+str(idx)+".jpg"))
-        idx += 15
+        idx +=100 
     show_images(im)
 
     
