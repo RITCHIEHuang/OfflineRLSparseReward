@@ -183,7 +183,8 @@ class AlgoTrainer(BaseAlgo):
                     1,
                     0,
                 )
-                delay_reward = s["delay_reward"].to(self.device)
+                #print("keys:",s.keys())
+                delay_reward = s["reward"].to(self.device)
                 returns = delay_reward.sum(dim=-1)
                 main_loss = (
                     torch.mean(
