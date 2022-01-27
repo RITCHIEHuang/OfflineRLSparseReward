@@ -1,10 +1,4 @@
 Dataset Type,Environment,Delay Mode,Delay,Strategy,Algo,Seed,Iteration,D4rl_Score,D4rl_Score_stddev
-low-100,walker2d,constant,20,none,iql,"[1000, 100, 10]",149,39.9,3.3
-low-100,hopper,constant,20,none,iql,"[1000, 100, 10]",99,17.0,1.0
-low-100,halfcheetah,constant,20,none,iql,"[1000, 100, 10]",849,29.4,0.1
-low-10,walker2d,constant,20,none,iql,"[1000, 10, 100]",649,41.9,3.3
-low-10,hopper,constant,20,none,iql,"[100, 1000, 10]",299,17.5,1.7
-low-10,halfcheetah,constant,20,none,iql,"[1000, 10, 100]",1249,28.9,0.2
 medium-expert-v0,walker2d,constant,20,none,iql,"[100, 1000, 10]",1099,106.7,1.7
 medium-expert-v0,hopper,constant,20,none,iql,"[1000, 100, 10]",549,112.5,0.3
 medium-replay-v0,hopper,constant,20,none,iql,"[10, 1000, 100]",249,39.1,4.0

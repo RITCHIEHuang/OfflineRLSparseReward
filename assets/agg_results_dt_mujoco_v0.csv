@@ -1,13 +1,13 @@
 Dataset Type,Environment,Delay Mode,Delay,Strategy,Algo,Seed,Iteration,D4rl_Score,D4rl_Score_stddev
 random,walker2d,constant,20,dt,DT,"[1000, 100, 10]",45,6.1,0.2
-medium,walker2d,constant,20,dt,DT,"[1000, 100, 10]",2,72.9,4.3
-medium-replay,walker2d,constant,20,dt,DT,"[1000, 100, 10]",5,68.2,3.7
-medium-expert,walker2d,constant,20,dt,DT,"[1000, 100, 10]",2,108.4,0.4
+medium,walker2d,constant,20,dt,DT,"[1000, 100, 10]",24,73.9,2.3
+medium-replay,walker2d,constant,20,dt,DT,"[1000, 100, 10]",48,68.8,5.5
+medium-expert,walker2d,constant,20,dt,DT,"[1000, 100, 10]",35,108.6,0.3
 expert,walker2d,constant,20,dt,DT,"[1000, 100, 10]",10,109.2,0.2
 random,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",0,2.3,0.0
 medium,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",29,42.7,0.1
 medium-replay,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",45,38.1,0.6
-medium-expert,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",43,91.4,1.4
+medium-expert,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",45,91.6,0.3
 expert,halfcheetah,constant,20,dt,DT,"[10, 100, 0]",43,92.0,0.8
 random,hopper,constant,20,dt,DT,"[100, 10, 0]",46,8.2,0.0
 medium,hopper,constant,20,dt,DT,"[100, 10, 0]",12,65.7,4.8

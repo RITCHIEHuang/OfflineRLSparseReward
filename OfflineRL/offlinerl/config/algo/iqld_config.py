@@ -25,7 +25,7 @@ soft_target_tau = 1.0
 
 q_update_period = 1
 policy_update_period = 1
-target_update_period = 10
+target_update_period = 50
 
 # update
 beta = 0.01

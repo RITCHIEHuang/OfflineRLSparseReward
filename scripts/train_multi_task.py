@@ -35,7 +35,7 @@ def argsparser():
         "--domain",
         help="name of experiment domain",
         type=str,
-        default="d4rl",
+        default="recs",
         choices=["d4rl", "neorl", "recs"],
     )
     parser.add_argument(
@@ -58,20 +58,21 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 domain = args.domain
-# algos = ["iql"]
-# algos = ["mopo"]
-algos = [args.algo_name]
+#algos = ["iql"]
+algos = ["offline_qr_dqn"]
 
 # algos = ["mopo"]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
 delay_modes = ["none"]
-seeds = [10, 100, 1000]
+# seeds = [10, 100, 1000]
+seeds = [20, 30, 40, 50, 60, 70, 80]
 delays = [1]
 
-# strategies = ["none"]
-strategies = [args.strategy]
+strategies = ["none", "interval_average", "interval_ensemble"]
+
+# strategies = [args.strategy]
 reward_scale = args.reward_scale
 reward_shift = args.reward_shift
 # strategies = ["interval_average"]

@@ -287,7 +287,7 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
                     init_reward_redistribution.cpu().numpy(),
                     traj_delay_rewards,
                 ],
-                ["non-delay", "smoothed", "init", "trained"],
+                ["dense", "ius", "init", "iupm"],
                 config,
                 suffix=f"{i}_interval_ensemble_compare",
             )

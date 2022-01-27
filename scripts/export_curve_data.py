@@ -12,50 +12,56 @@ from loguru import logger
 
 from utils.io_util import proj_path
 
+os.environ["WANDB_API_KEY"] = "13188c77c0fe0f79d08fe99604010dcdf7e8b5cd"
+
+wandb.login()
 
 debug = False
 
-result_file_path = f"{proj_path}/assets/iql/d4rl"
+result_file_path = f"{proj_path}/assets/antmaze-medium-play-v2"
 
 if not os.path.exists(result_file_path):
     os.makedirs(result_file_path)
 
 
 api = wandb.Api()
-runs = api.runs("ritchiehuang/OfflineRL_DelayRewards")
+# runs = api.runs("ritchiehuang/OfflineRL_DelayRewards")
+runs = api.runs("atlanta66/OfflineRL_DelayRewards")
 
 exp_variant_mapping = defaultdict(list)
 # {"group": [{}, {}]}
 
-# filter_group = ["d4rl-halfcheetah-medium-replay-v0"]
-filter_group = [
-    "d4rl-antmaze-umaze-v2",
-    "d4rl-antmaze-umaze-diverse-v2",
-    "d4rl-antmaze-medium-play-v2",
-    "d4rl-antmaze-medium-diverse-v2",
-    "d4rl-antmaze-large-play-v2",
-    "d4rl-antmaze-large-diverse-v2",
-]
+filter_group = ["d4rl-antmaze-medium-play-v2"]
+# filter_group = [
+#     "d4rl-antmaze-umaze-v2",
+#     "d4rl-antmaze-umaze-diverse-v2",
+#     "d4rl-antmaze-medium-play-v2",
+#     "d4rl-antmaze-medium-diverse-v2",
+#     "d4rl-antmaze-large-play-v2",
+#     "d4rl-antmaze-large-diverse-v2",
+# ]
 # filter_group = None
 
-filter_strategy = ["interval_ensemble", "interval_average", "none"]
+# filter_strategy = ["interval_ensemble", "interval_average", "none"]
 # filter_strategy = ["interval_ensemble"]
-# filter_strategy = ["none"]
+filter_strategy = ["none"]
 
-filter_delaymode = ["constant"]
-# filter_delaymode = ["none"]
+# filter_delaymode = ["constant"]
+filter_delaymode = ["none"]
 
-filter_delay = [20]
+filter_delay = [1]
 filter_seed = [10, 100, 1000]
 
 # filter_domain = ["neorl", "d4rl"]
 filter_domain = ["d4rl"]
 
 # filter_algo = ["mopo"]
-filter_algo = ["iql"]
+filter_algo = ["iql", "cql"]
+filter_state = ["finished"]
 
 # collect
 for run in tqdm(runs):
+    state = run.state
     group = run.group
     task = run.config["task"]
 
@@ -79,13 +85,15 @@ for run in tqdm(runs):
     algo = run.config["algo_name"]
     strategy = run.config["strategy"]
 
-    if group in filter_group:
+    quantile = run.config.get("quantile", 0.9)
+    if quantile != 0.9:
         continue
-
+    
     if not (
         (filter_domain is None or domain in filter_domain)
         and (filter_delaymode is None or delay_mode in filter_delaymode)
-        # and group in filter_group
+        and (filter_state is None or state in filter_state)
+        and group in filter_group
         and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
@@ -101,6 +109,8 @@ for run in tqdm(runs):
         "Strategy": strategy,
         "Algo": algo,
         "Seed": seed,
+        "Reward_Scale": run.config["reward_scale"],
+        "Reward_Shift": run.config["reward_shift"],
     }
 
     history_dict = run.scan_history()
@@ -123,8 +133,8 @@ if debug:
 # aggregate
 flag = True
 for k, v in exp_variant_mapping.items():
-    task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"] + "-strategy"
-    # task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"]
+    # task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"] + "-strategy"
+    task_name = v[0]["Environment"] + "-" + v[0]["Dataset Type"]
     result_file_path_ = f"{result_file_path}/{task_name}.csv"
     if os.path.exists(result_file_path_):
         flag = False
