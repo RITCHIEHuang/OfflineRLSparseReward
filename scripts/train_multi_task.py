@@ -48,7 +48,7 @@ def argsparser():
         "--reward_scale", help="scale for reward", type=float, default=1.0
     )
     parser.add_argument(
-        "--reward_shift", help="shift for reward", type=float, default=0.0
+        "--reward_shift", help="shift for reward", type=float, default=-1.0
     )
     return parser.parse_args()
 
@@ -58,19 +58,22 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 domain = args.domain
-#algos = ["iql"]
-algos = ["offline_qr_dqn"]
+algos = ["iqld"]
+# algos = ["offline_qr_dqn"]
 
 # algos = ["mopo"]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
 delay_modes = ["none"]
+# seeds = [10]
 # seeds = [10, 100, 1000]
-seeds = [20, 30, 40, 50, 60, 70, 80]
+# seeds = [20, 30, 40, 50, 60, 70, 80]
+seeds = [20]
 delays = [1]
 
 strategies = ["none", "interval_average", "interval_ensemble"]
+# strategies = ["none"]
 
 # strategies = [args.strategy]
 reward_scale = args.reward_scale
