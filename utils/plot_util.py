@@ -363,7 +363,7 @@ def plot_mopo_mujoco_strategy():
     dfs = []
 
     for p in file_paths:
-        df = pd.read_csv(os.path.join(file_dir, p))
+        df = pd.read_csv(os.path.join(file_dir, p), skiprows=lambda x: x > 0 and x % 50 != 0)
         df = df.replace("interval_ensemble", "IUPM")
         df = df.replace("interval_average", "IUS")
         df = df.replace("none", "None")
@@ -477,7 +477,7 @@ if __name__ == "__main__":
     # plot_mopo_reimp_mujoco()
 
     # # mopo mujoco v0 strategy
-    # plot_mopo_mujoco_strategy()
+    plot_mopo_mujoco_strategy()
 
     # # iql, cql under different reward shapings
     # plot_performance_under_shapings()
@@ -492,4 +492,4 @@ if __name__ == "__main__":
     # plot_iql_antmaze_strategy()
 
     # # iql mujoco strategy
-    plot_iql_mujoco_strategy()
+    # plot_iql_mujoco_strategy()
