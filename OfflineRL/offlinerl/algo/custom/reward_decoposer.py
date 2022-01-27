@@ -165,7 +165,7 @@ class AlgoTrainer(BaseAlgo):
         val_loader,
         callback_fn,
     ):
-        for epoch in range(max(self.args["max_epoch"],100)):
+        for epoch in range(min(self.args["max_epoch"],50)):
             ep_loss = 0
             for batch, s in enumerate(train_loader):
                 key_padding_mask = create_key_padding_mask(
@@ -221,5 +221,7 @@ if __name__ == "__main__":
     key_padding_mask = create_key_padding_mask([3, 4, 5], 5)
 
     model = TransformerRewardDecomposer(10, 512)
+    x=torch.where(key_padding_mask==0,1.0,0.0)
     reward_pre = model(obs_act_pair, key_padding_mask=key_padding_mask)
+
     print(reward_pre.shape)
