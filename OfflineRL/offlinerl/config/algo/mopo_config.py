@@ -23,8 +23,8 @@ transition_batch_size = 256
 policy_batch_size = 256
 data_collection_per_epoch = 50e3
 steps_per_epoch = 1000
-bc_epoch = 100
-max_epoch = 1500
+bc_epoch = 0
+max_epoch = 1000
 eval_epoch = 50
 
 learnable_alpha = True
@@ -36,6 +36,7 @@ discount = 0.99
 soft_target_tau = 5e-3
 
 horizon = 5
+# lam = 5
 lam = 2
 
 # tune

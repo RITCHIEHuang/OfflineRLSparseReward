@@ -1,3 +1,4 @@
+import math
 import os
 
 import matplotlib.pyplot as plt
@@ -49,50 +50,34 @@ sns.set(
 def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
     df = pd.DataFrame(data_list)
     df = df.T
+    names = [name.capitalize() for name in names]
     df.columns = names
 
-    n_row, n_col = 2, len(names)
-
-    fig, axes = plt.subplots(n_row, n_col, figsize=(12, 8))
-    cur_r, cur_c = 0, 0
-    ax = axes[cur_r, cur_c]
+    fig1, ax = plt.subplots(1, 1, figsize=(6, 4))
     sns.lineplot(data=df, legend=False, ci=None, ax=ax)
-    ax.set_xlabel("Time step")
+    ax.set_xlabel("Time Step")
     ax.set_ylabel("Reward")
 
-    for idx in range(n_col):
-        name = names[idx]
-        cur_c += 1
-        if cur_c == n_col:
-            cur_r += 1
-            cur_c = 0
-        ax = axes[cur_r, cur_c]
-        sns.distplot(df[name], ax=ax)
-
-    sns.despine(top=False, right=False, left=False, bottom=False)
-    fig_dir = f"{proj_path}/assets/{config['task']}"
-    if not os.path.exists(fig_dir):
-        os.makedirs(fig_dir)
-    fig.tight_layout()
-    fig.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.png")
-
-
-def plot_reward_dist(data_list: list, names: list, config: dict, suffix=""):
-    plt.figure()
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-    axes = axes.ravel()
+    if len(names) >= 4:
+        row = 2
+        col = math.ceil(len(names) // 2)
+        figsize = (12, 7)
+    else:
+        row = 1
+        col = len(names)
+        figsize = (14, 4)
+    fig2, axes = plt.subplots(row, col, figsize=figsize)
     for idx, ax in enumerate(axes):
-        if idx >= len(data_list):
-            break
-        ax.hist(data_list[idx], color="blue", edgecolor="black", bins=1000)
-        ax.set_xlabel("val")
-        ax.set_ylabel("proportion")
-        ax.set_title(names[idx])
+        sns.distplot(df[names[idx]], ax=ax, color=material[idx])
 
     fig_dir = f"{proj_path}/assets/{config['task']}"
     if not os.path.exists(fig_dir):
         os.makedirs(fig_dir)
-    plt.savefig(f"{fig_dir}/{config['delay_tag']}_distribution_{suffix}.png")
+    fig1.tight_layout()
+    fig1.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}.pdf")
+
+    fig2.tight_layout()
+    fig2.savefig(f"{fig_dir}/{config['delay_tag']}_{suffix}_distribution.pdf")
 
 
 ##############################################################################

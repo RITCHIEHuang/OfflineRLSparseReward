@@ -38,7 +38,7 @@ def record_video(task,policy,exp_name):
     state, done = env.reset(), False
     rewards = 0
     lengths = 0
-    max_step = 10
+    max_step = 1000
     cur = 0
     for _ in tqdm(range(max_step)):
         cur += 1
@@ -67,7 +67,7 @@ def run_algo(kwargs):
     #     [d4rl_eval_fn(task=algo_config["task"])]
     # )
     p = algo_trainer.get_policy()
-    record_video(algo_config["task"],p,algo_trainer.exp_name)
+    record_video(algo_config["task"],p,kwargs["model_path"][2:-3])
 
     #algo_trainer.train(train_buffer, None, callback_fn=callback_list)
 

@@ -4,7 +4,7 @@ from datetime import datetime
 
 from loguru import logger
 
-from utils.io_util import proj_path
+from utils.io_util import proj_path, data_path
 from utils.task_util import get_domain_by_task
 
 
@@ -20,7 +20,6 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError("Boolean value expected.")
-
 
 
 def argsparser():
@@ -112,7 +111,7 @@ def setup_exp_args():
     logger.info(f"Task: {args['task']} in Domain: {domain} !!!")
 
     args["task"] = f"{domain}-{args['task']}"
-    args["log_path"] = f"{proj_path}/logs"
+    args["log_path"] = f"{data_path}/logs"
 
     delay_tag = ""
     if args["delay_mode"] == "none":

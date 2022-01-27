@@ -151,7 +151,7 @@ def load_recs_buffer(config):
 
 if __name__ == "__main__":
     config = setup_exp_args()
-    config["task"] = "recs-random-v0"
+    # config["task"] = "recs-random-v0"
     # config["strategy"] = "interval_average"
     # config["delay_mode"] = "none"
     if config["log_to_wandb"]:

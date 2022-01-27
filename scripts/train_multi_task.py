@@ -35,7 +35,7 @@ def argsparser():
         "--domain",
         help="name of experiment domain",
         type=str,
-        default="d4rl",
+        default="recs",
         choices=["d4rl", "neorl", "recs"],
     )
     parser.add_argument(
@@ -65,11 +65,13 @@ algos = [args.algo_name]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
-delay_modes = ["none"]
-seeds = [10, 100, 1000]
-delays = [1]
+delay_modes = ["constant"]
+# seeds = [10, 100, 1000]
+seeds = [42, 430, 420]
+delays = [20]
 
-strategies = ["none"]
+strategies = ["transformer_decompose"]
+
 # strategies = [args.strategy]
 reward_scale = args.reward_scale
 reward_shift = args.reward_shift

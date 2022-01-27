@@ -60,7 +60,8 @@ rec_task_list = {
     1: "recs-replay-v0", 
     2: "recs-random-large-v0", 
     3: "recs-v0",
-    4: "recs-medium-v0"
+    4: "recs-medium-v0",
+    5: "recs-medium-replay-v0"
 }
 
 
@@ -71,3 +72,4 @@ def get_domain_by_task(task: str):
         return "neorl"
     elif task in list(rec_task_list.values()):
         return "recs"
+
