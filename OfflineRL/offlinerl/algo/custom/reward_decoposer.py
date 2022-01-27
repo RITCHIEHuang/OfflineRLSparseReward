@@ -150,10 +150,10 @@ class AlgoTrainer(BaseAlgo):
         super(AlgoTrainer, self).__init__(args)
         self.args = args
 
-        self.model = self.args["model"]["net"]
-        self.model_optim = self.args["model"]["optim"]
+        self.model = algo_init["model"]["net"]
+        self.model_optim = algo_init["model"]["opt"]
 
-        self.batch_size = self.args["batch_size"]
+        self.batch_size = 64
         self.device = self.args["device"]
 
         self.best_model = deepcopy(self.model)
@@ -165,7 +165,7 @@ class AlgoTrainer(BaseAlgo):
         val_loader,
         callback_fn,
     ):
-        for epoch in range(self.args["max_epoch"]):
+        for epoch in range(max(self.args["max_epoch"],100)):
             ep_loss = 0
             for batch, s in enumerate(train_loader):
                 key_padding_mask = create_key_padding_mask(

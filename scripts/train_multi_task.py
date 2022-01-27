@@ -59,18 +59,18 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 args = argsparser()
 domain = args.domain
 #algos = ["iql"]
-algos = ["offline_qr_dqn"]
+algos = [args.algo_name]
 
 # algos = ["mopo"]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
-delay_modes = ["none"]
+delay_modes = ["constant"]
 # seeds = [10, 100, 1000]
-seeds = [20, 30, 40, 50, 60, 70, 80]
-delays = [1]
+seeds = [42, 430, 420]
+delays = [20]
 
-strategies = ["none", "interval_average", "interval_ensemble"]
+strategies = ["transformer_decompose"]
 
 # strategies = [args.strategy]
 reward_scale = args.reward_scale
