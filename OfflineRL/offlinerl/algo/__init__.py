@@ -46,6 +46,7 @@ from offlinerl.algo.modelfree import (
     cql_discrete,
     iql_discrete,
     offline_dqn,
+    offline_dqn_bc,
     offline_qr_dqn,
     bcd,
     offline_rem,
@@ -69,6 +70,7 @@ algo_dict = {
     "mopo": {"algo": mopo, "config": mopo_config},
     "mopod": {"algo": mopo_discrete, "config": mopod_config},
     "offline_dqn": {"algo": offline_dqn, "config": offline_dqn_config},
+    "offline_dqn_bc": {"algo": offline_dqn_bc, "config": offline_dqn_config},
     "offline_qr_dqn": {
         "algo": offline_qr_dqn,
         "config": offline_qr_dqn_config,

@@ -1,5 +1,4 @@
 import argparse
-import subprocess
 
 from datetime import datetime
 
@@ -12,9 +11,6 @@ from utils.task_util import get_domain_by_task
 """ Experiment setting """
 
 
-count_gpu_shell = "nvidia-smi | grep 'GeFor' | wc -l"
-
-
 def str2bool(v):
     if isinstance(v, bool):
         return v
@@ -25,21 +21,6 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError("Boolean value expected.")
 
-
-def get_gpu_count():
-    p = subprocess.Popen(
-        count_gpu_shell,
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-    while p.poll() is None:
-        line = p.stdout.readline()
-        line = line.strip()
-        if line:
-            out = int(line.decode("utf-8"))
-            logger.info(f"Subprogram output: [{line}]")
-    return out
 
 
 def argsparser():

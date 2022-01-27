@@ -11,9 +11,9 @@ hidden_layer_size = 256
 hidden_layers = 2
 num_quantiles = 20
 
-batch_size = 256
-max_epoch = 1000
-steps_per_epoch = 3000
+batch_size = 128
+max_epoch = 700
+steps_per_epoch = 1000
 eval_epoch = 10
 
 lr = 1e-4

@@ -21,7 +21,7 @@ warmup_size = 10000
 train_freq = 1
 max_step = 1e7
 max_epoch = 10000
-eval_epoch = 50
+eval_epoch = 10
 use_noisy_linear = False
 
 lr = 1e-4

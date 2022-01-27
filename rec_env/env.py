@@ -298,7 +298,7 @@ def reward_fn(responses, rew_type="click"):
 def get_recs_env(**kwargs):
     env = create_env()
     print("*" * 100)
-    reward_type = kwargs.get("reward_type", "click")
+    reward_type = kwargs.get("reward_type", "weighted")
     print("reward_type", reward_type)
     print("*" * 100)
     recs_env = RecsEnv(env, partial(reward_fn, rew_type=reward_type), **kwargs)

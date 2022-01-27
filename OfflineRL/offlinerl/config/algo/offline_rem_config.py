@@ -12,8 +12,8 @@ hidden_layers = 2
 num_heads = 20
 
 batch_size = 256
-max_epoch = 1000
-steps_per_epoch = 3000
+max_epoch = 700
+steps_per_epoch = 1000
 eval_epoch = 10
 
 lr = 1e-4

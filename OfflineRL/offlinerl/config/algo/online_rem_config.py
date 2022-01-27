@@ -16,7 +16,7 @@ num_heads = 20
 log_data_path = f"{proj_path}/rec_env/data"
 # buffer_type = "avg_traj"  # log_transition
 buffer_type = "log_transition"  # log_transition
-buffer_size = 1e6
+buffer_size = 3e6
 batch_size = 256
 warmup_size = 10000
 train_freq = 1
@@ -24,7 +24,7 @@ max_step = 1e7
 max_epoch = 10000
 eval_epoch = 50
 
-lr = 1e-4
+lr = 3e-4
 exploration_init_eps = 0.2
 exploration_final_eps = 0.02
 target_update_interval = 2000

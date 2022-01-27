@@ -7,6 +7,7 @@
 assets/*
 !assets/*.csv
 !assets/*.png
+!assets/*.pdf
 
 *tune_results
 datasets/dataset/*
@@ -23,3 +24,6 @@ scripts/wandb.sh
 scripts/*.ipynb
 scripts/jupyter_exp
 scripts/.ipynb*
+
+# ----- GPU43 ---------
+utils/exp_util.py

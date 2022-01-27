@@ -22,7 +22,7 @@ for env in ["HalfCheetah", "Hopper", "Walker2d", "Ant"]:
             ]
 
 for env in ["recs"]:
-    for dset in ["", "random", "replay"]:
+    for dset in ["", "random", "replay","medium"]:
         if len(dset) != 0:
             dset_name = env + "-" + dset + "-v0"
         else:

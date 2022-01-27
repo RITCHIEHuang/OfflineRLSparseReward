@@ -17,7 +17,7 @@ for env_name in ["HalfCheetah-v3", "Hopper-v3", "Walker2d-v3"]:
             if os.path.exists(f"{name}.pkl"):
                 print("Dataset exists!!!")
                 continue
-            env = neorl.make(name)
+            env = neorl.make(env_name)
             dataset, _ = env.get_dataset(
                 data_type=dataset_type, train_num=dataset_num, need_val=False
             )
