@@ -28,10 +28,10 @@ policy_update_period = 1
 target_update_period = 50
 
 # update
-beta = 0.01
 # beta = 1.0 / 3
-quantile = 0.8
 # quantile = 0.7
+beta = 0.01
+quantile = 0.8
 clip_score = 100
 
 
