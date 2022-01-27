@@ -18,6 +18,8 @@ hidden_layers = 2
 layer_num = 2
 actor_lr = 3e-4
 critic_lr = 3e-4
+load_model = False
+load_epoch = 0
 
 discount = 0.99
 soft_target_tau = 5e-3
@@ -28,8 +30,8 @@ target_update_period = 1
 
 # update
 # antmaze
-# beta = 0.1
-# quantile = 0.9
+#beta = 0.1
+#quantile = 0.9
 # gym
 beta = 1.0 / 3
 quantile = 0.7

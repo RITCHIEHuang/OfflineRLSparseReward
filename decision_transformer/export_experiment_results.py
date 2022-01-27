@@ -16,7 +16,7 @@ from utils.task_util import get_domain_by_task
 
 debug = False
 
-agg_result_file_path = f"{proj_path}/assets/DT_agg_results.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results_dt_mujoco_v0.csv"
 
 if os.path.exists(agg_result_file_path):
     os.remove(agg_result_file_path)

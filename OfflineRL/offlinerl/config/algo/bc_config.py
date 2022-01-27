@@ -13,6 +13,8 @@ max_action = None
 
 actor_features = 256
 actor_layers = 2
+load_model = False
+load_epoch = 0
 
 batch_size = 256
 steps_per_epoch = 1000

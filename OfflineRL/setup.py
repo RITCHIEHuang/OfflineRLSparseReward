@@ -25,7 +25,7 @@ setup(
         "sklearn",
         "gtimer",
         "numpy",
-        "ray==1.2.0",
+        "ray==1.4.1",
     ],
     
 )

@@ -6,13 +6,20 @@ from torch.utils.data import Dataset
 
 
 class TrajDataset(Dataset):
-    def __init__(self, traj_dataset) -> None:
+    def __init__(self, traj_dataset, config) -> None:
+        self.config = config
         self.obs = traj_dataset["observations"]
         self.act = traj_dataset["actions"]
         self.delay_rew = traj_dataset["delay_rewards"]
         self.rew = traj_dataset["rewards"]
         self.done = traj_dataset["terminals"]
         self.next_obs = traj_dataset["next_observations"]
+
+        tmp = np.array([x.sum() for x in self.delay_rew])
+        self.return_max = np.max(tmp)
+        self.return_min = np.min(tmp)
+        self.return_mean = np.mean(tmp)
+        self.return_std = np.std(tmp)
 
         self.length = traj_dataset["length"]
         self.max_length = max(self.length)
@@ -48,6 +55,16 @@ class TrajDataset(Dataset):
         sample["next_obs"][:valid_length] = torch.from_numpy(
             self.next_obs[idx]
         )
+
+        if "scale" in self.config:
+            valid_rew = (torch.from_numpy(self.rew[idx])) * self.config[
+                "scale"
+            ]
+        else:
+            # default
+            valid_rew = (torch.from_numpy(self.rew[idx]) - self.return_min/valid_length) / (
+                self.return_max - self.return_min
+            )
 
         sample["act"] = torch.zeros((self.max_length, self.act_size))
         sample["act"][:valid_length] = torch.from_numpy(self.act[idx])

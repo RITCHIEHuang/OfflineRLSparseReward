@@ -128,6 +128,11 @@ class AlgoTrainer(BaseAlgo):
             * 5
         )
         self.args["target_entropy"] = -self.args["action_shape"]
+        if self.args["model_path"]!="":
+            print("load_model!!!!!!!!!!!!!!!!!!!!!!!")
+            print("load_model!!!!!!!!!!!!!!!!!!!!!!!")
+            print("load_model!!!!!!!!!!!!!!!!!!!!!!!")
+            self.actor = self.load_model(self.args["model_path"])
 
     def train(self, train_buffer, val_buffer, callback_fn):
         if self.args["dynamics_path"] is not None:

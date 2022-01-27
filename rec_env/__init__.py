@@ -31,6 +31,22 @@ register(
 )
 
 register(
+    id="recs-medium-replay-v0",
+    entry_point="rec_env.offline_env:get_recs_offline_env",
+    max_episode_steps=4000,
+    kwargs={
+        "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
+        "data_limit": int(3000_000),
+        "ref_min_score": 0.0,
+        "ref_max_score": 9.0,
+        "reward_key": "retentions",
+        "reward_type": "retention",
+    },
+)
+
+
+
+register(
     id="recs-medium-v0",
     entry_point="rec_env.offline_env:get_recs_offline_env",
     max_episode_steps=4000,
@@ -44,6 +60,22 @@ register(
     },
 )
 
+
+
+#------------------------------
+# online env
+register(
+    id="recs-v0",
+    entry_point="rec_env.env:get_recs_env",
+    max_episode_steps=4000,
+    kwargs={
+        # "reward_type": "click",
+        "reward_type": "retention",
+    },
+)
+
+# ------------------------------------------
+# not used now
 register(
     id="recs-random-large-v0",
     entry_point="rec_env.offline_env:get_recs_offline_env",
@@ -58,13 +90,3 @@ register(
     },
 )
 
-
-register(
-    id="recs-v0",
-    entry_point="rec_env.env:get_recs_env",
-    max_episode_steps=4000,
-    kwargs={
-        # "reward_type": "click",
-        "reward_type": "retention",
-    },
-)

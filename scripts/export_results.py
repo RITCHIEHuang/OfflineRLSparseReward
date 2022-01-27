@@ -13,10 +13,10 @@ from loguru import logger
 from utils.io_util import proj_path
 
 
-debug = False
+debug = False 
 
-result_file_path = f"{proj_path}/assets/results_iql_reimpl.csv"
-agg_result_file_path = f"{proj_path}/assets/agg_results_iql_reimpl.csv"
+result_file_path = f"{proj_path}/assets/results_mopo_reimpl.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_reimpl.csv"
 
 
 if os.path.exists(result_file_path):
@@ -50,9 +50,10 @@ filter_seed = [10, 100, 1000]
 # filter_domain = ["neorl", "d4rl"]
 filter_domain = ["d4rl"]
 
-# filter_algo = ["mopo"]
-filter_algo = ["iql"]
-
+filter_algo = ["mopo"]
+# filter_algo = ["iql"]
+filter_delaymode = ["none"]
+filter_delay = [1]
 # collect
 for run in tqdm(runs):
     group = run.group
@@ -78,11 +79,16 @@ for run in tqdm(runs):
     algo = run.config["algo_name"]
     strategy = run.config["strategy"]
 
+    if group in filter_group:
+        continue
+
     if not (
         (filter_domain is None or domain in filter_domain)
+        and (filter_delaymode is None or delay_mode in filter_delaymode)
         and algo in filter_algo
         and strategy in filter_strategy
         and seed in filter_seed
+        and delay in filter_delay
     ):
         continue
 

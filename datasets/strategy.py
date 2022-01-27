@@ -16,6 +16,7 @@ from offlinerl.utils.config import parse_config
 from offlinerl.evaluation import OnlineCallBackFunction, CallBackFunctionList
 from offlinerl.evaluation.d4rl import d4rl_eval_fn
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
+from offlinerl.algo.custom.reward_decoposer import create_key_padding_mask
 from offlinerl.config.algo import (
     shaping_config,
     decomposer_config,
@@ -287,7 +288,7 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
                     init_reward_redistribution.cpu().numpy(),
                     traj_delay_rewards,
                 ],
-                ["non-delay", "smoothed", "init", "trained"],
+                ["dense", "ius", "init", "iupm"],
                 config,
                 suffix=f"{i}_interval_ensemble_compare",
             )
@@ -409,7 +410,6 @@ def transformer_decompose_strategy(
 ):
     # train decompose model
     logger.info(f"Training Transformer decompose model start...")
-    dataset = TrajDataset(traj_dataset)
 
     algo_config = parse_config(decomposer_config)
     algo_config["project"] = config["project"]
@@ -417,10 +417,12 @@ def transformer_decompose_strategy(
     algo_config["log_path"] = config["log_path"]
     algo_config["log_to_wandb"] = False
 
+    dataset = TrajDataset(traj_dataset, algo_config)
+
     algo_config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
     train_dataloader = DataLoader(
-        dataset, batch_size=algo_config["batch_size"], shuffle=True
+        dataset, batch_size=16, shuffle=True
     )
     # val_dataloader = DataLoader(
     #     dataset, batch_size=algo_config["batch_size"] * 5, shuffle=True
@@ -438,7 +440,7 @@ def transformer_decompose_strategy(
 
     for i, traj_length in enumerate(traj_dataset["length"]):
         with torch.no_grad():
-            traj_delay_rewards = torch.from_numpy(
+            raw_delay_rewards = torch.from_numpy(
                 traj_dataset["delay_rewards"][i]
             ).to(device)
 
@@ -447,22 +449,29 @@ def transformer_decompose_strategy(
             )
             traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(device)
             traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
+            mask = create_key_padding_mask(
+                    [traj_length], traj_length
+                ).to(device)
             # init
             init_reward_pre = init_decomposer_model(
                 traj_obs_act_pair.unsqueeze(dim=0),
+                mask
             ).squeeze(dim=-1)
             init_reward_redistribution = reward_redistributed(
                 init_reward_pre,
-                traj_delay_rewards.unsqueeze(dim=0),
+                raw_delay_rewards.unsqueeze(dim=0),
+                [traj_length]
             ).squeeze(dim=0)
 
             # trained
             trained_reward_pre = trained_decomposer_model(
                 traj_obs_act_pair.unsqueeze(dim=0),
+                mask
             ).squeeze(dim=-1)
             trained_reward_redistribution = reward_redistributed(
                 trained_reward_pre,
-                traj_delay_rewards.unsqueeze(dim=0),
+                raw_delay_rewards.unsqueeze(dim=0),
+                [traj_length]
             ).squeeze(dim=0)
 
             traj_delay_rewards = (
@@ -471,7 +480,7 @@ def transformer_decompose_strategy(
             if i in plot_traj_idx_list:
                 plot_ep_reward(
                     [
-                        traj_delay_rewards.cpu().numpy(),
+                        raw_delay_rewards,
                         init_reward_redistribution.cpu().numpy(),
                         trained_reward_redistribution.cpu().numpy(),
                     ],

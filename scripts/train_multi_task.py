@@ -64,13 +64,12 @@ algos = ["mopo"]
 # delay_modes = ["constant", "random"]
 delay_modes = ["constant"]
 seeds = [10, 100, 1000]
-delays = [50]
-
-strategies = ["none"]
+delays = [20]
+# [1,2,5,6,9,10]
 # strategies = [args.strategy]
 reward_scale = args.reward_scale
 reward_shift = args.reward_shift
-# strategies = ["interval_average"]
+strategies = ["transformer_decompose"]
 # strategies = [
 #     "none",
 #     "minmax",

@@ -99,10 +99,8 @@ class AlgoTrainer(BaseAlgo):
         self.critic_criterion = nn.MSELoss()
 
         self._n_train_steps_total = 0
-        self._current_epoch = 0
 
     def _train(self, batch):
-        self._current_epoch += 1
         self._n_train_steps_total += 1
         batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
         rewards = batch.rew
@@ -150,7 +148,7 @@ class AlgoTrainer(BaseAlgo):
         dist = self.actor(obs)
         log_pi = dist.log_prob(actions.long()).sum(dim=-1, keepdim=True)
 
-        if self._current_epoch < self.args["policy_bc_steps"]:
+        if self._n_train_steps_total < self.args["policy_bc_steps"]:
             """
             For the initial few epochs, try doing behaivoral cloning, if needed
             conventionally, there's not much difference in performance with having 20k
