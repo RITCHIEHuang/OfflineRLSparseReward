@@ -58,18 +58,18 @@ print(f"num_gpu: {NUM_GPU} gpus.")
 
 args = argsparser()
 domain = args.domain
-algos = ["mopo"]
+algos = [args.algo_name]
 # algos = ["bc", "bcq", "cql", "mopo"]
 
 # delay_modes = ["constant", "random"]
-delay_modes = ["constant"]
-seeds = [10, 100, 1000]
+delay_modes = ["constant" if domain!="recs" else "none"]
+seeds = [41,42,43]
 delays = [20]
 # [1,2,5,6,9,10]
 # strategies = [args.strategy]
 reward_scale = args.reward_scale
 reward_shift = args.reward_shift
-strategies = ["transformer_decompose"]
+strategies = [args.strategy]
 # strategies = [
 #     "none",
 #     "minmax",
