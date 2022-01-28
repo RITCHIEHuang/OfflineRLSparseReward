@@ -1,4 +1,4 @@
-# Model Based Sparse Offline RL
+# Offline Reinforcement Learning for Sparse Reward Tasks
 
 The official implementation of "On Offline Reinforcement Learning for Sparse Reward Tasks"
 
