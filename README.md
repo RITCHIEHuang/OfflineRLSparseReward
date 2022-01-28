@@ -1,7 +1,6 @@
 # Model Based Sparse Offline RL
 
-The official implementation of Uniform Reward Shaping and Prediction for Offline Reinforcement Learning
-with Sparse Reward.
+The official implementation of "On Offline Reinforcement Learning for Sparse Reward Tasks"
 
 ## Installation
 
