@@ -36,7 +36,7 @@ register(
     max_episode_steps=4000,
     kwargs={
         "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
-        "data_limit": int(3000_000),
+        "data_limit": int(300_000),
         "ref_min_score": 0.0,
         "ref_max_score": 9.0,
         "reward_key": "retentions",
