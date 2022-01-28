@@ -15,8 +15,8 @@ from utils.io_util import proj_path
 
 debug = False 
 
-result_file_path = f"{proj_path}/assets/results_mopo_reimpl.csv"
-agg_result_file_path = f"{proj_path}/assets/agg_results_mopo_reimpl.csv"
+result_file_path = f"{proj_path}/assets/results_iql_delay_50_mujoco_v0.csv"
+agg_result_file_path = f"{proj_path}/assets/agg_results_iql_delay_50_mujoco_v0.csv"
 
 
 if os.path.exists(result_file_path):
@@ -50,10 +50,11 @@ filter_seed = [10, 100, 1000]
 # filter_domain = ["neorl", "d4rl"]
 filter_domain = ["d4rl"]
 
-filter_algo = ["mopo"]
-# filter_algo = ["iql"]
-filter_delaymode = ["none"]
-filter_delay = [1]
+# filter_algo = ["mopo"]
+filter_algo = ["iql"]
+# filter_delaymode = ["none"]
+filter_delaymode = ["constant"]
+filter_delay = [50]
 # collect
 for run in tqdm(runs):
     group = run.group
@@ -132,7 +133,7 @@ for k, v in exp_variant_mapping.items():
             [it["D4rl_Score"] for it in iter_res],
         )
         for i_iter, iter_res in v.items()
-        if len(iter_res) >= 3
+        if len(iter_res) >= 2
     ]
 
     sorted_iter_scores = sorted(iter_scores, key=lambda v: v[1], reverse=True)

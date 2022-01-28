@@ -221,7 +221,9 @@ def interval_ensemble_strategy(traj_dataset, config, plot_traj_idx_list=[]):
                     F.one_hot(
                         traj_act.long(),
                         num_classes=action_shape,
-                    ).squeeze(1).float()
+                    )
+                    .squeeze(1)
+                    .float()
                 )
             traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1).float()
             # init
@@ -422,7 +424,7 @@ def transformer_decompose_strategy(
     algo_config["exp_name"] = f"{config['exp_name']}-reward_decomposer"
 
     train_dataloader = DataLoader(
-        dataset, batch_size=16, shuffle=True
+        dataset, batch_size=algo_config["batch_size"], shuffle=True
     )
     # val_dataloader = DataLoader(
     #     dataset, batch_size=algo_config["batch_size"] * 5, shuffle=True
@@ -449,29 +451,27 @@ def transformer_decompose_strategy(
             )
             traj_act = torch.from_numpy(traj_dataset["actions"][i]).to(device)
             traj_obs_act_pair = torch.cat([traj_obs, traj_act], dim=-1)
-            mask = create_key_padding_mask(
-                    [traj_length], traj_length
-                ).to(device)
+            mask = create_key_padding_mask([traj_length], traj_length).to(
+                device
+            )
             # init
             init_reward_pre = init_decomposer_model(
-                traj_obs_act_pair.unsqueeze(dim=0),
-                mask
+                traj_obs_act_pair.unsqueeze(dim=0), mask
             ).squeeze(dim=-1)
             init_reward_redistribution = reward_redistributed(
                 init_reward_pre,
                 raw_delay_rewards.unsqueeze(dim=0),
-                [traj_length]
+                [traj_length],
             ).squeeze(dim=0)
 
             # trained
             trained_reward_pre = trained_decomposer_model(
-                traj_obs_act_pair.unsqueeze(dim=0),
-                mask
+                traj_obs_act_pair.unsqueeze(dim=0), mask
             ).squeeze(dim=-1)
             trained_reward_redistribution = reward_redistributed(
                 trained_reward_pre,
                 raw_delay_rewards.unsqueeze(dim=0),
-                [traj_length]
+                [traj_length],
             ).squeeze(dim=0)
 
             traj_delay_rewards = (
