@@ -348,7 +348,7 @@ def plot_mopo_mujoco_strategy():
     dfs = []
 
     for p in file_paths:
-        df = pd.read_csv(os.path.join(file_dir, p), skiprows=lambda x: (x + 1) % 50 != 0)
+        df = pd.read_csv(os.path.join(file_dir, p), skiprows=lambda x: x > 0 and x % 50 != 0)
         df = df.replace("interval_ensemble", "IUPM")
         df = df.replace("interval_average", "IUS")
         df = df.replace("none", "None")

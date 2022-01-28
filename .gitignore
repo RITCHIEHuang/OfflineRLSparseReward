@@ -28,3 +28,4 @@ scripts/.ipynb*
 # ----- GPU43 ---------
 utils/exp_util.py
 scripts/train_multi_mask.py
+scripts/plot_util.py
