@@ -26,6 +26,6 @@ scripts/jupyter_exp
 scripts/.ipynb*
 
 # ----- GPU43 ---------
-utils/exp_util.py
+# utils/exp_util.py
 scripts/train_multi_task.py
 utils/plot_util.py
