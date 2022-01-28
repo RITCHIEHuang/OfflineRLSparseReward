@@ -67,7 +67,7 @@ def plot_ep_reward(data_list: list, names: list, config: dict, suffix=""):
         col = len(names)
         figsize = (14, 4)
     fig2, axes = plt.subplots(row, col, figsize=figsize)
-    for idx, ax in enumerate(axes):
+    for idx, ax in enumerate(axes.flatten()):
         sns.distplot(df[names[idx]], ax=ax, color=material[idx])
 
     fig_dir = f"{proj_path}/assets/{config['task']}"
