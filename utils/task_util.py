@@ -72,4 +72,6 @@ def get_domain_by_task(task: str):
         return "neorl"
     elif task in list(rec_task_list.values()):
         return "recs"
+    else:
+        return "gym"
 

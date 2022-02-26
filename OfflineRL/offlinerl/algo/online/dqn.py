@@ -32,10 +32,10 @@ def algo_init(args):
         args["obs_shape"], args["action_shape"] = obs_shape, action_shape
     else:
         raise NotImplementedError
-    
+
     use_noisy_linear = False
-    if "use_noisy_linear" in args and args["use_noisy_linear"]: 
-        use_noisy_linear=True
+    if "use_noisy_linear" in args and args["use_noisy_linear"]:
+        use_noisy_linear = True
         print("use noisy linear network!!!")
 
     q = MLP(
@@ -45,7 +45,7 @@ def algo_init(args):
         args["hidden_layers"],
         norm=None,
         hidden_activation="relu",
-        use_noisy_linear=use_noisy_linear
+        use_noisy_linear=use_noisy_linear,
     ).to(args["device"])
     critic_optim = torch.optim.Adam(q.parameters(), lr=args["lr"])
 
@@ -120,7 +120,7 @@ class AlgoTrainer(BaseAlgo):
                         action = self.actor(obs_t)[0].long()
                         action = action.cpu().numpy()
 
-                new_obs, reward, done, info = self.env.step(action)
+                new_obs, reward, done, info = self.env.step(action[0])
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
@@ -145,7 +145,10 @@ class AlgoTrainer(BaseAlgo):
                 obs = new_obs
 
                 self.total_train_steps += 1
-                if self.total_train_steps >= self.args["warmup_size"] and self.total_train_steps % self.args["train_freq"] == 0:
+                if (
+                    self.total_train_steps >= self.args["warmup_size"]
+                    and self.total_train_steps % self.args["train_freq"] == 0
+                ):
                     batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
 
@@ -202,7 +205,9 @@ class AlgoTrainer(BaseAlgo):
             )
 
         self.exploration_rate = self.exploration_schedule(
-            np.clip(1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0)
+            np.clip(
+                1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0
+            )
         )
         self.actor.q_net = self.q
 

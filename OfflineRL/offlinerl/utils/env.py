@@ -1,21 +1,21 @@
 import gym
-import neorl
-import rec_env
 import numpy as np
 from typing import Tuple
 
 
 def get_env(task: str) -> gym.Env:
     try:
-        if "HalfCheetah-v3" in task:
-            env = neorl.make("HalfCheetah-v3")
-        elif "Hopper-v3" in task:
-            env = neorl.make("Hopper-v3")
-        elif "Walker2d-v3" in task:
-            env = neorl.make("Walker2d-v3")
-        elif task.startswith("recs"):
+        if task.startswith("recs"):
+            import rec_env
+
             task = task[5:]
             env = gym.make(task)
+        elif task.startswith("neorl"):
+            import neorl
+
+            task = "-".join(task.split("-")[1:3])
+            env = neorl.make(task)
+
         elif task.startswith("d4rl"):
             import d4rl
 
@@ -137,10 +137,9 @@ def get_env(task: str) -> gym.Env:
                     return done
 
                 env.get_done_func = lambda: terminal_function
-        else:
-            task_name = task.strip().split("-")[0]
-            print(f"task:{task},task_name:{task_name}")
-            env = neorl.make(task_name)
+        elif task.startswith("gym"):
+            task = task[4:]
+            env = gym.make(task)
     except:
         raise NotImplementedError
 

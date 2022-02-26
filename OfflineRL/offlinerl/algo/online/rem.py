@@ -115,8 +115,7 @@ class AlgoTrainer(BaseAlgo):
 
                         action = self.actor(obs_t)[0].long()
                         action = action.cpu().numpy()
-
-                new_obs, reward, done, info = self.env.step(action)
+                new_obs, reward, done, info = self.env.step(action[0])
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
@@ -141,7 +140,10 @@ class AlgoTrainer(BaseAlgo):
 
                 self.total_train_steps += 1
 
-                if self.total_train_steps >= self.args["warmup_size"] and self.total_train_steps % self.args["train_freq"] == 0:
+                if (
+                    self.total_train_steps >= self.args["warmup_size"]
+                    and self.total_train_steps % self.args["train_freq"] == 0
+                ):
                     batch = self.replay_buffer.sample(self.args["batch_size"])
                     batch.to_torch(device=self.device)
                     dqn_metrics = self._rem_update(batch)
@@ -203,7 +205,9 @@ class AlgoTrainer(BaseAlgo):
                 soft_target_tau=self.args["soft_target_tau"],
             )
         self.exploration_rate = self.exploration_schedule(
-            np.clip(1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0)
+            np.clip(
+                1.0 - 1.0 * self.train_epoch / self.args["max_epoch"], 0.0, 1.0
+            )
         )
         self.actor.q_net = self.q
 

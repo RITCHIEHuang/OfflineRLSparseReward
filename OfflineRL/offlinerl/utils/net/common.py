@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Tuple, Union, Callable, Optional, Sequence
 
 from offlinerl.utils.data import to_array_as
 
+
 def miniblock(
     inp: int,
     oup: int,
@@ -22,27 +23,32 @@ def miniblock(
 
 
 class BasePolicy(ABC):
-    @abstractmethod 
+    @abstractmethod
     def policy_infer(self, obs):
         pass
-    
+
     def get_action(self, obs):
-        obs_tensor = torch.as_tensor(obs, device=next(self.parameters()).device, dtype=torch.float32)
+        obs_tensor = torch.as_tensor(
+            obs, device=next(self.parameters()).device, dtype=torch.float32
+        )
         act = to_array_as(self.policy_infer(obs_tensor), obs)
-        
+
         return act
 
+
 class DiscretePolicy(ABC):
-    @abstractmethod 
+    @abstractmethod
     def policy_infer(self, obs):
         pass
-    
+
     def get_action(self, obs):
-        obs_tensor = torch.as_tensor(obs, device=next(self.parameters()).device, dtype=torch.float32)
+        obs_tensor = torch.as_tensor(
+            obs, device=next(self.parameters()).device, dtype=torch.float32
+        )
         act = self.policy_infer(obs_tensor).detach().cpu().numpy()[0]
-        
+
         return act
-    
+
 
 class Net(nn.Module):
     """Simple MLP backbone.
@@ -65,7 +71,7 @@ class Net(nn.Module):
         softmax: bool = False,
         concat: bool = False,
         hidden_layer_size: int = 128,
-        output_shape: int = 0, 
+        output_shape: int = 0,
         dueling: Optional[Tuple[int, int]] = None,
         norm_layer: Optional[Callable[[int], nn.modules.Module]] = None,
     ) -> None:
@@ -81,9 +87,8 @@ class Net(nn.Module):
 
         for i in range(layer_num):
             model += miniblock(
-                hidden_layer_size, hidden_layer_size, norm_layer)
-            
-        
+                hidden_layer_size, hidden_layer_size, norm_layer
+            )
 
         if dueling is None:
             if action_shape and not concat:
@@ -94,10 +99,12 @@ class Net(nn.Module):
 
             for i in range(q_layer_num):
                 Q += miniblock(
-                    hidden_layer_size, hidden_layer_size, norm_layer)
+                    hidden_layer_size, hidden_layer_size, norm_layer
+                )
             for i in range(v_layer_num):
                 V += miniblock(
-                    hidden_layer_size, hidden_layer_size, norm_layer)
+                    hidden_layer_size, hidden_layer_size, norm_layer
+                )
 
             if action_shape and not concat:
                 Q += [nn.Linear(hidden_layer_size, np.prod(action_shape))]
@@ -105,9 +112,9 @@ class Net(nn.Module):
 
             self.Q = nn.Sequential(*Q)
             self.V = nn.Sequential(*V)
-            
+
         if self.output_shape:
-            model +=  [nn.Linear(hidden_layer_size, output_shape)]
+            model += [nn.Linear(hidden_layer_size, output_shape)]
         self.model = nn.Sequential(*model)
 
     def forward(
@@ -173,20 +180,29 @@ class Recurrent(nn.Module):
         else:
             # we store the stack data in [bsz, len, ...] format
             # but pytorch rnn needs [len, bsz, ...]
-            s, (h, c) = self.nn(s, (state["h"].transpose(0, 1).contiguous(),
-                                    state["c"].transpose(0, 1).contiguous()))
+            s, (h, c) = self.nn(
+                s,
+                (
+                    state["h"].transpose(0, 1).contiguous(),
+                    state["c"].transpose(0, 1).contiguous(),
+                ),
+            )
         s = self.fc2(s[:, -1])
         # please ensure the first dim is batch size: [bsz, len, ...]
-        return s, {"h": h.transpose(0, 1).detach(),
-                   "c": c.transpose(0, 1).detach()}
+        return s, {
+            "h": h.transpose(0, 1).detach(),
+            "c": c.transpose(0, 1).detach(),
+        }
+
 
 class Swish(nn.Module):
     def forward(self, x):
         return x * torch.sigmoid(x)
 
+
 class NoisyLinear(nn.Module):
     """Noisy linear module for NoisyNet.
-    
+
     Attributes:
         in_features (int): input size of linear module
         out_features (int): output size of linear module
@@ -195,13 +211,15 @@ class NoisyLinear(nn.Module):
         weight_sigma (nn.Parameter): std value weight parameter
         bias_mu (nn.Parameter): mean value bias parameter
         bias_sigma (nn.Parameter): std value bias parameter
-        
+
     """
 
-    def __init__(self, in_features: int, out_features: int, std_init: float = 0.5):
+    def __init__(
+        self, in_features: int, out_features: int, std_init: float = 0.5
+    ):
         """Initialization."""
         super(NoisyLinear, self).__init__()
-        
+
         self.in_features = in_features
         self.out_features = out_features
         self.std_init = std_init
@@ -244,7 +262,7 @@ class NoisyLinear(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward method implementation.
-        
+
         We don't use separate statements on train / eval mode.
         It doesn't show remarkable difference of performance.
         """
@@ -253,7 +271,7 @@ class NoisyLinear(nn.Module):
             self.weight_mu + self.weight_sigma * self.weight_epsilon,
             self.bias_mu + self.bias_sigma * self.bias_epsilon,
         )
-    
+
     @staticmethod
     def scale_noise(size: int) -> torch.Tensor:
         """Set scale to make noise (factorized gaussian noise)."""
@@ -264,37 +282,39 @@ class NoisyLinear(nn.Module):
 
 class MLP(nn.Module):
     r"""
-        Multi-layer Perceptron
-        Inputs:
-            in_features : int, features numbers of the input
-            out_features : int, features numbers of the output
-            hidden_features : int, features numbers of the hidden layers
-            hidden_layers : int, numbers of the hidden layers
-            norm : str, normalization method between hidden layers, default : None
-            hidden_activation : str, activation function used in hidden layers, default : 'leakyrelu'
-            output_activation : str, activation function used in output layer, default : 'identity'
+    Multi-layer Perceptron
+    Inputs:
+        in_features : int, features numbers of the input
+        out_features : int, features numbers of the output
+        hidden_features : int, features numbers of the hidden layers
+        hidden_layers : int, numbers of the hidden layers
+        norm : str, normalization method between hidden layers, default : None
+        hidden_activation : str, activation function used in hidden layers, default : 'leakyrelu'
+        output_activation : str, activation function used in output layer, default : 'identity'
     """
 
     ACTIVATION_CREATORS = {
-        'relu' : lambda: nn.ReLU(inplace=True),
-        'elu' : lambda: nn.ELU(),
-        'leakyrelu' : lambda: nn.LeakyReLU(negative_slope=0.1, inplace=True),
-        'tanh' : lambda: nn.Tanh(),
-        'sigmoid' : lambda: nn.Sigmoid(),
-        'identity' : lambda: nn.Identity(),
-        'gelu' : lambda: nn.GELU(),
-        'swish' : lambda: Swish(),
+        "relu": lambda: nn.ReLU(inplace=True),
+        "elu": lambda: nn.ELU(),
+        "leakyrelu": lambda: nn.LeakyReLU(negative_slope=0.1, inplace=True),
+        "tanh": lambda: nn.Tanh(),
+        "sigmoid": lambda: nn.Sigmoid(),
+        "identity": lambda: nn.Identity(),
+        "gelu": lambda: nn.GELU(),
+        "swish": lambda: Swish(),
     }
 
-    def __init__(self, 
-                 in_features : int, 
-                 out_features : int, 
-                 hidden_features : int, 
-                 hidden_layers : int, 
-                 norm : str = None, 
-                 hidden_activation : str = 'leakyrelu', 
-                 output_activation : str = 'identity',
-                 use_noisy_linear : bool=False):
+    def __init__(
+        self,
+        in_features: int,
+        out_features: int,
+        hidden_features: int,
+        hidden_layers: int,
+        norm: str = None,
+        hidden_activation: str = "leakyrelu",
+        output_activation: str = "identity",
+        use_noisy_linear: bool = False,
+    ):
         super(MLP, self).__init__()
 
         hidden_activation_creator = self.ACTIVATION_CREATORS[hidden_activation]
@@ -303,22 +323,34 @@ class MLP(nn.Module):
         if hidden_layers == 0:
             self.net = nn.Sequential(
                 nn.Linear(in_features, out_features),
-                output_activation_creator(out_features)
+                output_activation_creator(out_features),
             )
         else:
             net = []
             for i in range(hidden_layers):
                 if use_noisy_linear:
-                    net.append(NoisyLinear(in_features if i == 0 else hidden_features, hidden_features))
+                    net.append(
+                        NoisyLinear(
+                            in_features if i == 0 else hidden_features,
+                            hidden_features,
+                        )
+                    )
                 else:
-                    net.append(nn.Linear(in_features if i == 0 else hidden_features, hidden_features))
+                    net.append(
+                        nn.Linear(
+                            in_features if i == 0 else hidden_features,
+                            hidden_features,
+                        )
+                    )
                 if norm:
-                    if norm == 'ln':
+                    if norm == "ln":
                         net.append(nn.LayerNorm(hidden_features))
-                    elif norm == 'bn':
+                    elif norm == "bn":
                         net.append(nn.BatchNorm1d(hidden_features))
                     else:
-                        raise NotImplementedError(f'{norm} does not supported!')
+                        raise NotImplementedError(
+                            f"{norm} does not supported!"
+                        )
                 net.append(hidden_activation_creator())
             if use_noisy_linear:
                 net.append(NoisyLinear(hidden_features, out_features))

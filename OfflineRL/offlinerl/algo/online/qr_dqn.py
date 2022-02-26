@@ -124,7 +124,7 @@ class AlgoTrainer(BaseAlgo):
                         action = self.actor(obs_t)[0].long()
                         action = action.cpu().numpy()
 
-                new_obs, reward, done, info = self.env.step(action)
+                new_obs, reward, done, info = self.env.step(action[0])
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
