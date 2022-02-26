@@ -5,8 +5,6 @@ from torch import nn
 from copy import deepcopy
 from loguru import logger
 
-import numpy as np
-from tqdm import tqdm
 
 from torch.nn import (
     TransformerEncoder,
@@ -153,7 +151,7 @@ class AlgoTrainer(BaseAlgo):
         self.model = algo_init["model"]["net"]
         self.model_optim = algo_init["model"]["opt"]
 
-        self.batch_size = 32
+        self.batch_size = self.args["batch_size"]
         self.device = self.args["device"]
 
         self.best_model = deepcopy(self.model)
@@ -183,7 +181,7 @@ class AlgoTrainer(BaseAlgo):
                     1,
                     0,
                 )
-                #print("keys:",s.keys())
+                # print("keys:",s.keys())
                 delay_reward = s["reward"].to(self.device)
                 returns = delay_reward.sum(dim=-1)
                 main_loss = (
