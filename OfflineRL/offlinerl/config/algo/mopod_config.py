@@ -23,6 +23,8 @@ transition_batch_size = 256
 policy_batch_size = 256
 data_collection_per_epoch = 50e3
 steps_per_epoch = 1000
+target_update_interval = 8000
+update_interval = 4
 bc_epoch = 0
 max_epoch = 1500
 eval_epoch = 50
@@ -33,7 +35,7 @@ transition_lr = 1e-3
 actor_lr = 1e-4
 critic_lr = 1e-4
 discount = 0.99
-soft_target_tau = 5e-3
+soft_target_tau = 1.0
 
 horizon = 5
 lam = 2

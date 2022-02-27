@@ -236,9 +236,9 @@ class AlgoTrainer(BaseAlgo):
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
-        # torch.nn.utils.clip_grad.clip_grad_norm_(
-        #     [*self.q1.parameters(), *self.q2.parameters()], max_norm=1.0
-        # )
+        torch.nn.utils.clip_grad.clip_grad_norm_(
+            [*self.q1.parameters(), *self.q2.parameters()], max_norm=1.0
+        )
         self.critic_optim.step()
 
         # soft target update
@@ -270,9 +270,9 @@ class AlgoTrainer(BaseAlgo):
 
         self.actor_optim.zero_grad()
         actor_loss.backward()
-        # torch.nn.utils.clip_grad.clip_grad_norm_(
-        #     self.actor.parameters(), max_norm=1.0
-        # )
+        torch.nn.utils.clip_grad.clip_grad_norm_(
+            self.actor.parameters(), max_norm=1.0
+        )
         self.actor_optim.step()
 
         if self.args["learnable_alpha"]:
@@ -282,9 +282,9 @@ class AlgoTrainer(BaseAlgo):
 
             self.log_alpha_optim.zero_grad()
             alpha_loss.backward()
-            # torch.nn.utils.clip_grad.clip_grad_norm_(
-            #     [self.log_alpha], max_norm=1.0
-            # )
+            torch.nn.utils.clip_grad.clip_grad_norm_(
+                [self.log_alpha], max_norm=1.0
+            )
             self.log_alpha_optim.step()
 
         # DEBUGGING INFORMATION
