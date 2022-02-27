@@ -50,7 +50,7 @@ class GreedyAgent(object):
 AGENT_MAPPING = {"random": RandomAgent, "greedy": GreedyAgent}
 
 
-def create_agent(environment, agent_type: RandomAgent):
+def create_agent(environment, agent_type=RandomAgent):
     return agent_type(environment)
 
 

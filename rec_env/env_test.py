@@ -31,7 +31,8 @@ def test_user():
 
 def test_env():
     env = get_recs_env(
-        obs_encode_format="vec",
+        # obs_encode_format="vec",
+        obs_encode_format="img",
     )
 
     print("=" * 88)

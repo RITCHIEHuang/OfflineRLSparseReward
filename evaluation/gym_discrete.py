@@ -3,24 +3,11 @@ from collections import OrderedDict
 import numpy as np
 
 from offlinerl.utils.env import get_env
-
-
-def run_episode(args):
-    env, policy, _ = args
-    state, done = env.reset(), False
-    rewards = 0
-    lengths = 0
-    while not done:
-        state = state[np.newaxis]
-        action = policy.get_action(state)
-        state, reward, done, _ = env.step(action)
-        rewards += reward
-        lengths += 1
-    return rewards, lengths
+from offlinerl.utils.atari_utils import make_pytorch_env
 
 
 def gym_eval_fn(task, eval_episodes=100):
-    env = get_env(task)
+    env = make_pytorch_env(get_env(task), clip_rewards=False, scale=True)
 
     def d4rl_eval(policy):
         episode_rewards = []
