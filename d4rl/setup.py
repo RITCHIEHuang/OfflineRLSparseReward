@@ -14,7 +14,7 @@ setup(
         "termcolor",  # adept_envs dependency
         "click",  # adept_envs dependency
         'dm_control', 
-        "mjrl@git+https://github.com/aravindr93/mjrl@master#egg=mjrl"
+        # "mjrl@git+https://github.com/aravindr93/mjrl@master#egg=mjrl"
     ],
     packages=find_packages(),
     package_data={

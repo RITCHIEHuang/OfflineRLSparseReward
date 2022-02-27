@@ -100,7 +100,7 @@ class AlgoTrainer(BaseAlgo):
         if self.args["buffer_type"] == "log_transition":
             self.replay_buffer = LoggedReplayBuffer(
                 self.args["buffer_size"],
-                log_path=f'{self.args["log_data_path"]}/SAC/{self.env.spec.id}',
+                log_path=f'{self.args["log_data_path"]}/SACD/{self.env.spec.id}',
             )
         elif self.args["buffer_type"] == "avg_traj":
             self.replay_buffer = TrajAveragedReplayBuffer(
@@ -132,17 +132,26 @@ class AlgoTrainer(BaseAlgo):
                     obs_t = obs_t.unsqueeze(0)
                     action = self.actor(obs_t).sample()
                     action = action.cpu().numpy()
-                    new_obs, reward, done, info = self.env.step(action)
+                    new_obs, reward, done, info = self.env.step(action[0])
+
+                if self.total_train_steps >= self.args["warmup_size"]:
+                    for _ in range(self.args["steps_per_epoch"]):
+                        batch = self.replay_buffer.sample(
+                            self.args["batch_size"]
+                        )
+                        batch.to_torch(device=self.device)
+
+                        sac_metrics = self._sac_update(batch)
+                        metrics.update(sac_metrics)
 
                 batch_data = Batch(
                     {
                         "obs": np.expand_dims(obs, 0),
                         "act": np.expand_dims(action, 0),
                         "rew": [reward],
-                        # "ret": reward,
                         "done": [done],
                         "obs_next": np.expand_dims(new_obs, 0),
-                        "retention": [info["reward"]["retention"]],
+                        # "retention": [info["reward"]["retention"]],
                     }
                 )
                 if isinstance(self.replay_buffer, LoggedReplayBuffer):
@@ -160,14 +169,6 @@ class AlgoTrainer(BaseAlgo):
 
             if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
                 self.replay_buffer.put(traj_batch)
-
-            if self.total_train_steps >= self.args["warmup_size"]:
-                for _ in range(self.args["steps_per_epoch"]):
-                    batch = self.replay_buffer.sample(self.args["batch_size"])
-                    batch.to_torch(device=self.device)
-
-                    sac_metrics = self._sac_update(batch)
-                    metrics.update(sac_metrics)
 
             if (
                 self.train_epoch == 0
@@ -193,12 +194,12 @@ class AlgoTrainer(BaseAlgo):
         _q2 = self.q2(obs).gather(-1, action.long())
 
         with torch.no_grad():
+            alpha = torch.exp(self.log_alpha)
             next_action_dist = self.actor(next_obs)
             probs = next_action_dist.probs
             entropy = next_action_dist.entropy().unsqueeze(-1)
             _target_q1 = self.target_q1(next_obs)
             _target_q2 = self.target_q2(next_obs)
-            alpha = torch.exp(self.log_alpha)
             target_q = probs * torch.min(_target_q1, _target_q2)
 
             y = reward + self.args["discount"] * (1 - done) * (
@@ -243,6 +244,7 @@ class AlgoTrainer(BaseAlgo):
             q1 = self.q1(obs)
             q2 = self.q2(obs)
             q = torch.min(q1, q2)
+            alpha = torch.exp(self.log_alpha)
 
         q = torch.sum(q * probs, dim=-1, keepdim=True)
         actor_loss = -(q + alpha * entropy).mean()

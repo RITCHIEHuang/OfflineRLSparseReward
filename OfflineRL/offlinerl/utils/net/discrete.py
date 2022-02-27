@@ -39,27 +39,32 @@ class ActorProb(nn.Module):
 
 
 class CategoricalActor(nn.Module, DiscretePolicy):
-    def __init__(self, obs_dim, action_dim, hidden_size, hidden_layers, hidden_activation='tanh'):
+    def __init__(
+        self,
+        obs_dim,
+        action_dim,
+        hidden_size,
+        hidden_layers,
+        hidden_activation="tanh",
+    ):
         super().__init__()
         self.backbone = MLP(
             in_features=obs_dim,
             out_features=action_dim,
             hidden_features=hidden_size,
             hidden_layers=hidden_layers,
-            hidden_activation=hidden_activation
+            hidden_activation=hidden_activation,
         )
-        #self.front = MLP(in_features=hidden_size,out_features=action_dim,hidden_layers=1,hidden_features=action_dim)
+
+    def forward(self, obs):
+        logits = self.backbone(obs)
+        probs = F.softmax(logits, dim=-1)
+        return Categorical(probs)
 
     def policy_infer(self, obs):
         probs = self(obs).probs
         greedy_actions = torch.argmax(probs, dim=-1, keepdim=True)
         return greedy_actions
-
-    def forward(self, obs):
-        logits= self.backbone(obs)
-        #logits = self.front(emb)
-        probs = F.softmax(logits, dim=-1)
-        return Categorical(probs)
 
 
 def combine_function(raw_outputs, combine_type):
@@ -189,11 +194,13 @@ class QPolicyWrapper(nn.Module, DiscretePolicy):
 
     def forward(self, obs):
         return self.policy_infer(obs)
+
+
 class QPolicyWrapperWithFront(nn.Module, DiscretePolicy):
-    def __init__(self, q_net,front):
+    def __init__(self, q_net, front):
         super().__init__()
         self.q_net = q_net
-        self.front=front
+        self.front = front
 
     def policy_infer(self, obs):
         with torch.no_grad():

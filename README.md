@@ -1,6 +1,6 @@
 # Offline Reinforcement Learning for Sparse Reward Tasks
 
-The official implementation of "On Offline Reinforcement Learning for Sparse Reward Tasks"
+The official implementation of "On Offline Reinforcement Learning for Sparse Reward Tasks".
 
 ## Installation
 
@@ -59,8 +59,13 @@ This project includes experiments on [d4rl](https://github.com/rail-berkeley/d4r
 
 To cite this repository:
 ```
-@xxxx{
-
+@misc{offlinerlsparse,
+  autho = {Ritchie Huang, Kuo Li},
+  title = {OfflineRLSparseReward},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/RITCHIEHuang/OfflineRLSparseReward}}
 }
 ```
 
