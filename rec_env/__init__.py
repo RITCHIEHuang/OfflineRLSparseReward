@@ -71,6 +71,8 @@ register(
     kwargs={
         "reward_type": "click",
         # "reward_type": "retention",
+        # "obs_encode_format": "vec"
+        "obs_encode_format": "img"
     },
 )
 

@@ -10,10 +10,15 @@ from offlinerl.utils.data import (
     TrajAveragedReplayBuffer,
 )
 from offlinerl.utils.net.common import MLP
-from offlinerl.utils.net.discrete import CategoricalActor
+from offlinerl.utils.net.discrete import (
+    CategoricalActor,
+    ConvCategoricalActor,
+    ConvMLP,
+)
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.env import get_env
+from offlinerl.utils.atari_utils import make_pytorch_env
 
 
 def algo_init(args):
@@ -31,11 +36,16 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    actor = CategoricalActor(
-        obs_dim=obs_shape,
+    # actor = CategoricalActor(
+    #     obs_dim=obs_shape,
+    #     action_dim=action_shape,
+    #     hidden_size=args["hidden_layer_size"],
+    #     hidden_layers=args["hidden_layers"],
+    # ).to(args["device"])
+
+    actor = ConvCategoricalActor(
+        4,
         action_dim=action_shape,
-        hidden_size=args["hidden_layer_size"],
-        hidden_layers=args["hidden_layers"],
     ).to(args["device"])
 
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args["actor_lr"])
@@ -43,27 +53,38 @@ def algo_init(args):
     log_alpha = torch.zeros(1, requires_grad=True, device=args["device"])
     alpha_optimizer = torch.optim.Adam([log_alpha], lr=args["actor_lr"])
 
-    q1 = MLP(
-        obs_shape,
+    # q1 = MLP(
+    #     obs_shape,
+    #     action_shape,
+    #     args["hidden_layer_size"],
+    #     args["hidden_layers"],
+    #     norm=None,
+    #     hidden_activation="relu",
+    # ).to(args["device"])
+    # q2 = MLP(
+    #     obs_shape,
+    #     action_shape,
+    #     args["hidden_layer_size"],
+    #     args["hidden_layers"],
+    #     norm=None,
+    #     hidden_activation="relu",
+    # ).to(args["device"])
+    q1 = ConvMLP(
+        4,
         action_shape,
-        args["hidden_layer_size"],
-        args["hidden_layers"],
-        norm=None,
-        hidden_activation="relu",
     ).to(args["device"])
-    q2 = MLP(
-        obs_shape,
+    q2 = ConvMLP(
+        4,
         action_shape,
-        args["hidden_layer_size"],
-        args["hidden_layers"],
-        norm=None,
-        hidden_activation="relu",
     ).to(args["device"])
+
     critic_optim = torch.optim.Adam(
         [*q1.parameters(), *q2.parameters()], lr=args["actor_lr"]
     )
 
-    env = get_env(args["task"])
+    env = make_pytorch_env(
+        get_env(args["task"]), clip_rewards=False, scale=True
+    )
 
     return {
         "env": env,
@@ -134,7 +155,11 @@ class AlgoTrainer(BaseAlgo):
                     action = action.cpu().numpy()
                     new_obs, reward, done, info = self.env.step(action[0])
 
-                if self.total_train_steps >= self.args["warmup_size"]:
+                if (
+                    self.total_train_steps >= self.args["warmup_size"]
+                    and self.total_train_steps % self.args["update_interval"]
+                    == 0
+                ):
                     for _ in range(self.args["steps_per_epoch"]):
                         batch = self.replay_buffer.sample(
                             self.args["batch_size"]
@@ -162,10 +187,11 @@ class AlgoTrainer(BaseAlgo):
                     else:
                         traj_batch = Batch.cat([traj_batch, batch_data])
 
-                if done:
-                    break
                 obs = new_obs
                 self.total_train_steps += 1
+
+                if done:
+                    break
 
             if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
                 self.replay_buffer.put(traj_batch)
@@ -206,34 +232,27 @@ class AlgoTrainer(BaseAlgo):
                 target_q.sum(dim=-1, keepdim=True) + alpha * entropy
             )
 
-        # print("action", action.shape)
-        # print("reward", reward.shape)
-        # print("done", done.shape)
-        # print("entropy", entropy.shape)
-        # print("target_q", target_q.shape)
-        # print("y", y.shape)
-        # print("q1", _q1.shape)
-
         critic_loss = ((y - _q1) ** 2).mean() + ((y - _q2) ** 2).mean()
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
-        torch.nn.utils.clip_grad.clip_grad_norm_(
-            [*self.q1.parameters(), *self.q2.parameters()], max_norm=1.0
-        )
+        # torch.nn.utils.clip_grad.clip_grad_norm_(
+        #     [*self.q1.parameters(), *self.q2.parameters()], max_norm=1.0
+        # )
         self.critic_optim.step()
 
         # soft target update
-        self._sync_weight(
-            self.target_q1,
-            self.q1,
-            soft_target_tau=self.args["soft_target_tau"],
-        )
-        self._sync_weight(
-            self.target_q2,
-            self.q2,
-            soft_target_tau=self.args["soft_target_tau"],
-        )
+        if self.total_train_steps % self.args["target_update_interval"] == 0:
+            self._sync_weight(
+                self.target_q1,
+                self.q1,
+                soft_target_tau=self.args["soft_target_tau"],
+            )
+            self._sync_weight(
+                self.target_q2,
+                self.q2,
+                soft_target_tau=self.args["soft_target_tau"],
+            )
 
         action_dist = self.actor(obs)
         probs = action_dist.probs
@@ -251,9 +270,9 @@ class AlgoTrainer(BaseAlgo):
 
         self.actor_optim.zero_grad()
         actor_loss.backward()
-        torch.nn.utils.clip_grad.clip_grad_norm_(
-            self.actor.parameters(), max_norm=1.0
-        )
+        # torch.nn.utils.clip_grad.clip_grad_norm_(
+        #     self.actor.parameters(), max_norm=1.0
+        # )
         self.actor_optim.step()
 
         if self.args["learnable_alpha"]:
@@ -263,9 +282,9 @@ class AlgoTrainer(BaseAlgo):
 
             self.log_alpha_optim.zero_grad()
             alpha_loss.backward()
-            torch.nn.utils.clip_grad.clip_grad_norm_(
-                [self.log_alpha], max_norm=1.0
-            )
+            # torch.nn.utils.clip_grad.clip_grad_norm_(
+            #     [self.log_alpha], max_norm=1.0
+            # )
             self.log_alpha_optim.step()
 
         # DEBUGGING INFORMATION

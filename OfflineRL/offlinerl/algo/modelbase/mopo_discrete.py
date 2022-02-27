@@ -13,7 +13,7 @@ from offlinerl.utils.data import Batch
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ReplayBuffer 
+from offlinerl.utils.data import ReplayBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
 
 
@@ -41,7 +41,8 @@ def algo_init(args):
 
     transition = EnsembleTransition(
         obs_shape,
-        action_shape,
+        # action_shape,
+        1,
         args["hidden_layer_size"],
         args["transition_layers"],
         args["transition_init_num"],
@@ -70,7 +71,8 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="swish",
+        # hidden_activation="swish",
+        hidden_activation="relu",
     ).to(args["device"])
     q2 = MLP(
         obs_shape,
@@ -78,7 +80,8 @@ def algo_init(args):
         args["hidden_layer_size"],
         args["hidden_layers"],
         norm=None,
-        hidden_activation="swish",
+        # hidden_activation="swish",
+        hidden_activation="relu",
     ).to(args["device"])
     critic_optim = torch.optim.Adam(
         [*q1.parameters(), *q2.parameters()], lr=args["actor_lr"]
@@ -240,7 +243,7 @@ class AlgoTrainer(BaseAlgo):
                     obs = train_buffer.sample(
                         int(self.args["data_collection_per_epoch"])
                     )["obs"]
-                    obs = torch.tensor(obs, device=self.device)
+                    obs = torch.tensor(obs, dtype=torch.float32, device=self.device)
                     for t in range(self.args["horizon"]):
                         action = self.actor(obs).sample()
                         action = action.unsqueeze(-1)
@@ -392,9 +395,11 @@ class AlgoTrainer(BaseAlgo):
         with torch.no_grad():
             q1 = self.q1(obs)
             q2 = self.q2(obs)
+            q = torch.min(q1, q2)
+            alpha = torch.exp(self.log_alpha)
 
         q = torch.sum(
-            action_prob * torch.min(q1, q2),
+            action_prob * q,
             dim=-1,
             keepdim=True,
         )
@@ -403,23 +408,23 @@ class AlgoTrainer(BaseAlgo):
 
         self.actor_optim.zero_grad()
         actor_loss.backward()
-        # torch.nn.utils.clip_grad.clip_grad_norm_(
-        #     self.actor.parameters(), max_norm=1.0
-        # )
+        torch.nn.utils.clip_grad.clip_grad_norm_(
+            self.actor.parameters(), max_norm=1.0
+        )
         self.actor_optim.step()
 
         if self.args["learnable_alpha"]:
             # update alpha
             alpha_loss = -torch.mean(
                 self.log_alpha
-                * (-entropy.detach() + self.args["target_entropy"]).detach()
+                * (-entropy + self.args["target_entropy"]).detach()
             )
 
             self.log_alpha_optim.zero_grad()
             alpha_loss.backward()
-            # torch.nn.utils.clip_grad.clip_grad_norm_(
-            #     [self.log_alpha], max_norm=1.0
-            # )
+            torch.nn.utils.clip_grad.clip_grad_norm_(
+                [self.log_alpha], max_norm=1.0
+            )
             self.log_alpha_optim.step()
 
         # DEBUGGING INFORMATION
