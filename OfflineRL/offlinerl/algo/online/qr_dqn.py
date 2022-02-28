@@ -112,7 +112,7 @@ class AlgoTrainer(BaseAlgo):
             }
             # collect data
             obs = self.env.reset()
-            traj_batch = None
+            traj_batch = []
             while True:
                 if np.random.rand() < self.exploration_rate:
                     action = np.array([self.env.action_space.sample()])
@@ -138,10 +138,7 @@ class AlgoTrainer(BaseAlgo):
                 if "transition" in self.args["buffer_type"]:
                     self.replay_buffer.put(batch_data)
                 else:
-                    if traj_batch is None:
-                        traj_batch = batch_data
-                    else:
-                        traj_batch = Batch.cat([traj_batch, batch_data])
+                    traj_batch.append(batch_data)
 
                 if done:
                     break
@@ -157,7 +154,7 @@ class AlgoTrainer(BaseAlgo):
                     metrics.update(dqn_metrics)
 
             if "traj" in self.args["buffer_type"]:
-                self.replay_buffer.put(traj_batch)
+                self.replay_buffer.put(Batch.cat(traj_batch, axis=0))
 
             if (
                 self.train_epoch == 0

@@ -6,7 +6,6 @@ import numpy as np
 import gym
 from gym import spaces, wrappers
 import cv2
-
 cv2.ocl.setUseOpenCL(False)
 
 
@@ -22,7 +21,7 @@ class NoopResetEnv(gym.Wrapper):
         self.noop_max = noop_max
         self.override_num_noops = None
         self.noop_action = 0
-        assert env.unwrapped.get_action_meanings()[0] == "NOOP"
+        assert env.unwrapped.get_action_meanings()[0] == 'NOOP'
 
     def reset(self, **kwargs):
         self.env.reset(**kwargs)
@@ -49,7 +48,7 @@ class FireResetEnv(gym.Wrapper):
         :param env: (Gym Environment) the environment to wrap
         """
         gym.Wrapper.__init__(self, env)
-        assert env.unwrapped.get_action_meanings()[1] == "FIRE"
+        assert env.unwrapped.get_action_meanings()[1] == 'FIRE'
         assert len(env.unwrapped.get_action_meanings()) >= 3
 
     def reset(self, **kwargs):
@@ -118,9 +117,8 @@ class MaxAndSkipEnv(gym.Wrapper):
         gym.Wrapper.__init__(self, env)
         # most recent raw observations (for max pooling across time steps)
         self._obs_buffer = np.zeros(
-            (2,) + env.observation_space.shape,
-            dtype=env.observation_space.dtype,
-        )
+            (2,)+env.observation_space.shape,
+            dtype=env.observation_space.dtype)
         self._skip = skip
 
     def step(self, action):
@@ -178,11 +176,8 @@ class WarpFramePyTorch(gym.ObservationWrapper):
         self.width = 84
         self.height = 84
         self.observation_space = spaces.Box(
-            low=0,
-            high=255,
-            shape=(1, self.height, self.width),
-            dtype=env.observation_space.dtype,
-        )
+            low=0, high=255, shape=(1, self.height, self.width),
+            dtype=env.observation_space.dtype)
 
     def observation(self, frame):
         """
@@ -192,8 +187,7 @@ class WarpFramePyTorch(gym.ObservationWrapper):
         """
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
         frame = cv2.resize(
-            frame, (self.width, self.height), interpolation=cv2.INTER_AREA
-        )
+            frame, (self.width, self.height), interpolation=cv2.INTER_AREA)
         return frame[None, :, :]
 
 
@@ -207,7 +201,7 @@ class FrameStackPyTorch(gym.Wrapper):
         :param env: (Gym Environment) the environment
         :param n_frames: (int) the number of frames to stack
         """
-        # assert env.observation_space.dtype == np.uint8
+        assert env.observation_space.dtype == np.uint8
 
         gym.Wrapper.__init__(self, env)
         self.n_frames = n_frames
@@ -218,8 +212,7 @@ class FrameStackPyTorch(gym.Wrapper):
             low=np.min(env.observation_space.low),
             high=np.max(env.observation_space.high),
             shape=(shp[0] * n_frames, shp[1], shp[2]),
-            dtype=env.observation_space.dtype,
-        )
+            dtype=env.observation_space.dtype)
 
     def reset(self):
         obs = self.env.reset()
@@ -241,11 +234,8 @@ class ScaledFloatFrame(gym.ObservationWrapper):
     def __init__(self, env):
         gym.ObservationWrapper.__init__(self, env)
         self.observation_space = spaces.Box(
-            low=0,
-            high=1.0,
-            shape=env.observation_space.shape,
-            dtype=np.float32,
-        )
+            low=0, high=1.0, shape=env.observation_space.shape,
+            dtype=np.float32)
 
     def observation(self, observation):
         # careful! This undoes the memory optimization, use
@@ -259,7 +249,8 @@ class LazyFrames(object):
         self.dtype = frames[0].dtype
 
     def _force(self):
-        return np.concatenate(np.array(self._frames, dtype=self.dtype), axis=0)
+        return np.concatenate(
+            np.array(self._frames, dtype=self.dtype), axis=0)
 
     def __array__(self, dtype=None):
         out = self._force()
@@ -280,15 +271,14 @@ def make_atari(env):
     :param env_id: (str) the environment ID
     :return: (Gym Environment) the wrapped atari environment
     """
-    assert "NoFrameskip" in env.spec.id
+    assert 'NoFrameskip' in env.spec.id
     env = NoopResetEnv(env, noop_max=30)
     env = MaxAndSkipEnv(env, skip=4)
     return env
 
 
-def wrap_deepmind_pytorch(
-    env, episode_life=True, clip_rewards=True, frame_stack=True, scale=False
-):
+def wrap_deepmind_pytorch(env, episode_life=True, clip_rewards=True,
+                          frame_stack=True, scale=False):
     """
     Configure environment for DeepMind-style Atari.
     :param env: (Gym Environment) the atari environment
@@ -300,7 +290,7 @@ def wrap_deepmind_pytorch(
     """
     if episode_life:
         env = EpisodicLifeEnv(env)
-    if "FIRE" in env.unwrapped.get_action_meanings():
+    if 'FIRE' in env.unwrapped.get_action_meanings():
         env = FireResetEnv(env)
     env = WarpFramePyTorch(env)
     if clip_rewards:
@@ -312,16 +302,15 @@ def wrap_deepmind_pytorch(
     return env
 
 
-def make_pytorch_env(
-    env, episode_life=True, clip_rewards=True, frame_stack=True, scale=False
-):
+def make_pytorch_env(env, episode_life=True, clip_rewards=True,
+                     frame_stack=True, scale=False):
     env = make_atari(env)
     env = wrap_deepmind_pytorch(
-        env, episode_life, clip_rewards, frame_stack, scale
-    )
+        env, episode_life, clip_rewards, frame_stack, scale)
     return env
 
 
 def wrap_monitor(env, log_dir):
-    env = wrappers.Monitor(env, log_dir, video_callable=lambda x: True)
+    env = wrappers.Monitor(
+        env, log_dir, video_callable=lambda x: True)
     return env

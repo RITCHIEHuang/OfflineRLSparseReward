@@ -6,8 +6,7 @@ from loguru import logger
 from offlinerl.algo.base import BaseAlgo
 from offlinerl.utils.data import (
     Batch,
-    LoggedReplayBuffer,
-    TrajAveragedReplayBuffer,
+    ReplayBuffer,
 )
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.net.discrete import (
@@ -83,7 +82,7 @@ def algo_init(args):
     )
 
     env = make_pytorch_env(
-        get_env(args["task"]), clip_rewards=False, scale=True
+        get_env(args["task"]), clip_rewards=False
     )
 
     return {
@@ -118,15 +117,8 @@ class AlgoTrainer(BaseAlgo):
         self.total_train_steps = 0
         self.train_epoch = 0
 
-        if self.args["buffer_type"] == "log_transition":
-            self.replay_buffer = LoggedReplayBuffer(
-                self.args["buffer_size"],
-                log_path=f'{self.args["log_data_path"]}/SACD/{self.env.spec.id}',
-            )
-        elif self.args["buffer_type"] == "avg_traj":
-            self.replay_buffer = TrajAveragedReplayBuffer(
-                self.args["buffer_size"],
-            )
+        self.replay_buffer = ReplayBuffer(self.args["buffer_size"])
+        
 
     def train(self, callback_fn):
         self.train_policy(callback_fn)
@@ -146,14 +138,12 @@ class AlgoTrainer(BaseAlgo):
             }
             # collect data
             obs = self.env.reset()
-            traj_batch = None
             while True:
                 with torch.no_grad():
-                    obs_t = torch.tensor(obs, device=self.device).float()
-                    obs_t = obs_t.unsqueeze(0)
+                    obs_t = torch.FloatTensor(obs[None, ...]).to(self.device)
                     action = self.actor(obs_t).sample()
                     action = action.cpu().numpy()
-                    new_obs, reward, done, info = self.env.step(action[0])
+                    new_obs, reward, done, info = self.env.step(action.item())
 
                 if (
                     self.total_train_steps >= self.args["warmup_size"]
@@ -179,22 +169,13 @@ class AlgoTrainer(BaseAlgo):
                         # "retention": [info["reward"]["retention"]],
                     }
                 )
-                if isinstance(self.replay_buffer, LoggedReplayBuffer):
-                    self.replay_buffer.put(batch_data)
-                else:
-                    if traj_batch is None:
-                        traj_batch = batch_data
-                    else:
-                        traj_batch = Batch.cat([traj_batch, batch_data])
+                self.replay_buffer.put(batch_data)
 
                 obs = new_obs
                 self.total_train_steps += 1
 
                 if done:
                     break
-
-            if isinstance(self.replay_buffer, TrajAveragedReplayBuffer):
-                self.replay_buffer.put(traj_batch)
 
             if (
                 self.train_epoch == 0

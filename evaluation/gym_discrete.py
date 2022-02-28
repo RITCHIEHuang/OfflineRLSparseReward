@@ -6,26 +6,34 @@ from offlinerl.utils.env import get_env
 from offlinerl.utils.atari_utils import make_pytorch_env
 
 
-def gym_eval_fn(task, eval_episodes=100):
-    env = make_pytorch_env(get_env(task), clip_rewards=False, scale=True)
+def gym_eval_fn(task, max_episode_steps=27000, num_eval_steps=10000):
+    env = make_pytorch_env(get_env(task), episode_life=False, clip_rewards=False)
 
-    def d4rl_eval(policy):
+    def gym_eval(policy):
         episode_rewards = []
         episode_lengths = []
-        for _ in range(eval_episodes):
-            state, done = env.reset(), False
-            rewards = 0
-            lengths = 0
-            while not done:
+        num_steps = 0
+
+        while True:
+            state = env.reset()
+            episode_steps = 0
+            episode_return = 0.0
+            done = False
+            while (not done) and episode_steps <= max_episode_steps:
                 state = state[np.newaxis]
-                action = policy.get_action(state)
-                state, reward, done, _ = env.step(action[0])
-                rewards += reward
-                lengths += 1
+                action = policy.get_action(state).item()
+                next_state, reward, done, _ = env.step(action)
+                num_steps += 1
+                episode_steps += 1
+                episode_return += reward
+                state = next_state
 
-            episode_rewards.append(rewards)
-            episode_lengths.append(lengths)
+            if num_steps > num_eval_steps:
+                break
 
+            episode_lengths.append(episode_steps)
+            episode_rewards.append(episode_return)
+            
         rew_mean = np.mean(episode_rewards)
         len_mean = np.mean(episode_lengths)
 
@@ -35,4 +43,4 @@ def gym_eval_fn(task, eval_episodes=100):
 
         return res
 
-    return d4rl_eval
+    return gym_eval

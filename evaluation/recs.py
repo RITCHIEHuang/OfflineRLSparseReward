@@ -60,8 +60,8 @@ def recs_eval_fn(task, eval_episodes=100):
             lengths = 0
             while not done:
                 state = state[np.newaxis]
-                action = policy.get_action(state)
-                state, reward, done, info = env.step(action[0])
+                action = policy.get_action(state).item()
+                state, reward, done, info = env.step(action)
                 rewards += reward
                 retentions += info["reward"]["retention"]
                 clicks += info["reward"]["click"]

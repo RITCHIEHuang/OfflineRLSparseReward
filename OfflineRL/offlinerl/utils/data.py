@@ -2,6 +2,8 @@ from typing import *
 from copy import deepcopy
 import os
 import pprint
+import random
+from collections import deque
 
 import torch
 import numpy as np
@@ -185,21 +187,18 @@ class Batch:
         return batch
 
     def __len__(self) -> int:
-        return self.shape[0]
-
-    @property
-    def shape(self) -> List[int]:
-        data_shape = []
+        lens = []
         for v in self.__dict__.values():
-            try:
-                data_shape.append(list(v.shape))
-            except AttributeError:
-                data_shape.append([])
-        return (
-            list(map(min, zip(*data_shape)))
-            if len(data_shape) > 1
-            else data_shape[0]
-        )
+            if hasattr(v, "__len__"):
+                lens.append(len(v))
+            else:
+                raise TypeError(f"Object {v} in {self} has no len()")
+        if len(lens) == 0:
+            # empty batch has the shape of any, like the tensorflow '?' shape.
+            # So it has no length.
+            raise TypeError(f"Object {self} has no len()")
+        return min(lens)
+        
 
     def split(self, size: Union[int, List[int]], shuffle: bool = True):
         if type(size) == list:
@@ -260,28 +259,17 @@ def get_scaler(data):
 
 class ReplayBuffer:
     def __init__(self, buffer_size):
-        self.data = None
-        self.buffer_size = int(buffer_size)
+        self.data = deque(maxlen=int(buffer_size))
 
     def put(self, batch_data):
-        batch_data.to_torch(device="cpu")
-
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
+        self.data.append(batch_data)
 
     def __len__(self):
-        if self.data is None:
-            return 0
-        return self.data.shape[0]
+        return len(self.data)
 
     def sample(self, batch_size):
-        indexes = np.random.randint(0, len(self), size=(batch_size))
-        return self.data[indexes]
+        random_batch = random.sample(self.data, batch_size)
+        return Batch.cat(random_batch, axis=0)
 
 
 
@@ -293,16 +281,8 @@ class LoggedReplayBuffer(ReplayBuffer):
         self.log_count = 0
 
     def put(self, batch_data: Batch):
-        batch_data.to_torch(device="cpu")
-
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
+        self.data.append(batch_data)
         self.add_count += len(batch_data)
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
 
         if self.add_count >= (self.log_count + 1) * self.buffer_size:
             self._log_data()
@@ -320,15 +300,16 @@ class LoggedReplayBuffer(ReplayBuffer):
         if os.path.exists(full_log_path):
             logger.info(f"{full_log_path} exists !!!")
         else:
+            batch_data = Batch.concat(self.data, axis=0)
             np.savez_compressed(
                 full_log_path,
-                observations=self.data["obs"].numpy(),
-                actions=self.data["act"].numpy(),
-                rewards=self.data["rew"].numpy(),
-                terminals=self.data["done"].numpy(),
-                timeouts=self.data["done"].numpy(),
-                next_observations=self.data["obs_next"].numpy(),
-                retentions=self.data["retention"].numpy(),
+                observations=batch_data["obs"].numpy(),
+                actions=batch_data["act"].numpy(),
+                rewards=batch_data["rew"].numpy(),
+                terminals=batch_data["done"].numpy(),
+                timeouts=batch_data["done"].numpy(),
+                next_observations=batch_data["obs_next"].numpy(),
+                retentions=batch_data["retention"].numpy(),
             )
             logger.info(f"Logging buffer to {full_log_path}.")
             self.log_count += 1
@@ -349,17 +330,9 @@ class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
         self.eps = np.finfo(np.float32).eps.item()
 
     def put(self, batch_data: Batch):
-        batch_data.to_torch(device="cpu")
-
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
+        self.data.append(batch_data)
         self.add_count += 1
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
-
+    
         if self.add_count % self.buffer_size == 0:
             self._log_data()
 
@@ -384,16 +357,9 @@ class TrajAveragedReplayBuffer(ReplayBuffer):
         return batch_data
 
     def put(self, batch_data: Batch):
-        batch_data.to_torch(device="cpu")
         batch_data = self._average(batch_data)
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
-
+        for i in range(len(batch_data)):
+            super(ReplayBuffer, self).put(batch_data[i])
 
 class LoggedTrajAveragedReplayBuffer(LoggedReplayBuffer):
     def __init__(self, buffer_size, log_path=None):
@@ -415,12 +381,6 @@ class LoggedTrajAveragedReplayBuffer(LoggedReplayBuffer):
         return batch_data
 
     def put(self, batch_data: Batch):
-        batch_data.to_torch(device="cpu")
         batch_data = self._average(batch_data)
-        if self.data is None:
-            self.data = batch_data
-        else:
-            self.data = Batch.cat([self.data, batch_data], axis=0)
-
-        if len(self) > self.buffer_size:
-            self.data = self.data[len(self) - self.buffer_size :]
+        for i in range(len(batch_data)):
+            super(ReplayBuffer, self).put(batch_data[i])
