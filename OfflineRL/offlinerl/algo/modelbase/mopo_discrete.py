@@ -12,7 +12,7 @@ from offlinerl.utils.data import Batch
 from offlinerl.utils.net.common import MLP
 from offlinerl.utils.exp import setup_seed
 
-from offlinerl.utils.data import ReplayBuffer
+from offlinerl.utils.data import MOPOBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
 from offlinerl.utils.net.discrete import CategoricalActor
 
@@ -205,7 +205,7 @@ class AlgoTrainer(BaseAlgo):
         )
         model_batch_size = self.args["policy_batch_size"] - real_batch_size
 
-        model_buffer = ReplayBuffer(self.args["buffer_size"])
+        model_buffer = MOPOBuffer(self.args["buffer_size"])
 
         obs_max = torch.as_tensor(train_buffer["obs"].max(axis=0)).to(
             self.device

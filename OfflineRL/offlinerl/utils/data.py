@@ -16,6 +16,7 @@ from loguru import logger
 
 from offlinerl.utils.segtree import SegmentTree
 
+
 def to_array_as(x, y):
     if isinstance(x, torch.Tensor) and isinstance(y, np.ndarray):
         return x.detach().cpu().numpy().astype(y.dtype)
@@ -198,7 +199,6 @@ class Batch:
             # So it has no length.
             raise TypeError(f"Object {self} has no len()")
         return min(lens)
-        
 
     def split(self, size: Union[int, List[int]], shuffle: bool = True):
         if type(size) == list:
@@ -248,13 +248,37 @@ class Batch:
         return self[indices]
 
 
-
 def get_scaler(data):
     scaler = MinMaxScaler((-1, 1))
     scaler.fit(data)
 
     return scaler
 
+
+class MOPOBuffer:
+    def __init__(self, buffer_size):
+        self.data = None
+        self.buffer_size = int(buffer_size)
+
+    def put(self, batch_data):
+        batch_data.to_torch(device="cpu")
+
+        if self.data is None:
+            self.data = batch_data
+        else:
+            self.data.cat_(batch_data)
+
+        if len(self) > self.buffer_size:
+            self.data = self.data[len(self) - self.buffer_size :]
+
+    def __len__(self):
+        if self.data is None:
+            return 0
+        return self.data.shape[0]
+
+    def sample(self, batch_size):
+        indexes = np.random.randint(0, len(self), size=(batch_size))
+        return self.data[indexes]
 
 
 class ReplayBuffer:
@@ -270,7 +294,6 @@ class ReplayBuffer:
     def sample(self, batch_size):
         random_batch = random.sample(self.data, batch_size)
         return Batch.cat(random_batch, axis=0)
-
 
 
 class LoggedReplayBuffer(ReplayBuffer):
@@ -315,7 +338,6 @@ class LoggedReplayBuffer(ReplayBuffer):
             self.log_count += 1
 
 
-
 class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
     def __init__(
         self, buffer_size, alpha, beta, weight_norm=True, log_path=None
@@ -332,7 +354,7 @@ class LoggedPrioritizedReplayBuffer(LoggedReplayBuffer):
     def put(self, batch_data: Batch):
         self.data.append(batch_data)
         self.add_count += 1
-    
+
         if self.add_count % self.buffer_size == 0:
             self._log_data()
 
@@ -360,6 +382,7 @@ class TrajAveragedReplayBuffer(ReplayBuffer):
         batch_data = self._average(batch_data)
         for i in range(len(batch_data)):
             super(ReplayBuffer, self).put(batch_data[i])
+
 
 class LoggedTrajAveragedReplayBuffer(LoggedReplayBuffer):
     def __init__(self, buffer_size, log_path=None):

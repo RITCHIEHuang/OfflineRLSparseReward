@@ -21,7 +21,8 @@ critic_lr = 3e-4
 use_automatic_entropy_tuning = True
 target_entropy = 0.0
 discount = 0.99
-soft_target_tau = 5e-3
+soft_target_tau = 1.0
+target_update_interval = 2000
 
 # min Q
 explore = 1.0

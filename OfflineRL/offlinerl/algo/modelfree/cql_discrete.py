@@ -40,24 +40,12 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    
     actor = CategoricalActor(
         obs_dim=obs_shape,
         action_dim=action_shape,
         hidden_size=args["hidden_layer_size"],
         hidden_layers=args["layer_num"],
     ).to(args["device"])
-
-    # net_a = Net(
-    #     layer_num=args["layer_num"],
-    #     state_shape=obs_shape,
-    #     hidden_layer_size=args["hidden_layer_size"],
-    # )
-    # actor = CategoricalPolicy(
-    #     preprocess_net=net_a,
-    #     action_num=action_shape,
-    #     hidden_layer_size=args["hidden_layer_size"],
-    # ).to(args["device"])
 
     actor_optim = optim.Adam(actor.parameters(), lr=args["actor_lr"])
 
@@ -83,7 +71,7 @@ def algo_init(args):
 
     if args["use_automatic_entropy_tuning"]:
         if args["target_entropy"] >= 0:
-            target_entropy = -np.prod(args["action_shape"]).item()
+            target_entropy = 0.98 * np.log(args["action_shape"]).item()
         else:
             target_entropy = args["target_entropy"]
         log_alpha = torch.zeros(1, requires_grad=True, device=args["device"])
@@ -278,15 +266,16 @@ class AlgoTrainer(BaseAlgo):
         qf_loss.backward()
         self.critic_opt.step()
 
-        """
-        Soft Updates target network
-        """
-        self._sync_weight(
-            self.critic1_target, self.critic1, self.args["soft_target_tau"]
-        )
-        self._sync_weight(
-            self.critic2_target, self.critic2, self.args["soft_target_tau"]
-        )
+        if self._n_train_steps_total % self.args["target_update_interval"]:
+            """
+            Soft Updates target network
+            """
+            self._sync_weight(
+                self.critic1_target, self.critic1, self.args["soft_target_tau"]
+            )
+            self._sync_weight(
+                self.critic2_target, self.critic2, self.args["soft_target_tau"]
+            )
 
         metrics = dict(
             cql_min_qf1_loss=min_qf1_loss.mean().item(),
