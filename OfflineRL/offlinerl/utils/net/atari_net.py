@@ -21,15 +21,17 @@ class ConvMLP(nn.Module):
     ):
         super().__init__()
         self.conv_net = nn.Sequential(
-            nn.Conv2d(num_channels, 32, kernel_size=4, stride=2, padding=0),
+            nn.Conv2d(num_channels, 32, kernel_size=8, stride=4, padding=0),
             nn.ReLU(),
-            nn.Conv2d(32, 64, kernel_size=2, stride=1, padding=0),
+            nn.Conv2d(32, 64, kernel_size=4, stride=2, padding=0),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=0),
             nn.ReLU(),
             nn.Flatten(),
         ).apply(initialize_weights_he)
 
         self.head = nn.Sequential(
-            nn.Linear(3 * 3 * 64, 512),
+            nn.Linear(7 * 7 * 64, 512),
             nn.ReLU(inplace=True),
             nn.Linear(512, action_dim),
         )

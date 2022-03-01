@@ -201,8 +201,6 @@ class FrameStackPyTorch(gym.Wrapper):
         :param env: (Gym Environment) the environment
         :param n_frames: (int) the number of frames to stack
         """
-        assert env.observation_space.dtype == np.uint8
-
         gym.Wrapper.__init__(self, env)
         self.n_frames = n_frames
         self.frames = deque([], maxlen=n_frames)

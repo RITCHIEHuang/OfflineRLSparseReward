@@ -2,7 +2,6 @@
 # https://arxiv.org/abs/2005.13239
 # https://github.com/tianheyu927/mopo
 
-from offlinerl.utils.net.discrete import CategoricalActor
 import torch
 import numpy as np
 from copy import deepcopy
@@ -15,6 +14,7 @@ from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.data import ReplayBuffer
 from offlinerl.utils.net.model.ensemble import EnsembleTransition
+from offlinerl.utils.net.discrete import CategoricalActor
 
 
 def prob_log_prob(dist, eps=1e-6):
@@ -41,7 +41,6 @@ def algo_init(args):
 
     transition = EnsembleTransition(
         obs_shape,
-        # action_shape,
         1,
         args["hidden_layer_size"],
         args["transition_layers"],
@@ -122,7 +121,9 @@ class AlgoTrainer(BaseAlgo):
             * self.args["horizon"]
             * 5
         )
-        self.args["target_entropy"] = np.log(self.args["action_shape"])
+        self.args["target_entropy"] = np.log(self.args["action_shape"]) * 0.98
+
+        self.total_sac_train_steps = 0
 
     def train(self, train_buffer, val_buffer, callback_fn):
         if self.args["dynamics_path"] is not None:
@@ -161,8 +162,8 @@ class AlgoTrainer(BaseAlgo):
         while True:
             epoch += 1
             idxs = np.random.randint(
-                train_buffer.shape[0],
-                size=[self.transition.ensemble_size, train_buffer.shape[0]],
+                len(train_buffer),
+                size=[self.transition.ensemble_size, len(train_buffer)],
             )
             for batch_num in range(int(np.ceil(idxs.shape[-1] / batch_size))):
                 batch_idxs = idxs[
@@ -243,7 +244,9 @@ class AlgoTrainer(BaseAlgo):
                     obs = train_buffer.sample(
                         int(self.args["data_collection_per_epoch"])
                     )["obs"]
-                    obs = torch.tensor(obs, dtype=torch.float32, device=self.device)
+                    obs = torch.tensor(
+                        obs, dtype=torch.float32, device=self.device
+                    )
                     for t in range(self.args["horizon"]):
                         action = self.actor(obs).sample()
                         action = action.unsqueeze(-1)
@@ -285,12 +288,6 @@ class AlgoTrainer(BaseAlgo):
                         reward = torch.clamp(reward, rew_min, rew_max)
                         # TODO : scale should be consistent with transition tranining
                         # reward = (reward - rew_min) / (rew_max - rew_min)
-
-                        print("average next_obs:", next_obs.mean().item())
-                        print("average reward:", reward.mean().item())
-                        print(
-                            "average uncertainty:", uncertainty.mean().item()
-                        )
 
                         penalized_reward = (
                             reward - self.args["lam"] * uncertainty
@@ -341,6 +338,8 @@ class AlgoTrainer(BaseAlgo):
         return self.get_policy()
 
     def _sac_update(self, batch_data):
+        self.total_sac_train_steps += 1
+
         obs = batch_data["obs"]
         action = batch_data["act"]
         next_obs = batch_data["obs_next"]
@@ -370,22 +369,23 @@ class AlgoTrainer(BaseAlgo):
 
         self.critic_optim.zero_grad()
         critic_loss.backward()
-        torch.nn.utils.clip_grad.clip_grad_norm_(
-            [*self.q1.parameters(), *self.q2.parameters()], max_norm=1.0
-        )
         self.critic_optim.step()
 
         # soft target update
-        self._sync_weight(
-            self.target_q1,
-            self.q1,
-            soft_target_tau=self.args["soft_target_tau"],
-        )
-        self._sync_weight(
-            self.target_q2,
-            self.q2,
-            soft_target_tau=self.args["soft_target_tau"],
-        )
+        if (
+            self.total_sac_train_steps % self.args["target_update_interval"]
+            == 0
+        ):
+            self._sync_weight(
+                self.target_q1,
+                self.q1,
+                soft_target_tau=self.args["soft_target_tau"],
+            )
+            self._sync_weight(
+                self.target_q2,
+                self.q2,
+                soft_target_tau=self.args["soft_target_tau"],
+            )
 
         action_dist = self.actor(obs)
         action_prob = action_dist.probs
@@ -404,13 +404,10 @@ class AlgoTrainer(BaseAlgo):
             keepdim=True,
         )
 
-        actor_loss = -(q + alpha * entropy).mean()
+        actor_loss = (-q - alpha * entropy).mean()
 
         self.actor_optim.zero_grad()
         actor_loss.backward()
-        torch.nn.utils.clip_grad.clip_grad_norm_(
-            self.actor.parameters(), max_norm=1.0
-        )
         self.actor_optim.step()
 
         if self.args["learnable_alpha"]:
@@ -422,15 +419,13 @@ class AlgoTrainer(BaseAlgo):
 
             self.log_alpha_optim.zero_grad()
             alpha_loss.backward()
-            torch.nn.utils.clip_grad.clip_grad_norm_(
-                [self.log_alpha], max_norm=1.0
-            )
             self.log_alpha_optim.step()
 
         # DEBUGGING INFORMATION
         metrics = {}
         metrics["mean_action_prob"] = torch.mean(action_prob).item()
         metrics["mean_critic_loss"] = torch.mean(critic_loss).item()
+        metrics["mean_entropy"] = torch.mean(entropy).item()
         metrics["mean_Qmin"] = torch.mean(q).item()
         metrics["log_alpha"] = self.log_alpha.item()
         metrics["mean_obs"] = torch.mean(obs).item()

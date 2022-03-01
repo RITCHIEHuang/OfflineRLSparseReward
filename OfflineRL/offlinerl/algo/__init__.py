@@ -53,7 +53,13 @@ from offlinerl.algo.modelfree import (
 )
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
-from offlinerl.algo.online import qr_dqn, rem, sac_discrete, dqn
+from offlinerl.algo.online import (
+    atari_sac_discrete,
+    qr_dqn,
+    rem,
+    dqn,
+    sac_discrete,
+)
 
 algo_dict = {
     # custom
@@ -88,6 +94,7 @@ algo_dict = {
     "moose": {"algo": moose, "config": moose_config},
     "bremen": {"algo": bremen, "config": bremen_config},
     # online
+    # "sacd": {"algo": atari_sac_discrete, "config": online_sacd_config},
     "sacd": {"algo": sac_discrete, "config": online_sacd_config},
     "dqn": {"algo": dqn, "config": online_dqn_config},
     "qr_dqn": {"algo": qr_dqn, "config": online_qr_dqn_config},

@@ -128,10 +128,10 @@ class ObservationAdapter(object):
         # The first row is user's observation. The remaining rows are documents'
         # observation, one row for each document.
         image = np.zeros(
-            self._observation_shape + (1,),
+            (1, ) + self._observation_shape,
             dtype=self._observation_dtype,
         )
-        image[0, :, 0] = self._pad_with_zeros(
+        image[0, 0, :] = self._pad_with_zeros(
             spaces.flatten(
                 self._input_observation_space.spaces["user"],
                 observation["user"],
@@ -141,7 +141,7 @@ class ObservationAdapter(object):
             self._input_observation_space.spaces["doc"].spaces.values(),
             observation["doc"].values(),
         )
-        image[1:, :, 0] = np.array(
+        image[0, 1:, :] = np.array(
             [
                 self._pad_with_zeros(spaces.flatten(doc_space, d))
                 for doc_space, d in doc_space

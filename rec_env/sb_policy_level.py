@@ -4,7 +4,7 @@ import rec_env
 
 import numpy as np
 
-from stable_baselines3 import PPO, DQN
+from stable_baselines3 import DQN
 
 from rec_env.sb_callback import EvalCallback
 from tqdm import tqdm
@@ -12,11 +12,22 @@ from tqdm import tqdm
 
 env = gym.make("recs-v0")
 eval_env = gym.make("recs-v0")
-# print(env.observation_space)
-# print(env.action_space.n)
 
-# model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./logs")
-buffer_size = int(200_000)
+dataset_config = {
+    "medium": {
+        "buffer_size": 200_000,
+        "sample_size": 1000_000,
+    },
+    "expert": {
+        "buffer_size": 1000_000,
+        "sample_size": 1000_000,
+    },
+}
+
+
+data_level = "medium"
+config = dataset_config[data_level]
+buffer_size = int(config["buffer_size"])
 model = DQN(
     "MlpPolicy",
     env,
@@ -30,10 +41,8 @@ model = DQN(
 eval_callback = EvalCallback(eval_env, n_eval_episodes=100)
 
 model.learn(total_timesteps=buffer_size, callback=eval_callback)
-total_steps = 1000_000
 
-
-
+total_steps = config["sample_size"]
 
 # eval
 rewards = []
@@ -43,17 +52,17 @@ steps = []
 observations = []
 actions = []
 dones = []
-timeouts=[]
+timeouts = []
 next_observations = []
-obs_shape=env.reset().shape
-print("obs shape:",obs_shape)
-act_dim = 10
 step = 0
 global_done = False
+
+
 def generator():
-  while step<total_steps:
-    print("steps:",step)
-    yield
+    while step < total_steps:
+        print("steps:", step)
+        yield
+
 
 for _ in tqdm(generator()):
     episode_reward = 0
@@ -75,7 +84,7 @@ for _ in tqdm(generator()):
         timeouts.append(0)
 
         step += 1
-        if step==total_steps:
+        if step == total_steps:
             global_done = True
             break
 
@@ -84,24 +93,23 @@ for _ in tqdm(generator()):
     if global_done:
         break
 
-obs_shape=env.reset().shape
-print("obs shape:",obs_shape)
+obs_shape = env.reset().shape
 act_dim = 1
-observations = np.reshape(np.array(observations),(-1,obs_shape[0]))
-actions = np.reshape(np.array(actions),(-1,act_dim))
-next_observations = np.reshape(np.array(next_observations),(-1,obs_shape[0]))
-rewards = np.reshape(np.array(actions),-1)
-timeouts= np.reshape(np.array(timeouts),-1)
-terminals= np.reshape(np.array(dones),-1)
-retentions= np.reshape(np.array(retentions),-1)
+print("obs shape:", obs_shape)
+observations = np.reshape(np.array(observations), (-1, obs_shape[0]))
+actions = np.reshape(np.array(actions), (-1, act_dim))
+next_observations = np.reshape(np.array(next_observations), (-1, obs_shape[0]))
+rewards = np.reshape(np.array(actions), -1)
+timeouts = np.reshape(np.array(timeouts), -1)
+terminals = np.reshape(np.array(dones), -1)
+retentions = np.reshape(np.array(retentions), -1)
 np.savez_compressed(
-    f"./data/recs-medium-v0.npz",
+    f"./data/recs-{data_level}-v0.npz",
     observations=observations,
     actions=actions,
     rewards=rewards,
     terminals=terminals,
     timeouts=timeouts,
     next_observations=next_observations,
-    retentions=retentions
+    retentions=retentions,
 )
-

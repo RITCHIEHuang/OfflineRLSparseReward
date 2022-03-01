@@ -13,8 +13,7 @@ env_config = {
     "slate_size": 1,
     "candidate_size": 10,
     # video
-    "max_video_duration": 1.0,
-    "min_video_duration": 60.0,
+    "max_video_duration": 60.0,
     "emb_dim": 10,
     # user
     "time_budget": 9 * 24 * 60,
@@ -32,7 +31,6 @@ env_config = {
 
 class Video(document.AbstractDocument):
     EMB_DIM = env_config["emb_dim"]
-    MIN_VIDEO_DURATION = env_config["min_video_duration"]
     MAX_VIDEO_DURATION = env_config["max_video_duration"]
 
     def __init__(self, v_id, emb, duration):
@@ -60,8 +58,8 @@ class Video(document.AbstractDocument):
                 "duration": spaces.Box(
                     shape=(1,),
                     dtype=np.float32,
-                    low=cls.MIN_VIDEO_DURATION,
-                    high=cls.MAX_VIDEO_DURATION,
+                    low=0.1,
+                    high=1.0,
                 ),
             }
         )
@@ -89,10 +87,7 @@ class VideoSampler(document.AbstractDocumentSampler):
             1,
             self.get_doc_ctor().EMB_DIM,
         )
-        doc_features["duration"] = self._rng.uniform(
-            self.get_doc_ctor().MIN_VIDEO_DURATION,
-            self.get_doc_ctor().MAX_VIDEO_DURATION,
-        )
+        doc_features["duration"] = self._rng.uniform(0.1, 1.0)
         self._video_count += 1
         return self._doc_ctor(**doc_features)
 
@@ -258,7 +253,9 @@ class UserModel(user.AbstractUserModel):
         next_time = None
         if score >= self.config["click_threshold"]:
             response.clicked = True
-            watch_time = score * doc.duration
+            watch_time = (
+                score * doc.duration * self.config["max_video_duration"]
+            )
             reaction_time = np.random.uniform(0.02, 0.05)
             next_time = watch_time + reaction_time
         else:

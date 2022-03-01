@@ -2,7 +2,7 @@ from offlinerl.algo import algo_select
 from offlinerl.evaluation import CallBackFunctionList
 
 from utils.exp_util import setup_exp_args
-from evaluation.gym_discrete import gym_eval_fn
+from evaluation.atari import atari_eval_fn
 
 
 def run_algo(kwargs):
@@ -11,7 +11,7 @@ def run_algo(kwargs):
     algo_trainer = algo_trainer_obj(algo_init, algo_config)
 
     callback_list = CallBackFunctionList(
-        [gym_eval_fn(task=algo_config["task"])]
+        [atari_eval_fn(task=algo_config["task"])]
     )
 
     algo_trainer.train(callback_fn=callback_list)

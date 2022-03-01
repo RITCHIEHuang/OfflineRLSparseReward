@@ -6,10 +6,12 @@ from offlinerl.utils.env import get_env
 from offlinerl.utils.atari_utils import make_pytorch_env
 
 
-def gym_eval_fn(task, max_episode_steps=27000, num_eval_steps=10000):
-    env = make_pytorch_env(get_env(task), episode_life=False, clip_rewards=False)
+def atari_eval_fn(task, max_episode_steps=27000, num_eval_steps=10000):
+    env = make_pytorch_env(
+        get_env(task), episode_life=False, clip_rewards=False, scale=True
+    )
 
-    def gym_eval(policy):
+    def atari_eval(policy):
         episode_rewards = []
         episode_lengths = []
         num_steps = 0
@@ -33,7 +35,7 @@ def gym_eval_fn(task, max_episode_steps=27000, num_eval_steps=10000):
 
             episode_lengths.append(episode_steps)
             episode_rewards.append(episode_return)
-            
+
         rew_mean = np.mean(episode_rewards)
         len_mean = np.mean(episode_lengths)
 
@@ -43,4 +45,4 @@ def gym_eval_fn(task, max_episode_steps=27000, num_eval_steps=10000):
 
         return res
 
-    return gym_eval
+    return atari_eval

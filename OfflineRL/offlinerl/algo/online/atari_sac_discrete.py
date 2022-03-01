@@ -8,15 +8,14 @@ from offlinerl.utils.data import (
     Batch,
     ReplayBuffer,
 )
-from offlinerl.utils.net.common import MLP
 from offlinerl.utils.net.discrete import (
-    CategoricalActor,
     ConvCategoricalActor,
     ConvMLP,
 )
 from offlinerl.utils.exp import setup_seed
 
 from offlinerl.utils.env import get_env
+from offlinerl.utils.atari_utils import make_pytorch_env
 
 
 def algo_init(args):
@@ -34,53 +33,32 @@ def algo_init(args):
     else:
         raise NotImplementedError
 
-    actor = CategoricalActor(
-        obs_dim=obs_shape,
+    actor = ConvCategoricalActor(
+        4,
         action_dim=action_shape,
-        hidden_size=args["hidden_layer_size"],
-        hidden_layers=args["hidden_layers"],
     ).to(args["device"])
-
-    # actor = ConvCategoricalActor(
-    #     1,
-    #     action_dim=action_shape,
-    # ).to(args["device"])
 
     actor_optim = torch.optim.Adam(actor.parameters(), lr=args["actor_lr"])
 
     log_alpha = torch.zeros(1, requires_grad=True, device=args["device"])
     alpha_optimizer = torch.optim.Adam([log_alpha], lr=args["actor_lr"])
 
-    q1 = MLP(
-        obs_shape,
+    q1 = ConvMLP(
+        4,
         action_shape,
-        args["hidden_layer_size"],
-        args["hidden_layers"],
-        norm=None,
-        hidden_activation="relu",
     ).to(args["device"])
-    q2 = MLP(
-        obs_shape,
+    q2 = ConvMLP(
+        4,
         action_shape,
-        args["hidden_layer_size"],
-        args["hidden_layers"],
-        norm=None,
-        hidden_activation="relu",
     ).to(args["device"])
-    # q1 = ConvMLP(
-    #     1,
-    #     action_shape,
-    # ).to(args["device"])
-    # q2 = ConvMLP(
-    #     1,
-    #     action_shape,
-    # ).to(args["device"])
 
     critic_optim = torch.optim.Adam(
         [*q1.parameters(), *q2.parameters()], lr=args["actor_lr"]
     )
 
-    env = get_env(args["task"])
+    env = make_pytorch_env(
+        get_env(args["task"]), clip_rewards=False, scale=True
+    )
 
     return {
         "env": env,
@@ -162,7 +140,6 @@ class AlgoTrainer(BaseAlgo):
                         "rew": [reward],
                         "done": [done],
                         "obs_next": np.expand_dims(new_obs, 0),
-                        "retention": [info["reward"]["retention"]],
                     }
                 )
                 self.replay_buffer.put(batch_data)

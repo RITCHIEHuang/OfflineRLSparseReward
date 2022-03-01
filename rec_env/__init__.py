@@ -21,7 +21,7 @@ register(
     entry_point="rec_env.offline_env:get_recs_offline_env",
     max_episode_steps=4000,
     kwargs={
-        "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
+        "dataset_path": f"{proj_path}/rec_env/data/recs-replay-v0.npz",
         "data_limit": int(1_000_000),
         "ref_min_score": 0.0,
         "ref_max_score": 9.0,
@@ -35,7 +35,7 @@ register(
     entry_point="rec_env.offline_env:get_recs_offline_env",
     max_episode_steps=4000,
     kwargs={
-        "dataset_path": f"{proj_path}/rec_env/data/recs-replay.npz",
+        "dataset_path": f"{proj_path}/rec_env/data/recs-replay-v0.npz",
         "data_limit": int(300_000),
         "ref_min_score": 0.0,
         "ref_max_score": 9.0,
@@ -71,8 +71,8 @@ register(
     kwargs={
         "reward_type": "click",
         # "reward_type": "retention",
-        # "obs_encode_format": "vec"
-        "obs_encode_format": "img"
+        "obs_encode_format": "vec"
+        # "obs_encode_format": "img"
     },
 )
 
