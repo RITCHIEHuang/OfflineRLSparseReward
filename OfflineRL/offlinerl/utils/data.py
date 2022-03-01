@@ -200,6 +200,20 @@ class Batch:
             raise TypeError(f"Object {self} has no len()")
         return min(lens)
 
+    @property
+    def shape(self) -> List[int]:
+        data_shape = []
+        for v in self.__dict__.values():
+            try:
+                data_shape.append(list(v.shape))
+            except AttributeError:
+                data_shape.append([])
+        return (
+            list(map(min, zip(*data_shape)))
+            if len(data_shape) > 1
+            else data_shape[0]
+        )
+
     def split(self, size: Union[int, List[int]], shuffle: bool = True):
         if type(size) == list:
             return self._split_with_sizes(size, shuffle)
@@ -266,7 +280,7 @@ class MOPOBuffer:
         if self.data is None:
             self.data = batch_data
         else:
-            self.data.cat_(batch_data)
+            self.data = Batch.cat([self.data, batch_data], axis=0)
 
         if len(self) > self.buffer_size:
             self.data = self.data[len(self) - self.buffer_size :]
