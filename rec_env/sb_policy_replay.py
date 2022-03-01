@@ -7,7 +7,7 @@ import numpy as np
 from stable_baselines3 import DQN
 
 from rec_env.sb_callback import EvalCallback
-
+from rec_env.sb_buffer import ReplayBuffer
 
 env = gym.make("recs-v0")
 eval_env = gym.make("recs-v0")
@@ -17,6 +17,7 @@ model = DQN(
     "MlpPolicy",
     env,
     buffer_size=buffer_size,
+    replay_buffer_class=ReplayBuffer,
     verbose=1,
     batch_size=256,
     target_update_interval=2000,
