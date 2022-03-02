@@ -7,17 +7,17 @@ obs_shape = None
 act_shape = None
 max_action = None
 
-max_epoch = 3000
+max_epoch = 1000
 steps_per_epoch = 1000
-eval_epoch = 50
+eval_epoch = 10
 policy_bc_steps = 0
 
 batch_size = 256
 hidden_layer_size = 256
 hidden_layers = 2
 layer_num = 2
-actor_lr = 3e-4
-critic_lr = 3e-4
+actor_lr = 1e-4
+critic_lr = 1e-4
 
 discount = 0.99
 soft_target_tau = 1.0
@@ -29,7 +29,7 @@ target_update_period = 2000
 # update
 # beta = 1.0 / 3
 # quantile = 0.7
-beta = 0.1
+beta = 0.01
 quantile = 0.8
 clip_score = 100
 

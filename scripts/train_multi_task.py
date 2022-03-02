@@ -23,7 +23,7 @@ def argsparser():
     # Experiment setting
     parser = argparse.ArgumentParser("Experiment runner")
     parser.add_argument(
-        "--algo_name", help="algorithm", type=str, default="cql"
+        "--algo_name", help="algorithm", type=str, default="mopod"
     )
     parser.add_argument(
         "--strategy",
@@ -35,7 +35,7 @@ def argsparser():
         "--domain",
         help="name of experiment domain",
         type=str,
-        default="d4rl",
+        default="recs",
         choices=["d4rl", "neorl", "recs"],
     )
     parser.add_argument(
@@ -48,7 +48,7 @@ def argsparser():
         "--reward_scale", help="scale for reward", type=float, default=1.0
     )
     parser.add_argument(
-        "--reward_shift", help="shift for reward", type=float, default=-1.0
+        "--reward_shift", help="shift for reward", type=float, default=0.0
     )
     return parser.parse_args()
 
@@ -63,7 +63,7 @@ algos = [args.algo_name]
 
 # delay_modes = ["constant", "random"]
 delay_modes = ["constant" if domain!="recs" else "none"]
-seeds = [41,42,43]
+seeds = [10, 100, 1000]
 delays = [20]
 # [1,2,5,6,9,10]
 # strategies = [args.strategy]

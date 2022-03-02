@@ -174,7 +174,7 @@ class AlgoTrainer(BaseAlgo):
                     self.transition, batch, self.transition_optim
                 )
             new_val_losses = self._eval_transition(self.transition, val_buffer)
-            print("eval transition loss", new_val_losses)
+            logger.info(f"Epoch [{epoch}] eval transition loss: {new_val_losses}")
 
             indexes = []
             for i, new_loss, old_loss in zip(
