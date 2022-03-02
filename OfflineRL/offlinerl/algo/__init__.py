@@ -32,6 +32,7 @@ from offlinerl.config.algo import (
     bcd_config,
     online_rem_config,
     offline_rem_config,
+    offline_sacd_config,
 )
 
 from offlinerl.utils.config import parse_config
@@ -50,11 +51,11 @@ from offlinerl.algo.modelfree import (
     offline_qr_dqn,
     bcd,
     offline_rem,
+    offline_sacd
 )
 from offlinerl.algo.modelbase import moose, combo, bremen, mopo, mopo_discrete
 from offlinerl.algo.custom import reward_shaper, reward_decoposer, reward_giver
 from offlinerl.algo.online import (
-    atari_sac_discrete,
     qr_dqn,
     rem,
     dqn,
@@ -82,17 +83,21 @@ algo_dict = {
         "config": offline_qr_dqn_config,
     },
     "offline_rem": {"algo": offline_rem, "config": offline_rem_config},
+    "offline_sacd": {"algo": offline_sacd, "config": offline_sacd_config},
     "bcd": {"algo": bcd, "config": bcd_config},
+
     # default
     "bc": {"algo": bc, "config": bc_config},
     "bcq": {"algo": bcq, "config": bcq_config},
     "bcqd": {"algo": bcqd, "config": bcqd_config},
     "combo": {"algo": combo, "config": combo_config},
+
     # "cql" : {"algo" : cql, "config" : cql_config},
     "crr": {"algo": crr, "config": crr_config},
     "plas": {"algo": plas, "config": plas_config},
     "moose": {"algo": moose, "config": moose_config},
     "bremen": {"algo": bremen, "config": bremen_config},
+
     # online
     # "sacd": {"algo": atari_sac_discrete, "config": online_sacd_config},
     "sacd": {"algo": sac_discrete, "config": online_sacd_config},

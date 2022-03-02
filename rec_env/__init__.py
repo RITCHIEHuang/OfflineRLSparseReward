@@ -1,7 +1,6 @@
 from gym.envs.registration import register
 from utils.io_util import proj_path
 
-# deprecated
 register(
     id="recs-random-v0",
     entry_point="rec_env.offline_env:get_recs_offline_env",

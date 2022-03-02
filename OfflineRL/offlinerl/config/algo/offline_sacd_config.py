@@ -10,15 +10,12 @@ max_action = None
 hidden_layer_size = 256
 hidden_layers = 2
 
-buffer_size = 1e6
-batch_size = 128
-warmup_size = 10000
+
+batch_size = 256
+steps_per_epoch = 1000
+max_epoch = 500
+eval_epoch = 10
 target_update_interval = 2000
-update_interval = 1
-steps_per_epoch = 1
-max_epoch = 10000
-max_step = 1e7
-eval_epoch = 50
 
 learnable_alpha = True
 actor_lr = 1e-4

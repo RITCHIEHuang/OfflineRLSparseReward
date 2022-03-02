@@ -81,7 +81,7 @@ class AlgoTrainer(BaseAlgo):
     def _train(self, batch):
         self.total_train_steps += 1
 
-        batch = batch.to_torch(dtype=torch.float32, device=self.args["device"])
+        batch = batch.to_torch(dtype=torch.float32, device=self.device)
         obs = batch["obs"]
         action = batch["act"]
         next_obs = batch["obs_next"]
