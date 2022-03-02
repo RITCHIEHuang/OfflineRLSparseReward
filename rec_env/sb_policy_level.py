@@ -17,8 +17,8 @@ eval_env = gym.make("recs-v0")
 
 dataset_config = {
     "medium": {
-        "buffer_size": 200_000,
-        "sample_size": 1000_000,
+        "buffer_size": 300_000,
+        "sample_size": 300_000,
     },
     "expert": {
         "buffer_size": 1000_000,

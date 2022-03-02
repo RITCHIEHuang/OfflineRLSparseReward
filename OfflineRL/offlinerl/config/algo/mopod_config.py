@@ -21,12 +21,14 @@ real_data_ratio = 0.05
 
 transition_batch_size = 256
 policy_batch_size = 256
-data_collection_per_epoch = 50e3
+data_collection_per_epoch = 1e4
+# data_collection_per_epoch = 5e4
+
 steps_per_epoch = 1000
 target_update_interval = 2000
 bc_epoch = 0
-max_epoch = 1500
-eval_epoch = 50
+max_epoch = 100
+eval_epoch = 1
 
 learnable_alpha = True
 uncertainty_mode = "aleatoric"
