@@ -124,7 +124,15 @@ def process_pointplot(
 
 
 def process_barplot(
-    dfs, row, col, x_key, y_key, hue_key, fig_name="", hue_order=None
+    dfs,
+    row,
+    col,
+    x_key,
+    y_key,
+    hue_key,
+    fig_name="",
+    hue_order=None,
+    title_func=lambda: "",
 ):
     fig, axes = plt.subplots(row, col, figsize=(12, 5))
     if row * col == 1:
@@ -132,7 +140,7 @@ def process_barplot(
 
     for idx, ax in enumerate(axes):
         df = dfs[idx]
-        dset_name = ()
+        dset_name = title_func(df)
         print("dataset name", dset_name)
 
         sns.barplot(
@@ -260,7 +268,9 @@ def plot_iql_reimp_antmaze():
         x_key="Iteration",
         y_key="D4rl_Score",
         fig_name=fig_name,
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -283,7 +293,9 @@ def plot_iql_reimp_mujoco():
         x_key="Iteration",
         y_key="D4rl_Score",
         fig_name=fig_name,
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -306,7 +318,9 @@ def plot_mopo_reimp_mujoco():
         x_key="Iteration",
         y_key="D4rl_Score",
         fig_name=fig_name,
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -335,7 +349,9 @@ def plot_iql_mujoco_strategy():
         style_key="Strategy",
         fig_name=fig_name,
         hue_order=["IUPM", "IUS", "None"],
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -348,7 +364,9 @@ def plot_mopo_mujoco_strategy():
     dfs = []
 
     for p in file_paths:
-        df = pd.read_csv(os.path.join(file_dir, p), skiprows=lambda x: x > 0 and x % 50 != 0)
+        df = pd.read_csv(
+            os.path.join(file_dir, p), skiprows=lambda x: x > 0 and x % 50 != 0
+        )
         df = df.replace("interval_ensemble", "IUPM")
         df = df.replace("interval_average", "IUS")
         df = df.replace("none", "None")
@@ -364,7 +382,9 @@ def plot_mopo_mujoco_strategy():
         style_key="Strategy",
         fig_name=fig_name,
         hue_order=["IUPM", "IUS", "None"],
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -393,16 +413,18 @@ def plot_iql_antmaze_strategy():
         style_key="Strategy",
         fig_name=fig_name,
         hue_order=["IUPM", "IUS", "None"],
-        title_func=lambda df: df["Environment"][0].capitalize() + "-" + df["Dataset Type"][0]
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
-def plot_delay_vs_nodelay(
+def plot_delay_interval_bar(
     file_paths=[
-        f"{proj_path}/assets/results_mopo_walker2d_medium_v0.csv",
-        f"{proj_path}/assets/results_mopo_halfcheetah_medium_replay_v0.csv",
+        f"{proj_path}/assets/results_mopo_delay_walker2d_medium_v0.csv",
+        f"{proj_path}/assets/results_mopo_delay_halfcheetah_medium_replay_v0.csv",
     ],
-    fig_name="MOPO_Delay_vs_None-Delay",
+    fig_name="MOPO_vs_Delay_interval_size_bar",
 ):
     dfs = []
     for file_path in file_paths:
@@ -410,6 +432,7 @@ def plot_delay_vs_nodelay(
         df = df.replace("interval_average", "IUS")
         df = df.replace("interval_ensemble", "IUPM")
         df = df.replace("none", "None")
+        df = df[df["Strategy"].isin(["IUS", "None"])].reset_index()
         dfs.append(df)
     process_barplot(
         dfs,
@@ -418,10 +441,12 @@ def plot_delay_vs_nodelay(
         x_key="Delay",
         y_key="D4rl_Score",
         hue_key="Strategy",
-        row=1,
-        col=2,
         fig_name=fig_name,
-        hue_order=["IUPM", "IUS", "None"],
+        # hue_order=["IUPM", "IUS", "None"],
+        hue_order=["IUS", "None"],
+        title_func=lambda df: df["Environment"][0].capitalize()
+        + "-"
+        + df["Dataset Type"][0],
     )
 
 
@@ -462,7 +487,7 @@ if __name__ == "__main__":
     # plot_mopo_reimp_mujoco()
 
     # # mopo mujoco v0 strategy
-    plot_mopo_mujoco_strategy()
+    # plot_mopo_mujoco_strategy()
 
     # # iql, cql under different reward shapings
     # plot_performance_under_shapings()
@@ -478,3 +503,5 @@ if __name__ == "__main__":
 
     # # iql mujoco strategy
     # plot_iql_mujoco_strategy()
+
+    plot_delay_interval_bar()

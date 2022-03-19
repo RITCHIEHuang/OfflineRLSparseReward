@@ -29,7 +29,7 @@ target_update_period = 2000
 # update
 # beta = 1.0 / 3
 # quantile = 0.7
-beta = 0.01
+beta = 0.3
 quantile = 0.8
 clip_score = 100
 

@@ -11,16 +11,14 @@ d4rl_task_list = {
     9: "hopper-medium-v0",
     10: "hopper-medium-replay-v0",
     11: "hopper-medium-expert-v0",
-
-#-----------------------------------------
+    # -----------------------------------------
     20: "antmaze-umaze-v0",
     21: "antmaze-umaze-diverse-v0",
     22: "antmaze-medium-play-v0",
     23: "antmaze-medium-diverse-v0",
     24: "antmaze-large-play-v0",
     25: "antmaze-large-diverse-v0",
-
-#-----------------------------------------
+    # -----------------------------------------
     30: "halfcheetah-random-v2",
     31: "halfcheetah-medium-v2",
     32: "halfcheetah-medium-replay-v2",
@@ -33,8 +31,7 @@ d4rl_task_list = {
     39: "hopper-medium-v2",
     40: "hopper-medium-replay-v2",
     41: "hopper-medium-expert-v2",
-
-#-----------------------------------------
+    # -----------------------------------------
     50: "antmaze-umaze-v2",
     51: "antmaze-umaze-diverse-v2",
     52: "antmaze-medium-diverse-v2",
@@ -56,12 +53,12 @@ neorl_task_list = {
 }
 
 rec_task_list = {
-    0: "recs-random-v0", 
-    1: "recs-medium-replay-v0",
-    2: "recs-replay-v0", 
-    3: "recs-v0",
-    4: "recs-medium-v0",
-    5: "recs-random-large-v0", 
+    0: "recs-random-v0",
+    1: "recs-medium-v0",
+    2: "recs-medium-replay-v0",
+    3: "recs-replay-v0",
+    4: "recs-v0",
+    5: "recs-random-large-v0",
 }
 
 
@@ -74,4 +71,3 @@ def get_domain_by_task(task: str):
         return "recs"
     else:
         return "gym"
-
